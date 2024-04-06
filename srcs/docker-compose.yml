@@ -1,0 +1,25 @@
+version: "3.9"
+
+services: 
+  nginx:
+    container_name: nginx
+    build: ./nginx
+    ports:
+      - "443:443"
+    volumes:
+      - ./nginx/ssl:/etc/nginx/ssl/
+      - ./nginx/default.conf:/etc/nginx/http.d/nginx.conf
+    depends_on:
+      - backend
+    networks:
+      - transcendence
+    restart: always
+
+  backend:
+    container_name: django
+    build: ./backend
+    networks:
+      - transcendence
+
+networks:
+  transcendence:
