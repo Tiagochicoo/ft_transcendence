@@ -7,7 +7,8 @@ services:
     ports:
       - "443:443"
     volumes:
-      - ./backend/server:/usr/share/nginx/html
+      - ./frontend/configs/:/usr/share/nginx/html
+      - ./backend/api:/api
     networks:
       - transcendence
     restart: always
@@ -15,8 +16,13 @@ services:
   backend:
     container_name: django
     build: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/api:/api 
     networks:
       - transcendence
+    restart: always
 
 networks:
   transcendence:

@@ -1,11 +1,21 @@
-FROM python:3.6
+FROM python:3.9-alpine3.19
 
-ENV PYTHONBUFFERED=1
+ENV PYTHONUNBUFFERED 1 
 
-WORKDIR /code/
+COPY ./configs/requirements.txt /requirements.txt
+COPY ./api /api
 
-COPY configs/requirements.txt /code/
+WORKDIR /api
 
-RUN pip install --upgrade pip && pip install -r requirements.txt
+EXPOSE 8000
 
-EXPOSE 9000
+RUN python -m venv /py && \
+	/py/bin/pip install --upgrade pip && \
+	/py/bin/pip install -r /requirements.txt && \
+	adduser --disabled-password --no-create-home api
+
+ENV PATH="/py/bin:$PATH"
+
+USER api
+
+
