@@ -5,7 +5,8 @@ FROM alpine:3.18
 RUN	apk update && apk upgrade && apk add --no-cache nginx
 
 # Copy your custom Nginx configuration file into the container
-COPY ./default.conf /etc/nginx/nginx.conf
+COPY ./nginx.conf /etc/nginx/nginx.conf
+COPY ./default.conf /etc/nginx/conf.d/default.conf
 
 # Copy your SSL certificate and key into the container
 COPY ./ssl/nginx-selfsigned.crt /etc/nginx/certs/

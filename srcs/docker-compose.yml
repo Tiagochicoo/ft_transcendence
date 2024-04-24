@@ -3,15 +3,23 @@ version: "3.9"
 services: 
   nginx:
     container_name: nginx
-    build: ./nginx
+    image: nginx:alpine
     ports:
+      - "80:80"
       - "443:443"
     volumes:
-      - ./frontend/configs/:/usr/share/nginx/html
-      - ./backend/api:/api
-    networks:
-      - transcendence
+      - ./frontend:/usr/share/nginx/html
+    depends_on:
+      - backend
     restart: always
+
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    volumes:
+      - ./frontend:/app
+    depends_on:
+      - backend
 
   backend:
     container_name: django
@@ -19,10 +27,30 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./backend/api:/api 
+      - ./backend/:/transcendence
+    env_file:
+      - .env
+    networks:
+      - transcendence
+    restart: unless-stopped
+    depends_on:
+      - db
+  
+  db:
+    container_name: postgreSQL
+    image: postgres:alpine3.19
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
     networks:
       - transcendence
     restart: always
 
 networks:
   transcendence:
+
+volumes:
+  postgres_data:
