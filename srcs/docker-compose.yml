@@ -3,23 +3,29 @@ version: "3.9"
 services: 
   nginx:
     container_name: nginx
-    image: nginx:alpine
+    build: ./nginx
     ports:
-      - "80:80"
       - "443:443"
     volumes:
       - ./frontend:/usr/share/nginx/html
-    depends_on:
-      - backend
+      - ./backend:/transcendence
     restart: always
+    networks:
+      - transcendence
+    env_file:
+      - .env
 
   frontend:
     container_name: frontend
     build: ./frontend
     volumes:
-      - ./frontend:/app
+      - ./frontend:/usr/share/nginx/html
     depends_on:
       - backend
+    networks:
+      - transcendence
+    env_file:
+      - .env
 
   backend:
     container_name: django

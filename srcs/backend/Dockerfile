@@ -20,4 +20,4 @@ ENV PATH="/py/bin:$PATH"
 
 USER transcendence
 
-CMD ["sh", "-c", "/usr/local/bin/entrypoint.sh python manage.py migrate && python manage.py runserver 8000"]
+CMD ["sh", "-c", "/usr/local/bin/entrypoint.sh python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
