@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import UserSerializer
 from .models import User as User
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 class UserList(APIView):
@@ -37,7 +38,6 @@ class UserUpdate(APIView):
 
 class UserDelete(APIView):
     def delete(self, request, pk, format=None):
-        user = User.objects.get(pk=pk)
-        if user.delete():
-            return Response("User deleted successfully from DB" ,status=status.HTTP_200_OK)
-
+        user = get_object_or_404(User, pk=pk)
+        user.delete()
+        return Response(f"User with ID {pk} deleted successfully from DB", status=status.HTTP_200_OK)
