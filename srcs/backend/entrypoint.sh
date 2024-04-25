@@ -9,6 +9,7 @@ echo "Database started"
 
 # Apply database migrations
 echo "Applying database migrations..."
+python manage.py makemigrations
 python manage.py migrate
 
 # Create a superuser - this can be conditional or based on an environment variable

@@ -6,6 +6,7 @@ COPY ./default.conf /etc/nginx/nginx.conf
 
 COPY ./ssl/nginx-selfsigned.crt /etc/nginx/certs/
 COPY ./ssl/nginx-selfsigned.key /etc/nginx/certs/
+COPY ./proxy_params /etc/nginx/
 
 EXPOSE 443
 

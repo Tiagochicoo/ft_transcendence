@@ -11,7 +11,6 @@ class UserList(APIView):
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
 
-@method_decorator(csrf_exempt, name='dispatch')
 class UserCreate(APIView):
     def post(self, request, format=None):
         serializer = UserSerializer(data=request.data)
