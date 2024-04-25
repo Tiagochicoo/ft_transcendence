@@ -17,6 +17,7 @@ class UserSerializer(serializers.ModelSerializer):
             num_tournaments=validated_data['num_tournaments'],
             num_tournaments_won=validated_data['num_tournaments_won'],
         )
+        
         user.password = make_password(validated_data['password'])
         user.save()
         return user

@@ -10,4 +10,6 @@ class User(models.Model):
 	num_games_won = models.IntegerField(default=0)
 	num_tournaments = models.IntegerField(default=0)
 	num_tournaments_won = models.IntegerField(default=0)
-
+	
+	def __str__(self):
+		return f"{self.username} ({self.email})"

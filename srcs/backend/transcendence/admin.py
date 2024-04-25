@@ -1,6 +1,7 @@
 from django.contrib import admin
+from .models import User
 
-# Register your models here.
-from .models import User # Adjust the import according to your model
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('username', 'email', 'num_games', 'num_games_won')  # Specify the columns to display
 
-admin.site.register(User)
+admin.site.register(User, UserAdmin)
