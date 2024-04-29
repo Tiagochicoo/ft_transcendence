@@ -91,6 +91,7 @@ export default class Game {
     this.rightPlayer.score = 0;
     this.isGameOn = false;
     this.isGamePaused = false;
+    this.pauseBtn.innerHTML = i18next.t("pong.buttons.pause");
     this.draw();
   }
 

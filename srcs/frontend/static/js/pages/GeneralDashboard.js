@@ -65,9 +65,13 @@ export default class extends Abstract {
 
   async getHtml() {
     // fetching data mocked on db.json
-    this.data = await FetchData.getData();
+    this.data = await FetchData.getMockedData();
     this.games = this.data.games;
     this.users = this.data.users;
+
+	// testing communication with Django API
+	const test = await FetchData.getUserList();
+	console.log(test);
 
     return `
 			<h1>

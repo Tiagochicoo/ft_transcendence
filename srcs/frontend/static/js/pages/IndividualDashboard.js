@@ -44,7 +44,7 @@ export default class extends Abstract {
 
   async getHtml() {
     // fetching data mocked on db.json
-    this.data = await FetchData.getData();
+    this.data = await FetchData.getMockedData();
     this.user = this.data.users.filter((user) => user.userId == this.userId)[0];
 
     return `

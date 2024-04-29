@@ -3,6 +3,7 @@ import GeneralDashboard from "./GeneralDashboard.js";
 import IndividualDashboard from "./IndividualDashboard.js";
 import SignIn from "./SignIn.js";
 import SignUp from "./SignUp.js";
+import Match from "./pong/Match.js";
 import Pong from "./Pong.js";
 
-export { GeneralDashboard, IndividualDashboard, Home, SignIn, SignUp, Pong };
+export { GeneralDashboard, IndividualDashboard, Home, SignIn, SignUp, Match, Pong };
