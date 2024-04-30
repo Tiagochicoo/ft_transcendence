@@ -1,17 +1,17 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import UserSerializer
-from .models import User as User
 from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
+from django.core import serializers
+from .serializers.serializers_user import UserSerializer
+from .models import User as User
 
 # Create your views here.
 class UserList(APIView):
     def get(self, request, format=None):
-        users = User.objects.all()
-        serializer = UserSerializer(users, many=True)
-        return Response(serializer.data)
+        return Response(13)
 
 class UserDetail(APIView):
     def get(self, request, pk, format=None):
@@ -41,3 +41,4 @@ class UserDelete(APIView):
         user = get_object_or_404(User, pk=pk)
         user.delete()
         return Response(f"User with ID {pk} deleted successfully from DB", status=status.HTTP_200_OK)
+
