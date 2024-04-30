@@ -25,10 +25,10 @@ export default class extends Abstract {
 						<div class="d-flex flex-column align-items-center">
 							<canvas id="canvas" width="600" height="400" class="bg-dark"></canvas>
 						</div>
-						<div class="buttons d-flex justify-content-around mt-2">
-							<button id="start-btn" type="button" class="btn pong-buttons w-50 m-1 shadow">${i18next.t("pong.buttons.start")}</button>
-							<button id="pause-btn" type="button" class="btn pong-buttons w-50 m-1 shadow">${i18next.t("pong.buttons.pause")}</button>
-							<button id="restart-btn" type="button" class="btn pong-buttons w-50 m-1 shadow">${i18next.t("pong.buttons.restart")}</button>
+						<div class="d-flex justify-content-around mt-2" style="width: 600px;">
+							<button class="pong-buttons" id="start-btn" type="button"> ${i18next.t("pong.buttons.start")}</button>
+							<button class="pong-buttons" id="pause-btn" type="button"> ${i18next.t("pong.buttons.pause")}</button>
+							<button class="pong-buttons" id="restart-btn" type="button"> ${i18next.t("pong.buttons.restart")}</button>
 						</div>
 					</div>
 				</div>
@@ -53,3 +53,4 @@ export default class extends Abstract {
 		`;
   }
 }
+

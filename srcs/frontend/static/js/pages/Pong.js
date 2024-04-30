@@ -16,7 +16,7 @@ export default class extends Abstract {
 		  <h1 class="mb-4">
 				  ${i18next.t("pong.title")}
 		  </h1>
-		  <div class="buttons d-flex justify-content-around mt-2" >
+		  <div class="d-flex justify-content-around mt-2" >
 		  	<div class="d-flex flex-column">
 				<img src="/static/images/single-match.jpg" class="mode-images" >
 				<a id="single-match-button" href="/pong/match" data-link>
