@@ -11,7 +11,7 @@
   --bs-nav-link-hover-color: #000000cc !important;
 }
 
-.pong-buttons {
+#single-match-button, #tournament-button {
   font-size: 18px;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -28,15 +28,12 @@
   transition: 0.3s ease all;
   z-index: 1;
   background-color: transparent;
-}
-
-.pong-buttons a {
-  text-decoration: none;
-  color: #14dd50;
+  margin-top: 25px;
 }
 
 
-.pong-buttons:before, .pong-buttons a:before {
+
+#single-match-button:before, #tournament-button:before {
   transition: 0.5s all ease;
   position: absolute;
   top: 0;
@@ -49,27 +46,37 @@
   z-index: -1;
 }
 
-.pong-buttons:hover, .pong-buttons:focus, .pong-buttons a:hover, .pong-buttons a:focus {
+#single-match-button:hover, #single-match-button:focus, #tournament-button:hover, #tournament-button:focus {
   color: white;
 }
 
-.pong-buttons:hover:before, .pong-buttons:focus:before, .pong-buttons a:hover:before, .pong-buttons a:focus:before {
+#single-match-button:hover:before, #single-match-button:focus:before, #tournament-button:hover:before, #tournament-button:focus:before {
   transition: 0.5s all ease;
   left: 0;
   right: 0;
   opacity: 1;
 }
 
-.pong-buttons:active, .pong-buttons a:active {
+#single-match-button:active, #tournament-button:active {
   transform: scale(0.9);
 }
 
-@media (max-width: 500px) {
+.mode-images {
+  width: 411px;
+  height: 256px;
+}
+
+@media (max-width: 992px) {
   .buttons {
     flex-direction: column;
   }
 
-  .pong-buttons {
+  #single-match-button, #tournament-button {
     margin-bottom: 25px;
   }
+  .mode-images {
+    width: auto;
+    height: auto;
+  }
 }
+
