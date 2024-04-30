@@ -17,10 +17,18 @@ export default class extends Abstract {
 				  ${i18next.t("pong.title")}
 		  </h1>
 		  <div class="buttons d-flex justify-content-around mt-2">
-		  	<button id="single-match" type="button" class="btn pong-buttons w-50 m-1 shadow"><a href="/pong/match" data-link>Single match</a></button>
-			<button id="tournament" type="button" class="btn pong-buttons w-50 m-1 shadow">Tournament</button>  
+			<button class="pong-buttons">
+				<a href="/pong/match" data-link>
+					Single match
+				</a>
+			</button>
+			<button class="pong-buttons">
+					Tournament
+			</button> 
 		</div>
 		  `;
 	}
   }
   
+//   <button id="single-match" type="button" class="btn pong-buttons w-50 m-1 shadow"><a href="/pong/match" data-link>Single match</a></button>
+// 		<button id="tournament" type="button" class="btn pong-buttons w-50 m-1 shadow">Tournament</button>

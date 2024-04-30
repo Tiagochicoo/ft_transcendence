@@ -1,6 +1,6 @@
-.pong-buttons {
+/* .pong-buttons {
   --bs-btn-bg: #bdbdbd !important;
-}
+} */
 
 .nav-pills {
   --bs-nav-pills-link-active-bg: #6c757d !important;
@@ -9,4 +9,67 @@
 .nav-link {
   --bs-nav-link-color: #727273 !important;
   --bs-nav-link-hover-color: #000000cc !important;
+}
+
+.pong-buttons {
+  font-size: 18px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  display: inline-block;
+  text-align: center;
+  font-weight: bold;
+  padding: 0.7em 2em;
+  border: 3px solid #14dd50;
+  border-radius: 10px;
+  position: relative;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.1);
+  color: #14dd50;
+  text-decoration: none;
+  transition: 0.3s ease all;
+  z-index: 1;
+  background-color: transparent;
+}
+
+.pong-buttons a {
+  text-decoration: none;
+  color: #14dd50;
+}
+
+
+.pong-buttons:before, .pong-buttons a:before {
+  transition: 0.5s all ease;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  right: 50%;
+  bottom: 0;
+  opacity: 0;
+  content: '';
+  background-color: #14dd50;
+  z-index: -1;
+}
+
+.pong-buttons:hover, .pong-buttons:focus, .pong-buttons a:hover, .pong-buttons a:focus {
+  color: white;
+}
+
+.pong-buttons:hover:before, .pong-buttons:focus:before, .pong-buttons a:hover:before, .pong-buttons a:focus:before {
+  transition: 0.5s all ease;
+  left: 0;
+  right: 0;
+  opacity: 1;
+}
+
+.pong-buttons:active, .pong-buttons a:active {
+  transform: scale(0.9);
+}
+
+@media (max-width: 500px) {
+  .buttons {
+    flex-direction: column;
+  }
+
+  .pong-buttons {
+    margin-bottom: 25px;
+  }
 }
