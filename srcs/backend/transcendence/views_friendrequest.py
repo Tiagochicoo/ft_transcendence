@@ -41,8 +41,7 @@ class FriendCreate(APIView):
 class FriendCancel(APIView):
     def patch(self, request, friendRequestId, format=None):
         try:
-            #friend_request = FriendRequest.objects.get(pk=friendRequestId)
-            friend_request = FriendRequest.objects.all()[friendRequestId-1]
+            friend_request = FriendRequest.objects.get(pk=friendRequestId)
             friend_request.was_canceled = True
             friend_request.save()
             serializer = FriendRequestSerializer(friend_request)
@@ -53,8 +52,7 @@ class FriendCancel(APIView):
 class FriendAccept(APIView):
     def patch(self, request, friendRequestId, format=None):
         try:
-            #friend_request = FriendRequest.objects.get(pk=friend_request_id)
-            friend_request = FriendRequest.objects.all()[friendRequestId-1]
+            friend_request = FriendRequest.objects.get(pk=friendRequestId)
             friend_request.was_accepted = True
             friend_request.save()
             serializer = FriendRequestSerializer(friend_request)
@@ -65,8 +63,7 @@ class FriendAccept(APIView):
 class FriendRefuse(APIView):
     def patch(self, request, friendRequestId, format=None):
         try:
-            #friend_request = FriendRequest.objects.get(pk=friendRequestId)
-            friend_request = FriendRequest.objects.all()[friendRequestId-1]
+            friend_request = FriendRequest.objects.get(pk=friendRequestId)
             friend_request.was_refused = True
             friend_request.save()
             serializer = FriendRequestSerializer(friend_request)
@@ -78,8 +75,7 @@ class FriendRefuse(APIView):
 class FriendDetail(APIView):
     def get(self, request, friendRequestId, format=None):
         try:
-            #friend_request = FriendRequest.objects.get(pk=friendRequestId)
-            friend_request = FriendRequest.objects.all()[friendRequestId-1]
+            friend_request = FriendRequest.objects.get(pk=friendRequestId)
             serializer = FriendRequestSerializer(friend_request)
             return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception as error:
@@ -88,7 +84,6 @@ class FriendDetail(APIView):
 #many = multiple instances
 class UserFriendRequests(APIView):
     def get(self, request, userId, format=None):
-        #return JsonResponse(123, safe=False)
         try:
             user = User.objects.get(pk=userId)
             friend_requests = FriendRequest.objects.filter(user1=user) | FriendRequest.objects.filter(user2=user)

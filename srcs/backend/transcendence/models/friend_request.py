@@ -2,6 +2,7 @@ from django.db import models
 from .user import User
 
 class FriendRequest(models.Model):
+	id = models.AutoField(primary_key=True)
 	user1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_friend_requests')
 	user2 = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_friend_requests')
 	was_accepted = models.BooleanField(default=False)
