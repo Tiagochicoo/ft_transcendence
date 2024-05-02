@@ -11,7 +11,9 @@ from ..models import User as User
 # Create your views here.
 class UserList(APIView):
     def get(self, request, format=None):
-        return Response(13)
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
 
 class UserDetail(APIView):
     def get(self, request, pk, format=None):
