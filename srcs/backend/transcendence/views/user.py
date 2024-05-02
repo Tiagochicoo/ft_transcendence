@@ -5,8 +5,8 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
-from .serializers.serializers_user import UserSerializer
-from .models import User as User
+from ..serializers.serializers_user import UserSerializer
+from ..models import User as User
 
 # Create your views here.
 class UserList(APIView):
@@ -41,4 +41,3 @@ class UserDelete(APIView):
         user = get_object_or_404(User, pk=pk)
         user.delete()
         return Response(f"User with ID {pk} deleted successfully from DB", status=status.HTTP_200_OK)
-

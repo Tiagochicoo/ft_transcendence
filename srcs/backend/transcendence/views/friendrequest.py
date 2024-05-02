@@ -1,31 +1,14 @@
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework import status
-from django.shortcuts import get_object_or_404
-from django.views.decorators.csrf import csrf_exempt
-from django.core import serializers
-from .serializers.serializers_friendrequest import FriendRequestSerializer
-from .models import User as User
-from .models import FriendRequest as FriendRequest
+from ..models import User as User
+from ..models import FriendRequest as FriendRequest
+from ..serializers.serializers_friendrequest import FriendRequestSerializer
 
+# POST sends data to the server.
+# PATCH updates resources on the server.
+# GET retrieves data from the server.
 
-"""
-Shell Testing configure
-docker exec -it container python3 manage.py shell
-from transcendence.models import User
-user1 = User.objects.create(email='user1@gmai.com', password='123abc', username='user1')
-user2 = User.objects.create(email='2user2@gmai.com', password='222aaa', username='user2')
-User.objects.all()
-User.objects.filter(id=id).delete()
-for user in User.objects.all():
-print(f"ID:{user.id}, Email: {user.email}, Password: {user.password}, Username: {user.username}")
-
-from transcendence.models import FriendRequest
-friend_request = FriendRequest.objects.create(user1=id, user2=id)
-"""
-
-#POST sends data to the server. 
 class FriendCreate(APIView):
     def post(self, request, format=None):
         user1 = request.data.get('user1')
@@ -37,7 +20,6 @@ class FriendCreate(APIView):
         except Exception as error:
             return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-#PATCH updates resources on the server. 
 class FriendCancel(APIView):
     def patch(self, request, friendRequestId, format=None):
         try:
@@ -71,8 +53,7 @@ class FriendRefuse(APIView):
         except Exception as error:
             return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-#GET retrieves data from the server
-class FriendDetail(APIView):
+class FriendDetails(APIView):
     def get(self, request, friendRequestId, format=None):
         try:
             friend_request = FriendRequest.objects.get(pk=friendRequestId)
@@ -81,8 +62,7 @@ class FriendDetail(APIView):
         except Exception as error:
             return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-#many = multiple instances
-class UserFriendRequests(APIView):
+class UserFriendDetails(APIView):
     def get(self, request, userId, format=None):
         try:
             user = User.objects.get(pk=userId)
