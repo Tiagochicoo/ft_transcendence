@@ -15,21 +15,39 @@ export default class extends Abstract {
 				id
 			} = target;
 
+			const doDataUpdate = async (doFunc) => {
+				const response = await doFunc(id);
+				if (response.success) {
+					this.data = this.data.map(el => (el.id == response.data.id) ? response.data : el);
+					return true;
+				}
+				return false;
+			}
+
 			switch (action) {
 				case 'message':
 					alert(`message: ${id}`);
 					break;
 
 				case 'refuse':
-					await Friends.refuse(id);
+					if (await doDataUpdate(Friends.refuse)) {
+						document.getElementById('friends-accepted').innerHTML = this.getFriendsAccepted();
+						document.getElementById('friends-received').innerHTML = this.getFriendsReceived();
+					}
 					break;
 
 				case 'accept':
-					await Friends.accept(id);
+					if (await doDataUpdate(Friends.accept)) {
+						document.getElementById('friends-accepted').innerHTML = this.getFriendsAccepted();
+						document.getElementById('friends-received').innerHTML = this.getFriendsReceived();
+					}
 					break;
 
 				case 'cancel':
-					await Friends.cancel(id);
+					if (await doDataUpdate(Friends.cancel)) {
+						document.getElementById('friends-accepted').innerHTML = this.getFriendsAccepted();
+						document.getElementById('friends-sent').innerHTML = this.getFriendsSent();
+					}
 					break;
 			}
 		}
@@ -68,7 +86,7 @@ export default class extends Abstract {
 									<button class="bg-transparent p-1 border-0" data-action="${action}" data-id="${id}">
 										${icon}
 									</button>
-								`)}
+								`).join("")}
 							</div>
 						</div>
 					`).join("")}
@@ -77,7 +95,10 @@ export default class extends Abstract {
 		`;
 	}
 
-	getFriendsAccepted(list) {
+	getFriendsAccepted() {
+		const list = this.data.filter(({ was_accepted }) => was_accepted)
+			.map(({ id, user1, user2 }) => ({ id, user: (user1.id == 1) ? user2 : user1 }));
+
 		return this.getList(list, {
 			id: 'friends-accepted-list',
 			title: 'Friends',
@@ -90,7 +111,10 @@ export default class extends Abstract {
 		});
 	}
 
-	getFriendsReceived(list) {
+	getFriendsReceived() {
+		const list = this.data.filter(({ was_accepted, was_canceled, was_refused, user2 }) => !was_accepted && !was_canceled && !was_refused && (user2.id == 1))
+			.map(({ id, user1 }) => ({ id, user: user1 }));
+
 		const htmlList = this.getList(list, {
 			id: 'friends-received-list',
 			title: 'Invitations Received',
@@ -113,7 +137,10 @@ export default class extends Abstract {
 		`;
 	}
 
-	getFriendsSent(list) {
+	getFriendsSent() {
+		const list = this.data.filter(({ was_accepted, was_canceled, was_refused, user1 }) => !was_accepted && !was_canceled && !was_refused && (user1.id == 1))
+			.map(({ id, user2 }) => ({ id, user: user2 }));
+
 		const htmlList = this.getList(list, {
 			id: 'friends-sent-list',
 			title: 'Invitations Sent',
@@ -133,27 +160,21 @@ export default class extends Abstract {
 	}
 
 	async getHtml() {
-		this.data = await Friends.getAll();
-
-		const listAccepted = this.data.filter(({ was_accepted }) => was_accepted)
-			.map(({ id, user1, user2 }) => ({ id, user: (user1.id == 1) ? user2 : user1 }));
-		const listReceived = this.data.filter(({ was_accepted, was_canceled, was_refused, user2 }) => !was_accepted && !was_canceled && !was_refused && (user2.id == 1))
-			.map(({ id, user1 }) => ({ id, user: user1 }));
-		 const listSent = this.data.filter(({ was_accepted, was_canceled, was_refused, user1 }) => !was_accepted && !was_canceled && !was_refused && (user1.id == 1))
-			.map(({ id, user2 }) => ({ id, user: user2 }));
+		const response = await Friends.getAll();
+		this.data = response.success ? response.data : [];
 
 		return `
 			<div>
 				<div id="friends-accepted">
-					${this.getFriendsAccepted(listAccepted)}
+					${this.getFriendsAccepted()}
 				</div>
 
 				<div id="friends-received">
-					${this.getFriendsReceived(listReceived)}
+					${this.getFriendsReceived()}
 				</div>
 
 				<div id="friends-sent">
-					${this.getFriendsSent(listSent)}
+					${this.getFriendsSent()}
 				</div>
 			</div>
 		`;
