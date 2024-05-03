@@ -45,7 +45,6 @@ export default class extends Abstract {
 
 				case 'cancel':
 					if (await doDataUpdate(Friends.cancel)) {
-						document.getElementById('friends-accepted').innerHTML = this.getFriendsAccepted();
 						document.getElementById('friends-sent').innerHTML = this.getFriendsSent();
 					}
 					break;
@@ -60,8 +59,11 @@ export default class extends Abstract {
 	}
 
 	getList(list, options) {
+		const element = document.querySelector(`[data-bs-target="#${options.id}"]`);
+		const isExpanded = element && (element.getAttribute("aria-expanded") === 'true');
+
 		return `
-			<button class="btn btn-toggle d-flex gap-2 align-items-center text-start text-white opacity-75 w-100 p-0 border-0 mb-2" data-bs-toggle="collapse" data-bs-target="#${options.id}" aria-expanded="false">
+			<button class="btn btn-toggle d-flex gap-2 align-items-center text-start text-white opacity-75 w-100 p-0 border-0 mb-2 ${isExpanded ? "" : "collapsed"}" data-bs-toggle="collapse" data-bs-target="#${options.id}" aria-expanded="${isExpanded ? "true" : "false"}">
 				${options.title}
 
 				<span class="badge text-bg-secondary">
@@ -69,7 +71,7 @@ export default class extends Abstract {
 				</span>
 			</button>
 
-			<div id="${options.id}" class="collapse">
+			<div id="${options.id}" class="collapse ${isExpanded ? "show" : ""}">
 				<ul class="list-unstyled d-flex flex-column gap-2">
 					${list.map(({ id, user }) => `
 						<div class="sidebar-section-element d-flex justify-content-between gap-1 p-1 bg-light rounded" data-friend-id="${id}">
