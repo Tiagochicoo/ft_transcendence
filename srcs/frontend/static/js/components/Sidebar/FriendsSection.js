@@ -41,6 +41,97 @@ export default class extends Abstract {
 		});
 	}
 
+	getList(list, options) {
+		return `
+			<button class="btn btn-toggle d-flex gap-2 align-items-center text-start text-white opacity-75 w-100 p-0 border-0 mb-2" data-bs-toggle="collapse" data-bs-target="#${options.id}" aria-expanded="false">
+				${options.title}
+
+				<span class="badge text-bg-secondary">
+					${list.length}
+				</span>
+			</button>
+
+			<div id="${options.id}" class="collapse">
+				<ul class="list-unstyled d-flex flex-column gap-2">
+					${list.map(({ id, user }) => `
+						<div class="sidebar-section-element d-flex justify-content-between gap-1 p-1 bg-light rounded" data-friend-id="${id}">
+							<div class="d-flex align-items-center gap-1">
+								<img src="${user.avatar}" class="rounded-circle" />
+
+								<span class="lh-1">
+									${user.username}
+								<span>
+							</div>
+
+							<div class="d-flex align-items-center gap-1">
+								${options.actions.map(({ action, icon }) => `
+									<button class="bg-transparent p-1 border-0" data-action="${action}" data-id="${id}">
+										${icon}
+									</button>
+								`)}
+							</div>
+						</div>
+					`).join("")}
+				</ul>
+			</div>
+		`;
+	}
+
+	getFriendsAccepted(list) {
+		return this.getList(list, {
+			id: 'friends-accepted-list',
+			title: 'Friends',
+			actions: [
+				{
+					action: 'message',
+					icon: '<i class="bi bi-chat-left-dots-fill"></i>'
+				}
+			]
+		});
+	}
+
+	getFriendsReceived(list) {
+		const htmlList = this.getList(list, {
+			id: 'friends-received-list',
+			title: 'Invitations Received',
+			actions: [
+				{
+					action: 'refuse',
+					icon: '<i class="bi bi-x-circle-fill"></i>'
+				},
+				{
+					action: 'accept',
+					icon: '<i class="bi bi-check-circle-fill"></i>'
+				}
+			]
+		});
+
+		return `
+			<div class="mt-2">
+				${htmlList}
+			</div>
+		`;
+	}
+
+	getFriendsSent(list) {
+		const htmlList = this.getList(list, {
+			id: 'friends-sent-list',
+			title: 'Invitations Sent',
+			actions: [
+				{
+					action: 'cancel',
+					icon: '<i class="bi bi-x-circle-fill"></i>'
+				}
+			]
+		});
+
+		return `
+			<div class="mt-2">
+				${htmlList}
+			</div>
+		`;
+	}
+
 	async getHtml() {
 		this.data = await Friends.getAll();
 
@@ -53,98 +144,16 @@ export default class extends Abstract {
 
 		return `
 			<div>
-				<button class="btn btn-toggle text-start text-white opacity-75 w-100 p-0 border-0 mb-2" data-bs-toggle="collapse" data-bs-target="#friends-list" aria-expanded="false">
-					Friends
-				</button>
-
-				<div id="friends-list" class="collapse">
-					<ul class="list-unstyled d-flex flex-column gap-2">
-						${listAccepted.map(({ id, user }) => `
-							<div class="sidebar-section-element d-flex justify-content-between gap-1 p-1 bg-light rounded" data-friend-id="${id}">
-								<div class="d-flex align-items-center gap-1">
-									<img src="${user.avatar}" class="rounded-circle" />
-
-									<span class="lh-1">
-										${user.username}
-									<span>
-								</div>
-
-								<div class="d-flex align-items-center gap-1">
-									<button class="bg-transparent p-1 border-0" data-action="message" data-id="${id}">
-										<i class="bi bi-chat-left-dots-fill"></i>
-									</button>
-								</div>
-							</div>
-						`).join("")}
-					</ul>
+				<div id="friends-accepted">
+					${this.getFriendsAccepted(listAccepted)}
 				</div>
 
-				<div class="mt-2">
-					<button class="btn btn-toggle d-flex gap-2 align-items-center text-start text-white opacity-75 w-100 p-0 border-0 mb-2" data-bs-toggle="collapse" data-bs-target="#friends-received" aria-expanded="false">
-						Invitations Received
-
-						<span class="badge text-bg-secondary">
-							${listReceived.length}
-						</span>
-					</button>
-
-					<div id="friends-received" class="collapse">
-						<ul class="list-unstyled d-flex flex-column gap-2">
-							${listReceived.map(({ id, user }) => `
-								<div class="sidebar-section-element d-flex justify-content-between gap-1 p-1 bg-light rounded" data-friend-id="${id}">
-									<div class="d-flex align-items-center gap-1">
-										<img src="${user.avatar}" class="rounded-circle" />
-
-										<span class="lh-1">
-											${user.username}
-										<span>
-									</div>
-
-									<div class="d-flex align-items-center gap-1">
-										<button class="bg-transparent p-1 border-0" data-action="refuse" data-id="${id}">
-											<i class="bi bi-x-circle-fill"></i>
-										</button>
-
-										<button class="bg-transparent p-1 border-0" data-action="accept" data-id="${id}">
-											<i class="bi bi-check-circle-fill"></i>
-										</button>
-									</div>
-								</div>
-							`).join("")}
-						</ul>
-					</div>
+				<div id="friends-received">
+					${this.getFriendsReceived(listReceived)}
 				</div>
 
-				<div class="mt-2">
-					<button class="btn btn-toggle d-flex gap-2 align-items-center text-start text-white opacity-75 w-100 p-0 border-0 mb-2" data-bs-toggle="collapse" data-bs-target="#friends-sent" aria-expanded="false">
-						Invitations Sent
-
-						<span class="badge text-bg-secondary">
-							${listSent.length}
-						</span>
-					</button>
-
-					<div id="friends-sent" class="collapse">
-						<ul class="list-unstyled d-flex flex-column gap-2">
-							${listSent.map(({ id, user }) => `
-								<div class="sidebar-section-element d-flex justify-content-between gap-1 p-1 bg-light rounded" data-friend-id="${id}">
-									<div class="d-flex align-items-center gap-1">
-										<img src="${user.avatar}" class="rounded-circle" />
-
-										<span class="lh-1">
-											${user.username}
-										<span>
-									</div>
-
-									<div class="d-flex align-items-center gap-1">
-										<button class="bg-transparent p-1 border-0" data-action="cancel" data-id="${id}">
-											<i class="bi bi-x-circle-fill"></i>
-										</button>
-									</div>
-								</div>
-							`).join("")}
-						</ul>
-					</div>
+				<div id="friends-sent">
+					${this.getFriendsSent(listSent)}
 				</div>
 			</div>
 		`;
