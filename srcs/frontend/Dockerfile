@@ -2,7 +2,7 @@
 FROM node:16
 
 # Set working directory
-WORKDIR /Users/tiago/rep/transcendence
+WORKDIR .
 
 # Copy package.json and package-lock.json
 COPY package*.json ./
