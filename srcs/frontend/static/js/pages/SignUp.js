@@ -1,87 +1,101 @@
 import { Abstract } from "/static/js/components/index.js";
 
 export default class extends Abstract {
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
+        this.params = props;
+    }
 
-    this.params = props;
-  }
+    async addFunctionality() {
+        document.querySelector("form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const form = e.target;
 
-  async addFunctionality() {
-    document.querySelector("form").addEventListener("submit", (e) => {
-      e.preventDefault();
+            // Clear previous errors
+            document.querySelectorAll('.invalid-feedback').forEach(element => {
+                element.textContent = '';
+                element.style.display = 'none';
+            });
 
-      const form = e.target;
+            if (form.checkValidity()) {
+                const formData = new FormData(form);
+                const data = {};
+                for (const key of formData.keys()) {
+                    data[key] = formData.get(key);
+                }
+                console.log("Submitting data:", data);
 
-      if (form.checkValidity()) {
-        const formData = new FormData(e.target);
-        const data = {};
-        for (const key of formData.keys()) {
-          data[key] = formData.get(key);
+                try {
+                    const response = await fetch('http://localhost:8000/api/create_user/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': this.getCSRFToken()
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    const responseData = await response.json();
+                    console.log("Server response:", responseData);
+
+                    if (!response.ok) {
+                        this.handleErrors(responseData);
+                    } else {
+                        console.log('User registered successfully:', responseData);
+                        // Optional: Redirect or clear form here
+                        form.reset(); // Clear the form after successful registration
+                    }
+                } catch (error) {
+                    console.error('Network or other error:', error);
+                }
+            } else {
+                form.classList.add("was-validated");
+            }
+        });
+    }
+
+    getCSRFToken() {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; csrftoken=`);
+        return parts.length === 2 ? parts.pop().split(';').shift() : '';
+    }
+
+    handleErrors(responseData) {
+        if (responseData.email) {
+            document.getElementById('emailError').textContent = responseData.email[0];
+            document.getElementById('emailError').style.display = 'block';
         }
+        if (responseData.username) {
+            document.getElementById('usernameError').textContent = responseData.username[0];
+            document.getElementById('usernameError').style.display = 'block';
+        }
+        if (responseData.password) {
+            document.getElementById('passwordError').textContent = responseData.password[0];
+            document.getElementById('passwordError').style.display = 'block';
+        }
+    }
 
-        console.log(data);
-      } else {
-        e.stopPropagation();
-
-        form.classList.add("was-validated");
-      }
-    });
-  }
-
-  async getHtml() {
-    return `
-			<h1 class="mb-4">
-				${i18next.t("signUp.title")}
-			</h1>
-
-			<form class="needs-validation" novalidate>
-				<div class="mb-4">
-					<label for="email" class="form-label">
-						${i18next.t("signUp.fields.email.label")}
-					</label>
-					<div class="input-group has-validation">
-						<input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required>
-						<div class="invalid-feedback">
-							${i18next.t("signUp.fields.email.invalidFeedback")}
-						</div>
-					</div>
-					<div id="emailHelp" class="form-text">
-						${i18next.t("signUp.fields.email.help")}
-					</div>
-				</div>
-
-				<div class="mb-4">
-					<label for="username" class="form-label">
-						${i18next.t("signUp.fields.username.label")}
-					</label>
-					<div class="input-group has-validation">
-						<input type="text" class="form-control" id="username" name="username" aria-describedby="usernameHelp" minlength="5" required>
-						<div class="invalid-feedback">
-							${i18next.t("signUp.fields.username.invalidFeedback")}
-						</div>
-					</div>
-					<div id="usernameHelp" class="form-text">
-						${i18next.t("signUp.fields.username.help")}
-					</div>
-				</div>
-
-				<div class="mb-4">
-					<label for="password" class="form-label">
-						${i18next.t("signUp.fields.password.label")}
-					</label>
-					<div class="input-group has-validation">
-						<input type="password" class="form-control" id="password" name="password" minlength="8" required>
-						<div class="invalid-feedback">
-							${i18next.t("signUp.fields.password.invalidFeedback")}
-						</div>
-					</div>
-				</div>
-
-				<button type="submit" class="btn btn-primary">
-					${i18next.t("signUp.submitButton")}
-				</button>
-			</form>
-		`;
-  }
+    async getHtml() {
+        return `
+            <h1 class="mb-4">Sign Up</h1>
+            <form class="needs-validation" novalidate>
+                <div class="mb-4">
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="email" class="form-control" id="email" name="email">
+                    <div id="emailError" class="invalid-feedback" style="display: none;"></div>
+                </div>
+                <div class="mb-4">
+                    <label for="username" class="form-label">Username:</label>
+                    <input type="text" class="form-control" id="username" name="username">
+                    <div id="usernameError" class="invalid-feedback" style="display: none;"></div>
+                </div>
+                <div class="mb-4">
+                    <label for="password" class="form-label">Password:</label>
+                    <input type="password" class="form-control" id="password" name="password">
+                    <div id="passwordError" class="invalid-feedback">Please enter a valid password.</div>
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+        `;
+    }
 }

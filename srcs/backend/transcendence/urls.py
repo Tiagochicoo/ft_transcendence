@@ -1,6 +1,7 @@
 from django.urls import path
 from .views.user import UserCreate, UserList, UserDetail, UserUpdate, UserDelete
 from .views.friendrequest import FriendCreate, FriendCancel, FriendAccept, FriendRefuse, FriendDetails, UserFriendDetails
+from django.http import JsonResponse
 
 urlpatterns = [
     path('create_user/', UserCreate.as_view(), name='create_user'),
