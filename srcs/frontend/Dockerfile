@@ -1,20 +1,17 @@
-# Use Node.js 14 LTS version
+# Use Node.js 16 LTS version
 FROM node:16
 
-# Set working directory
-WORKDIR /Users/tiago/rep/transcendence
-
-# Copy package.json and package-lock.json
-COPY package*.json ./
-
-# Install dependencies
-RUN npm install
-
 # Copy application files
-COPY . .
+COPY . /transcendence
+
+# Set working directory
+WORKDIR /transcendence
 
 # Expose port 3000
 EXPOSE 3000
+
+# Install dependencies
+RUN npm install
 
 # Command to run the application
 CMD ["node", "server.js"]
