@@ -11,9 +11,9 @@ from ..serializers.serializers_friendrequest import FriendRequestSerializer
 
 class FriendCreate(APIView):
     def post(self, request, format=None):
-        user1 = request.data.get('user1')
-        user2 = request.data.get('user2')
         try:
+            user1 = request.data.get('user1')
+            user2 = request.data.get('user2')
             friend_request = FriendRequest.objects.create(user1_id=user1, user2_id=user2)
             serializer = FriendRequestSerializer(friend_request)
             return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
