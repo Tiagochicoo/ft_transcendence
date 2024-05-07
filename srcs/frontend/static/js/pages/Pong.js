@@ -19,7 +19,7 @@ export default class extends Abstract {
 		  <div class="d-flex justify-content-around mt-2" >
 		  	<div class="d-flex flex-column">
 				<img src="/static/images/single-match.jpg" class="mode-images" >
-				<a id="single-match-button" href="/pong/match" data-link>
+				<a id="single-match-button" href="/pong/single/setup" data-link>
 					Single match
 				</a>
 			</div>

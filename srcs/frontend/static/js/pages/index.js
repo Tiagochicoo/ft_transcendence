@@ -5,5 +5,6 @@ import SignIn from "./SignIn.js";
 import SignUp from "./SignUp.js";
 import Match from "./pong/Match.js";
 import Pong from "./Pong.js";
+import Setup from "./pong/Setup.js"
 
-export { GeneralDashboard, IndividualDashboard, Home, SignIn, SignUp, Match, Pong };
+export { GeneralDashboard, IndividualDashboard, Home, SignIn, SignUp, Match, Pong, Setup };
