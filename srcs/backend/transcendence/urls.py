@@ -18,9 +18,6 @@ urlpatterns = [
     path('users/<int:userId>/friend_requests', UserFriendDetails.as_view(), name='user_friend_details'),
 
     path('chat_rooms', ChatRoomCreate.as_view(), name='chat_room_create'),
-    path('chat_rooms/<int:chatRoomId>/cancel', ChatRoomCancel.as_view(), name='chat_room_cancel'),
-    path('chat_rooms/<int:chatRoomId>/accept', ChatRoomAccept.as_view(), name='chat_room_accept'),
-    path('chat_rooms/<int:chatRoomId>/refuse', ChatRoomRefuse.as_view(), name='chat_room_refuse'),
     path('chat_rooms/<int:chatRoomId>/block', ChatRoomBlock.as_view(), name='chat_room_block'),
     path('chat_rooms/<int:chatRoomId>/unblock', ChatRoomUnblock.as_view(), name='chat_room_unblock'),
     path('chat_rooms/<int:chatRoomId>/messages', ChatRoomMessages.as_view(), name='chat_room_messages'),

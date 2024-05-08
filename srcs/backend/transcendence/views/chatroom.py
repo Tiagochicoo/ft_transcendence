@@ -3,7 +3,9 @@ from rest_framework.views import APIView
 from rest_framework import status
 from ..models import User as User
 from ..models import ChatRoom as ChatRoom
+from ..models import Message as Message
 from ..serializers.serializers_chatroom import ChatRoomSerializer
+from ..serializers.serializers_chatroom import MessageSerializer
 
 class ChatRoomCreate(APIView):
     def post(self, request, format=None):
@@ -38,21 +40,26 @@ class ChatRoomUnblock(APIView):
         except Exception as error:
             return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-class ChatRoomCancel(APIView):
-    def patch(self, request, chatRoomId, format=None):
-
-class ChatRoomAccept(APIView):
-    def patch(self, request, chatRoomId, format=None):
-
-class ChatRoomRefuse(APIView):
-    def patch(self, request, chatRoomId, format=None):
-
-
-
-
 class ChatRoomMessages(APIView):
     def get(self, request, chatRoomId, format=None):
+        try:
+            chat_room = ChatRoom.objects.get(pk=chatRoomId)
+            messages = Message.objects.filter(chat_room=chat_room)
+            serializer = MessageSerializer(messages, many=True)
+            return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
+        except Exception as error:
+            return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     def patch(self, request, chatRoomId, format=None):
+        try:
+            content = request.data.get('content')
+            chat_room = ChatRoom.objects.get(pk=chatRoomId)
+            message = Message.objects.filter(chat_room=chat_room)
+            message.content = content
+            message.save()
+            serializer = MessageSerializer(message)
+            return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
+        except Exception as error:
+            return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class ChatRoomDetails(APIView):
     def get(self, request, chatRoomId, format=None):
