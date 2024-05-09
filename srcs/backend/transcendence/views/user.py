@@ -7,8 +7,25 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 from ..serializers.serializers_user import UserSerializer
 from ..models import User as User
+import logging
 
 # Create your views here.
+
+logger = logging.getLogger(__name__)
+
+class UserCreate(APIView):
+    def post(self, request, *args, **kwargs):
+        logger.info(f"Received data: {request.data}")
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            logger.info(f"User created successfully: {user.id}")
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            logger.error(f"Validation errors: {serializer.errors}")
+            return Response(serializer.errors, status=400)
+
+
 class UserList(APIView):
     def get(self, request, format=None):
         users = User.objects.all()
@@ -20,15 +37,7 @@ class UserDetail(APIView):
         user = User.objects.get(pk=pk)
         serializer = UserSerializer(user)
         return Response(serializer.data)
-
-class UserCreate(APIView):
-    def post(self, request, format=None):
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+    
 class UserUpdate(APIView):
     def put(self, request, pk, format=None):
         user = User.objects.get(pk=pk)
