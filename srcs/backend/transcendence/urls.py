@@ -1,7 +1,7 @@
 from django.urls import path
 from .views.user import UserCreate, UserList, UserDetail, UserUpdate, UserDelete
 from .views.friendrequest import FriendCreate, FriendCancel, FriendAccept, FriendRefuse, FriendDetails, UserFriendDetails
-from .views.chatRoom import ChatRoomCreate, ChatRoomCancel, ChatRoomAccept, ChatRoomRefuse, ChatRoomBlock, ChatRoomUnblock, ChatRoomMessages, ChatRoomDetails, UserChatRoomDetails,
+from .views.chatroom import ChatRoomCreate, ChatRoomBlock, ChatRoomUnblock, ChatRoomMessages, ChatRoomDetails, UserChatRoomDetails
 
 urlpatterns = [
     path('create_user/', UserCreate.as_view(), name='create_user'),

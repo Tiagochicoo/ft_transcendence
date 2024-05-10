@@ -5,13 +5,13 @@ from ..models import User as User
 from ..models import ChatRoom as ChatRoom
 from ..models import Message as Message
 from ..serializers.serializers_chatroom import ChatRoomSerializer
-from ..serializers.serializers_chatroom import MessageSerializer
+from ..serializers.serializers_message import MessageSerializer
 
 class ChatRoomCreate(APIView):
     def post(self, request, format=None):
-        user1 = request.data.get('user1')
-        user2 = request.data.get('user2')
-         try:
+        try:
+            user1 = request.data.get('user1')
+            user2 = request.data.get('user2')
             chat_room = ChatRoom.objects.create(user1_id=user1, user2_id=user2)
             serializer = ChatRoomSerializer(chat_room)
             return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
@@ -24,7 +24,7 @@ class ChatRoomBlock(APIView):
             chat_room = ChatRoom.objects.get(pk=chatRoomId)
             chat_room.was_blocked = True
             chat_room.save()
-            serializer = FriendRequestSerializer(chat_room)
+            serializer = ChatRoomSerializer(chat_room)
             return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception as error:
             return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -35,7 +35,7 @@ class ChatRoomUnblock(APIView):
             chat_room = ChatRoom.objects.get(pk=chatRoomId)
             chat_room.was_blocked = False
             chat_room.save()
-            serializer = FriendRequestSerializer(chat_room)
+            serializer = ChatRoomSerializer(chat_room)
             return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception as error:
             return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -65,7 +65,7 @@ class ChatRoomDetails(APIView):
     def get(self, request, chatRoomId, format=None):
         try:
             chat_room = ChatRoom.objects.get(pk=chatRoomId)
-            serializer = FriendRequestSerializer(chat_room)
+            serializer = ChatRoomSerializer(chat_room)
             return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception as error:
             return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -75,7 +75,7 @@ class UserChatRoomDetails(APIView):
         try:
             user = User.objects.get(pk=userId)
             chat_room = ChatRoom.objects.filter(user1=user) | ChatRoom.objects.filter(user2=user)
-            serializer = FriendRequestSerializer(chat_room, many=True)
+            serializer = ChatRoomSerializer(chat_room, many=True)
             return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception as error:
             return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
