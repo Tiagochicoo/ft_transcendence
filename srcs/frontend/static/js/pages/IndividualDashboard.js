@@ -1,5 +1,5 @@
 import { Abstract } from "/static/js/components/index.js";
-import { FetchData } from "/static/js/services/index.js";
+import { PongData } from "/static/js/api/index.js";
 
 export default class extends Abstract {
   constructor(props) {
@@ -44,7 +44,7 @@ export default class extends Abstract {
 
   async getHtml() {
     // fetching data mocked on db.json
-    this.data = await FetchData.getMockedData();
+    this.data = await PongData.getMockedData();
     this.user = this.data.users.filter((user) => user.userId == this.userId)[0];
 
     return `

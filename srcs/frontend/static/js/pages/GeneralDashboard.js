@@ -1,5 +1,5 @@
 import { Abstract } from "/static/js/components/index.js";
-import { FetchData } from "/static/js/services/index.js";
+import { PongData } from "/static/js/api/index.js";
 
 export default class extends Abstract {
   constructor(props) {
@@ -65,12 +65,12 @@ export default class extends Abstract {
 
   async getHtml() {
     // fetching data mocked on db.json
-    this.data = await FetchData.getMockedData();
+    this.data = await PongData.getMockedData();
     this.games = this.data.games;
     this.users = this.data.users;
 
 	// testing communication with Django API
-	const test = await FetchData.getUserList();
+	const test = await PongData.getUserList();
 	console.log(test);
 
     return `
