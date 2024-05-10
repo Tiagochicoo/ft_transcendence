@@ -1,5 +1,11 @@
+# General
+*.env
+.vscode
+
+# Backend
 *.pyc
 __pycache__
 db.sqlite3
-*.env
-.vscode
+
+# Frontend
+node_modules
