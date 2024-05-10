@@ -6,8 +6,12 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 from ..serializers.serializers_user import UserSerializer
-from ..models import User as User
+from ..serializers.serializers_signin import SignInSerializer
+from ..models import User
 import logging
+from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import check_password
+from django.contrib.auth import login
 
 # Create your views here.
 
@@ -25,6 +29,14 @@ class UserCreate(APIView):
             logger.error(f"Validation errors: {serializer.errors}")
             return Response(serializer.errors, status=400)
 
+
+class UserLogin(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = SignInSerializer(data=request.data)
+        if serializer.is_valid():
+            return Response({'message': 'Login successful', 'user_id': serializer.validated_data['user'].id}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserList(APIView):
     def get(self, request, format=None):

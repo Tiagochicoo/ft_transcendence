@@ -1,5 +1,6 @@
 import { Abstract } from "/static/js/components/index.js";
 
+
 export default class extends Abstract {
     constructor(props) {
         super(props);
@@ -11,7 +12,6 @@ export default class extends Abstract {
             e.preventDefault();
             const form = e.target;
 
-            // Clear previous errors
             document.querySelectorAll('.invalid-feedback').forEach(element => {
                 element.textContent = '';
                 element.style.display = 'none';
@@ -42,8 +42,7 @@ export default class extends Abstract {
                         this.handleErrors(responseData);
                     } else {
                         console.log('User registered successfully:', responseData);
-                        // Optional: Redirect or clear form here
-                        form.reset(); // Clear the form after successful registration
+                        form.reset();
                     }
                 } catch (error) {
                     console.error('Network or other error:', error);

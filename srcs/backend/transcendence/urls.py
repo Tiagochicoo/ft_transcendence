@@ -1,5 +1,5 @@
 from django.urls import path
-from .views.user import UserCreate, UserList, UserDetail, UserUpdate, UserDelete
+from .views.user import UserCreate, UserList, UserDetail, UserUpdate, UserDelete, UserLogin
 from .views.friendrequest import FriendCreate, FriendCancel, FriendAccept, FriendRefuse, FriendDetails, UserFriendDetails
 
 urlpatterns = [
@@ -8,6 +8,7 @@ urlpatterns = [
     path('users/<int:pk>/', UserDetail.as_view(), name='user_detail'),
     path('users/<int:pk>/update/', UserUpdate.as_view(), name='user_update'),
     path('users/<int:pk>/delete/', UserDelete.as_view(), name='user_delete'),
+    path('sign-in/', UserLogin.as_view(), name='user_login'),
 
     path('friend_requests', FriendCreate.as_view(), name='friend_create'),
     path('friend_requests/<int:friendRequestId>/cancel', FriendCancel.as_view(), name='friend_cancel'),

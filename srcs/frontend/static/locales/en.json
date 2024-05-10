@@ -49,7 +49,7 @@
     "title": "Sign-in",
     "fields": {
       "email": {
-        "label": "Email address",
+        "label": "Email or Username",
         "invalidFeedback": "Please choose a valid email."
       },
       "password": {
