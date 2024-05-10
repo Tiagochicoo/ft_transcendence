@@ -14,16 +14,19 @@ export default class extends Abstract {
 	
 	setupArea.innerHTML = this.showListOfFriends();
 	const singleMatchInvitationBtn = document.querySelector('#single-match-invitation-btn');
-	const availableOpponents = document.querySelectorAll('input[name="friends"]');
+	singleMatchInvitationBtn.disabled = true;
+
+	for (let opponent of document.querySelectorAll('input[name="friends"]')) {
+		opponent.addEventListener("input", (event) => {
+			this.opponent = event.target.value;
+			singleMatchInvitationBtn.disabled = false;
+		});
+	}
+
 	singleMatchInvitationBtn.addEventListener("click", () => {
-		for (const opponent of availableOpponents) {
-			if (opponent.checked) {
-				this.opponent = opponent.value;
-				setupArea.innerHTML = this.enableStartGame();
-				break;
-			}
+		if (this.opponent) {
+			setupArea.innerHTML = this.enableStartGame();
 		}
-		if (!this.opponent) console.log("include some validation here");
 	});
   }
 
