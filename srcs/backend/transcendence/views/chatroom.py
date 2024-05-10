@@ -55,8 +55,9 @@ class ChatRoomMessages(APIView):
             chat_room = ChatRoom.objects.get(pk=chatRoomId)
             message = Message.objects.filter(chat_room=chat_room)
             message.content = content
-            message.save()
-            serializer = MessageSerializer(message)
+            #message.save()
+            #serializer = MessageSerializer(message)
+            return JsonResponse(message.content, safe=False)
             return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception as error:
             return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
