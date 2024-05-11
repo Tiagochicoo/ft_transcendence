@@ -19,6 +19,7 @@ class ChatRoomCreate(APIView):
             return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class ChatRoomBlock(APIView):
+    # TODO: Setup the 'block_user' field
     def patch(self, request, chatRoomId, format=None):
         try:
             chat_room = ChatRoom.objects.get(pk=chatRoomId)
@@ -30,6 +31,7 @@ class ChatRoomBlock(APIView):
             return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class ChatRoomUnblock(APIView):
+    # TODO: Setup the 'block_user' field
     def patch(self, request, chatRoomId, format=None):
         try:
             chat_room = ChatRoom.objects.get(pk=chatRoomId)
@@ -49,15 +51,14 @@ class ChatRoomMessages(APIView):
             return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception as error:
             return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    def patch(self, request, chatRoomId, format=None):
+
+    # TODO: Setup the 'sender' field (Model can't be null either)
+    def post(self, request, chatRoomId, format=None):
         try:
-            content = request.data.get('content')
             chat_room = ChatRoom.objects.get(pk=chatRoomId)
-            message = Message.objects.filter(chat_room=chat_room)
-            message.content = content
-            #message.save()
-            #serializer = MessageSerializer(message)
-            return JsonResponse(message.content, safe=False)
+            content = request.data.get('content')
+            message = Message.objects.create(chat_room=chat_room, content=content)
+            serializer = MessageSerializer(message)
             return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception as error:
             return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
