@@ -8,6 +8,26 @@
   --bs-nav-link-hover-color: #000000cc !important;
 }
 
+#single-match-invitation-btn:disabled {
+  font-size: 18px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  display: inline-block;
+  text-align: center;
+  font-weight: bold;
+  padding: 0.7em 2em;
+  border: 3px solid #6c757d;
+  border-radius: 10px;
+  position: relative;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.1);
+  color: #6c757d;
+  text-decoration: none;
+  transition: 0.3s ease all;
+  z-index: 1;
+  background-color: transparent;
+  margin-top: 25px;
+}
+
 #single-match-button, #tournament-button, .pong-buttons, #single-match-invitation-btn, #start-match-button {
   font-size: 18px;
   letter-spacing: 2px;
@@ -45,14 +65,14 @@
 
 #single-match-button:hover, #single-match-button:focus, #tournament-button:hover, #tournament-button:focus,
 .pong-buttons:hover, .pong-buttons:focus,
-#single-match-invitation-btn:hover, #single-match-invitation-btn:focus,
+#single-match-invitation-btn:hover:enabled, #single-match-invitation-btn:focus,
 #start-match-button:hover, #start-match-button:focus {
   color: white;
 }
 
 #single-match-button:hover:before, #single-match-button:focus:before, #tournament-button:hover:before, #tournament-button:focus:before,
 .pong-buttons:hover:before, .pong-buttons:focus:before,
-#single-match-invitation-btn:hover:before, #single-match-invitation-btn:focus:before,
+#single-match-invitation-btn:hover:enabled:before, #single-match-invitation-btn:focus:before,
 #start-match-button:hover:before, #start-match-button:focus:before {
   transition: 0.5s all ease;
   left: 0;
@@ -60,7 +80,7 @@
   opacity: 1;
 }
 
-#single-match-button:active, #tournament-button:active, .pong-buttons:active, #single-match-invitation-btn:active, #start-match-button:active {
+#single-match-button:active, #tournament-button:active, .pong-buttons:active, #single-match-invitation-btn:active:enabled, #start-match-button:active {
   transform: scale(0.9);
 }
 
