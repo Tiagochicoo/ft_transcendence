@@ -36,7 +36,7 @@ clean: down
 	@printf "\e[38;5;196m ╔════════════════════════════════════════╗ \e[0m\n"
 	@printf "\e[38;5;196m ║    Cleaning all containers & volumes   ║ \e[0m\n"
 	@printf "\e[38;5;196m ╚════════════════════════════════════════╝ \e[0m\n"
-	sudo docker system prune --a
+	sudo docker system prune --all
 
 fclean:
 	@printf "\e[38;5;196m ╔════════════════════════════════════════╗ \e[0m\n"
