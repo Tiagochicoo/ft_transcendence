@@ -11,8 +11,8 @@ export default class extends Abstract {
 
   async addFunctionality() {
 	const setupArea = document.getElementById('setup-area');
-	
 	setupArea.innerHTML = this.showListOfFriends();
+
 	const singleMatchInvitationBtn = document.querySelector('#single-match-invitation-btn');
 	singleMatchInvitationBtn.disabled = true;
 
@@ -25,6 +25,8 @@ export default class extends Abstract {
 
 	singleMatchInvitationBtn.addEventListener("click", () => {
 		if (this.opponent) {
+			// include a loader to wait for the response. A friend can accept or decline the invitation. 
+			// If it was accepted, we show the start button, if it was not, we must show a notification and allow the user to choose another friend.
 			setupArea.innerHTML = this.enableStartGame();
 		}
 	});
