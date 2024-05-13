@@ -91,6 +91,7 @@ export default class Game {
     this.rightPlayer.score = 0;
     this.isGameOn = false;
     this.isGamePaused = false;
+    this.pauseBtn.innerHTML = i18next.t("pong.buttons.pause");
     this.draw();
   }
 
@@ -248,7 +249,8 @@ export default class Game {
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.ctx.fillStyle = "#BDBDBD";
+    // #BDBDBD
+    this.ctx.fillStyle = "#37ff8b";
 
     //paddles
     this.ctx.fillRect(0, this.leftPaddleY, this.paddleWidth, this.paddleHeight);
