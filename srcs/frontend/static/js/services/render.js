@@ -5,12 +5,16 @@ import {
   Home,
   SignIn,
   SignUp,
+  Match,
   Pong,
+  Setup,
 } from "/static/js/pages/index.js";
 
 const ROUTES = [
   { path: "/", title: "Home", page: Home },
   { path: "/pong", title: "Pong", page: Pong },
+  { path: "/pong/single/setup", title: "Pong", page: Setup },
+  { path: "/pong/single/match", title: "Pong", page: Match },
   { path: "/sign-up", title: "Sign-up", page: SignUp },
   { path: "/sign-in", title: "Sign-in", page: SignIn },
   {
