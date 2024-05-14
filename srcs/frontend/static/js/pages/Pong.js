@@ -20,13 +20,13 @@ export default class extends Abstract {
 		  	<div class="d-flex flex-column">
 				<img src="/static/images/single-match.jpg" class="mode-images" >
 				<a id="single-match-button" href="/pong/single/setup" data-link>
-					Single match
+					${i18next.t("pong.singleMatch")}
 				</a>
 			</div>
 			<div class="d-flex flex-column">
 				<img src="/static/images/tournament.jpg" class="mode-images">
 				<a id="tournament-button" href="/pong" data-link>
-					Tournament
+				${i18next.t("pong.tournament")}
 				</a>
 			</div>
 		</div>

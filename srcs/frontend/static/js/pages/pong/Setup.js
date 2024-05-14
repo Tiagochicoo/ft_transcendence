@@ -4,6 +4,7 @@ export default class extends Abstract {
   constructor(props) {
     super(props);
     this.params = props;
+	// this data will be fetched from database using logged user_id
 	this.friends = ['Will', 'Joe', 'Jeff', 'John'];
 	this.opponent;
 	
@@ -28,6 +29,7 @@ export default class extends Abstract {
 		if (this.opponent) {
 			// include a loader to wait for the response. A friend can accept or decline the invitation. 
 			// If it was accepted, we show the start button, if it was not, we must show a notification and allow the user to choose another friend.
+			// Depending on socket connection
 			setupArea.innerHTML = this.enableStartGame();
 		}
 	});
@@ -35,7 +37,7 @@ export default class extends Abstract {
 
   showListOfFriends() {
 	let list = `<div>
-					<p>Select your opponent:</p>`;
+					<p>${i18next.t("pong.invitationMessage")}</p>`;
 
 	this.friends.forEach((friend, index) => {
 		list += `<div class="form-check">
@@ -46,7 +48,7 @@ export default class extends Abstract {
 				</div>`;
 	});
 
-	list += `<button id="single-match-invitation-btn">Invite</button>
+	list += `<button id="single-match-invitation-btn">${i18next.t("pong.invitationBtn")}</button>
 			 </div>`;
 
 	return list;
@@ -54,7 +56,7 @@ export default class extends Abstract {
 
   enableStartGame() {
 	let startBtn = `<a id="start-match-button" href="/pong/single/match" data-link>
-						Start Game
+						${i18next.t("pong.startGame")}
 					</a>`;
 
 	return startBtn;
