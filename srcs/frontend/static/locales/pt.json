@@ -1,10 +1,10 @@
 {
   "navbar": {
-    "home": "Início",
+    "home": "Home (PT)",
     "dashboard": "Painel",
     "individualDashboard": "Estatísticas Individuais",
     "generalDashboard": "Estatísticas Gerais",
-    "userManagement": "Gestão de Usuários",
+    "userManagement": "Gestão de usuários",
     "signUp": "Inscrever-se",
     "signIn": "Iniciar Sessão",
     "pong": "Pong",
@@ -44,18 +44,18 @@
     }
   },
   "home": {
-    "title": "Início"
+    "title": "Home (PT)"
   },
   "signIn": {
-    "title": "Iniciar Sessão",
+    "title": "Iniciar",
     "fields": {
       "email": {
-        "label": "Email ou nome de usuário",
+        "label": "Endereço de email ou nome de usuário",
         "invalidFeedback": "Por favor, escolha um endereço de email válido."
       },
       "password": {
         "label": "Senha",
-        "invalidFeedback": "Por favor, escolha uma senha válida."
+        "invalidFeedback": "Por favor escolha uma senha válida."
       }
     },
     "validation": {
@@ -73,13 +73,13 @@
     "fields": {
       "email": {
         "label": "Endereço de email",
-        "invalidFeedback": "Por favor, escolha um endereço de email válido.",
+        "invalidFeedback": "Por favor escolha um endereço de email válido.",
         "help": "Nós nunca iremos partilhar seu email com ninguém."
       },
       "username": {
         "label": "Nome de usuário",
         "invalidFeedback": "Este nome de usuário já está em uso.",
-        "help": "Como os outros jogadores irão vê-lo."
+        "help": "Como os outros jogadores vão vê-lo."
       },
       "password": {
         "label": "Senha",

@@ -69,17 +69,17 @@
       "submitButton": "Enviar"
     },
     "signUp": {
-      "title": "Registrarse",
+      "title": "Inscribirse",
       "fields": {
         "email": {
-          "label": "Dirección de correo electrónico",
+          "label": "Correo electrónico",
           "invalidFeedback": "Por favor, elige un correo electrónico válido.",
-          "help": "Nunca compartiremos tu correo electrónico con nadie más."
+          "help": "Nunca compartiremos su correo electrónico con nadie más."
         },
         "username": {
           "label": "Nombre de usuario",
           "invalidFeedback": "Este nombre de usuario ya está tomado.",
-          "help": "Así es como los otros jugadores te verán."
+          "help": "Cómo te verán los otros jugadores."
         },
         "password": {
           "label": "Contraseña",
