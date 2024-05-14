@@ -16,25 +16,28 @@ export default class extends Abstract {
 	const setupArea = document.getElementById('setup-area');
 	setupArea.innerHTML = this.showListOfFriends();
 
-	const singleMatchInvitationBtn = document.querySelector('#single-match-invitation-btn');
-
-	singleMatchInvitationBtn.style.display = 'none';
+	const invitationBtn = document.querySelector('#invitation-btn');
+	invitationBtn.style.display = 'none';
 	
 	for (let opponent of document.querySelectorAll('input[name="friends"]')) {
 		opponent.addEventListener("input", (event) => {
 			this.opponent = event.target.value;
-			singleMatchInvitationBtn.style.display = 'block';
+			invitationBtn.style.display = 'block';
 		});
 	}
 
-	singleMatchInvitationBtn.addEventListener("click", () => {
-		if (this.opponent) {
-			// include a loader to wait for the response. A friend can accept or decline the invitation. 
-			// If it was accepted, we show the start button, if it was not, we must show a notification and allow the user to choose another friend.
-			// Depending on socket connection
-			setupArea.innerHTML = this.enableStartGame();
-		}
+	invitationBtn.addEventListener("click", () => {
+		if (this.mode === 'single') this.startSingleMatch(setupArea);
 	});
+  }
+
+  startSingleMatch(setupArea) {
+	if (this.opponent) {
+		// include a loader to wait for the response. A friend can accept or decline the invitation. 
+		// If it was accepted, we show the start button, if it was not, we must show a notification and allow the user to choose another friend.
+		// Depending on socket connection
+		setupArea.innerHTML = this.enableStartGame();
+	}
   }
 
   showListOfFriends() {
@@ -50,7 +53,7 @@ export default class extends Abstract {
 				</div>`;
 	});
 
-	list += `<button id="single-match-invitation-btn">${i18next.t("pong.invitationBtn")}</button>
+	list += `<button id="invitation-btn">${i18next.t("pong.invitationBtn")}</button>
 			 </div>`;
 
 	return list;
