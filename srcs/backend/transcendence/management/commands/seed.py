@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
-from ...models import User as User
+from ...models import ChatRoom as ChatRoom
 from ...models import FriendRequest as FriendRequest
+from ...models import User as User
 
 # manage.py seed
 class Command(BaseCommand):
@@ -18,13 +19,16 @@ class Command(BaseCommand):
 
         # Create Friend Requests for the First User
         for user in all_users[1:10]:
-            FriendRequest.objects.create(user1=all_users[0], user2=user, was_accepted=True)
+            chat_room = ChatRoom.objects.create(user1=all_users[0], user2=user)
+            FriendRequest.objects.create(user1=all_users[0], user2=user, chat_room=chat_room, was_accepted=True)
 
         for user in all_users[10:15]:
-            FriendRequest.objects.create(user1=all_users[0], user2=user)
+            chat_room = ChatRoom.objects.create(user1=all_users[0], user2=user)
+            FriendRequest.objects.create(user1=all_users[0], user2=user, chat_room=chat_room)
 
         for user in all_users[15:20]:
-            FriendRequest.objects.create(user1=user, user2=all_users[0])
+            chat_room = ChatRoom.objects.create(user1=user, user2=all_users[0])
+            FriendRequest.objects.create(user1=user, user2=all_users[0], chat_room=chat_room)
 
         # Log messages
         for user in all_users:

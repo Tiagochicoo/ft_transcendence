@@ -1,8 +1,9 @@
 from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework import status
-from ..models import User as User
+from ..models import ChatRoom as ChatRoom
 from ..models import FriendRequest as FriendRequest
+from ..models import User as User
 from ..serializers.serializers_friendrequest import FriendRequestSerializer
 
 # POST sends data to the server.
@@ -14,7 +15,8 @@ class FriendCreate(APIView):
         try:
             user1 = request.data.get('user1')
             user2 = request.data.get('user2')
-            friend_request = FriendRequest.objects.create(user1_id=user1, user2_id=user2)
+            chat_room = ChatRoom.objects.create(user1_id=user1, user2_id=user2)
+            friend_request = FriendRequest.objects.create(user1_id=user1, user2_id=user2, chat_room=chat_room)
             serializer = FriendRequestSerializer(friend_request)
             return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception as error:
