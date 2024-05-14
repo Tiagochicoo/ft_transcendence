@@ -1,4 +1,4 @@
-import { Friends } from "/static/js/api/index.js";
+import { ChatRooms, Friends } from "/static/js/api/index.js";
 import { Abstract } from "/static/js/components/index.js";
 
 export default class extends Abstract {
@@ -26,7 +26,12 @@ export default class extends Abstract {
 
 			switch (action) {
 				case 'message':
-					alert(`message: ${id}`);
+					const chatRoomId = this.data.find(el => el.id === parseInt(id))?.chat_room_id;
+					console.log('chatRoomId', chatRoomId);
+					const chatRoom = await ChatRooms.get(chatRoomId);
+					console.log('chatRoom', chatRoom);
+					const chatRoomMessages = await ChatRooms.getMessages(chatRoomId);
+					console.log('chatRoomMessages', chatRoomMessages);
 					break;
 
 				case 'refuse':

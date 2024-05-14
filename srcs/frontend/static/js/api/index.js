@@ -1,4 +1,5 @@
+import ChatRooms from "./chat-rooms.js";
 import Friends from "./friends.js";
 import PongData from "./pongData.js";
 
-export { Friends, PongData };
+export { ChatRooms, Friends, PongData };
