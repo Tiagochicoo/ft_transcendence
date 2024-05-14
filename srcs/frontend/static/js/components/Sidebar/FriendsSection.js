@@ -99,7 +99,7 @@ export default class extends Abstract {
 
 	getFriendsAccepted() {
 		const list = this.data.filter(({ was_accepted }) => was_accepted)
-			.map(({ id, user1, user2 }) => ({ id, user: (user1.id == 1) ? user2 : user1 }));
+			.map(({ id, user1, user2 }) => ({ id, user: (user1.id == Friends.USER_ID) ? user2 : user1 }));
 
 		return this.getList(list, {
 			id: 'friends-accepted-list',
@@ -114,7 +114,7 @@ export default class extends Abstract {
 	}
 
 	getFriendsReceived() {
-		const list = this.data.filter(({ was_accepted, was_canceled, was_refused, user2 }) => !was_accepted && !was_canceled && !was_refused && (user2.id == 1))
+		const list = this.data.filter(({ was_accepted, was_canceled, was_refused, user2 }) => !was_accepted && !was_canceled && !was_refused && (user2.id == Friends.USER_ID))
 			.map(({ id, user1 }) => ({ id, user: user1 }));
 
 		const htmlList = this.getList(list, {
@@ -140,7 +140,7 @@ export default class extends Abstract {
 	}
 
 	getFriendsSent() {
-		const list = this.data.filter(({ was_accepted, was_canceled, was_refused, user1 }) => !was_accepted && !was_canceled && !was_refused && (user1.id == 1))
+		const list = this.data.filter(({ was_accepted, was_canceled, was_refused, user1 }) => !was_accepted && !was_canceled && !was_refused && (user1.id == Friends.USER_ID))
 			.map(({ id, user2 }) => ({ id, user: user2 }));
 
 		const htmlList = this.getList(list, {
