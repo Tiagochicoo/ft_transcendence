@@ -14,12 +14,13 @@ export default class extends Abstract {
 	setupArea.innerHTML = this.showListOfFriends();
 
 	const singleMatchInvitationBtn = document.querySelector('#single-match-invitation-btn');
-	singleMatchInvitationBtn.disabled = true;
 
+	singleMatchInvitationBtn.style.display = 'none';
+	
 	for (let opponent of document.querySelectorAll('input[name="friends"]')) {
 		opponent.addEventListener("input", (event) => {
 			this.opponent = event.target.value;
-			singleMatchInvitationBtn.disabled = false;
+			singleMatchInvitationBtn.style.display = 'block';
 		});
 	}
 
