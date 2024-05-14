@@ -9,28 +9,27 @@ logger = logging.getLogger(__name__)
 
 class SignInSerializer(serializers.Serializer):
     username_email = serializers.CharField(required=True, error_messages={
-        'blank': 'This field may not be blank.'
+        'blank': 'field_blank'
     })
     password = serializers.CharField(required=True, error_messages={
-        'blank': 'Password field may not be blank.'
+        'blank': 'password_blank'
     })
 
     def validate_username_email(self, value):
         if not value:
-            raise serializers.ValidationError("This field may not be blank.", code='blank')
+            raise serializers.ValidationError("field_blank", code='blank')
         
-        # Check if it is a valid email or username exists in the database.
         if '@' in value:
             try:
                 validate_email(value)
                 user_exists = User.objects.filter(email=value).exists()
             except ValidationError:
-                raise serializers.ValidationError("Enter a valid email address.", code='invalid')
+                raise serializers.ValidationError("invalid_email_address", code='invalid')
         else:
             user_exists = User.objects.filter(username=value).exists()
         
         if not user_exists:
-            raise serializers.ValidationError("No account found with the provided username/email.", code='not_found')
+            raise serializers.ValidationError("account_not_found", code='not_found')
 
         return value
     
@@ -38,7 +37,7 @@ class SignInSerializer(serializers.Serializer):
     def validate(self, data):
         user = self.custom_authenticate(data['username_email'], data['password'])
         if not user:
-            raise serializers.ValidationError("Invalid password or the user does not exist.", code='invalid_credentials')
+            raise serializers.ValidationError("invalid_credentials", code='invalid_credentials')
         data['user'] = user
         return data
     
@@ -54,7 +53,7 @@ class SignInSerializer(serializers.Serializer):
                 return user
             else:
                 logger.warning(f"Failed login attempt for {username_or_email}: Incorrect password")
-                raise serializers.ValidationError("The password is incorrect.")
+                raise serializers.ValidationError("incorrect_password", code='invalid_credentials')
         else:
             logger.warning(f"Failed login attempt for {username_or_email}: User not found")
-            raise serializers.ValidationError("Invalid username/email or password.", code='invalid_credentials')
+            raise serializers.ValidationError("account_not_found", code='invalid_credentials')

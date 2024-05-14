@@ -40,8 +40,10 @@ export default class extends Abstract {
                     if (!response.ok) {
                         this.handleErrors(responseData);
                     } else {
+                        localStorage.setItem('accessToken', responseData.access);
+                        localStorage.setItem('refreshToken', responseData.refresh);
                         console.log('Login successful:', responseData);
-                        form.reset();
+                        form.reset(); 
                         window.location.href = '/dashboard';
                     }
                 } catch (error) {
@@ -60,46 +62,49 @@ export default class extends Abstract {
     }
 
     handleErrors(responseData) {
-    
         if (responseData.username_email) {
-            document.getElementById('usernameEmailError').textContent = responseData.username_email[0];
-            document.getElementById('usernameEmailError').style.display = 'block';
+          const errorKey = `signIn.validation.${responseData.username_email[0]}`;
+          const errorMessage = i18next.t(errorKey);
+          document.getElementById('usernameEmailError').textContent = errorMessage;
+          document.getElementById('usernameEmailError').style.display = 'block';
         }
-    
         if (responseData.password) {
-            const passwordError = document.getElementById('passwordError');
-            if (passwordError) {
-                passwordError.textContent = responseData.password[0];
-                passwordError.style.display = 'block';
-            }
+          const errorKey = `signIn.validation.${responseData.password[0]}`;
+          const errorMessage = i18next.t(errorKey);
+          const passwordError = document.getElementById('passwordError');
+          if (passwordError) {
+            passwordError.textContent = errorMessage;
+            passwordError.style.display = 'block';
+          }
         }
-    
         if (responseData.non_field_errors) {
-            const generalError = document.getElementById('generalLoginError');
-            if (generalError) {
-                generalError.textContent = responseData.non_field_errors.join(', ');
-                generalError.style.display = 'block';
-            }
+          const errorKey = `signIn.validation.${responseData.non_field_errors[0]}`;
+          const errorMessage = i18next.t(errorKey);
+          const generalError = document.getElementById('generalLoginError');
+          if (generalError) {
+            generalError.textContent = errorMessage;
+            generalError.style.display = 'block';
+          }
         }
-    }
-    
-    async getHtml() {
+      }      
+
+      async getHtml() {
         return `
-            <h1 class="mb-4">Sign In</h1>
+            <h1 class="mb-4">${i18next.t('signIn.title')}</h1>
             <form class="needs-validation" novalidate>
                 <div class="mb-4">
-                    <label for="username_email" class="form-label">Email or Username:</label>
+                    <label for="username_email" class="form-label">${i18next.t('signIn.fields.email.label')}</label>
                     <input type="text" class="form-control" id="username_email" name="username_email">
                     <div id="usernameEmailError" class="invalid-feedback" style="display: none;"></div>
                 </div>
                 <div class="mb-4">
-                    <label for="password" class="form-label">Password:</label>
+                    <label for="password" class="form-label">${i18next.t('signIn.fields.password.label')}</label>
                     <input type="password" class="form-control" id="password" name="password">
                     <div id="passwordError" class="invalid-feedback" style="display: none;"></div>
                     <div id="generalLoginError" class="invalid-feedback" style="display: none;"></div>
                 </div>
-                <button type="submit" class="btn btn-primary">Sign In</button>
+                <button type="submit" class="btn btn-primary">${i18next.t('signIn.submitButton')}</button>
             </form>
         `;
-    }
-}    
+    }    
+}

@@ -12,6 +12,7 @@ import logging
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import login
+from rest_framework_simplejwt.tokens import RefreshToken
 
 # Create your views here.
 
@@ -27,14 +28,20 @@ class UserCreate(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             logger.error(f"Validation errors: {serializer.errors}")
-            return Response(serializer.errors, status=400)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserLogin(APIView):
     def post(self, request, *args, **kwargs):
         serializer = SignInSerializer(data=request.data)
         if serializer.is_valid():
-            return Response({'message': 'Login successful', 'user_id': serializer.validated_data['user'].id}, status=status.HTTP_200_OK)
+            user = serializer.validated_data['user']
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+                'user_id': user.id,
+            }, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -64,3 +71,4 @@ class UserDelete(APIView):
         user = get_object_or_404(User, pk=pk)
         user.delete()
         return Response(f"User with ID {pk} deleted successfully from DB", status=status.HTTP_200_OK)
+
