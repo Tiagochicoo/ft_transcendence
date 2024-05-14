@@ -1,6 +1,6 @@
 {
   "navbar": {
-    "home": "Home (PT)",
+    "home": "Início",
     "dashboard": "Painel",
     "individualDashboard": "Estatísticas Individuais",
     "generalDashboard": "Estatísticas Gerais",
@@ -48,7 +48,7 @@
     }
   },
   "home": {
-    "title": "Home (PT)"
+    "title": "Início"
   },
   "signIn": {
     "title": "Iniciar",
