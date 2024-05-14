@@ -1,9 +1,11 @@
 // TODELETE
-const USER_ID = 1;
+const USER_ID = 100;
 const API_URL = 'http://localhost:8000/api';
 
 export default class Friends {
   constructor() {}
+
+  static USER_ID = USER_ID;
 
   static async create(invited_user_id) {
     alert(`create: ${invited_user_id}`);
