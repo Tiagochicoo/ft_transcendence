@@ -15,6 +15,7 @@ const ROUTES = [
   { path: "/pong", title: "Pong", page: Pong },
   { path: "/pong/single/setup", title: "Pong", page: Setup },
   { path: "/pong/single/match", title: "Pong", page: Match },
+  { path: "/pong/tournament/setup", title: "Pong", page: Setup },
   { path: "/sign-up", title: "Sign-up", page: SignUp },
   { path: "/sign-in", title: "Sign-in", page: SignIn },
   {

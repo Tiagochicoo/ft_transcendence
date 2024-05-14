@@ -25,7 +25,7 @@ export default class extends Abstract {
 			</div>
 			<div class="d-flex flex-column">
 				<img src="/static/images/tournament.jpg" class="mode-images">
-				<a id="tournament-button" href="/pong" data-link>
+				<a id="tournament-button" href="/pong/tournament/setup" data-link>
 				${i18next.t("pong.tournament")}
 				</a>
 			</div>

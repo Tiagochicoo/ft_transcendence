@@ -5,9 +5,11 @@ export default class extends Abstract {
     super(props);
     this.params = props;
 	// this data will be fetched from database using logged user_id
-	this.friends = ['Will', 'Joe', 'Jeff', 'John'];
+	this.friends = ['Will', 'Joe', 'Jeff', 'John', 'Eva', 'Hannah', 'Diana', 'Alex', 'Tyna', 'Bob', 'Wendy', 'Martha'];
 	this.opponent;
-	
+	let url = window.location.toString();
+	if (url.indexOf('single') > 0) this.mode = 'single';
+	else if (url.indexOf('tournament') > 0) this.mode = 'tournament';
   }
 
   async addFunctionality() {
@@ -41,7 +43,7 @@ export default class extends Abstract {
 
 	this.friends.forEach((friend, index) => {
 		list += `<div class="form-check">
-					<input class="form-check-input" type="radio" name="friends" value="${friend}" id="${index}">
+					<input class="form-check-input" type="${this.mode === 'single' ? 'radio' : 'checkbox'}" name="friends" value="${friend}" id="${index}">
 					<label class="form-check-label" for="friends">
 					${friend}
 					</label>
