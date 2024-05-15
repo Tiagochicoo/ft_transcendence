@@ -11,7 +11,6 @@ export default class extends Abstract {
             e.preventDefault();
             const form = e.target;
 
-            // Clear previous errors
             document.querySelectorAll('.invalid-feedback').forEach(element => {
                 element.textContent = '';
                 element.style.display = 'none';
@@ -42,8 +41,7 @@ export default class extends Abstract {
                         this.handleErrors(responseData);
                     } else {
                         console.log('User registered successfully:', responseData);
-                        // Optional: Redirect or clear form here
-                        form.reset(); // Clear the form after successful registration
+                        form.reset();
                     }
                 } catch (error) {
                     console.error('Network or other error:', error);
@@ -62,40 +60,46 @@ export default class extends Abstract {
 
     handleErrors(responseData) {
         if (responseData.email) {
-            document.getElementById('emailError').textContent = responseData.email[0];
+            const emailErrorKey = `signUp.validation.${responseData.email[0]}`;
+            const emailErrorMessage = i18next.t(emailErrorKey);
+            document.getElementById('emailError').textContent = emailErrorMessage;
             document.getElementById('emailError').style.display = 'block';
         }
         if (responseData.username) {
-            document.getElementById('usernameError').textContent = responseData.username[0];
+            const usernameErrorKey = `signUp.validation.${responseData.username[0]}`;
+            const usernameErrorMessage = i18next.t(usernameErrorKey);
+            document.getElementById('usernameError').textContent = usernameErrorMessage;
             document.getElementById('usernameError').style.display = 'block';
         }
         if (responseData.password) {
-            document.getElementById('passwordError').textContent = responseData.password[0];
+            const passwordErrorKey = `signUp.validation.${responseData.password[0]}`;
+            const passwordErrorMessage = i18next.t(passwordErrorKey);
+            document.getElementById('passwordError').textContent = passwordErrorMessage;
             document.getElementById('passwordError').style.display = 'block';
         }
-    }
+    }    
 
     async getHtml() {
         return `
-            <h1 class="mb-4">Sign Up</h1>
+            <h1 class="mb-4">${i18next.t('signUp.title')}</h1>
             <form class="needs-validation" novalidate>
                 <div class="mb-4">
-                    <label for="email" class="form-label">Email:</label>
+                    <label for="email" class="form-label">${i18next.t('signUp.fields.email.label')}</label>
                     <input type="text" class="form-control" id="email" name="email">
                     <div id="emailError" class="invalid-feedback" style="display: none;"></div>
                 </div>
                 <div class="mb-4">
-                    <label for="username" class="form-label">Username:</label>
+                    <label for="username" class="form-label">${i18next.t('signUp.fields.username.label')}</label>
                     <input type="text" class="form-control" id="username" name="username">
                     <div id="usernameError" class="invalid-feedback" style="display: none;"></div>
                 </div>
                 <div class="mb-4">
-                    <label for="password" class="form-label">Password:</label>
+                    <label for="password" class="form-label">${i18next.t('signUp.fields.password.label')}</label>
                     <input type="password" class="form-control" id="password" name="password">
-                    <div id="passwordError" class="invalid-feedback">Please enter a valid password.</div>
+                    <div id="passwordError" class="invalid-feedback" style="display: none;">${i18next.t('signUp.fields.password.invalidFeedback')}</div>
                 </div>
-                <button type="submit" class="btn btn-primary">Register</button>
+                <button type="submit" class="btn btn-primary">${i18next.t('signUp.submitButton')}</button>
             </form>
         `;
     }
-}
+}    

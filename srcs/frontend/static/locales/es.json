@@ -7,7 +7,8 @@
     "userManagement": "Gestión de Usuarios",
     "signUp": "Inscribirse",
     "signIn": "Iniciar Sesión",
-    "pong": "Pong"
+    "pong": "Pong",
+    "logout": "Cerrar sesión"
   },
   "pong": {
     "title": "Pong",
@@ -46,37 +47,57 @@
     "title": "Inicio"
   },
   "signIn": {
-    "title": "Iniciar Sesión",
-    "fields": {
-      "email": {
-        "label": "Correo electrónico",
-        "invalidFeedback": "Por favor elija un correo electrónico válido."
+      "title": "Iniciar sesión",
+      "fields": {
+        "email": {
+          "label": "Correo electrónico o nombre de usuario",
+          "invalidFeedback": "Por favor, elige un correo electrónico válido."
+        },
+        "password": {
+          "label": "Contraseña",
+          "invalidFeedback": "Por favor, elige una contraseña válida."
+        }
       },
-      "password": {
-        "label": "Contraseña",
-        "invalidFeedback": "Por favor elija una contraseña válida."
-      }
+      "validation": {
+        "field_blank": "Este campo no puede estar vacío.",
+        "password_blank": "El campo de contraseña no puede estar vacío.",
+        "invalid_email_address": "Introduzca una dirección de correo válida.",
+        "account_not_found": "No se encontró ninguna cuenta con el nombre de usuario/correo proporcionado.",
+        "invalid_credentials": "Contraseña inválida o el usuario no existe.",
+        "incorrect_password": "La contraseña es incorrecta."
+      },
+      "submitButton": "Enviar"
     },
-    "submitButton": "Enviar"
-  },
-  "signUp": {
-    "title": "Inscribirse",
-    "fields": {
-      "email": {
-        "label": "Correo electrónico",
-        "invalidFeedback": "Por favor elija un correo electrónico válido.",
-        "help": "Nunca compartiremos su correo electrónico con nadie más."
+    "signUp": {
+      "title": "Inscribirse",
+      "fields": {
+        "email": {
+          "label": "Correo electrónico",
+          "invalidFeedback": "Por favor, elige un correo electrónico válido.",
+          "help": "Nunca compartiremos su correo electrónico con nadie más."
+        },
+        "username": {
+          "label": "Nombre de usuario",
+          "invalidFeedback": "Este nombre de usuario ya está tomado.",
+          "help": "Cómo te verán los otros jugadores."
+        },
+        "password": {
+          "label": "Contraseña",
+          "invalidFeedback": "La contraseña debe tener al menos 8 caracteres."
+        }
       },
-      "username": {
-        "label": "Nombre de usuario",
-        "invalidFeedback": "Por favor elija un nombre de usuario válido.",
-        "help": "Cómo te verán los otros jugadores."
+      "validation": {
+        "email_cannot_be_blank": "El correo no puede estar vacío",
+        "invalid_email_format": "Formato de correo inválido",
+        "email_too_long": "El correo es demasiado largo",
+        "email_in_use": "Este correo electrónico ya está registrado",
+        "username_cannot_be_blank": "El nombre de usuario no puede estar vacío",
+        "username_too_long": "El nombre de usuario es demasiado largo",
+        "username_in_use": "Este nombre de usuario ya está en uso",
+        "username_too_short": "El nombre de usuario debe tener al menos 5 caracteres",
+        "password_cannot_be_blank": "La contraseña no puede estar vacía",
+        "password_too_short": "La contraseña debe tener al menos 8 caracteres"
       },
-      "password": {
-        "label": "Contraseña",
-        "invalidFeedback": "Por favor elija una contraseña válida."
-      }
-    },
-    "submitButton": "Enviar"
-  }
-}
+      "submitButton": "Registrar"
+    }
+  } 
