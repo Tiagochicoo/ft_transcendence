@@ -1,13 +1,14 @@
 {
   "navbar": {
-    "home": "Home (PT)",
+    "home": "Início",
     "dashboard": "Painel",
     "individualDashboard": "Estatísticas Individuais",
     "generalDashboard": "Estatísticas Gerais",
     "userManagement": "Gestão de usuários",
     "signUp": "Inscrever-se",
-    "signIn": "Iniciar",
-    "pong": "Pong"
+    "signIn": "Iniciar Sessão",
+    "pong": "Pong",
+    "logout": "Sair"
   },
   "pong": {
     "title": "Pong",
@@ -16,7 +17,12 @@
       "pause": "Pausar",
       "continue": "Continuar",
       "restart": "Reiniciar"
-    }
+    },
+    "singleMatch": "Partida única",
+    "tournament": "Campeonato",
+    "invitationMessage": "Escolha seu adversário:",
+    "invitationBtn": "Convidar",
+    "startGame": "Jogar"
   },
   "individualDashboard": {
     "title": "Estatísticas",
@@ -43,19 +49,27 @@
     }
   },
   "home": {
-    "title": "Home (PT)"
+    "title": "Início"
   },
   "signIn": {
     "title": "Iniciar",
     "fields": {
       "email": {
-        "label": "Email",
-        "invalidFeedback": "Por favor escolha um endereço de email válido."
+        "label": "Endereço de email ou nome de usuário",
+        "invalidFeedback": "Por favor, escolha um endereço de email válido."
       },
       "password": {
         "label": "Senha",
         "invalidFeedback": "Por favor escolha uma senha válida."
       }
+    },
+    "validation": {
+      "field_blank": "Este campo não pode estar vazio.",
+      "password_blank": "O campo da senha não pode estar vazio.",
+      "invalid_email_address": "Insira um endereço de email válido.",
+      "account_not_found": "Nenhuma conta encontrada com o username/email fornecido.",
+      "invalid_credentials": "Senha inválida ou o usuário não existe.",
+      "incorrect_password": "A senha está incorreta."
     },
     "submitButton": "Enviar"
   },
@@ -63,20 +77,32 @@
     "title": "Inscrever-se",
     "fields": {
       "email": {
-        "label": "Email",
+        "label": "Endereço de email",
         "invalidFeedback": "Por favor escolha um endereço de email válido.",
         "help": "Nós nunca iremos partilhar seu email com ninguém."
       },
       "username": {
         "label": "Nome de usuário",
-        "invalidFeedback": "Por favor escolha um nome de usuário válido.",
+        "invalidFeedback": "Este nome de usuário já está em uso.",
         "help": "Como os outros jogadores vão vê-lo."
       },
       "password": {
         "label": "Senha",
-        "invalidFeedback": "Por favor escolha uma senha válida."
+        "invalidFeedback": "A senha deve ter pelo menos 8 caracteres."
       }
     },
-    "submitButton": "Enviar"
+    "validation": {
+      "email_cannot_be_blank": "O email não pode estar vazio",
+      "invalid_email_format": "Formato de email inválido",
+      "email_too_long": "O email é muito longo",
+      "email_in_use": "Este email já está registrado",
+      "username_cannot_be_blank": "O nome de usuário não pode estar vazio",
+      "username_too_long": "O nome de usuário é muito longo",
+      "username_in_use": "Este nome de usuário já está em uso",
+      "username_too_short": "O nome de usuário deve ter pelo menos 5 caracteres",
+      "password_cannot_be_blank": "A senha não pode estar vazia",
+      "password_too_short": "A senha deve ter pelo menos 8 caracteres"
+    },
+    "submitButton": "Registrar"
   }
 }

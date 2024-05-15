@@ -28,8 +28,6 @@
   margin-top: 25px;
 }
 
-
-
 #single-match-button:before, #tournament-button:before, .pong-buttons:before, #single-match-invitation-btn:before, #start-match-button:before {
   transition: 0.5s all ease;
   position: absolute;

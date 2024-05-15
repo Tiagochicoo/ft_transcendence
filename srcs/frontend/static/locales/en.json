@@ -7,7 +7,8 @@
     "userManagement": "User Management",
     "signUp": "Sign-up",
     "signIn": "Sign-in",
-    "pong": "Pong"
+    "pong": "Pong",
+    "logout": "Log out"
   },
   "pong": {
     "title": "Pong",
@@ -16,7 +17,12 @@
       "pause": "Pause",
       "continue": "Continue",
       "restart": "Restart"
-    }
+    },
+    "singleMatch": "Single Match",
+    "tournament": "Tournament",
+    "invitationMessage": "Select your opponent:",
+    "invitationBtn": "Invite",
+    "startGame": "Start Game"
   },
   "individualDashboard": {
     "title": "Statistics",
@@ -46,10 +52,10 @@
     "title": "Home"
   },
   "signIn": {
-    "title": "Sign-in",
+    "title": "Sign in",
     "fields": {
       "email": {
-        "label": "Email address",
+        "label": "Email or Username",
         "invalidFeedback": "Please choose a valid email."
       },
       "password": {
@@ -57,10 +63,18 @@
         "invalidFeedback": "Please choose a valid password."
       }
     },
+    "validation": {
+        "field_blank": "This field may not be blank.",
+        "password_blank": "Password field may not be blank.",
+        "invalid_email_address": "Enter a valid email address.",
+        "account_not_found": "No account found with the provided username/email.",
+        "invalid_credentials": "Invalid password or the user does not exist.",
+        "incorrect_password": "The password is incorrect."
+    },
     "submitButton": "Submit"
   },
   "signUp": {
-    "title": "Sign-up",
+    "title": "Sign up",
     "fields": {
       "email": {
         "label": "Email address",
@@ -69,14 +83,26 @@
       },
       "username": {
         "label": "Username",
-        "invalidFeedback": "Please choose a valid username.",
+        "invalidFeedback": "This username is already taken.",
         "help": "How the other players will see you"
       },
       "password": {
         "label": "Password",
-        "invalidFeedback": "Please choose a valid password."
+        "invalidFeedback": "The password must be at least 8 characters."
       }
     },
-    "submitButton": "Submit"
-  }
+    "validation": {
+      "email_cannot_be_blank": "Email cannot be blank",
+      "invalid_email_format": "Invalid email format",
+      "email_too_long": "Email is too long",
+      "email_in_use": "This email is already registered",
+      "username_cannot_be_blank": "Username cannot be blank",
+      "username_too_long": "Username is too long",
+      "username_in_use": "This username is already in use",
+      "username_too_short": "Username must be at least 5 characters",
+      "password_cannot_be_blank": "Password cannot be blank",
+      "password_too_short": "Password must be at least 8 characters"
+      },
+      "submitButton": "Submit"
+    }
 }
