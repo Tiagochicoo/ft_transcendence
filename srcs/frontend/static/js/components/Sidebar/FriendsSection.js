@@ -1,5 +1,6 @@
 import { ChatRooms, Friends } from "/static/js/api/index.js";
 import { Abstract } from "/static/js/components/index.js";
+import ChatBox from "/static/js/components/ChatBox/index.js";
 
 export default class extends Abstract {
 	constructor(props) {
@@ -27,11 +28,8 @@ export default class extends Abstract {
 			switch (action) {
 				case 'message':
 					const chatRoomId = this.data.find(el => el.id === parseInt(id))?.chat_room_id;
-					console.log('chatRoomId', chatRoomId);
-					const chatRoom = await ChatRooms.get(chatRoomId);
-					console.log('chatRoom', chatRoom);
-					const chatRoomMessages = await ChatRooms.getMessages(chatRoomId);
-					console.log('chatRoomMessages', chatRoomMessages);
+					const chatBox = new ChatBox(chatRoomId);
+					document.getElementById('chat-box').innerHTML = await chatBox.getHtml();
 					break;
 
 				case 'refuse':

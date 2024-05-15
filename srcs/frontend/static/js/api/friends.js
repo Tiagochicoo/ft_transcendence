@@ -1,5 +1,5 @@
 // TODELETE
-const USER_ID = 100;
+const USER_ID = 182;
 const API_URL = 'http://localhost:8000/api';
 
 export default class Friends {
