@@ -1,6 +1,6 @@
 {
   "navbar": {
-    "home": "Home (PT)",
+    "home": "Início",
     "dashboard": "Painel",
     "individualDashboard": "Estatísticas Individuais",
     "generalDashboard": "Estatísticas Gerais",
@@ -17,7 +17,12 @@
       "pause": "Pausar",
       "continue": "Continuar",
       "restart": "Reiniciar"
-    }
+    },
+    "singleMatch": "Partida única",
+    "tournament": "Campeonato",
+    "invitationMessage": "Escolha seu adversário:",
+    "invitationBtn": "Convidar",
+    "startGame": "Jogar"
   },
   "individualDashboard": {
     "title": "Estatísticas",
@@ -44,7 +49,7 @@
     }
   },
   "home": {
-    "title": "Home (PT)"
+    "title": "Início"
   },
   "signIn": {
     "title": "Iniciar",

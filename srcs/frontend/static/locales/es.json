@@ -17,7 +17,12 @@
       "pause": "Pausar",
       "continue": "Continuar",
       "restart": "Reiniciar"
-    }
+    },
+    "singleMatch": "Partido único",
+    "tournament": "Torneo",
+    "invitationMessage": "Selecciona a tu oponente:",
+    "invitationBtn": "Convidar",
+    "startGame": "Jugar"
   },
   "individualDashboard": {
     "title": "Estadísticas",
