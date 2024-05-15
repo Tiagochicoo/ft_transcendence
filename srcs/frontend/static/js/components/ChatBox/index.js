@@ -8,6 +8,8 @@ export default class extends Abstract {
 		this.chatRoomId = props;
 	}
 
+
+
 	async getHtml() {
 		let response = await ChatRooms.get(this.chatRoomId);
 		this.chatRoom = response.data;
@@ -17,6 +19,23 @@ export default class extends Abstract {
 
 		const otherUser = (this.chatRoom.user1.id === ChatRooms.USER_ID) ? this.chatRoom.user2 : this.chatRoom.user1;
 
+		document.getElementById("chat-box").addEventListener("click", (e) => {
+			let currentElement = e.target;
+
+			while (
+				currentElement.tagName &&
+				(currentElement.matches("[data-action=\"close\"]") || currentElement.parentNode)
+			) {
+				if (currentElement.matches("[data-action=\"close\"]")) {
+					e.preventDefault();
+					document.getElementById("chat-box").innerHTML = '';
+					return;
+				}
+
+				currentElement = currentElement.parentNode;
+			}
+		});
+
 		return `
 			<div class="chat-box-wrapper">
 				<div class="chat-box-header">
@@ -24,7 +43,11 @@ export default class extends Abstract {
 
 					<span class="lh-1">
 						${otherUser.username}
-					<span>
+					</span>
+
+					<button class="chat-box-close" data-action="close">
+						<i class="bi bi-x-circle-fill"></i>
+					</button>
 				</div>
 
 				<div class="chat-box-messages">

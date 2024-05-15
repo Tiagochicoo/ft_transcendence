@@ -83,7 +83,7 @@ export default class extends Abstract {
 
 								<span class="lh-1">
 									${user.username}
-								<span>
+								</span>
 							</div>
 
 							<div class="d-flex align-items-center gap-1">

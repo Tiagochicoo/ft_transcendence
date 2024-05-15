@@ -90,7 +90,18 @@ main {
 }
 
 .chat-box-header {
+  display: flex;
   color: #f8f9fa;
+}
+
+.chat-box-close {
+  color: #f8f9fa;
+  font-size: 20px;
+  line-height: 1;
+  background: transparent;
+  padding: 0;
+  border: none;
+  margin-left: auto;
 }
 
 .chat-box-messages {
@@ -101,6 +112,7 @@ main {
   padding: 10px;
   background: #6c757d;
   border-radius: 5px;
+  overflow-y: scroll;
 }
 
 .chat-box-message {
