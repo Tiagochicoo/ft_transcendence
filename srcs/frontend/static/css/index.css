@@ -130,3 +130,8 @@ main {
 .chat-box-message.left {
   margin-right: auto;
 }
+
+.chat-box-footer form {
+  display: flex;
+  gap: 5px;
+}

@@ -1,11 +1,12 @@
+import { getUserIDFromToken } from "/static/js/services/authService.js";
+
 // TODELETE
-const USER_ID = 182;
 const API_URL = 'http://localhost:8000/api';
 
 export default class Friends {
   constructor() {}
 
-  static USER_ID = USER_ID;
+  static USER_ID = getUserIDFromToken();
 
   static async create(invited_user_id) {
     alert(`create: ${invited_user_id}`);
@@ -39,7 +40,7 @@ export default class Friends {
   }
 
   static async getAll() {
-    const response = await fetch(`${API_URL}/users/${USER_ID}/friend_requests`);
+    const response = await fetch(`${API_URL}/users/${this.USER_ID}/friend_requests`);
     const responseJson = await response.json();
 
     return responseJson;

@@ -8,8 +8,6 @@ export default class extends Abstract {
 		this.chatRoomId = props;
 	}
 
-
-
 	async getHtml() {
 		let response = await ChatRooms.get(this.chatRoomId);
 		this.chatRoom = response.data;
@@ -36,6 +34,13 @@ export default class extends Abstract {
 			}
 		});
 
+		document.querySelector("#chat-box").addEventListener("submit", (e) => {
+			e.preventDefault();
+
+			const data = new FormData(e.target);
+			ChatRooms.sendMessage(this.chatRoomId, data.get('content'));
+		});
+
 		return `
 			<div class="chat-box-wrapper">
 				<div class="chat-box-header">
@@ -56,6 +61,15 @@ export default class extends Abstract {
 							${content}
 						</div>
 					`).join("")}
+				</div>
+
+				<div class="chat-box-footer">
+					<form novalidate>
+						<input type="text" class="form-control" id="content" name="content">
+						<button type="submit" class="btn btn-primary">
+							<i class="bi bi-send-fill"></i>
+						</button>
+					</form>
 				</div>
 			</div>
 		`;
