@@ -19,7 +19,8 @@
     },
     "singleMatch": "Partido único",
     "tournament": "Torneo",
-    "invitationMessage": "Selecciona a tu oponente:",
+    "singleMatchInvitationMessage": "Selecciona a tu oponente:",
+    "tournamentInvitationMessage": "Seleccione 7 participantes:",
     "invitationBtn": "Convidar",
     "startGame": "Jugar"
   },

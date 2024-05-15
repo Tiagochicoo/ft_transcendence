@@ -7,6 +7,7 @@ export default class extends Abstract {
 	// this data will be fetched from database using logged user_id
 	this.friends = ['Will', 'Joe', 'Jeff', 'John', 'Eva', 'Hannah', 'Diana', 'Alex', 'Tyna', 'Bob', 'Wendy', 'Martha'];
 	this.opponent;
+	this.participants = ['thisUser'];
 	let url = window.location.toString();
 	if (url.indexOf('single') > 0) this.mode = 'single';
 	else if (url.indexOf('tournament') > 0) this.mode = 'tournament';
@@ -21,13 +22,20 @@ export default class extends Abstract {
 	
 	for (let opponent of document.querySelectorAll('input[name="friends"]')) {
 		opponent.addEventListener("input", (event) => {
-			this.opponent = event.target.value;
-			invitationBtn.style.display = 'block';
+			if (this.mode === 'single') {
+				this.opponent = event.target.value;
+				invitationBtn.style.display = 'block';
+			} else if (this.mode === 'tournament') {
+				if (this.participants.length === 8) document.getElementById('invitation-error').innerHTML = "Only the first 7 selected participants will be invited."
+				if (this.participants.length < 8) this.participants.push(event.target.value);
+				if (this.participants.length === 8) invitationBtn.style.display = 'block';
+			}
 		});
 	}
 
 	invitationBtn.addEventListener("click", () => {
 		if (this.mode === 'single') this.startSingleMatch(setupArea);
+		else if (this.mode === 'tournament') this.startTournament(setupArea);
 	});
   }
 
@@ -40,9 +48,16 @@ export default class extends Abstract {
 	}
   }
 
+  startTournament(setupArea) {
+	// include a loader to wait for the response. A friend can accept or decline the invitation. 
+	// If it was accepted, we show the start button, if it was not, we must show a notification and allow the user to choose another friend.
+	// Depending on socket connection
+	setupArea.innerHTML = this.enableStartGame();
+  }
+
   showListOfFriends() {
 	let list = `<div>
-					<p>${i18next.t("pong.invitationMessage")}</p>`;
+					<p>${this.mode === "single" ? i18next.t("pong.singleMatchInvitationMessage") : i18next.t("pong.tournamentInvitationMessage")}</p>`;
 
 	this.friends.forEach((friend, index) => {
 		list += `<div class="form-check">
@@ -53,7 +68,8 @@ export default class extends Abstract {
 				</div>`;
 	});
 
-	list += `<button id="invitation-btn">${i18next.t("pong.invitationBtn")}</button>
+	list += `<p id="invitation-error" style="color: red;"></p>
+			 <button id="invitation-btn">${i18next.t("pong.invitationBtn")}</button>
 			 </div>`;
 
 	return list;
