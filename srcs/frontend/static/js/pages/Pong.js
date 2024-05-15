@@ -1,4 +1,4 @@
-import { isLoggedIn, getUserIDFromToken, redirectToLogin } from "../services/authService.js";
+import { redirectToLogin, isLoggedIn } from "/static/js/services/authService.js";
 import { Abstract } from "/static/js/components/index.js";
 
 export default class extends Abstract {
@@ -8,25 +8,13 @@ export default class extends Abstract {
 	  this.params = props;
 	}
   
-	async addFunctionality() {
-		console.log(isLoggedIn());
-	  const token = localStorage.getItem('accessToken');
-	  if (!token) {
-		console.log("No token found.");
-		redirectToLogin();
-	  }
-	  else {
-		try {
-			const payload = JSON.parse(atob(token.split('.')[1]));
-			console.log("Payload: " + payload);
-			console.log("Id: " + payload.user_id);
-		} catch(e) {
-			console.error('Invalid token');
-		}
-	  }
-	}
+	async addFunctionality() {}
   
 	async getHtml() {
+		if (!isLoggedIn()) {
+			redirectToLogin();
+			return '';
+		}
 	  return `
 		  <h1 class="mb-4">
 				  ${i18next.t("pong.title")}

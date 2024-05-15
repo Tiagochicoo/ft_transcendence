@@ -1,5 +1,6 @@
 import { Abstract } from "/static/js/components/index.js";
 import { Game } from "/static/js/pages/pong/index.js";
+import { isLoggedIn, getUserIDFromToken, redirectToLogin } from "/static/js/services/authService.js";
 
 export default class extends Abstract {
   constructor(props) {
@@ -20,6 +21,10 @@ export default class extends Abstract {
   }
 
   async getHtml() {
+	if (!isLoggedIn()) {
+		redirectToLogin();
+		return '';
+	}
     return `
 		<h1 class="mb-4">
 				${i18next.t("pong.title")}

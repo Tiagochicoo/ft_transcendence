@@ -75,7 +75,7 @@ export default class extends Abstract {
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="${this.userLoggedIn ? '/pong' : '/sign-in'}" data-link>
+                            <a class="nav-link" href="${userLoggedIn ? '/pong' : '/sign-in'}" data-link>
                                 ${i18next.t("navbar.pong")}
                             </a>
                         </li>
@@ -85,12 +85,12 @@ export default class extends Abstract {
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a class="dropdown-item" href="${this.userLoggedIn ? '/dashboard/individual/' + this.getUserIDFromToken() : '/sign-in'}" data-link>
+                                    <a class="dropdown-item" href="${userLoggedIn ? '/dashboard/individual/' + getUserIDFromToken() : '/sign-in'}" data-link>
                                         ${i18next.t("navbar.individualDashboard")}
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="${this.userLoggedIn ? '/dashboard/general' : '/sign-in'}" data-link>
+                                    <a class="dropdown-item" href="${userLoggedIn ? '/dashboard/general' : '/sign-in'}" data-link>
                                         ${i18next.t("navbar.generalDashboard")}
                                     </a>
                                 </li>
