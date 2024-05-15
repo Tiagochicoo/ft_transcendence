@@ -8,6 +8,8 @@ export default class extends Abstract {
 	this.friends = ['Will', 'Joe', 'Jeff', 'John', 'Eva', 'Hannah', 'Diana', 'Alex', 'Tyna', 'Bob', 'Wendy', 'Martha'];
 	this.opponent;
 	this.participants = ['thisUser'];
+
+	// it could be better manipulated if included in a global state!
 	let url = window.location.toString();
 	if (url.indexOf('single') > 0) this.mode = 'single';
 	else if (url.indexOf('tournament') > 0) this.mode = 'tournament';
@@ -76,7 +78,7 @@ export default class extends Abstract {
   }
 
   enableStartGame() {
-	let startBtn = `<a id="start-match-button" href="/pong/single/match" data-link>
+	let startBtn = `<a id="start-match-button" href="${this.mode === 'single' ? '/pong/single/match' : '/pong/tournament/match'}" data-link>
 						${i18next.t("pong.startGame")}
 					</a>`;
 

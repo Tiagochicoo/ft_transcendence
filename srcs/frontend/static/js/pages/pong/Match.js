@@ -6,10 +6,15 @@ export default class extends Abstract {
     super(props);
 
     this.params = props;
+
+	// it could be better manipulated if included in a global state!
+	let url = window.location.toString();
+	if (url.indexOf('single') > 0) this.mode = 'single';
+	else if (url.indexOf('tournament') > 0) this.mode = 'tournament';
   }
 
   async addFunctionality() {
-    //it is hardcoded but should be properties being received by app management
+    //it is hardcoded but should be properties being retrieved from a global state
     let game = new Game("ansilva-", "tpereira");
     game.draw();
   }
