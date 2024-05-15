@@ -1,6 +1,6 @@
 function redirectToLogin() {
     console.log("Redirecting to login page due to authentication failure.");
-    window.location.href = '/login'; 
+    window.location.href = '/sign-in'; 
 }
 
 function isTokenExpired(token) {
@@ -29,6 +29,21 @@ function isLoggedIn() {
     } catch (error) {
         console.error('Error decoding token:', error);
         return false;
+    }
+}
+
+function getUserIDFromToken() {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+        console.log("No token found, user not logged in.");
+        return null;
+    }
+    try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.user_id;
+    } catch(e) {
+        console.error("Invalid token: ", e);
+        return null;
     }
 }
 
@@ -82,4 +97,4 @@ async function fetchWithToken(url, options = {}) {
     return jsonResponse;
 }
 
-export { fetchWithToken, isLoggedIn, renewAccessToken };
+export { fetchWithToken, isLoggedIn, getUserIDFromToken, renewAccessToken, redirectToLogin };
