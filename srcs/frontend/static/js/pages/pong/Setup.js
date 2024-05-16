@@ -1,14 +1,17 @@
 import { Abstract } from "/static/js/components/index.js";
 import { isLoggedIn, getUserIDFromToken, redirectToLogin } from "/static/js/services/authService.js";
+import { Friends, PongData } from "/static/js/api/index.js";
+
 
 export default class extends Abstract {
   constructor(props) {
     super(props);
     this.params = props;
 	// this data will be fetched from database using logged user_id
-	this.friends = ['Will', 'Joe', 'Jeff', 'John', 'Eva', 'Hannah', 'Diana', 'Alex', 'Tyna', 'Bob', 'Wendy', 'Martha'];
+	// this.friends = ['Will', 'Joe', 'Jeff', 'John', 'Eva', 'Hannah', 'Diana', 'Alex', 'Tyna', 'Bob', 'Wendy', 'Martha'];
+	this.friends = [];
 	this.opponent;
-	this.participants = ['thisUser'];
+	this.participants = [];
 
 	// it could be better manipulated if included in a global state!
 	let url = window.location.toString();
@@ -17,6 +20,30 @@ export default class extends Abstract {
   }
 
   async addFunctionality() {
+
+	// here we will retrieve user information using the id retrieved from localStorage with getUserIDFromToken();
+	// const user = await PongData.getUser(getUserIDFromToken());
+	const user = await PongData.getUser(25);
+	if (this.mode === 'tournament') {
+		this.participants.push({
+			"id": user.id,
+			"username": user.username
+		});
+	}
+
+	const requestedFriends = await Friends.getAll();
+
+	requestedFriends.data.forEach((obj) => {
+		for (const [key, value] of Object.entries(obj)) {
+			if (key === 'user1' && value.id === 25 && obj.was_accepted === true) {
+				this.friends.push({
+					"id": obj.user2.id,
+					"username": obj.user2.username
+				});
+			}
+		}
+	});
+
 	const setupArea = document.getElementById('setup-area');
 	setupArea.innerHTML = this.showListOfFriends();
 
@@ -30,7 +57,9 @@ export default class extends Abstract {
 				invitationBtn.style.display = 'block';
 			} else if (this.mode === 'tournament') {
 				if (this.participants.length === 8) document.getElementById('invitation-error').innerHTML = "Only the first 7 selected participants will be invited."
-				if (this.participants.length < 8) this.participants.push(event.target.value);
+				if (this.participants.length < 8) {
+					this.participants.push(this.friends.filter((friend => friend.username === event.target.value))[0]);
+				}
 				if (this.participants.length === 8) invitationBtn.style.display = 'block';
 			}
 		});
@@ -59,14 +88,15 @@ export default class extends Abstract {
   }
 
   showListOfFriends() {
+	
 	let list = `<div>
 					<p>${this.mode === "single" ? i18next.t("pong.singleMatchInvitationMessage") : i18next.t("pong.tournamentInvitationMessage")}</p>`;
 
-	this.friends.forEach((friend, index) => {
+	this.friends.forEach((friend) => {
 		list += `<div class="form-check">
-					<input class="form-check-input" type="${this.mode === 'single' ? 'radio' : 'checkbox'}" name="friends" value="${friend}" id="${index}">
+					<input class="form-check-input" type="${this.mode === 'single' ? 'radio' : 'checkbox'}" name="friends" value="${friend.username}" id="${friend.id}">
 					<label class="form-check-label" for="friends">
-					${friend}
+					${friend.username}
 					</label>
 				</div>`;
 	});
@@ -87,10 +117,11 @@ export default class extends Abstract {
   }
 
   async getHtml() {
-	if (!isLoggedIn()) {
-		redirectToLogin();
-		return '';
-	}
+	// if (!isLoggedIn()) {
+	// 	redirectToLogin();
+	// 	return '';
+	// }
+
 	return `
 		<h1 class="mb-4">
 				${i18next.t("pong.title")}

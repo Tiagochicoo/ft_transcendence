@@ -11,10 +11,10 @@ export default class extends Abstract {
 	async addFunctionality() {}
   
 	async getHtml() {
-		if (!isLoggedIn()) {
-			redirectToLogin();
-			return '';
-		}
+		// if (!isLoggedIn()) {
+		// 	redirectToLogin();
+		// 	return '';
+		// }
 	  return `
 		  <h1 class="mb-4">
 				  ${i18next.t("pong.title")}
