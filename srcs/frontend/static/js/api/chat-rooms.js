@@ -1,12 +1,5 @@
-import { getUserIDFromToken } from "/static/js/services/authService.js";
-
-// TODELETE
-const API_URL = 'http://localhost:8000/api';
-
 export default class ChatRooms {
   constructor() {}
-
-  static USER_ID = getUserIDFromToken();
 
   static async get(chat_room_id) {
     const response = await fetch(`${API_URL}/chat_rooms/${chat_room_id}`);

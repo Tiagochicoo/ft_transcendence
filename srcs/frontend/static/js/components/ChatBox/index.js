@@ -15,7 +15,7 @@ export default class extends Abstract {
 		response = await ChatRooms.getMessages(this.chatRoomId);
 		this.messages = response.data;
 
-		const otherUser = (this.chatRoom.user1.id === ChatRooms.USER_ID) ? this.chatRoom.user2 : this.chatRoom.user1;
+		const otherUser = (this.chatRoom.user1.id === USER_ID) ? this.chatRoom.user2 : this.chatRoom.user1;
 
 		document.getElementById("chat-box").addEventListener("click", (e) => {
 			let currentElement = e.target;
@@ -69,7 +69,7 @@ export default class extends Abstract {
 
 				<div class="chat-box-messages">
 					${this.messages.map(({ content, sender }) => `
-						<div class="chat-box-message ${sender.id == ChatRooms.USER_ID ? "left" : "right"}">
+						<div class="chat-box-message ${sender.id == USER_ID ? "left" : "right"}">
 							${content}
 						</div>
 					`).join("")}

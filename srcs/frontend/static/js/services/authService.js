@@ -32,19 +32,6 @@ function isLoggedIn() {
     }
 }
 
-function getUserIDFromToken() {
-    const token = localStorage.getItem('accessToken');
-    if (!token) {
-        return null;
-    }
-    try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        return payload.user_id;
-    } catch (e) {
-        return null;
-    }
-}
-
 async function renewAccessToken(refreshToken) {
     console.log("Attempting to renew access token.");
     const response = await fetch('/api/token/refresh/', {
@@ -94,4 +81,4 @@ async function fetchWithToken(url, options = {}) {
     return jsonResponse;
 }
 
-export { fetchWithToken, isLoggedIn, getUserIDFromToken, renewAccessToken };
+export { fetchWithToken, isLoggedIn, renewAccessToken };
