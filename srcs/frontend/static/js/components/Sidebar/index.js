@@ -10,10 +10,18 @@ export default class extends Abstract {
 	}
 
 	async addFunctionality() {
+		if (!USER_ID) {
+			return;
+		}
+
 		await this.friendsSection.addFunctionality();
 	}
 
 	async getHtml() {
+		if (!USER_ID) {
+			return '';
+		}
+
 		return `
 			<div class="sidebar-outter-wrapper">
 				<div class="sidebar-wrapper position-absolute top-0 start-0 p-3 overflow-y-scroll rounded">
