@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('transcendence', '0010_friendrequest_chat_room'),
+        ('transcendence', '0012_friendrequest_chat_room'),
     ]
 
     operations = [
