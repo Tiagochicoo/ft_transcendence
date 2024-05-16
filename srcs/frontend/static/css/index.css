@@ -135,3 +135,13 @@ main {
   display: flex;
   gap: 5px;
 }
+
+#friends-add form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+#friends-add form input {
+  flex: 1;
+}

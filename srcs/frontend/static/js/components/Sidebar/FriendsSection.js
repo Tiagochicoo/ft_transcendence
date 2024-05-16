@@ -59,6 +59,23 @@ export default class extends Abstract {
 				handleClick(event.target.closest('button').dataset);
 			}
 		});
+
+		document.querySelector('#sidebar').addEventListener("submit", async (e) => {
+			e.preventDefault();
+
+			const data = new FormData(e.target);
+			const response = await Friends.createByUsername(data.get('username'));
+			const usernameInputEl = e.target.querySelector('#username');
+			const usernameErrorEl = e.target.querySelector('#usernameError');
+			if (response?.success) {
+				usernameInputEl.value = '';
+				usernameErrorEl.textContent = '';
+				usernameErrorEl.style.display = 'none';
+			} else {
+				usernameErrorEl.textContent = 'Invalid username';
+				usernameErrorEl.style.display = 'block';
+			}
+		});
 	}
 
 	getList(list, options) {
@@ -100,11 +117,23 @@ export default class extends Abstract {
 		`;
 	}
 
+	getFriendsAddForm() {
+		return `
+			<form novalidate>
+				<input type="text" class="form-control" id="username" name="username">
+				<button type="submit" class="btn btn-primary">
+					Add
+				</button>
+				<div id="usernameError" class="invalid-feedback" style="display: none;"></div>
+			</form>
+		`;
+	}
+
 	getFriendsAccepted() {
 		const list = this.data.filter(({ was_accepted }) => was_accepted)
 			.map(({ id, user1, user2 }) => ({ id, user: (user1.id == USER_ID) ? user2 : user1 }));
 
-		return this.getList(list, {
+		const htmlList = this.getList(list, {
 			id: 'friends-accepted-list',
 			title: 'Friends',
 			actions: [
@@ -114,6 +143,12 @@ export default class extends Abstract {
 				}
 			]
 		});
+
+		return `
+			<div class="mt-2">
+				${htmlList}
+			</div>
+		`;
 	}
 
 	getFriendsReceived() {
@@ -170,6 +205,9 @@ export default class extends Abstract {
 
 		return `
 			<div>
+				<div id="friends-add">
+					${this.getFriendsAddForm()}
+				</div>
 				<div id="friends-accepted">
 					${this.getFriendsAccepted()}
 				</div>
