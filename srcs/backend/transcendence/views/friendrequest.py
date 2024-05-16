@@ -16,6 +16,10 @@ class FriendCreate(APIView):
         try:
             user1 = get_user_id_from_request(request)
             user2 = request.data.get('invited_user_id')
+            # Check if instance already exists
+            already_exists = FriendRequest.objects.filter(user1=user1, user2=user2) | FriendRequest.objects.filter(user1=user2, user2=user1)
+            if already_exists:
+                raise Exception('Friend Request already exists')
             chat_room = ChatRoom.objects.create(user1_id=user1, user2_id=user2)
             friend_request = FriendRequest.objects.create(user1_id=user1, user2_id=user2, chat_room=chat_room)
             serializer = FriendRequestSerializer(friend_request)
