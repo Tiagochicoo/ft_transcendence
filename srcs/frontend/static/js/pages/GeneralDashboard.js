@@ -1,5 +1,5 @@
 import { Abstract } from "/static/js/components/index.js";
-import { PongData } from "/static/js/api/index.js";
+import { PongData, User } from "/static/js/api/index.js";
 
 export default class extends Abstract {
   constructor(props) {
@@ -70,7 +70,7 @@ export default class extends Abstract {
     this.users = this.data.users;
 
 	// testing communication with Django API
-	const test = await PongData.getUserList();
+	const test = await User.getUserList();
 	console.log(test);
 
     return `

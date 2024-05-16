@@ -1,6 +1,6 @@
 import { Abstract } from "/static/js/components/index.js";
 import { isLoggedIn, getUserIDFromToken, redirectToLogin } from "/static/js/services/authService.js";
-import { Friends, PongData } from "/static/js/api/index.js";
+import { Friends, PongData, User } from "/static/js/api/index.js";
 
 
 export default class extends Abstract {
@@ -10,7 +10,6 @@ export default class extends Abstract {
 	// this data will be fetched from database using logged user_id
 	// this.friends = ['Will', 'Joe', 'Jeff', 'John', 'Eva', 'Hannah', 'Diana', 'Alex', 'Tyna', 'Bob', 'Wendy', 'Martha'];
 	this.friends = [];
-	this.opponent;
 	this.participants = [];
 
 	// it could be better manipulated if included in a global state!
@@ -22,24 +21,16 @@ export default class extends Abstract {
   async addFunctionality() {
 
 	// here we will retrieve user information using the id retrieved from localStorage with getUserIDFromToken();
-	// const user = await PongData.getUser(getUserIDFromToken());
-	const user = await PongData.getUser(25);
-	if (this.mode === 'tournament') {
-		this.participants.push({
-			"id": user.id,
-			"username": user.username
-		});
-	}
+	// const user = await User.getUser(getUserIDFromToken());
+	const user = await User.getUser(25);
+	this.participants.push(user);
 
 	const requestedFriends = await Friends.getAll();
 
 	requestedFriends.data.forEach((obj) => {
 		for (const [key, value] of Object.entries(obj)) {
 			if (key === 'user1' && value.id === 25 && obj.was_accepted === true) {
-				this.friends.push({
-					"id": obj.user2.id,
-					"username": obj.user2.username
-				});
+				this.friends.push(obj.user2);
 			}
 		}
 	});
@@ -53,7 +44,7 @@ export default class extends Abstract {
 	for (let opponent of document.querySelectorAll('input[name="friends"]')) {
 		opponent.addEventListener("input", (event) => {
 			if (this.mode === 'single') {
-				this.opponent = event.target.value;
+				this.participants[1] = this.friends.filter((friend => friend.username === event.target.value))[0];
 				invitationBtn.style.display = 'block';
 			} else if (this.mode === 'tournament') {
 				if (this.participants.length === 8) document.getElementById('invitation-error').innerHTML = "Only the first 7 selected participants will be invited."
@@ -69,22 +60,6 @@ export default class extends Abstract {
 		if (this.mode === 'single') this.startSingleMatch(setupArea);
 		else if (this.mode === 'tournament') this.startTournament(setupArea);
 	});
-  }
-
-  startSingleMatch(setupArea) {
-	if (this.opponent) {
-		// include a loader to wait for the response. A friend can accept or decline the invitation. 
-		// If it was accepted, we show the start button, if it was not, we must show a notification and allow the user to choose another friend.
-		// Depending on socket connection
-		setupArea.innerHTML = this.enableStartGame();
-	}
-  }
-
-  startTournament(setupArea) {
-	// include a loader to wait for the response. A friend can accept or decline the invitation. 
-	// If it was accepted, we show the start button, if it was not, we must show a notification and allow the user to choose another friend.
-	// Depending on socket connection
-	setupArea.innerHTML = this.enableStartGame();
   }
 
   showListOfFriends() {
@@ -108,12 +83,41 @@ export default class extends Abstract {
 	return list;
   }
 
+  startSingleMatch(setupArea) {
+	if (this.participants.length == 2) {
+		// include a loader to wait for the response. A friend can accept or decline the invitation. 
+		// If it was accepted, we show the start button, if it was not, we must show a notification and allow the user to choose another friend.
+		// Depending on socket connection
+		setupArea.innerHTML = this.enableStartGame();
+		// this.storeMatch();
+	}
+  }
+
+  startTournament(setupArea) {
+	// include a loader to wait for the response. A friend can accept or decline the invitation. 
+	// If it was accepted, we show the start button, if it was not, we must show a notification and allow the user to choose another friend.
+	// Depending on socket connection
+	setupArea.innerHTML = this.enableStartGame();
+  }
+
   enableStartGame() {
 	let startBtn = `<a id="start-match-button" href="${this.mode === 'single' ? '/pong/single/match' : '/pong/tournament/match'}" data-link>
 						${i18next.t("pong.startGame")}
 					</a>`;
 
 	return startBtn;
+  }
+
+  storeMatch() {
+	const startGameBtn = document.getElementById('start-match-button');
+	startGameBtn.addEventListener("click", () => {
+		console.log("Clicked start button");
+		const data = {
+			"user1": this.participants[0],
+			"user2": this.participants[1],
+		};
+		PongData.createMatch(data);
+	})
   }
 
   async getHtml() {

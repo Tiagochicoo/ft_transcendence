@@ -7,17 +7,22 @@ export default class PongData {
 		.then((response) => response.json())
 		.catch((error) => console.log(error.message));
 	}
-  
-	// request data from Django API
-	static getUserList() {
-	  return fetch("/api/users")
-		.then((response) => response.json())
-		.catch((error) => console.log(error.message));
-	}
-  
-	static getUser(id) {
-	  return fetch(`/api/users/${id}`)
-		.then((response) => response.json())
-		.catch((error) => console.log(error.message));
+
+	static async createMatch(data) {
+		console.log(data);		
+		try {
+			const response = await fetch("/api/single/match", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(data),
+			});
+
+			const responseData = await response.json();
+			console.log("Success: ", responseData);
+		} catch(error) {
+			console.error("Error: ", error);
+		}
 	}
   }
