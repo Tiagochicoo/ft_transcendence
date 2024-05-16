@@ -48,6 +48,9 @@ class UserLogin(APIView):
 class UserList(APIView):
     def get(self, request, format=None):
         users = User.objects.all()
+        query_username = request.GET.get('username', '')
+        if (query_username):
+            users = users.filter(username=query_username)
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
 
