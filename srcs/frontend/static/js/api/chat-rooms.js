@@ -23,6 +23,12 @@ export default class ChatRooms {
   }
 
   static async sendMessage(chat_room_id, content) {
+    if (content?.length <= 0) {
+      return {
+        success: false
+      }
+    }
+
     const response = await fetch(`${API_URL}/chat_rooms/${chat_room_id}/messages`, {
       method: 'POST',
       headers: {

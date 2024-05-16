@@ -34,15 +34,27 @@ export default class extends Abstract {
 			}
 		});
 
-		document.querySelector("#chat-box").addEventListener("submit", (e) => {
+		document.querySelector("#chat-box").addEventListener("submit", async (e) => {
 			e.preventDefault();
 
 			const data = new FormData(e.target);
-			ChatRooms.sendMessage(this.chatRoomId, data.get('content'));
+			const response = await ChatRooms.sendMessage(this.chatRoomId, data.get('content'));
+			if (response.success) {
+				socket.emit('chat_message', response.data.chat_room, response.data.content);
+				e.target.querySelector('#content').value = '';
+			}
 		});
 
+		// Scroll the messages thread to the bottom by default
+		setTimeout(() => {
+			const messagesWrapper = document.querySelector('#chat-box .chat-box-messages');
+			if (messagesWrapper) {
+				messagesWrapper.scrollTop = messagesWrapper.scrollHeight;
+			}
+		}, 50);
+
 		return `
-			<div class="chat-box-wrapper">
+			<div class="chat-box-wrapper" data-chat-room-id="${this.chatRoomId}">
 				<div class="chat-box-header">
 					<img src="${otherUser.avatar}" class="rounded-circle" />
 
