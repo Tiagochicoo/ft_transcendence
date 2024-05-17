@@ -1,4 +1,5 @@
 import { isLoggedIn } from "/static/js/services/authService.js";
+import { navigateTo } from "/static/js/services/index.js";
 import { Abstract, LanguageToggle } from "./index.js";
 
 export default class extends Abstract {
@@ -9,35 +10,17 @@ export default class extends Abstract {
         this.languageToggle = new LanguageToggle();
     }
 
-    async addFunctionality() {
-        const logoutButton = document.getElementById('logoutButton');
-        if (logoutButton) {
-            logoutButton.addEventListener('click', this.handleLogout.bind(this));
-        } else {
-            console.error("Logout button not found.");
-        }
-    }
-
     handleLogout() {
         console.log("Logging out user.");
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
-        window.location.href = '/sign-in';
-        this.refreshNavbar();
+        navigateTo('/sign-in');
     }
 
-    async refreshNavbar() {
-        const navbarContainer = document.getElementById('navbar');
-        if (navbarContainer) {
-            navbarContainer.innerHTML = await this.getHtml();
-            if (isLoggedIn()) {
-                setTimeout(() => {
-                    const logoutButton = document.getElementById('logoutButton');
-                    if (logoutButton) {
-                        logoutButton.addEventListener('click', this.handleLogout.bind(this));
-                    }
-                }, 100); // Delay of 100 ms
-            }
+    async addFunctionality() {
+        const logoutButton = document.getElementById('logoutButton');
+        if (logoutButton) {
+            logoutButton.addEventListener('click', this.handleLogout);
         }
     }
 

@@ -69,8 +69,8 @@ const renderPage = async () => {
   const page = new thisRoute.page({ title: thisRoute.title, ...params });
 
   const navbar = new Navbar();
-  navbar.refreshNavbar();
   document.querySelector("#navbar").innerHTML = await navbar.getHtml();
+  navbar.addFunctionality();
 
   document.querySelector("#app").innerHTML = await page.getHtml();
   document.title = thisRoute.title;

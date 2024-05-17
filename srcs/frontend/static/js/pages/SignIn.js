@@ -1,4 +1,5 @@
 import { Abstract } from "/static/js/components/index.js";
+import { navigateTo } from "/static/js/services/index.js";
 
 export default class extends Abstract {
     constructor(props) {
@@ -43,8 +44,7 @@ export default class extends Abstract {
                         localStorage.setItem('accessToken', responseData.access);
                         localStorage.setItem('refreshToken', responseData.refresh);
                         console.log('Login successful:', responseData);
-                        form.reset(); 
-                        window.location.href = '/dashboard';
+                        navigateTo('/dashboard/general');
                     }
                 } catch (error) {
                     console.error('Network or other error:', error);

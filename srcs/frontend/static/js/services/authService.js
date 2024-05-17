@@ -1,7 +1,4 @@
-function redirectToLogin() {
-    console.log("Redirecting to login page due to authentication failure.");
-    window.location.href = '/login'; 
-}
+import { navigateTo } from "/static/js/services/index.js";
 
 function isTokenExpired(token) {
     const payloadBase64 = token.split('.')[1];
@@ -32,7 +29,6 @@ function isLoggedIn() {
     }
 }
 
-
 async function renewAccessToken(refreshToken) {
     console.log("Attempting to renew access token.");
     const response = await fetch('/api/token/refresh/', {
@@ -46,7 +42,7 @@ async function renewAccessToken(refreshToken) {
     if (response.ok) {
         localStorage.setItem('accessToken', data.access);
         console.log("Access token successfully renewed.");
-        return data.access; 
+        return data.access;
     } else {
         console.error('Failed to renew access token:', data);
         throw new Error('Failed to renew access token');
@@ -63,7 +59,7 @@ async function fetchWithToken(url, options = {}) {
             accessToken = await renewAccessToken(refreshToken);
         } catch (error) {
             console.error('Token renewal failed or refresh token expired:', error);
-            redirectToLogin();
+            navigateTo('/sign-in');
             return;
         }
     }
