@@ -78,7 +78,7 @@ const renderSidebar = async () => {
 }
 
 const renderPage = async () => {
-  refreshUserID();
+  await refreshUserID();
 
   let thisRoute = ROUTES.find((route) => doesPathMatch(route.path));
 
@@ -95,11 +95,11 @@ const renderPage = async () => {
 
   const navbar = new Navbar();
   document.getElementById("navbar").innerHTML = await navbar.getHtml();
-  navbar.addFunctionality();
+  await navbar.addFunctionality();
 
   document.getElementById("app").innerHTML = await page.getHtml();
   document.title = thisRoute.title;
-  page.addFunctionality();
+  await page.addFunctionality();
 
   const sidebar = document.getElementById("sidebar");
   const chatbox = document.getElementById("chat-box");

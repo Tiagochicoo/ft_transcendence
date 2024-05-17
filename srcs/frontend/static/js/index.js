@@ -32,7 +32,4 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Render Page
   await i18nextInit().then(renderPage);
-
-  // Generate sockets
-  await generateSocket();
 });

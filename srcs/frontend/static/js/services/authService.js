@@ -1,6 +1,9 @@
-import { navigateTo } from "/static/js/services/index.js";
+import { generateSocket, navigateTo } from "/static/js/services/index.js";
 
-function refreshUserID() {
+async function refreshUserID() {
+    const originalUserID = USER_ID;
+
+    // Get the USER_ID from the 'Access Token'
     try {
         const token = localStorage.getItem('accessToken');
         if (!token) {
@@ -10,6 +13,11 @@ function refreshUserID() {
         USER_ID = payload.user_id;
     } catch (e) {
         USER_ID = null;
+    }
+
+    // If the USER_ID was updated then refresh the SOCKET
+    if (originalUserID != USER_ID) {
+        await generateSocket();
     }
 }
 

@@ -1,6 +1,10 @@
 const generateSocket = async () => {
   if (!USER_ID) return;
 
+  if (SOCKET) {
+    SOCKET.disconnect();
+  }
+
   try {
     // Fetch the user chat_rooms (to listen for chat_messages)
     const response = await fetch(`${API_URL}/users/${USER_ID}/chat_rooms`);
