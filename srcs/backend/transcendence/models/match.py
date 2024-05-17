@@ -1,8 +1,11 @@
 from django.db import models
 from .tournament import Tournament
 from .user import User
+from datetime import datetime
 
 class Match(models.Model):
+	id = models.AutoField(primary_key=True)
+	created_on = models.DateTimeField(default=datetime.now)
 	user1 = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='matches_as_user1')
 	user2 = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='matches_as_user2')
 	tournament = models.ForeignKey(Tournament, on_delete=models.SET_NULL, null=True, related_name='matches')
@@ -13,4 +16,4 @@ class Match(models.Model):
 	score = models.IntegerField(default=0)
 
 	def __str__(self):
-		return f"Match of {self.user1} with {self.user2}"
+		return f"Match {self.id} of {self.user1} with {self.user2}"

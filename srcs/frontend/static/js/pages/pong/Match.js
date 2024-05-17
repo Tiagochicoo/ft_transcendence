@@ -7,6 +7,8 @@ export default class extends Abstract {
     super(props);
 
     this.params = props;
+	this.matchId = this.params.matchId;
+	console.log("Match id: " + this.matchId);
 
 	// it could be better manipulated if included in a global state!
 	let url = window.location.toString();
@@ -15,6 +17,7 @@ export default class extends Abstract {
   }
 
   async addFunctionality() {
+
     //it is hardcoded but should be properties being retrieved from a global state
     let game = new Game("ansilva-", "tpereira");
     game.draw();

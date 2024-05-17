@@ -8,4 +8,4 @@ class MatchSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Match
-		fields = ['user1', 'user2', 'tournament', 'was_accepted', 'was_canceled', 'was_refused', 'has_finished', 'score']
+		fields = ['id', 'created_on', 'user1', 'user2', 'tournament', 'was_accepted', 'was_canceled', 'was_refused', 'has_finished', 'score']

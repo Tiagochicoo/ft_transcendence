@@ -21,10 +21,11 @@ export default class PongData {
 
 			const responseData = await response.json();
 			console.log("Success: ", responseData);
-			return true;
+			return responseData.data.id;
 		} catch(error) {
 			console.error("Error: ", error);
-			return false;
+			return -1;
 		}
 	}
+	
   }

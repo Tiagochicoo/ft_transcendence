@@ -11,6 +11,7 @@ export default class extends Abstract {
 	// this.friends = ['Will', 'Joe', 'Jeff', 'John', 'Eva', 'Hannah', 'Diana', 'Alex', 'Tyna', 'Bob', 'Wendy', 'Martha'];
 	this.friends = [];
 	this.participants = [];
+	this.matchId = -1;
 
 	// it could be better manipulated if included in a global state!
 	let url = window.location.toString();
@@ -25,7 +26,8 @@ export default class extends Abstract {
 	const user = await User.getUser(1);
 	this.participants.push(user);
 
-	console.log(await User.getUserList());
+	// only to test
+	// console.log(await User.getUserList());
 
 	this.friends = await Friends.getAllFriends();
 
@@ -82,11 +84,12 @@ export default class extends Abstract {
 		// include a loader to wait for the response. A friend can accept or decline the invitation. 
 		// If it was accepted, we show the start button, if it was not, we must show a notification and allow the user to choose another friend.
 		// Depending on socket connection
-		if (!this.storeMatch()) {
+		this.storeMatch().then((response) => {
+			if (response) setupArea.innerHTML = this.enableStartGame();
+		}).catch((error) => {
+			console.log(error.message);
 			setupArea.innerHTML = '<p style="color: red;">We could not create your match. Please try again.</p>'
-		} else {
-			setupArea.innerHTML = this.enableStartGame();
-		}
+		});
 	}
   }
 
@@ -97,21 +100,22 @@ export default class extends Abstract {
 	setupArea.innerHTML = this.enableStartGame();
   }
 
-  enableStartGame() {
-	let startBtn = `<a id="start-match-button" href="${this.mode === 'single' ? '/pong/single/match' : '/pong/tournament/match'}" data-link>
-						${i18next.t("pong.startGame")}
-					</a>`;
-
-	return startBtn;
-  }
-
-  storeMatch() {
+  async storeMatch() {
 	const data = {
 		"user1": this.participants[0],
 		"user2": this.participants[1]
 	};
-		
-	return PongData.createMatch(data);
+	
+	this.matchId = await PongData.createMatch(data);
+	return this.matchId === -1 ? false : true;
+  }
+
+  enableStartGame() {
+	let startBtn = `<a id="start-match-button" href="${this.mode === 'single' ? '/pong/single/match/' + this.matchId : '/pong/tournament/match/' + this.matchId}" data-link>
+						${i18next.t("pong.startGame")}
+					</a>`;
+
+	return startBtn;
   }
 
   async getHtml() {
