@@ -2,7 +2,7 @@
 FROM node:16
 
 # Copy application files
-COPY . /transcendence
+COPY . .
 
 # Set working directory
 WORKDIR /transcendence
