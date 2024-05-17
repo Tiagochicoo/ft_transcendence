@@ -8,15 +8,8 @@ export default class extends Abstract {
 		this.chatRoomId = props;
 	}
 
-	async getHtml() {
-		const chatBox = document.getElementById("chat-box");
-		let response = await ChatRooms.get(this.chatRoomId);
-		this.chatRoom = response.data;
-
-		response = await ChatRooms.getMessages(this.chatRoomId);
-		this.messages = response.data;
-
-		const otherUser = (this.chatRoom.user1.id === USER_ID) ? this.chatRoom.user2 : this.chatRoom.user1;
+	async addFunctionality() {
+		const chatBox = document.querySelector("#chat-box > .chat-box-wrapper");
 
 		chatBox.addEventListener("click", (e) => {
 			let currentElement = e.target;
@@ -30,7 +23,6 @@ export default class extends Abstract {
 					chatBox.innerHTML = '';
 					return;
 				}
-
 				currentElement = currentElement.parentNode;
 			}
 		});
@@ -47,12 +39,20 @@ export default class extends Abstract {
 		});
 
 		// Scroll the messages thread to the bottom by default
-		setTimeout(() => {
-			const messagesWrapper = chatBox.querySelector('.chat-box-messages');
-			if (messagesWrapper) {
-				messagesWrapper.scrollTop = messagesWrapper.scrollHeight;
-			}
-		}, 50);
+		const messagesWrapper = chatBox.querySelector('.chat-box-messages');
+		if (messagesWrapper) {
+			messagesWrapper.scrollTop = messagesWrapper.scrollHeight;
+		}
+	}
+
+	async getHtml() {
+		let response = await ChatRooms.get(this.chatRoomId);
+		this.chatRoom = response.data;
+
+		response = await ChatRooms.getMessages(this.chatRoomId);
+		this.messages = response.data;
+
+		const otherUser = (this.chatRoom.user1.id === USER_ID) ? this.chatRoom.user2 : this.chatRoom.user1;
 
 		return `
 			<div class="chat-box-wrapper" data-chat-room-id="${this.chatRoomId}">

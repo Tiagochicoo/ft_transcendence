@@ -12,7 +12,6 @@ export default class extends Abstract {
 
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
-            const form = e.target;
 
             form.querySelectorAll('.invalid-feedback').forEach(element => {
                 element.textContent = '';

@@ -9,6 +9,7 @@ export default class extends Abstract {
 
     async addFunctionality() {
         const form = document.getElementById("form-sign-in");
+
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
 

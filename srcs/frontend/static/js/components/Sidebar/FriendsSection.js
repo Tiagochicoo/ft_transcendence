@@ -10,7 +10,7 @@ export default class extends Abstract {
 	}
 
 	async addFunctionality() {
-		const sidebar = document.getElementById('sidebar');
+		const sidebar = document.querySelector("#sidebar > .sidebar-wrapper");
 
 		const handleClick = async (target) => {
 			const {
@@ -32,6 +32,7 @@ export default class extends Abstract {
 					const chatRoomId = this.data.find(el => el.id === parseInt(id))?.chat_room_id;
 					const chatBox = new ChatBox(chatRoomId);
 					document.getElementById('chat-box').innerHTML = await chatBox.getHtml();
+					await chatBox.addFunctionality();
 					break;
 
 				case 'refuse':

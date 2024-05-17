@@ -23,8 +23,8 @@ export default class extends Abstract {
 		}
 
 		return `
-			<div class="sidebar-outter-wrapper">
-				<div class="sidebar-wrapper position-absolute top-0 start-0 p-3 overflow-y-scroll rounded">
+			<div class="sidebar-wrapper">
+				<div class="sidebar-inner-wrapper position-absolute top-0 start-0 p-3 overflow-y-scroll rounded">
 					<h2 class="text-white lh-1 mb-4">
 						Menu
 					</h2>

@@ -27,11 +27,11 @@ main {
 }
 
 /* SideBar */
-.sidebar-outter-wrapper {
+.sidebar-wrapper {
   width: 238px;
 }
 
-.sidebar-wrapper {
+.sidebar-inner-wrapper {
   background-color: var(--bs-dark);
   height: calc(100vh - 100px);
   width: 250px;
