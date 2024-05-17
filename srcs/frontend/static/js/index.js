@@ -1,11 +1,7 @@
-import { i18nextInit, renderPage, renderSidebar } from "/static/js/services/index.js";
-
-const navigateTo = (url) => {
-  history.pushState(null, null, url);
-  renderPage();
-};
+import { i18nextInit, navigateTo, renderPage, renderSidebar } from "/static/js/services/index.js";
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Handle Page Links
   document.body.addEventListener("click", (e) => {
     let currentElement = e.target;
 
@@ -27,6 +23,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       currentElement = currentElement.parentNode;
     }
+  });
+
+  // Handle "Go Back" Button
+  window.addEventListener('popstate', (e) => {
+    renderPage();
   });
 
   const renderAll = () => {
