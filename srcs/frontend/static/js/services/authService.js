@@ -1,5 +1,14 @@
 import { generateSocket, navigateTo } from "/static/js/services/index.js";
 
+function isTokenExpired(token) {
+    try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return (payload.exp < (Date.now() / 1000));
+    } catch(e) {
+        return false;
+    }
+}
+
 async function refreshUserID() {
     const originalUserID = USER_ID;
 
@@ -10,43 +19,17 @@ async function refreshUserID() {
             throw new Error('no accessToken');
         }
         const payload = JSON.parse(atob(token.split('.')[1]));
-        USER_ID = payload.user_id;
+        USER_ID = isTokenExpired(token) ? null : payload.user_id;
     } catch (e) {
         USER_ID = null;
     }
 
-    // If the USER_ID was updated then refresh the SOCKET
-    if (originalUserID != USER_ID) {
+    if (originalUserID == USER_ID) return;
+
+    // The USER_ID changed,
+    // If the USER_ID is valid regenerate the SOCKET
+    if (USER_ID) {
         await generateSocket();
-    }
-}
-
-function isTokenExpired(token) {
-    const payloadBase64 = token.split('.')[1];
-    const decodedJson = atob(payloadBase64);
-    const decoded = JSON.parse(decodedJson);
-    const exp = decoded.exp * 1000; // JWT 'exp' claims are in seconds, convert to milliseconds
-    const now = new Date();
-    const isExpired = now.getTime() > exp;
-    console.log(`Token expired: ${isExpired}`);
-    return isExpired;
-}
-
-function isLoggedIn() {
-    const token = localStorage.getItem('accessToken');
-    if (!token) {
-        //console.log("No token found, user not logged in.");
-        return false;
-    }
-    try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        const now = Date.now() / 1000;
-        const isExpired = payload.exp < now;
-        //console.log(`Token expiration check: ${isExpired ? 'expired' : 'valid'}`);
-        return !isExpired;
-    } catch (error) {
-        console.error('Error decoding token:', error);
-        return false;
     }
 }
 
@@ -99,4 +82,4 @@ async function fetchWithToken(url, options = {}) {
     return jsonResponse;
 }
 
-export { refreshUserID, fetchWithToken, isLoggedIn, renewAccessToken };
+export { refreshUserID, renewAccessToken, fetchWithToken };
