@@ -27,9 +27,9 @@ export default class extends Abstract {
     // navbar.individualDashboard should pass the logged userId on href
     // now it is hardcoded
     async getHtml() {
-        const userLoggedIn = isLoggedIn();
+        const isUserLoggedIn = isLoggedIn();
 
-        const userManagementLinks = userLoggedIn ? '' : `
+        const userManagementLinks = isUserLoggedIn ? '' : `
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     ${i18next.t("navbar.userManagement")}
@@ -49,7 +49,7 @@ export default class extends Abstract {
             </li>
         `;
 
-        const logoutLink = userLoggedIn ? `
+        const logoutLink = isUserLoggedIn ? `
             <li class="nav-item" style="margin-right: 20px;">
                 <button id="logoutButton" class="btn btn-link nav-link" style="color: inherit;">
                     ${i18next.t("navbar.logout")}
@@ -73,28 +73,30 @@ export default class extends Abstract {
                                     ${i18next.t("navbar.home")}
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/pong" data-link>
-                                    ${i18next.t("navbar.pong")}
-                                </a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    ${i18next.t("navbar.dashboard")}
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a class="dropdown-item" href="/dashboard/individual/1" data-link>
-                                            ${i18next.t("navbar.individualDashboard")}
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="/dashboard/general" data-link>
-                                            ${i18next.t("navbar.generalDashboard")}
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+                            ${isUserLoggedIn ? `
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/pong" data-link>
+                                        ${i18next.t("navbar.pong")}
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        ${i18next.t("navbar.dashboard")}
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a class="dropdown-item" href="/dashboard/individual/1" data-link>
+                                                ${i18next.t("navbar.individualDashboard")}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="/dashboard/general" data-link>
+                                                ${i18next.t("navbar.generalDashboard")}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            ` : ''}
                             ${userManagementLinks}
                             ${logoutLink}
                         </ul>
