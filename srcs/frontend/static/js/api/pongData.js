@@ -11,7 +11,7 @@ export default class PongData {
 	static async createMatch(data) {
 		
 		try {
-			const response = await fetch("/api/single/match", {
+			const response = await fetch("/api/match/", {
 				method: "POST",
 				headers: {
 					'Content-Type': 'application/json'
@@ -26,6 +26,12 @@ export default class PongData {
 			console.error("Error: ", error);
 			return -1;
 		}
+	}
+
+	static getMatchById(id) {
+		return fetch(`/api/match/${id}`)
+			.then((response) => response.json())
+			.catch((error) => console.log(error.message));
 	}
 	
   }

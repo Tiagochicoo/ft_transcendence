@@ -1,6 +1,7 @@
 import { Abstract } from "/static/js/components/index.js";
 import { Game } from "/static/js/pages/pong/index.js";
 import { isLoggedIn, getUserIDFromToken, redirectToLogin } from "/static/js/services/authService.js";
+import { PongData } from "/static/js/api/index.js";
 
 export default class extends Abstract {
   constructor(props) {
@@ -8,7 +9,6 @@ export default class extends Abstract {
 
     this.params = props;
 	this.matchId = this.params.matchId;
-	console.log("Match id: " + this.matchId);
 
 	// it could be better manipulated if included in a global state!
 	let url = window.location.toString();
@@ -18,8 +18,9 @@ export default class extends Abstract {
 
   async addFunctionality() {
 
-    //it is hardcoded but should be properties being retrieved from a global state
-    let game = new Game("ansilva-", "tpereira");
+	const match = await PongData.getMatchById(this.matchId);
+
+    let game = new Game(match.user1.username, match.user2.username);
     game.draw();
   }
 

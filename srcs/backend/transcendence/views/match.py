@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 from rest_framework.views import APIView
+from rest_framework.response import Response
 from rest_framework import status
 from ..models import Match, User
 from ..serializers.serializers_match import MatchSerializer
@@ -17,3 +18,10 @@ class MatchCreate(APIView):
 			return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
 		except Exception as error:
 			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+		
+
+class MatchDetail(APIView):
+	def get(self, request, pk, format=None):
+		match = Match.objects.get(pk=pk)
+		serializer = MatchSerializer(match)
+		return Response(serializer.data)

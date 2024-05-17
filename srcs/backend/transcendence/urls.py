@@ -2,7 +2,7 @@ from django.urls import path
 from .views.chatroom import ChatRoomCreate, ChatRoomBlock, ChatRoomUnblock, ChatRoomMessages, ChatRoomDetails, UserChatRoomDetails
 from .views.friendrequest import FriendCreate, FriendCancel, FriendAccept, FriendRefuse, FriendDetails, UserFriendDetails
 from .views.user import UserCreate, UserList, UserDetail, UserUpdate, UserDelete, UserLogin
-from .views.match import MatchCreate
+from .views.match import MatchCreate, MatchDetail
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
 urlpatterns = [
@@ -30,5 +30,6 @@ urlpatterns = [
     path('chat_rooms/<int:chatRoomId>', ChatRoomDetails.as_view(), name='chat_room_details'),
     path('users/<int:userId>/chat_rooms', UserChatRoomDetails.as_view(), name='user_chat_room_details'),
 	
-    path('single/match', MatchCreate.as_view(), name='create_match'),
+    path('match/', MatchCreate.as_view(), name='create_match'),
+	path('match/<int:pk>/', MatchDetail.as_view(), name='match_detail'),
 ]
