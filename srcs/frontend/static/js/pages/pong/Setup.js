@@ -22,18 +22,10 @@ export default class extends Abstract {
 
 	// here we will retrieve user information using the id retrieved from localStorage with getUserIDFromToken();
 	// const user = await User.getUser(getUserIDFromToken());
-	const user = await User.getUser(25);
+	const user = await User.getUser(106);
 	this.participants.push(user);
 
-	const requestedFriends = await Friends.getAll();
-
-	requestedFriends.data.forEach((obj) => {
-		for (const [key, value] of Object.entries(obj)) {
-			if (key === 'user1' && value.id === 25 && obj.was_accepted === true) {
-				this.friends.push(obj.user2);
-			}
-		}
-	});
+	this.friends = await Friends.getAllFriends();
 
 	const setupArea = document.getElementById('setup-area');
 	setupArea.innerHTML = this.showListOfFriends();
