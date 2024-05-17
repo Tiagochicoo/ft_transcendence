@@ -1,5 +1,18 @@
 import { navigateTo } from "/static/js/services/index.js";
 
+function refreshUserID() {
+    try {
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+            throw new Error('no accessToken');
+        }
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        USER_ID = payload.user_id;
+    } catch (e) {
+        USER_ID = null;
+    }
+}
+
 function isTokenExpired(token) {
     const payloadBase64 = token.split('.')[1];
     const decodedJson = atob(payloadBase64);
@@ -78,4 +91,4 @@ async function fetchWithToken(url, options = {}) {
     return jsonResponse;
 }
 
-export { fetchWithToken, isLoggedIn, renewAccessToken };
+export { refreshUserID, fetchWithToken, isLoggedIn, renewAccessToken };

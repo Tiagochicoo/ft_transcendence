@@ -40,7 +40,7 @@ export default class extends Abstract {
 			const data = new FormData(e.target);
 			const response = await ChatRooms.sendMessage(this.chatRoomId, data.get('content'));
 			if (response.success) {
-				socket.emit('chat_message', response.data.chat_room, response.data.content);
+				SOCKET.emit('chat_message', response.data.chat_room, response.data.content);
 				e.target.querySelector('#content').value = '';
 			}
 		});

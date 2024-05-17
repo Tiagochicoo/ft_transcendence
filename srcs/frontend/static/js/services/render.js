@@ -1,4 +1,4 @@
-import { Navbar } from "/static/js/components/index.js";
+import { Navbar, Sidebar } from "/static/js/components/index.js";
 import {
   GeneralDashboard,
   IndividualDashboard,
@@ -9,7 +9,7 @@ import {
   Pong,
   Setup,
 } from "/static/js/pages/index.js";
-import { isLoggedIn } from "/static/js/services/authService.js";
+import { refreshUserID, isLoggedIn } from "/static/js/services/authService.js";
 import { navigateTo } from "/static/js/services/index.js";
 
 const ROUTES = [
@@ -71,13 +71,20 @@ const isRouteValid = (route) => {
   );
 }
 
+const renderSidebar = async () => {
+  const sidebar = new Sidebar();
+  document.getElementById("sidebar").innerHTML = await sidebar.getHtml();
+  await sidebar.addFunctionality();
+}
+
 const renderPage = async () => {
+  refreshUserID();
+
   let thisRoute = ROUTES.find((route) => doesPathMatch(route.path));
 
   // Invalid routes redirect to the homepage
   if (!isRouteValid(thisRoute)) {
-    navigateTo('/');
-    return;
+    return navigateTo('/');
   }
 
   let params = {};
@@ -87,12 +94,21 @@ const renderPage = async () => {
   const page = new thisRoute.page({ title: thisRoute.title, ...params });
 
   const navbar = new Navbar();
-  document.querySelector("#navbar").innerHTML = await navbar.getHtml();
+  document.getElementById("navbar").innerHTML = await navbar.getHtml();
   navbar.addFunctionality();
 
-  document.querySelector("#app").innerHTML = await page.getHtml();
+  document.getElementById("app").innerHTML = await page.getHtml();
   document.title = thisRoute.title;
   page.addFunctionality();
+
+  const sidebar = document.getElementById("sidebar");
+  const chatbox = document.getElementById("chat-box");
+  if (USER_ID && !sidebar.innerHTML.length) {
+    await renderSidebar();
+  } else if (!USER_ID) {
+    sidebar.innerHTML = '';
+    chatbox.innerHTML = '';
+  }
 };
 
 export default renderPage;
