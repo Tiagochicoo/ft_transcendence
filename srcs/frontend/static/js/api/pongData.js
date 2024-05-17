@@ -9,7 +9,7 @@ export default class PongData {
 	}
 
 	static async createMatch(data) {
-		console.log(data);		
+		
 		try {
 			const response = await fetch("/api/single/match", {
 				method: "POST",
@@ -21,8 +21,10 @@ export default class PongData {
 
 			const responseData = await response.json();
 			console.log("Success: ", responseData);
+			return true;
 		} catch(error) {
 			console.error("Error: ", error);
+			return false;
 		}
 	}
   }

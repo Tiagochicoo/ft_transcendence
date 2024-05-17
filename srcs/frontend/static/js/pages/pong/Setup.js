@@ -82,8 +82,11 @@ export default class extends Abstract {
 		// include a loader to wait for the response. A friend can accept or decline the invitation. 
 		// If it was accepted, we show the start button, if it was not, we must show a notification and allow the user to choose another friend.
 		// Depending on socket connection
-		setupArea.innerHTML = this.enableStartGame();
-		this.storeMatch();
+		if (!this.storeMatch()) {
+			setupArea.innerHTML = '<p style="color: red;">We could not create your match. Please try again.</p>'
+		} else {
+			setupArea.innerHTML = this.enableStartGame();
+		}
 	}
   }
 
@@ -103,15 +106,12 @@ export default class extends Abstract {
   }
 
   storeMatch() {
-	const startGameBtn = document.getElementById('start-match-button');
-	startGameBtn.addEventListener("click", () => {
-		console.log("Clicked start button");
-		const data = {
-			"user1": this.participants[0],
-			"user2": this.participants[1]
-		};
-		PongData.createMatch(data);
-	})
+	const data = {
+		"user1": this.participants[0],
+		"user2": this.participants[1]
+	};
+		
+	return PongData.createMatch(data);
   }
 
   async getHtml() {
