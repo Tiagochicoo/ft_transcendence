@@ -1,3 +1,4 @@
+from django.contrib.auth.hashers import make_password
 from django.core.management.base import BaseCommand
 from ...models import ChatRoom as ChatRoom
 from ...models import FriendRequest as FriendRequest
@@ -13,7 +14,7 @@ class Command(BaseCommand):
         # Create Users
         for i in range(20):
             name = f'user{i}'
-            User.objects.create(username=name, email=f'{name}@gmail.com', password=f'pass-{name}')
+            User.objects.create(username=name, email=f'{name}@gmail.com', password=make_password(f'pass-{name}'))
 
         all_users = User.objects.all()
 
