@@ -2,7 +2,7 @@ import { getUserIDFromToken} from "/static/js/services/authService.js";
 
 // TODELETE
 // const USER_ID = getUserIDFromToken();
-const USER_ID = 106;
+const USER_ID = 1;
 const API_URL = 'http://localhost:8000/api';
 
 export default class Friends {

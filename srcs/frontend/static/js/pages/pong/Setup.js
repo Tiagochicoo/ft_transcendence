@@ -22,8 +22,10 @@ export default class extends Abstract {
 
 	// here we will retrieve user information using the id retrieved from localStorage with getUserIDFromToken();
 	// const user = await User.getUser(getUserIDFromToken());
-	const user = await User.getUser(106);
+	const user = await User.getUser(1);
 	this.participants.push(user);
+
+	console.log(await User.getUserList());
 
 	this.friends = await Friends.getAllFriends();
 
@@ -81,7 +83,7 @@ export default class extends Abstract {
 		// If it was accepted, we show the start button, if it was not, we must show a notification and allow the user to choose another friend.
 		// Depending on socket connection
 		setupArea.innerHTML = this.enableStartGame();
-		// this.storeMatch();
+		this.storeMatch();
 	}
   }
 
@@ -106,7 +108,7 @@ export default class extends Abstract {
 		console.log("Clicked start button");
 		const data = {
 			"user1": this.participants[0],
-			"user2": this.participants[1],
+			"user2": this.participants[1]
 		};
 		PongData.createMatch(data);
 	})
