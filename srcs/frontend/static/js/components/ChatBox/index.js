@@ -9,6 +9,7 @@ export default class extends Abstract {
 	}
 
 	async getHtml() {
+		const chatBox = document.getElementById("chat-box");
 		let response = await ChatRooms.get(this.chatRoomId);
 		this.chatRoom = response.data;
 
@@ -17,7 +18,7 @@ export default class extends Abstract {
 
 		const otherUser = (this.chatRoom.user1.id === USER_ID) ? this.chatRoom.user2 : this.chatRoom.user1;
 
-		document.getElementById("chat-box").addEventListener("click", (e) => {
+		chatBox.addEventListener("click", (e) => {
 			let currentElement = e.target;
 
 			while (
@@ -26,7 +27,7 @@ export default class extends Abstract {
 			) {
 				if (currentElement.matches("[data-action=\"close\"]")) {
 					e.preventDefault();
-					document.getElementById("chat-box").innerHTML = '';
+					chatBox.innerHTML = '';
 					return;
 				}
 
@@ -34,7 +35,7 @@ export default class extends Abstract {
 			}
 		});
 
-		document.querySelector("#chat-box").addEventListener("submit", async (e) => {
+		chatBox.addEventListener("submit", async (e) => {
 			e.preventDefault();
 
 			const data = new FormData(e.target);
@@ -47,7 +48,7 @@ export default class extends Abstract {
 
 		// Scroll the messages thread to the bottom by default
 		setTimeout(() => {
-			const messagesWrapper = document.querySelector('#chat-box .chat-box-messages');
+			const messagesWrapper = chatBox.querySelector('.chat-box-messages');
 			if (messagesWrapper) {
 				messagesWrapper.scrollTop = messagesWrapper.scrollHeight;
 			}

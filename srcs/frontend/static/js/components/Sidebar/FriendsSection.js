@@ -10,6 +10,8 @@ export default class extends Abstract {
 	}
 
 	async addFunctionality() {
+		const sidebar = document.getElementById('sidebar');
+
 		const handleClick = async (target) => {
 			const {
 				action,
@@ -34,33 +36,33 @@ export default class extends Abstract {
 
 				case 'refuse':
 					if (await doDataUpdate(Friends.refuse)) {
-						document.getElementById('friends-accepted').innerHTML = this.getFriendsAccepted();
-						document.getElementById('friends-received').innerHTML = this.getFriendsReceived();
+						sidebar.querySelector('#friends-accepted').innerHTML = this.getFriendsAccepted();
+						sidebar.querySelector('#friends-received').innerHTML = this.getFriendsReceived();
 					}
 					break;
 
 				case 'accept':
 					if (await doDataUpdate(Friends.accept)) {
-						document.getElementById('friends-accepted').innerHTML = this.getFriendsAccepted();
-						document.getElementById('friends-received').innerHTML = this.getFriendsReceived();
+						sidebar.querySelector('#friends-accepted').innerHTML = this.getFriendsAccepted();
+						sidebar.querySelector('#friends-received').innerHTML = this.getFriendsReceived();
 					}
 					break;
 
 				case 'cancel':
 					if (await doDataUpdate(Friends.cancel)) {
-						document.getElementById('friends-sent').innerHTML = this.getFriendsSent();
+						sidebar.querySelector('#friends-sent').innerHTML = this.getFriendsSent();
 					}
 					break;
 			}
 		}
 
-		document.querySelector('#sidebar').addEventListener('click', (event) => {
+		sidebar.addEventListener('click', (event) => {
 			if (event.target.closest('button')) {
 				handleClick(event.target.closest('button').dataset);
 			}
 		});
 
-		document.querySelector('#sidebar').addEventListener("submit", async (e) => {
+		sidebar.addEventListener("submit", async (e) => {
 			e.preventDefault();
 
 			const data = new FormData(e.target);
@@ -79,7 +81,8 @@ export default class extends Abstract {
 	}
 
 	getList(list, options) {
-		const element = document.querySelector(`[data-bs-target="#${options.id}"]`);
+		const sidebar = document.getElementById('sidebar');
+		const element = sidebar.querySelector(`[data-bs-target="#${options.id}"]`);
 		const isExpanded = element && (element.getAttribute("aria-expanded") === 'true');
 
 		return `

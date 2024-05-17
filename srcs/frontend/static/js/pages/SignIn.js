@@ -8,11 +8,11 @@ export default class extends Abstract {
     }
 
     async addFunctionality() {
-        const form = document.querySelector("form");
+        const form = document.getElementById("form-sign-in");
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
 
-            document.querySelectorAll('.invalid-feedback').forEach(element => {
+            form.querySelectorAll('.invalid-feedback').forEach(element => {
                 element.textContent = '';
                 element.style.display = 'none';
             });
@@ -62,16 +62,18 @@ export default class extends Abstract {
     }
 
     handleErrors(responseData) {
+        const form = document.getElementById("form-sign-in");
+
         if (responseData.username_email) {
           const errorKey = `signIn.validation.${responseData.username_email[0]}`;
           const errorMessage = i18next.t(errorKey);
-          document.getElementById('usernameEmailError').textContent = errorMessage;
-          document.getElementById('usernameEmailError').style.display = 'block';
+          form.querySelector('#usernameEmailError').textContent = errorMessage;
+          form.querySelector('#usernameEmailError').style.display = 'block';
         }
         if (responseData.password) {
           const errorKey = `signIn.validation.${responseData.password[0]}`;
           const errorMessage = i18next.t(errorKey);
-          const passwordError = document.getElementById('passwordError');
+          const passwordError = form.querySelector('#passwordError');
           if (passwordError) {
             passwordError.textContent = errorMessage;
             passwordError.style.display = 'block';
@@ -80,7 +82,7 @@ export default class extends Abstract {
         if (responseData.non_field_errors) {
           const errorKey = `signIn.validation.${responseData.non_field_errors[0]}`;
           const errorMessage = i18next.t(errorKey);
-          const generalError = document.getElementById('generalLoginError');
+          const generalError = form.querySelector('#generalLoginError');
           if (generalError) {
             generalError.textContent = errorMessage;
             generalError.style.display = 'block';
@@ -91,7 +93,7 @@ export default class extends Abstract {
       async getHtml() {
         return `
             <h1 class="mb-4">${i18next.t('signIn.title')}</h1>
-            <form class="needs-validation" novalidate>
+            <form id="form-sign-in" class="needs-validation" novalidate>
                 <div class="mb-4">
                     <label for="username_email" class="form-label">${i18next.t('signIn.fields.email.label')}</label>
                     <input type="text" class="form-control" id="username_email" name="username_email">

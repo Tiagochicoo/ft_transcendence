@@ -8,11 +8,13 @@ export default class extends Abstract {
     }
 
     async addFunctionality() {
-        document.querySelector("form").addEventListener("submit", async (e) => {
+        const form = document.getElementById("form-sign-up");
+
+        form.addEventListener("submit", async (e) => {
             e.preventDefault();
             const form = e.target;
 
-            document.querySelectorAll('.invalid-feedback').forEach(element => {
+            form.querySelectorAll('.invalid-feedback').forEach(element => {
                 element.textContent = '';
                 element.style.display = 'none';
             });
@@ -60,30 +62,32 @@ export default class extends Abstract {
     }
 
     handleErrors(responseData) {
+        const form = document.getElementById("form-sign-up");
+
         if (responseData.email) {
             const emailErrorKey = `signUp.validation.${responseData.email[0]}`;
             const emailErrorMessage = i18next.t(emailErrorKey);
-            document.getElementById('emailError').textContent = emailErrorMessage;
-            document.getElementById('emailError').style.display = 'block';
+            form.querySelector('#emailError').textContent = emailErrorMessage;
+            form.querySelector('#emailError').style.display = 'block';
         }
         if (responseData.username) {
             const usernameErrorKey = `signUp.validation.${responseData.username[0]}`;
             const usernameErrorMessage = i18next.t(usernameErrorKey);
-            document.getElementById('usernameError').textContent = usernameErrorMessage;
-            document.getElementById('usernameError').style.display = 'block';
+            form.querySelector('#usernameError').textContent = usernameErrorMessage;
+            form.querySelector('#usernameError').style.display = 'block';
         }
         if (responseData.password) {
             const passwordErrorKey = `signUp.validation.${responseData.password[0]}`;
             const passwordErrorMessage = i18next.t(passwordErrorKey);
-            document.getElementById('passwordError').textContent = passwordErrorMessage;
-            document.getElementById('passwordError').style.display = 'block';
+            form.querySelector('#passwordError').textContent = passwordErrorMessage;
+            form.querySelector('#passwordError').style.display = 'block';
         }
     }    
 
     async getHtml() {
         return `
             <h1 class="mb-4">${i18next.t('signUp.title')}</h1>
-            <form class="needs-validation" novalidate>
+            <form id="form-sign-up" class="needs-validation" novalidate>
                 <div class="mb-4">
                     <label for="email" class="form-label">${i18next.t('signUp.fields.email.label')}</label>
                     <input type="text" class="form-control" id="email" name="email">
@@ -103,4 +107,4 @@ export default class extends Abstract {
             </form>
         `;
     }
-}    
+}
