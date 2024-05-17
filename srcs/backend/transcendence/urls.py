@@ -31,7 +31,6 @@ urlpatterns = [
     path('chat_rooms/<int:chatRoomId>', ChatRoomDetails.as_view(), name='chat_room_details'),
     path('users/<int:userId>/chat_rooms', UserChatRoomDetails.as_view(), name='user_chat_room_details'),
 
-
     path('matches', MatchCreate.as_view(), name='match_create'),
     path('matches/<int:matchId>/cancel', MatchCancel.as_view(), name='match_cancel'),
     path('matches/<int:matchId>/accept', MatchAccept.as_view(), name='match_accept'),
