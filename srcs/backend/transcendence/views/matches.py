@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 from ..models import User as User
 from ..models import Match as Match
+from ..serializers.serializers_matches import MatchSerializer
 
 class MatchCreate(APIView):
     def post(self, request, format=None):

@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 from ..models import TournamentUser as TournamentUser
 from ..models import User as User
+from ..serializers.serializers_tournaments import TournamentSerializer
 
 class TournamentCreate(APIView):
     def post(self, request, format=None):
