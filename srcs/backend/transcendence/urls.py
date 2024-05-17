@@ -36,4 +36,11 @@ urlpatterns = [
     path('matches/<int:matchId>/refuse', MatchRefuse.as_view(), name='match_refuse'),
     path('matches/<int:matchId>/finish', MatchFinish.as_view(), name='match_finish'),
     path('matches/<int:matchId>', MatchDetails.as_view(), name='match_details'),
+
+    path('tournaments', TournamentCreate.as_view(), name='tournament_create'),
+    path('tournaments/:tournamentId/start', TournamentStart.as_view(), name='tournament_start'),
+    path('tournaments/:tournamentId/finish', TournamentFinish.as_view(), name='tournament_finish'),
+    path('tournaments/:tournamentId', TournamentDetails.as_view(), name='tournament_detail'),
+    path('users/:userId/tournaments', UserTournamentDetails.as_view(), name='user_tournament_detail'),
+
 ]
