@@ -85,40 +85,44 @@ export default class extends Abstract {
 
 	getList(list, options) {
 		const element = document.querySelector(`#friends-wrapper [data-bs-target="#${options.id}"]`);
-		const isExpanded = element && (element.getAttribute("aria-expanded") === 'true');
+		const isExpanded = !options.title || (element && (element.getAttribute("aria-expanded") === 'true'));
 
 		return `
-			<button class="btn btn-toggle d-flex gap-2 align-items-center text-start text-white opacity-75 w-100 p-0 border-0 mb-2 ${isExpanded ? "" : "collapsed"}" data-bs-toggle="collapse" data-bs-target="#${options.id}" aria-expanded="${isExpanded ? "true" : "false"}">
-				${options.title}
+			${options.title ? `
+				<button class="btn btn-toggle d-flex gap-2 align-items-center text-start text-white opacity-75 w-100 p-0 border-0 ${isExpanded ? "" : "collapsed"}" data-bs-toggle="collapse" data-bs-target="#${options.id}" aria-expanded="${isExpanded ? "true" : "false"}">
+					${options.title}
 
-				<span class="badge text-bg-secondary">
-					${list.length}
-				</span>
-			</button>
+					<span class="badge text-bg-secondary">
+						${list.length}
+					</span>
+				</button>
+			` : ''}
 
-			<div id="${options.id}" class="collapse ${isExpanded ? "show" : ""}">
-				<ul class="list-unstyled d-flex flex-column gap-2">
-					${list.map(({ id, user }) => `
-						<div class="sidebar-section-element d-flex justify-content-between gap-1 p-1 bg-light rounded" data-friend-id="${id}">
-							<div class="d-flex align-items-center gap-1">
-								<img src="${user.avatar}" class="rounded-circle" />
+			${list.length ? `
+				<div id="${options.id}" class="collapse ${isExpanded ? "show" : ""} ${options.title ? 'mt-3' : ''}">
+					<ul class="list-unstyled d-flex flex-column gap-2 mb-0">
+						${list.map(({ id, user }) => `
+							<div class="sidebar-section-element d-flex justify-content-between gap-1 p-1 bg-light rounded" data-friend-id="${id}">
+								<div class="d-flex align-items-center gap-1">
+									<img src="${user.avatar}" class="rounded-circle" />
 
-								<span class="lh-1">
-									${user.username}
-								</span>
+									<span class="lh-1">
+										${user.username}
+									</span>
+								</div>
+
+								<div class="d-flex align-items-center gap-1">
+									${options.actions.map(({ action, icon }) => `
+										<button class="bg-transparent p-1 border-0" data-action="${action}" data-id="${id}">
+											${icon}
+										</button>
+									`).join("")}
+								</div>
 							</div>
-
-							<div class="d-flex align-items-center gap-1">
-								${options.actions.map(({ action, icon }) => `
-									<button class="bg-transparent p-1 border-0" data-action="${action}" data-id="${id}">
-										${icon}
-									</button>
-								`).join("")}
-							</div>
-						</div>
-					`).join("")}
-				</ul>
-			</div>
+						`).join("")}
+					</ul>
+				</div>
+			` : ''}
 		`;
 	}
 
@@ -140,7 +144,6 @@ export default class extends Abstract {
 
 		const htmlList = this.getList(list, {
 			id: 'friends-accepted-list',
-			title: 'Friends',
 			actions: [
 				{
 					action: 'message',
@@ -150,7 +153,7 @@ export default class extends Abstract {
 		});
 
 		return `
-			<div class="mt-2">
+			<div>
 				${htmlList}
 			</div>
 		`;
@@ -176,7 +179,7 @@ export default class extends Abstract {
 		});
 
 		return `
-			<div class="mt-2">
+			<div class="mt-1">
 				${htmlList}
 			</div>
 		`;
@@ -198,7 +201,7 @@ export default class extends Abstract {
 		});
 
 		return `
-			<div class="mt-2">
+			<div class="mt-1">
 				${htmlList}
 			</div>
 		`;
@@ -209,7 +212,10 @@ export default class extends Abstract {
 		this.data = response.success ? response.data : [];
 
 		return `
-			<div id="friends-wrapper">
+			<div id="friends-wrapper" class="sidebar-section">
+				<h4 class="text-white mb-0">
+					Friends
+				</h4>
 				<div id="friends-add">
 					${this.getFriendsAddForm()}
 				</div>

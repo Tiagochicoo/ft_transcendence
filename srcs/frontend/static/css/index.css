@@ -37,6 +37,12 @@ main {
   width: 250px;
 }
 
+.sidebar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .sidebar-section-element {
   background-color: var(--bs-gray-400);
 }
