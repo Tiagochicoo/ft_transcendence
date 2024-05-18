@@ -9,6 +9,8 @@ import {
   Pong,
   Setup,
 } from "/static/js/pages/index.js";
+import { isLoggedIn } from "/static/js/services/authService.js";
+import { navigateTo } from "/static/js/services/index.js";
 
 const ROUTES = [
   { path: "/", title: "Home", page: Home },
@@ -57,11 +59,27 @@ const doesPathMatch = (path) => {
   return location.pathname.match(regex) !== null;
 };
 
+const isRouteValid = (route) => {
+  const isUserLoggedIn = isLoggedIn();
+
+  return (
+    // Non Invalid Route
+    route && (
+      // Non Logged in users can only access home, sign-up and sign-in pages
+      (!isUserLoggedIn && ['/', '/sign-up', '/sign-in'].includes(route.path)) ||
+      // Logged in users cannot access the sign-up and sign-in pages
+      (isUserLoggedIn && !['/sign-up', '/sign-in'].includes(route.path))
+    )
+  );
+}
+
 const renderPage = async () => {
   let thisRoute = ROUTES.find((route) => doesPathMatch(route.path));
 
-  if (!thisRoute) {
-    thisRoute = ROUTES[0];
+  // Invalid routes redirect to the homepage
+  if (!isRouteValid(thisRoute)) {
+    navigateTo('/');
+    return;
   }
 
   let params = {};
@@ -71,8 +89,8 @@ const renderPage = async () => {
   const page = new thisRoute.page({ title: thisRoute.title, ...params });
 
   const navbar = new Navbar();
-  navbar.refreshNavbar();
   document.querySelector("#navbar").innerHTML = await navbar.getHtml();
+  navbar.addFunctionality();
 
   document.querySelector("#app").innerHTML = await page.getHtml();
   document.title = thisRoute.title;

@@ -1,4 +1,5 @@
 import { Abstract } from "/static/js/components/index.js";
+import { navigateTo } from "/static/js/services/index.js";
 
 export default class extends Abstract {
     constructor(props) {
@@ -41,7 +42,7 @@ export default class extends Abstract {
                         this.handleErrors(responseData);
                     } else {
                         console.log('User registered successfully:', responseData);
-                        form.reset();
+                        navigateTo('/sign-in');
                     }
                 } catch (error) {
                     console.error('Network or other error:', error);
