@@ -1,4 +1,4 @@
-import { ChatRooms, Friends } from "/static/js/api/index.js";
+import { Friends } from "/static/js/api/index.js";
 import { Abstract } from "/static/js/components/index.js";
 import ChatBox from "/static/js/components/ChatBox/index.js";
 
@@ -29,7 +29,7 @@ export default class extends Abstract {
 			let response;
 			switch (action) {
 				case 'message':
-					const chatRoomId = this.data.find(el => el.id === parseInt(id))?.chat_room_id;
+					const chatRoomId = this.data.find(el => el.id == id)?.chat_room_id;
 					const chatBox = new ChatBox(chatRoomId);
 					document.getElementById('chat-box').innerHTML = await chatBox.getHtml();
 					await chatBox.addFunctionality();
@@ -277,9 +277,11 @@ export default class extends Abstract {
 				<h4 class="text-white mb-0">
 					Friends
 				</h4>
+
 				<div id="friends-add">
 					${this.getFriendsAddForm()}
 				</div>
+
 				<div id="friends-accepted">
 					${this.getFriendsAccepted()}
 				</div>

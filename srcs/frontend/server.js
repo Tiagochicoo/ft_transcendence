@@ -29,17 +29,12 @@ io.on('connection', async (socket) => {
     console.log(`User-${user_id} disconnected`);
   });
 
-  // User join all his chatrooms
-  const chat_rooms = JSON.parse(socket.handshake.headers['x-chat-rooms'] || '[]');
-  chat_rooms.forEach(chat_room_id => {
-    console.log(`User-${user_id} joined the room: chat-room-${chat_room_id}`);
-    socket.join(`chat-room-${chat_room_id}`);
-  });
-
   // Listen to he 'chat_message' event
-  socket.on('chat_message', (chat_room_id, message) => {
-    console.log(`Message to the chat-room-${chat_room_id}: ${message}`);
-    io.to(`chat-room-${chat_room_id}`).emit('chat_message', chat_room_id, user_id, message);
+  socket.on('chat_message', data => {
+    console.log(`chat_message_${data.chat_room.user1.id}`);
+    io.emit(`chat_message_${data.chat_room.user1.id}`, data);
+    console.log(`chat_message_${data.chat_room.user2.id}`);
+    io.emit(`chat_message_${data.chat_room.user2.id}`, data);
   });
 
   // Listen to the 'friend_add' event
