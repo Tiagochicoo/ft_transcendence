@@ -41,6 +41,12 @@ io.on('connection', async (socket) => {
     console.log(`Message to the chat-room-${chat_room_id}: ${message}`);
     io.to(`chat-room-${chat_room_id}`).emit('chat_message', chat_room_id, user_id, message);
   });
+
+  // Listen to the 'friend_add' event
+  socket.on('friend_add', (data) => {
+    console.log(`friend_add_${data.user2.id}`);
+    io.emit(`friend_add_${data.user2.id}`, data);
+  });
 });
 
 server.listen(port, () => console.log(`Server running at port: ${port}`));

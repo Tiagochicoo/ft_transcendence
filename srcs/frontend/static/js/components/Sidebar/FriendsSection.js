@@ -57,6 +57,17 @@ export default class extends Abstract {
 			}
 		}
 
+		const friendAddSocketListener = () => {
+			// Remove 'friend_add_id' listener
+			SOCKET.off(`friend_add_${USER_ID}`);
+
+			// Listen to the 'friend_add_id' event
+			SOCKET.on(`friend_add_${USER_ID}`, (data) => {
+				this.data.push(data);
+				wrapper.querySelector('#friends-received').innerHTML = this.getFriendsReceived();
+			});
+		}
+
 		wrapper.addEventListener('click', (event) => {
 			if (event.target.closest('button')) {
 				handleClick(event.target.closest('button').dataset);
@@ -71,6 +82,7 @@ export default class extends Abstract {
 			const usernameInputEl = e.target.querySelector('#username');
 			const usernameErrorEl = e.target.querySelector('#usernameError');
 			if (response?.success) {
+				SOCKET.emit('friend_add', response.data);
 				usernameInputEl.value = '';
 				usernameErrorEl.textContent = '';
 				usernameErrorEl.style.display = 'none';
@@ -81,6 +93,8 @@ export default class extends Abstract {
 				usernameErrorEl.style.display = 'block';
 			}
 		});
+
+		friendAddSocketListener();
 	}
 
 	getList(list, options) {
