@@ -53,18 +53,24 @@ async function fetchWithToken(url, options = {}) {
     let accessToken = localStorage.getItem('accessToken');
     const refreshToken = localStorage.getItem('refreshToken');
 
+    if (!accessToken || !refreshToken) {
+        console.log("No tokens found, redirecting to login.");
+        navigateTo('/sign-in');
+        return;
+    }
+
     if (isTokenExpired(accessToken)) {
-        console.log("Access token is expired, renewing token...");
+        console.log("Access token is expired, attempting to renew...");
         try {
             accessToken = await renewAccessToken(refreshToken);
         } catch (error) {
-            console.error('Token renewal failed or refresh token expired:', error);
+            console.error('Failed to renew access token:', error);
             navigateTo('/sign-in');
             return;
         }
     }
 
-    console.log(`Making API call to ${url}`);
+    console.log(`Making API call to ${url} with token: ${accessToken}`);
     const response = await fetch(url, {
         ...options,
         headers: {
@@ -72,6 +78,18 @@ async function fetchWithToken(url, options = {}) {
             Authorization: `Bearer ${accessToken}`,
         },
     });
+
+    if (!response.ok) {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.indexOf('application/json') !== -1) {
+            const errorJson = await response.json();
+            console.error('API call failed with JSON error:', errorJson);
+        } else {
+            const errorText = await response.text();
+            console.error('API call failed with text error:', errorText);
+        }
+        throw new Error('API call failed');
+    }
 
     const jsonResponse = await response.json();
     console.log(`Response from ${url}:`, jsonResponse);

@@ -1,7 +1,7 @@
 from django.urls import path
 from .views.chatroom import ChatRoomCreate, ChatRoomBlock, ChatRoomUnblock, ChatRoomMessages, ChatRoomDetails, UserChatRoomDetails
 from .views.friendrequest import FriendCreate, FriendCancel, FriendAccept, FriendRefuse, FriendDetails, UserFriendDetails
-from .views.user import UserCreate, UserList, UserDetail, UserUpdate, UserDelete, UserLogin
+from .views.user import UserCreate, UserList, UserDetail, UserUpdate, UserDelete, UserLogin, WhoAmI
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
 urlpatterns = [
@@ -14,7 +14,7 @@ urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
-
+    path('whoami/', WhoAmI.as_view(), name='whoami'),
     path('friend_requests', FriendCreate.as_view(), name='friend_create'),
     path('friend_requests/<int:friendRequestId>/cancel', FriendCancel.as_view(), name='friend_cancel'),
     path('friend_requests/<int:friendRequestId>/accept', FriendAccept.as_view(), name='friend_accept'),

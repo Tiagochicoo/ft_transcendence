@@ -13,10 +13,18 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import login
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
 
 logger = logging.getLogger(__name__)
+
+class WhoAmI(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return JsonResponse({'message': 'This is a protected view', 'user_id': request.user_id})
+
 
 class UserCreate(APIView):
     def post(self, request, *args, **kwargs):
