@@ -1,4 +1,4 @@
-import { redirectToLogin, isLoggedIn } from "/static/js/services/authService.js";
+import { navigateTo, isLoggedIn } from "/static/js/services/index.js";
 import { Abstract } from "/static/js/components/index.js";
 
 export default class extends Abstract {
@@ -12,7 +12,7 @@ export default class extends Abstract {
   
 	async getHtml() {
 		// if (!isLoggedIn()) {
-		// 	redirectToLogin();
+		// 	navigateTo(/sign-in);
 		// 	return '';
 		// }
 	  return `

@@ -1,5 +1,5 @@
 import { Abstract } from "/static/js/components/index.js";
-import { isLoggedIn, getUserIDFromToken, redirectToLogin } from "/static/js/services/authService.js";
+import { isLoggedIn, getUserIDFromToken, navigateTo } from "/static/js/services/index.js";
 import { Friends, PongData, User } from "/static/js/api/index.js";
 
 
@@ -120,7 +120,7 @@ export default class extends Abstract {
 
   async getHtml() {
 	// if (!isLoggedIn()) {
-	// 	redirectToLogin();
+	// 	navigateTo("/sign-in");
 	// 	return '';
 	// }
 
