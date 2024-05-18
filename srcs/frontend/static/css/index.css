@@ -9,6 +9,10 @@ main {
   min-height: calc(100vh - 66px);
 }
 
+#app {
+  flex: 1;
+}
+
 @media (max-width: 992px) {
   .navbar > .container {
     padding-right: 140px;
@@ -78,6 +82,10 @@ main {
 }
 
 /* ChatBox */
+#chat-box {
+  position: absolute;
+}
+
 .chat-box-wrapper {
   position: fixed;
   bottom: 0;
@@ -150,4 +158,9 @@ main {
 
 #friends-add form input {
   flex: 1;
+}
+
+/* Toast */
+#toast {
+  position: absolute;
 }
