@@ -20,7 +20,7 @@ export default class extends Abstract {
 			) {
 				if (currentElement.matches("[data-action=\"close\"]")) {
 					e.preventDefault();
-					chatBox.innerHTML = '';
+					chatBox.parentNode.innerHTML = '';
 					return;
 				}
 				currentElement = currentElement.parentNode;
