@@ -1,6 +1,7 @@
 import { Friends } from "/static/js/api/index.js";
 import { Abstract } from "/static/js/components/index.js";
 import ChatBox from "/static/js/components/ChatBox/index.js";
+import { sendNotification } from "/static/js/services/index.js";
 
 export default class extends Abstract {
 	constructor(props) {
@@ -74,6 +75,10 @@ export default class extends Abstract {
 			SOCKET.on(`friend_add_${USER_ID}`, (data) => {
 				this.doDataUpdate(data);
 				wrapper.querySelector('#friends-received').innerHTML = this.getFriendsReceived();
+				sendNotification({
+					author: data.user1.username,
+					body: 'Sent a friend request'
+				});
 			});
 		}
 
@@ -86,6 +91,10 @@ export default class extends Abstract {
 				this.doDataUpdate(data);
 				wrapper.querySelector('#friends-accepted').innerHTML = this.getFriendsAccepted();
 				wrapper.querySelector('#friends-sent').innerHTML = this.getFriendsSent();
+				sendNotification({
+					author: data.user2.username,
+					body: 'Refused your friend request'
+				});
 			});
 		}
 
@@ -98,6 +107,10 @@ export default class extends Abstract {
 				this.doDataUpdate(data);
 				wrapper.querySelector('#friends-accepted').innerHTML = this.getFriendsAccepted();
 				wrapper.querySelector('#friends-sent').innerHTML = this.getFriendsSent();
+				sendNotification({
+					author: data.user2.username,
+					body: 'Accepted your friend request'
+				});
 			});
 		}
 
@@ -109,6 +122,10 @@ export default class extends Abstract {
 			SOCKET.on(`friend_cancel_${USER_ID}`, (data) => {
 				this.doDataUpdate(data);
 				wrapper.querySelector('#friends-received').innerHTML = this.getFriendsReceived();
+				sendNotification({
+					author: data.user1.username,
+					body: 'Cancelled his friend request'
+				});
 			});
 		}
 
