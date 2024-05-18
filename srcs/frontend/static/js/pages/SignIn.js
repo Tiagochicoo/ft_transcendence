@@ -26,7 +26,7 @@ export default class extends Abstract {
                 console.log("Submitting data:", data);
 
                 try {
-                    const response = await fetch('http://localhost:8000/api/sign-in/', {
+                    const response = await fetch('http://localhost:8000/api/sign-in', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -38,11 +38,11 @@ export default class extends Abstract {
                     const responseData = await response.json();
                     console.log("Server response:", responseData);
 
-                    if (!response.ok) {
-                        this.handleErrors(responseData);
+                    if (!responseData.success) {
+                        this.handleErrors(responseData.errors);
                     } else {
-                        localStorage.setItem('accessToken', responseData.access);
-                        localStorage.setItem('refreshToken', responseData.refresh);
+                        localStorage.setItem('accessToken', responseData.data.access);
+                        localStorage.setItem('refreshToken', responseData.data.refresh);
                         console.log('Login successful:', responseData);
                         navigateTo('/dashboard/general');
                     }
@@ -61,15 +61,15 @@ export default class extends Abstract {
         return parts.length === 2 ? parts.pop().split(';').shift() : '';
     }
 
-    handleErrors(responseData) {
-        if (responseData.username_email) {
-          const errorKey = `signIn.validation.${responseData.username_email[0]}`;
+    handleErrors(errors) {
+        if (errors.username_email) {
+          const errorKey = `signIn.validation.${errors.username_email[0]}`;
           const errorMessage = i18next.t(errorKey);
           document.getElementById('usernameEmailError').textContent = errorMessage;
           document.getElementById('usernameEmailError').style.display = 'block';
         }
-        if (responseData.password) {
-          const errorKey = `signIn.validation.${responseData.password[0]}`;
+        if (errors.password) {
+          const errorKey = `signIn.validation.${errors.password[0]}`;
           const errorMessage = i18next.t(errorKey);
           const passwordError = document.getElementById('passwordError');
           if (passwordError) {
@@ -77,8 +77,8 @@ export default class extends Abstract {
             passwordError.style.display = 'block';
           }
         }
-        if (responseData.non_field_errors) {
-          const errorKey = `signIn.validation.${responseData.non_field_errors[0]}`;
+        if (errors.non_field_errors) {
+          const errorKey = `signIn.validation.${errors.non_field_errors[0]}`;
           const errorMessage = i18next.t(errorKey);
           const generalError = document.getElementById('generalLoginError');
           if (generalError) {
