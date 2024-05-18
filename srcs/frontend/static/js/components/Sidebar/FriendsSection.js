@@ -47,6 +47,7 @@ export default class extends Abstract {
 				case 'accept':
 					response = await Friends.accept(id);
 					if (response.success) {
+						SOCKET.emit('friend_accept', response.data);
 						this.doDataUpdate(response.data);
 						wrapper.querySelector('#friends-accepted').innerHTML = this.getFriendsAccepted();
 						wrapper.querySelector('#friends-received').innerHTML = this.getFriendsReceived();
@@ -72,6 +73,18 @@ export default class extends Abstract {
 			SOCKET.on(`friend_add_${USER_ID}`, (data) => {
 				this.doDataUpdate(data);
 				wrapper.querySelector('#friends-received').innerHTML = this.getFriendsReceived();
+			});
+		}
+
+		const friendAcceptSocketListener = () => {
+			// Remove 'friend_accept_id' listener
+			SOCKET.off(`friend_accept_${USER_ID}`);
+
+			// Listen to the 'friend_accept_id' event
+			SOCKET.on(`friend_accept_${USER_ID}`, (data) => {
+				this.doDataUpdate(data);
+				wrapper.querySelector('#friends-accepted').innerHTML = this.getFriendsAccepted();
+				wrapper.querySelector('#friends-sent').innerHTML = this.getFriendsSent();
 			});
 		}
 
@@ -113,6 +126,7 @@ export default class extends Abstract {
 		});
 
 		friendAddSocketListener();
+		friendAcceptSocketListener();
 		friendCancelSocketListener();
 	}
 
