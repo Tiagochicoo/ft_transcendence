@@ -9,6 +9,14 @@ export default class extends Abstract {
 		this.params = props;
 	}
 
+	doDataUpdate(data) {
+		if (this.data.find(el => el.id == data.id)) {
+			this.data = this.data.map(el => (el.id == data.id) ? data : el);
+		} else {
+			this.data.push(data);
+		}
+	}
+
 	async addFunctionality() {
 		const wrapper = document.getElementById('friends-wrapper');
 
@@ -18,15 +26,7 @@ export default class extends Abstract {
 				id
 			} = target;
 
-			const doDataUpdate = async (doFunc) => {
-				const response = await doFunc(id);
-				if (response.success) {
-					this.data = this.data.map(el => (el.id == response.data.id) ? response.data : el);
-					return true;
-				}
-				return false;
-			}
-
+			let response;
 			switch (action) {
 				case 'message':
 					const chatRoomId = this.data.find(el => el.id === parseInt(id))?.chat_room_id;
@@ -36,21 +36,27 @@ export default class extends Abstract {
 					break;
 
 				case 'refuse':
-					if (await doDataUpdate(Friends.refuse)) {
+					response = await Friends.refuse(id);
+					if (response.success) {
+						this.doDataUpdate(response.data);
 						wrapper.querySelector('#friends-accepted').innerHTML = this.getFriendsAccepted();
 						wrapper.querySelector('#friends-received').innerHTML = this.getFriendsReceived();
 					}
 					break;
 
 				case 'accept':
-					if (await doDataUpdate(Friends.accept)) {
+					response = await Friends.accept(id);
+					if (response.success) {
+						this.doDataUpdate(response.data);
 						wrapper.querySelector('#friends-accepted').innerHTML = this.getFriendsAccepted();
 						wrapper.querySelector('#friends-received').innerHTML = this.getFriendsReceived();
 					}
 					break;
 
 				case 'cancel':
-					if (await doDataUpdate(Friends.cancel)) {
+					response = await Friends.cancel(id);
+					if (response.success) {
+						this.doDataUpdate(response.data);
 						wrapper.querySelector('#friends-sent').innerHTML = this.getFriendsSent();
 					}
 					break;
@@ -63,7 +69,7 @@ export default class extends Abstract {
 
 			// Listen to the 'friend_add_id' event
 			SOCKET.on(`friend_add_${USER_ID}`, (data) => {
-				this.data.push(data);
+				this.doDataUpdate(data);
 				wrapper.querySelector('#friends-received').innerHTML = this.getFriendsReceived();
 			});
 		}
@@ -86,7 +92,7 @@ export default class extends Abstract {
 				usernameInputEl.value = '';
 				usernameErrorEl.textContent = '';
 				usernameErrorEl.style.display = 'none';
-				this.data.push(response.data);
+				this.doDataUpdate(response.data);
 				wrapper.querySelector('#friends-sent').innerHTML = this.getFriendsSent();
 			} else {
 				usernameErrorEl.textContent = 'Invalid username';
