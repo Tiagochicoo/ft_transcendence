@@ -1,3 +1,4 @@
+import { Users } from "/static/js/api/index.js";
 import { generateSocket, navigateTo } from "/static/js/services/index.js";
 
 function isTokenExpired(token) {
@@ -7,6 +8,11 @@ function isTokenExpired(token) {
     } catch(e) {
         return false;
     }
+}
+
+function clearTokens() {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
 }
 
 async function refreshUserID() {
@@ -20,7 +26,13 @@ async function refreshUserID() {
         }
         const payload = JSON.parse(atob(token.split('.')[1]));
         USER_ID = isTokenExpired(token) ? null : payload.user_id;
+
+        const response = await Users.get(USER_ID);
+        if (!response.success) {
+            throw new Error('non existing user');
+        }
     } catch (e) {
+        clearTokens();
         USER_ID = null;
     }
 
@@ -82,4 +94,4 @@ async function fetchWithToken(url, options = {}) {
     return jsonResponse;
 }
 
-export { refreshUserID, renewAccessToken, fetchWithToken };
+export { clearTokens, refreshUserID, renewAccessToken, fetchWithToken };

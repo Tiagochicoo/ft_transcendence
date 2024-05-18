@@ -1,3 +1,4 @@
+import { clearTokens } from "/static/js/services/authService.js";
 import { navigateTo } from "/static/js/services/index.js";
 import { Abstract, LanguageToggle } from "./index.js";
 
@@ -11,8 +12,7 @@ export default class extends Abstract {
 
     handleLogout() {
         console.log("Logging out user.");
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
+        clearTokens();
         navigateTo('/sign-in');
     }
 
