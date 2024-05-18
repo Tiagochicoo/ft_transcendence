@@ -48,6 +48,12 @@ io.on('connection', async (socket) => {
     io.emit(`friend_add_${data.user2.id}`, data);
   });
 
+  // Listen to the 'friend_refuse' event
+  socket.on('friend_refuse', (data) => {
+    console.log(`friend_refuse_${data.user1.id}`);
+    io.emit(`friend_refuse_${data.user1.id}`, data);
+  });
+
   // Listen to the 'friend_accept' event
   socket.on('friend_accept', (data) => {
     console.log(`friend_accept_${data.user1.id}`);
