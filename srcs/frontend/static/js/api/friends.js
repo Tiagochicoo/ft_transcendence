@@ -1,3 +1,5 @@
+import { Users } from "./index.js";
+
 export default class Friends {
   constructor() {}
 
@@ -16,16 +18,9 @@ export default class Friends {
   }
 
   static async createByUsername(username) {
-    if (username?.length <= 0) {
-      return {
-        success: false
-      }
-    }
-
-    const response = await fetch(`${API_URL}/users?` + new URLSearchParams({ username }));
-    const responseJson = await response.json();
-    if (responseJson.length && responseJson[0]?.id) {
-      const invited_user_id = responseJson[0].id;
+    const response = await Users.getByUsername(username);
+    if (response.success && response.data.length && response.data[0]?.id) {
+      const invited_user_id = response.data[0].id;
       return await this.create(invited_user_id);
     }
 
