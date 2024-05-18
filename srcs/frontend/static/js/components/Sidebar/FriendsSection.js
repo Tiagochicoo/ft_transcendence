@@ -74,6 +74,8 @@ export default class extends Abstract {
 				usernameInputEl.value = '';
 				usernameErrorEl.textContent = '';
 				usernameErrorEl.style.display = 'none';
+				this.data.push(response.data);
+				wrapper.querySelector('#friends-sent').innerHTML = this.getFriendsSent();
 			} else {
 				usernameErrorEl.textContent = 'Invalid username';
 				usernameErrorEl.style.display = 'block';
