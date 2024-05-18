@@ -27,7 +27,7 @@ export default class extends Abstract {
                 console.log("Submitting data:", data);
 
                 try {
-                    const response = await fetch('http://localhost:8000/api/create_user/', {
+                    const response = await fetch('http://localhost:8000/api/users', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -39,8 +39,8 @@ export default class extends Abstract {
                     const responseData = await response.json();
                     console.log("Server response:", responseData);
 
-                    if (!response.ok) {
-                        this.handleErrors(responseData);
+                    if (!responseData.success) {
+                        this.handleErrors(responseData.errors);
                     } else {
                         console.log('User registered successfully:', responseData);
                         navigateTo('/sign-in');
@@ -60,23 +60,23 @@ export default class extends Abstract {
         return parts.length === 2 ? parts.pop().split(';').shift() : '';
     }
 
-    handleErrors(responseData) {
+    handleErrors(errors) {
         const form = document.getElementById("form-sign-up");
 
-        if (responseData.email) {
-            const emailErrorKey = `signUp.validation.${responseData.email[0]}`;
+        if (errors.email) {
+            const emailErrorKey = `signUp.validation.${errors.email[0]}`;
             const emailErrorMessage = i18next.t(emailErrorKey);
             form.querySelector('#emailError').textContent = emailErrorMessage;
             form.querySelector('#emailError').style.display = 'block';
         }
-        if (responseData.username) {
-            const usernameErrorKey = `signUp.validation.${responseData.username[0]}`;
+        if (errors.username) {
+            const usernameErrorKey = `signUp.validation.${errors.username[0]}`;
             const usernameErrorMessage = i18next.t(usernameErrorKey);
             form.querySelector('#usernameError').textContent = usernameErrorMessage;
             form.querySelector('#usernameError').style.display = 'block';
         }
-        if (responseData.password) {
-            const passwordErrorKey = `signUp.validation.${responseData.password[0]}`;
+        if (errors.password) {
+            const passwordErrorKey = `signUp.validation.${errors.password[0]}`;
             const passwordErrorMessage = i18next.t(passwordErrorKey);
             form.querySelector('#passwordError').textContent = passwordErrorMessage;
             form.querySelector('#passwordError').style.display = 'block';
