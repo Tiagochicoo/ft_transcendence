@@ -47,6 +47,12 @@ io.on('connection', async (socket) => {
     console.log(`friend_add_${data.user2.id}`);
     io.emit(`friend_add_${data.user2.id}`, data);
   });
+
+  // Listen to the 'friend_cancel' event
+  socket.on('friend_cancel', (data) => {
+    console.log(`friend_cancel_${data.user2.id}`);
+    io.emit(`friend_cancel_${data.user2.id}`, data);
+  });
 });
 
 server.listen(port, () => console.log(`Server running at port: ${port}`));

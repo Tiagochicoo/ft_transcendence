@@ -56,6 +56,7 @@ export default class extends Abstract {
 				case 'cancel':
 					response = await Friends.cancel(id);
 					if (response.success) {
+						SOCKET.emit('friend_cancel', response.data);
 						this.doDataUpdate(response.data);
 						wrapper.querySelector('#friends-sent').innerHTML = this.getFriendsSent();
 					}
@@ -69,6 +70,17 @@ export default class extends Abstract {
 
 			// Listen to the 'friend_add_id' event
 			SOCKET.on(`friend_add_${USER_ID}`, (data) => {
+				this.doDataUpdate(data);
+				wrapper.querySelector('#friends-received').innerHTML = this.getFriendsReceived();
+			});
+		}
+
+		const friendCancelSocketListener = () => {
+			// Remove 'friend_cancel_id' listener
+			SOCKET.off(`friend_cancel_${USER_ID}`);
+
+			// Listen to the 'friend_cancel_id' event
+			SOCKET.on(`friend_cancel_${USER_ID}`, (data) => {
 				this.doDataUpdate(data);
 				wrapper.querySelector('#friends-received').innerHTML = this.getFriendsReceived();
 			});
@@ -101,6 +113,7 @@ export default class extends Abstract {
 		});
 
 		friendAddSocketListener();
+		friendCancelSocketListener();
 	}
 
 	getList(list, options) {
