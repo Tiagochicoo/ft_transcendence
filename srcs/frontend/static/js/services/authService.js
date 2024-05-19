@@ -1,5 +1,5 @@
 import { Users } from "/static/js/api/index.js";
-import { generateSocket, navigateTo } from "/static/js/services/index.js";
+import { generateSocket, navigateTo } from "./index.js";
 
 function isTokenExpired(token) {
     try {

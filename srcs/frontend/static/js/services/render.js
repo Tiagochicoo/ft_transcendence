@@ -9,8 +9,8 @@ import {
   Pong,
   Setup,
 } from "/static/js/pages/index.js";
-import { refreshUserID } from "/static/js/services/authService.js";
-import { navigateTo } from "/static/js/services/index.js";
+import { refreshUserID } from "./authService.js";
+import { navigateTo } from "./index.js";
 
 const ROUTES = [
   { path: "/", title: "Home", page: Home },
@@ -88,14 +88,17 @@ const renderPage = async () => {
 
   const page = new thisRoute.page({ title: thisRoute.title, ...params });
 
+  // Render Navbar
   const navbar = new Navbar();
   document.getElementById("navbar").innerHTML = await navbar.getHtml();
   await navbar.addFunctionality();
 
+  // Render Content
   document.getElementById("app").innerHTML = await page.getHtml();
   document.title = thisRoute.title;
   await page.addFunctionality();
 
+  // Render Sidebar
   const sidebar = document.getElementById("sidebar");
   const chatbox = document.getElementById("chat-box");
   if (USER_ID && !sidebar.innerHTML.length) {
