@@ -1,4 +1,4 @@
-import { generateSocket, i18nextInit, navigateTo, renderPage } from "/static/js/services/index.js";
+import { i18nextInit, navigateTo, renderPage } from "/static/js/services/index.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   // Handle Page Links

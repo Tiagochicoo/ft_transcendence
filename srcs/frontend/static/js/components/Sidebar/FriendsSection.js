@@ -31,9 +31,7 @@ export default class extends Abstract {
 			switch (action) {
 				case 'message':
 					const chatRoomId = this.data.find(el => el.id == id)?.chat_room_id;
-					const chatBox = new ChatBox(chatRoomId);
-					document.getElementById('chat-box').innerHTML = await chatBox.getHtml();
-					await chatBox.addFunctionality();
+					ChatBox.open(chatRoomId);
 					break;
 
 				case 'refuse':

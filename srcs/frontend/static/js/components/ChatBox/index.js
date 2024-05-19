@@ -1,17 +1,54 @@
 import { ChatRooms } from "/static/js/api/index.js";
 import { Abstract } from "/static/js/components/index.js";
 
+// Utility Class
 export default class extends Abstract {
 	constructor(props) {
 		super(props);
-
-		this.chatRoomId = props;
 	}
 
-	async addFunctionality() {
-		const chatBox = document.querySelector("#chat-box > .chat-box-wrapper");
+	static chatRoomId = null;
+	static chatRoom = {};
+	static messages = [];
 
-		chatBox.addEventListener("click", (e) => {
+	static scrollMessagesToBottom() {
+		const messagesWrapper = document.querySelector('#chat-box .chat-box-messages');
+		if (messagesWrapper) {
+			messagesWrapper.scrollTop = messagesWrapper.scrollHeight;
+		}
+	}
+
+	static getMessageHtml({ content, sender }) {
+		return `
+			<div class="chat-box-message ${sender.id == USER_ID ? "left" : "right"}">
+				${content}
+			</div>
+		`;
+	}
+
+	static appendMessage(data) {
+		if (data.chat_room.id == this.chatRoomId) {
+			const messagesWrapper = document.querySelector('#chat-box .chat-box-messages');
+			if (messagesWrapper) {
+				messagesWrapper.insertAdjacentHTML('beforeend', this.getMessageHtml(data));
+				this.scrollMessagesToBottom();
+				return true;
+			}
+		}
+		return false;
+	}
+
+	static async open(newChatRoomId) {
+		this.chatRoomId = newChatRoomId;
+		document.getElementById('chat-box').innerHTML = await this.getHtml();
+		await this.addFunctionality();
+	}
+
+	static async addFunctionality() {
+		const wrapper = document.querySelector("#chat-box .chat-box-wrapper");
+
+		// Close Button
+		wrapper.addEventListener("click", (e) => {
 			let currentElement = e.target;
 
 			while (
@@ -20,14 +57,15 @@ export default class extends Abstract {
 			) {
 				if (currentElement.matches("[data-action=\"close\"]")) {
 					e.preventDefault();
-					chatBox.parentNode.innerHTML = '';
+					wrapper.parentNode.innerHTML = '';
 					return;
 				}
 				currentElement = currentElement.parentNode;
 			}
 		});
 
-		chatBox.addEventListener("submit", async (e) => {
+		// Send Message
+		wrapper.addEventListener("submit", async (e) => {
 			e.preventDefault();
 
 			const data = new FormData(e.target);
@@ -39,13 +77,10 @@ export default class extends Abstract {
 		});
 
 		// Scroll the messages thread to the bottom by default
-		const messagesWrapper = chatBox.querySelector('.chat-box-messages');
-		if (messagesWrapper) {
-			messagesWrapper.scrollTop = messagesWrapper.scrollHeight;
-		}
+		this.scrollMessagesToBottom();
 	}
 
-	async getHtml() {
+	static async getHtml() {
 		let response = await ChatRooms.get(this.chatRoomId);
 		this.chatRoom = response.data;
 
@@ -69,11 +104,7 @@ export default class extends Abstract {
 				</div>
 
 				<div class="chat-box-messages">
-					${this.messages.map(({ content, sender }) => `
-						<div class="chat-box-message ${sender.id == USER_ID ? "left" : "right"}">
-							${content}
-						</div>
-					`).join("")}
+					${this.messages.map(message => this.getMessageHtml(message)).join("")}
 				</div>
 
 				<div class="chat-box-footer">
