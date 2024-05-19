@@ -5,10 +5,8 @@ import { sendNotification } from "/static/js/services/index.js";
 
 // Utility Class
 export default class extends Abstract {
-	constructor(props) {
-		super(props);
-
-		this.params = props;
+	constructor() {
+		throw new Error("Cannot be instantiated");
 	}
 
 	static data = [];

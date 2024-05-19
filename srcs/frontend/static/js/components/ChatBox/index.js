@@ -3,8 +3,8 @@ import { Abstract } from "/static/js/components/index.js";
 
 // Utility Class
 export default class extends Abstract {
-	constructor(props) {
-		super(props);
+	constructor() {
+		throw new Error("Cannot be instantiated");
 	}
 
 	static chatRoomId = null;
