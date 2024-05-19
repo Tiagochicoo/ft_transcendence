@@ -6,6 +6,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
     path('users', UserList.as_view(), name='users'),
+    # Added a forward slash (/) to the end of the URL because it was breaking with query params
+    path('users/', UserList.as_view(), name='users'),
     path('users/<int:userId>', UserDetails.as_view(), name='user_details'),
     path('sign-in', UserLogin.as_view(), name='user_login'),
     path('token', TokenObtainPairView.as_view(), name='token_obtain_pair'),

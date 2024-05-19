@@ -11,6 +11,9 @@ class UserList(APIView):
     def get(self, request, format=None):
         try:
             users = User.objects.all()
+            query_username = request.GET.get('username', '')
+            if (query_username):
+                users = users.filter(username=query_username)
             serializer = UserSerializer(users, many=True)
             return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception as error:

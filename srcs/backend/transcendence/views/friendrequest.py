@@ -1,9 +1,11 @@
 from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework import status
-from ..models import User as User
+from ..models import ChatRoom as ChatRoom
 from ..models import FriendRequest as FriendRequest
+from ..models import User as User
 from ..serializers.serializers_friendrequest import FriendRequestSerializer
+from ..utils.access_token import get_user_id_from_request
 
 # POST sends data to the server.
 # PATCH updates resources on the server.
@@ -12,9 +14,14 @@ from ..serializers.serializers_friendrequest import FriendRequestSerializer
 class FriendCreate(APIView):
     def post(self, request, format=None):
         try:
-            user1 = request.data.get('user1')
-            user2 = request.data.get('user2')
-            friend_request = FriendRequest.objects.create(user1_id=user1, user2_id=user2)
+            user1 = get_user_id_from_request(request)
+            user2 = request.data.get('invited_user_id')
+            # Check if instance already exists
+            already_exists = FriendRequest.objects.filter(user1=user1, user2=user2) | FriendRequest.objects.filter(user1=user2, user2=user1)
+            if already_exists:
+                raise Exception('Friend Request already exists')
+            chat_room = ChatRoom.objects.create(user1_id=user1, user2_id=user2)
+            friend_request = FriendRequest.objects.create(user1_id=user1, user2_id=user2, chat_room=chat_room)
             serializer = FriendRequestSerializer(friend_request)
             return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception as error:

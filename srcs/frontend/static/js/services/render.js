@@ -1,4 +1,4 @@
-import { Navbar } from "/static/js/components/index.js";
+import { Navbar, Sidebar } from "/static/js/components/index.js";
 import {
   GeneralDashboard,
   IndividualDashboard,
@@ -9,8 +9,8 @@ import {
   Pong,
   Setup,
 } from "/static/js/pages/index.js";
-import { isLoggedIn } from "/static/js/services/authService.js";
-import { navigateTo } from "/static/js/services/index.js";
+import { refreshUserID } from "./authService.js";
+import { navigateTo } from "./index.js";
 
 const ROUTES = [
   { path: "/", title: "Home", page: Home },
@@ -57,27 +57,29 @@ const doesPathMatch = (path) => {
   return location.pathname.match(regex) !== null;
 };
 
-const isRouteValid = (route) => {
-  const isUserLoggedIn = isLoggedIn();
+const isRouteValid = (route) => (
+  route && (
+    // Non Logged in users can only access home, sign-up and sign-in pages
+    (!USER_ID && ['/', '/sign-up', '/sign-in'].includes(route.path)) ||
+    // Logged in users cannot access the sign-up and sign-in pages
+    (USER_ID && !['/sign-up', '/sign-in'].includes(route.path))
+  )
+)
 
-  return (
-    // Non Invalid Route
-    route && (
-      // Non Logged in users can only access home, sign-up and sign-in pages
-      (!isUserLoggedIn && ['/', '/sign-up', '/sign-in'].includes(route.path)) ||
-      // Logged in users cannot access the sign-up and sign-in pages
-      (isUserLoggedIn && !['/sign-up', '/sign-in'].includes(route.path))
-    )
-  );
+const renderSidebar = async () => {
+  const sidebar = new Sidebar();
+  document.getElementById("sidebar").innerHTML = await sidebar.getHtml();
+  await sidebar.addFunctionality();
 }
 
 const renderPage = async () => {
+  await refreshUserID();
+
   let thisRoute = ROUTES.find((route) => doesPathMatch(route.path));
 
   // Invalid routes redirect to the homepage
   if (!isRouteValid(thisRoute)) {
-    navigateTo('/');
-    return;
+    return navigateTo(USER_ID ? '/' : '/sign-in');
   }
 
   let params = {};
@@ -86,13 +88,25 @@ const renderPage = async () => {
 
   const page = new thisRoute.page({ title: thisRoute.title, ...params });
 
+  // Render Navbar
   const navbar = new Navbar();
-  document.querySelector("#navbar").innerHTML = await navbar.getHtml();
-  navbar.addFunctionality();
+  document.getElementById("navbar").innerHTML = await navbar.getHtml();
+  await navbar.addFunctionality();
 
-  document.querySelector("#app").innerHTML = await page.getHtml();
+  // Render Content
+  document.getElementById("app").innerHTML = await page.getHtml();
   document.title = thisRoute.title;
-  page.addFunctionality();
+  await page.addFunctionality();
+
+  // Render Sidebar
+  const sidebar = document.getElementById("sidebar");
+  const chatbox = document.getElementById("chat-box");
+  if (USER_ID && !sidebar.innerHTML.length) {
+    await renderSidebar();
+  } else if (!USER_ID) {
+    sidebar.innerHTML = '';
+    chatbox.innerHTML = '';
+  }
 };
 
 export default renderPage;

@@ -1,31 +1,47 @@
-import { navigateTo } from "/static/js/services/index.js";
+import { Users } from "/static/js/api/index.js";
+import { generateSocket, navigateTo } from "./index.js";
 
 function isTokenExpired(token) {
-    const payloadBase64 = token.split('.')[1];
-    const decodedJson = atob(payloadBase64);
-    const decoded = JSON.parse(decodedJson);
-    const exp = decoded.exp * 1000; // JWT 'exp' claims are in seconds, convert to milliseconds
-    const now = new Date();
-    const isExpired = now.getTime() > exp;
-    console.log(`Token expired: ${isExpired}`);
-    return isExpired;
-}
-
-function isLoggedIn() {
-    const token = localStorage.getItem('accessToken');
-    if (!token) {
-        //console.log("No token found, user not logged in.");
-        return false;
-    }
     try {
         const payload = JSON.parse(atob(token.split('.')[1]));
-        const now = Date.now() / 1000;
-        const isExpired = payload.exp < now;
-        //console.log(`Token expiration check: ${isExpired ? 'expired' : 'valid'}`);
-        return !isExpired;
-    } catch (error) {
-        console.error('Error decoding token:', error);
+        return (payload.exp < (Date.now() / 1000));
+    } catch(e) {
         return false;
+    }
+}
+
+function clearTokens() {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+}
+
+async function refreshUserID() {
+    const originalUserID = USER_ID;
+
+    // Get the USER_ID from the 'Access Token'
+    try {
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+            throw new Error('no accessToken');
+        }
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        USER_ID = isTokenExpired(token) ? null : payload.user_id;
+
+        const response = await Users.get(USER_ID);
+        if (!response.success) {
+            throw new Error('non existing user');
+        }
+    } catch (e) {
+        clearTokens();
+        USER_ID = null;
+    }
+
+    if (originalUserID == USER_ID) return;
+
+    // The USER_ID changed,
+    // If the USER_ID is valid regenerate the SOCKET
+    if (USER_ID) {
+        await generateSocket();
     }
 }
 
@@ -78,4 +94,4 @@ async function fetchWithToken(url, options = {}) {
     return jsonResponse;
 }
 
-export { fetchWithToken, isLoggedIn, renewAccessToken };
+export { clearTokens, refreshUserID, renewAccessToken, fetchWithToken };

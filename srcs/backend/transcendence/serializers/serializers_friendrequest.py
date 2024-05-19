@@ -7,4 +7,4 @@ class FriendRequestSerializer(serializers.ModelSerializer):
     user2 = UserSerializer()
     class Meta:
         model = FriendRequest
-        fields = ['id', 'user1', 'user2', 'was_accepted', 'was_canceled', 'was_refused']
+        fields = ['id', 'user1', 'user2', 'was_accepted', 'was_canceled', 'was_refused', 'chat_room_id']

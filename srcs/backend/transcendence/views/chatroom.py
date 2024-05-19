@@ -6,6 +6,7 @@ from ..models import ChatRoom as ChatRoom
 from ..models import Message as Message
 from ..serializers.serializers_chatroom import ChatRoomSerializer
 from ..serializers.serializers_message import MessageSerializer
+from ..utils.access_token import get_user_id_from_request
 
 class ChatRoomCreate(APIView):
     def post(self, request, format=None):
@@ -52,12 +53,12 @@ class ChatRoomMessages(APIView):
         except Exception as error:
             return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    # TODO: Setup the 'sender' field (Model can't be null either)
     def post(self, request, chatRoomId, format=None):
         try:
             chat_room = ChatRoom.objects.get(pk=chatRoomId)
             content = request.data.get('content')
-            message = Message.objects.create(chat_room=chat_room, content=content)
+            user_id = get_user_id_from_request(request)
+            message = Message.objects.create(chat_room=chat_room, content=content, sender_id=user_id)
             serializer = MessageSerializer(message)
             return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception as error:
