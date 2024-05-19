@@ -25,7 +25,7 @@ const friendAddSocketListener = () => {
 
   // Listen to the 'friend_add_id' event
   SOCKET.on(`friend_add_${USER_ID}`, (data) => {
-    FriendsSection.friendAdd(data);
+    FriendsSection.friendAddNotification(data);
   });
 }
 
@@ -35,7 +35,7 @@ const friendRefuseSocketListener = () => {
 
   // Listen to the 'friend_refuse_id' event
   SOCKET.on(`friend_refuse_${USER_ID}`, (data) => {
-    FriendsSection.friendRefuse(data);
+    FriendsSection.friendRefuseNotification(data);
   });
 }
 
@@ -45,7 +45,7 @@ const friendAcceptSocketListener = () => {
 
   // Listen to the 'friend_accept_id' event
   SOCKET.on(`friend_accept_${USER_ID}`, (data) => {
-    FriendsSection.friendAccept(data);
+    FriendsSection.friendAcceptNotification(data);
   });
 }
 
@@ -55,7 +55,7 @@ const friendCancelSocketListener = () => {
 
   // Listen to the 'friend_cancel_id' event
   SOCKET.on(`friend_cancel_${USER_ID}`, (data) => {
-    FriendsSection.friendCancel(data);
+    FriendsSection.friendCancelNotification(data);
   });
 }
 

@@ -152,7 +152,7 @@ export default class extends Abstract {
 		}
 	}
 
-	static friendAdd(data) {
+	static friendAddNotification(data) {
 		this.doDataUpdate(data);
 		this.updateFriendsReceived();
 		sendNotification({
@@ -161,7 +161,7 @@ export default class extends Abstract {
 		});
 	}
 
-	static friendRefuse(data) {
+	static friendRefuseNotification(data) {
 		this.doDataUpdate(data);
 		this.updateFriendsAccepted();
 		this.updateFriendsSent();
@@ -171,7 +171,7 @@ export default class extends Abstract {
 		});
 	}
 
-	static friendAccept(data) {
+	static friendAcceptNotification(data) {
 		this.doDataUpdate(data);
 		this.updateFriendsAccepted();
 		this.updateFriendsSent();
@@ -181,7 +181,7 @@ export default class extends Abstract {
 		});
 	}
 
-	static friendCancel(data) {
+	static friendCancelNotification(data) {
 		this.doDataUpdate(data);
 		this.updateFriendsReceived();
 		sendNotification({
