@@ -6,7 +6,6 @@ export default class extends Abstract {
 		super(props);
 
 		this.params = props;
-		this.friendsSection = new FriendsSection();
 	}
 
 	async addFunctionality() {
@@ -14,7 +13,7 @@ export default class extends Abstract {
 			return;
 		}
 
-		await this.friendsSection.addFunctionality();
+		await FriendsSection.addFunctionality();
 	}
 
 	async getHtml() {
@@ -29,7 +28,7 @@ export default class extends Abstract {
 						Menu
 					</h2>
 
-					${await this.friendsSection.getHtml()}
+					${await FriendsSection.getHtml()}
 				</div>
 			</div>
 		`;

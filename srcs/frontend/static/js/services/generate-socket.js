@@ -1,4 +1,4 @@
-import { chatMessageSocketListener } from "./index.js";
+import { socketListeners } from "./index.js";
 
 const generateSocket = async () => {
   if (!USER_ID) return;
@@ -15,7 +15,7 @@ const generateSocket = async () => {
       }
     });
 
-    chatMessageSocketListener();
+    socketListeners();
   } catch(e) {
     console.error(e);
   }

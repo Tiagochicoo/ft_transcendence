@@ -3,6 +3,7 @@ import { Abstract } from "/static/js/components/index.js";
 import ChatBox from "/static/js/components/ChatBox/index.js";
 import { sendNotification } from "/static/js/services/index.js";
 
+// Utility Class
 export default class extends Abstract {
 	constructor(props) {
 		super(props);
@@ -10,7 +11,9 @@ export default class extends Abstract {
 		this.params = props;
 	}
 
-	doDataUpdate(data) {
+	static data = [];
+
+	static doDataUpdate(data) {
 		if (this.data.find(el => el.id == data.id)) {
 			this.data = this.data.map(el => (el.id == data.id) ? data : el);
 		} else {
@@ -18,148 +21,7 @@ export default class extends Abstract {
 		}
 	}
 
-	async addFunctionality() {
-		const wrapper = document.getElementById('friends-wrapper');
-
-		const handleClick = async (target) => {
-			const {
-				action,
-				id
-			} = target;
-
-			let response;
-			switch (action) {
-				case 'message':
-					const chatRoomId = this.data.find(el => el.id == id)?.chat_room_id;
-					ChatBox.open(chatRoomId);
-					break;
-
-				case 'refuse':
-					response = await Friends.refuse(id);
-					if (response.success) {
-						SOCKET.emit('friend_refuse', response.data);
-						this.doDataUpdate(response.data);
-						wrapper.querySelector('#friends-accepted').innerHTML = this.getFriendsAccepted();
-						wrapper.querySelector('#friends-received').innerHTML = this.getFriendsReceived();
-					}
-					break;
-
-				case 'accept':
-					response = await Friends.accept(id);
-					if (response.success) {
-						SOCKET.emit('friend_accept', response.data);
-						this.doDataUpdate(response.data);
-						wrapper.querySelector('#friends-accepted').innerHTML = this.getFriendsAccepted();
-						wrapper.querySelector('#friends-received').innerHTML = this.getFriendsReceived();
-					}
-					break;
-
-				case 'cancel':
-					response = await Friends.cancel(id);
-					if (response.success) {
-						SOCKET.emit('friend_cancel', response.data);
-						this.doDataUpdate(response.data);
-						wrapper.querySelector('#friends-sent').innerHTML = this.getFriendsSent();
-					}
-					break;
-			}
-		}
-
-		const friendAddSocketListener = () => {
-			// Remove 'friend_add_id' listener
-			SOCKET.off(`friend_add_${USER_ID}`);
-
-			// Listen to the 'friend_add_id' event
-			SOCKET.on(`friend_add_${USER_ID}`, (data) => {
-				this.doDataUpdate(data);
-				wrapper.querySelector('#friends-received').innerHTML = this.getFriendsReceived();
-				sendNotification({
-					author: data.user1.username,
-					body: 'Sent a friend request'
-				});
-			});
-		}
-
-		const friendRefuseSocketListener = () => {
-			// Remove 'friend_refuse_id' listener
-			SOCKET.off(`friend_refuse_${USER_ID}`);
-
-			// Listen to the 'friend_refuse_id' event
-			SOCKET.on(`friend_refuse_${USER_ID}`, (data) => {
-				this.doDataUpdate(data);
-				wrapper.querySelector('#friends-accepted').innerHTML = this.getFriendsAccepted();
-				wrapper.querySelector('#friends-sent').innerHTML = this.getFriendsSent();
-				sendNotification({
-					author: data.user2.username,
-					body: 'Refused your friend request'
-				});
-			});
-		}
-
-		const friendAcceptSocketListener = () => {
-			// Remove 'friend_accept_id' listener
-			SOCKET.off(`friend_accept_${USER_ID}`);
-
-			// Listen to the 'friend_accept_id' event
-			SOCKET.on(`friend_accept_${USER_ID}`, (data) => {
-				this.doDataUpdate(data);
-				wrapper.querySelector('#friends-accepted').innerHTML = this.getFriendsAccepted();
-				wrapper.querySelector('#friends-sent').innerHTML = this.getFriendsSent();
-				sendNotification({
-					author: data.user2.username,
-					body: 'Accepted your friend request'
-				});
-			});
-		}
-
-		const friendCancelSocketListener = () => {
-			// Remove 'friend_cancel_id' listener
-			SOCKET.off(`friend_cancel_${USER_ID}`);
-
-			// Listen to the 'friend_cancel_id' event
-			SOCKET.on(`friend_cancel_${USER_ID}`, (data) => {
-				this.doDataUpdate(data);
-				wrapper.querySelector('#friends-received').innerHTML = this.getFriendsReceived();
-				sendNotification({
-					author: data.user1.username,
-					body: 'Cancelled his friend request'
-				});
-			});
-		}
-
-		wrapper.addEventListener('click', (event) => {
-			if (event.target.closest('button')) {
-				handleClick(event.target.closest('button').dataset);
-			}
-		});
-
-		wrapper.addEventListener("submit", async (e) => {
-			e.preventDefault();
-
-			const data = new FormData(e.target);
-			const response = await Friends.createByUsername(data.get('username'));
-			const usernameInputEl = e.target.querySelector('#username');
-			const usernameErrorEl = e.target.querySelector('#usernameError');
-			if (response?.success) {
-				SOCKET.emit('friend_add', response.data);
-				usernameInputEl.value = '';
-				usernameErrorEl.textContent = '';
-				usernameErrorEl.style.display = 'none';
-				this.doDataUpdate(response.data);
-				wrapper.querySelector('#friends-sent').innerHTML = this.getFriendsSent();
-			} else {
-				usernameErrorEl.textContent = 'Invalid username';
-				usernameErrorEl.style.display = 'block';
-			}
-		});
-
-		friendAddSocketListener();
-		friendRefuseSocketListener();
-		friendAcceptSocketListener();
-		friendCancelSocketListener();
-	}
-
-	getList(list, options) {
+	static getList(list, options) {
 		const element = document.querySelector(`#friends-wrapper [data-bs-target="#${options.id}"]`);
 		const isExpanded = !options.title || (element && (element.getAttribute("aria-expanded") === 'true'));
 
@@ -202,20 +64,8 @@ export default class extends Abstract {
 		`;
 	}
 
-	getFriendsAddForm() {
-		return `
-			<form novalidate>
-				<input type="text" class="form-control" id="username" name="username">
-				<button type="submit" class="btn btn-primary">
-					Add
-				</button>
-				<div id="usernameError" class="invalid-feedback" style="display: none;"></div>
-			</form>
-		`;
-	}
-
-	getFriendsAccepted() {
-		const list = this.data.filter(({ was_accepted }) => was_accepted)
+	static getFriendsAccepted() {
+		const list = this.data.filter(el => el.was_accepted && !el.was_canceled && !el.was_refused)
 			.map(({ id, user1, user2 }) => ({ id, user: (user1.id == USER_ID) ? user2 : user1 }));
 
 		const htmlList = this.getList(list, {
@@ -235,8 +85,15 @@ export default class extends Abstract {
 		`;
 	}
 
-	getFriendsReceived() {
-		const list = this.data.filter(({ was_accepted, was_canceled, was_refused, user2 }) => !was_accepted && !was_canceled && !was_refused && (user2.id == USER_ID))
+	static updateFriendsAccepted() {
+		const wrapper = document.querySelector('#friends-wrapper #friends-accepted');
+		if (wrapper) {
+			wrapper.innerHTML = this.getFriendsAccepted();
+		}
+	}
+
+	static getFriendsReceived() {
+		const list = this.data.filter(el => !el.was_accepted && !el.was_canceled && !el.was_refused && (el.user2.id == USER_ID))
 			.map(({ id, user1 }) => ({ id, user: user1 }));
 
 		const htmlList = this.getList(list, {
@@ -261,8 +118,15 @@ export default class extends Abstract {
 		`;
 	}
 
-	getFriendsSent() {
-		const list = this.data.filter(({ was_accepted, was_canceled, was_refused, user1 }) => !was_accepted && !was_canceled && !was_refused && (user1.id == USER_ID))
+	static updateFriendsReceived() {
+		const wrapper = document.querySelector('#friends-wrapper #friends-received');
+		if (wrapper) {
+			wrapper.innerHTML = this.getFriendsReceived();
+		}
+	}
+
+	static getFriendsSent() {
+		const list = this.data.filter(el => !el.was_accepted && !el.was_canceled && !el.was_refused && (el.user1.id == USER_ID))
 			.map(({ id, user2 }) => ({ id, user: user2 }));
 
 		const htmlList = this.getList(list, {
@@ -283,7 +147,128 @@ export default class extends Abstract {
 		`;
 	}
 
-	async getHtml() {
+	static updateFriendsSent() {
+		const wrapper = document.querySelector('#friends-wrapper #friends-sent');
+		if (wrapper) {
+			wrapper.innerHTML = this.getFriendsSent();
+		}
+	}
+
+	static friendAdd(data) {
+		this.doDataUpdate(data);
+		this.updateFriendsReceived();
+		sendNotification({
+			author: data.user1.username,
+			body: 'Sent a friend request'
+		});
+	}
+
+	static friendRefuse(data) {
+		this.doDataUpdate(data);
+		this.updateFriendsAccepted();
+		this.updateFriendsSent();
+		sendNotification({
+			author: data.user2.username,
+			body: 'Refused your friend request'
+		});
+	}
+
+	static friendAccept(data) {
+		this.doDataUpdate(data);
+		this.updateFriendsAccepted();
+		this.updateFriendsSent();
+		sendNotification({
+			author: data.user2.username,
+			body: 'Accepted your friend request'
+		});
+	}
+
+	static friendCancel(data) {
+		this.doDataUpdate(data);
+		this.updateFriendsReceived();
+		sendNotification({
+			author: data.user1.username,
+			body: 'Canceled his friend request'
+		});
+	}
+
+	static async addFunctionality() {
+		const wrapper = document.getElementById('friends-wrapper');
+
+		const handleClick = async (target) => {
+			const {
+				action,
+				id
+			} = target;
+
+			let response;
+			switch (action) {
+				case 'message':
+					const chatRoomId = this.data.find(el => el.id == id)?.chat_room_id;
+					ChatBox.open(chatRoomId);
+					break;
+
+				case 'refuse':
+					response = await Friends.refuse(id);
+					if (response.success) {
+						SOCKET.emit('friend_refuse', response.data);
+						this.doDataUpdate(response.data);
+						this.updateFriendsAccepted();
+						this.updateFriendsReceived();
+					}
+					break;
+
+				case 'accept':
+					response = await Friends.accept(id);
+					if (response.success) {
+						SOCKET.emit('friend_accept', response.data);
+						this.doDataUpdate(response.data);
+						this.updateFriendsAccepted();
+						this.updateFriendsReceived();
+					}
+					break;
+
+				case 'cancel':
+					response = await Friends.cancel(id);
+					if (response.success) {
+						SOCKET.emit('friend_cancel', response.data);
+						this.doDataUpdate(response.data);
+						this.updateFriendsSent();
+					}
+					break;
+			}
+		}
+
+		// Handle Action
+		wrapper.addEventListener('click', (event) => {
+			if (event.target.closest('button')) {
+				handleClick(event.target.closest('button').dataset);
+			}
+		});
+
+		// Add Friend
+		wrapper.addEventListener("submit", async (e) => {
+			e.preventDefault();
+
+			const data = new FormData(e.target);
+			const response = await Friends.createByUsername(data.get('username'));
+			const usernameInputEl = e.target.querySelector('#username');
+			const usernameErrorEl = e.target.querySelector('#usernameError');
+			if (response?.success) {
+				SOCKET.emit('friend_add', response.data);
+				usernameInputEl.value = '';
+				usernameErrorEl.textContent = '';
+				usernameErrorEl.style.display = 'none';
+				this.doDataUpdate(response.data);
+				this.updateFriendsSent();
+			} else {
+				usernameErrorEl.textContent = 'Invalid username';
+				usernameErrorEl.style.display = 'block';
+			}
+		});
+	}
+
+	static async getHtml() {
 		const response = await Friends.getAll();
 		this.data = response.success ? response.data : [];
 
@@ -293,9 +278,13 @@ export default class extends Abstract {
 					Friends
 				</h4>
 
-				<div id="friends-add">
-					${this.getFriendsAddForm()}
-				</div>
+				<form id="friends-add" novalidate>
+					<input type="text" class="form-control" id="username" name="username">
+					<button type="submit" class="btn btn-primary">
+						Add
+					</button>
+					<div id="usernameError" class="invalid-feedback" style="display: none;"></div>
+				</form>
 
 				<div id="friends-accepted">
 					${this.getFriendsAccepted()}
