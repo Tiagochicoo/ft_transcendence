@@ -21,37 +21,51 @@ export default class extends Abstract {
 
 	Users.get(USER_ID).then((response) => this.participants.push(response.data));
 	
-
 	this.friends = await Friends.getAllFriends();
 
 	const setupArea = document.getElementById('setup-area');
 	setupArea.innerHTML = this.showListOfFriends();
 
-	const invitationBtn = document.querySelector('#invitation-btn');
-	invitationBtn.style.display = 'none';
-	
-	for (let opponent of document.querySelectorAll('input[name="friends"]')) {
-		opponent.addEventListener("input", (event) => {
-			if (this.mode === 'single') {
-				this.participants[1] = this.friends.filter((friend => friend.username === event.target.value))[0];
-				invitationBtn.style.display = 'block';
-			} else if (this.mode === 'tournament') {
-				if (this.participants.length === 8) document.getElementById('invitation-error').innerHTML = "Only the first 7 selected participants will be invited."
-				if (this.participants.length < 8) {
-					this.participants.push(this.friends.filter((friend => friend.username === event.target.value))[0]);
+
+	if (this.checkAvailability) {
+		const invitationBtn = document.querySelector('#invitation-btn');
+		invitationBtn.style.display = 'none';
+		
+		for (let opponent of document.querySelectorAll('input[name="friends"]')) {
+			opponent.addEventListener("input", (event) => {
+				if (this.mode === 'single') {
+					this.participants[1] = this.friends.filter((friend => friend.username === event.target.value))[0];
+					invitationBtn.style.display = 'block';
+				} else if (this.mode === 'tournament') {
+					if (this.participants.length === 8) document.getElementById('invitation-error').innerHTML = "Only the first 7 selected participants will be invited."
+					if (this.participants.length < 8) {
+						this.participants.push(this.friends.filter((friend => friend.username === event.target.value))[0]);
+					}
+					if (this.participants.length === 8) invitationBtn.style.display = 'block';
 				}
-				if (this.participants.length === 8) invitationBtn.style.display = 'block';
-			}
+			});
+		}
+	
+		invitationBtn.addEventListener("click", () => {
+			if (this.mode === 'single') this.startSingleMatch(setupArea);
+			else if (this.mode === 'tournament') this.startTournament(setupArea);
 		});
 	}
+  }
 
-	invitationBtn.addEventListener("click", () => {
-		if (this.mode === 'single') this.startSingleMatch(setupArea);
-		else if (this.mode === 'tournament') this.startTournament(setupArea);
-	});
+  checkAvailability() {
+	if ((this.mode === 'single' && this.friends.length === 0) ||
+		(this.mode === 'tournament' && this.friends.length < 7)) {
+			return false;
+		}
+	return true;
   }
 
   showListOfFriends() {
+	
+	if (!this.checkAvailability()) {
+		return this.mode === 'single' ? `<p style="color: red;">${i18next.t("pong.singleMatchNotEnoughFriends")}</p>` : `<p style="color: red;">${i18next.t("pong.tournamentNotEnoughFriends")}</p>`;
+	}
 	
 	let list = `<div>
 					<p>${this.mode === "single" ? i18next.t("pong.singleMatchInvitationMessage") : i18next.t("pong.tournamentInvitationMessage")}</p>`;
@@ -100,7 +114,6 @@ export default class extends Abstract {
   }
 
   async storeMatch() {
-	console.log(this.participants[0]);
 	const data = {
 		"user1": this.participants[0],
 		"user2": this.participants[1]

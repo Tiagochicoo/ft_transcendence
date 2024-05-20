@@ -20,6 +20,8 @@
     },
     "singleMatch": "Partido único",
     "tournament": "Torneo",
+    "singleMatchNotEnoughFriends": "Necesitas al menos 1 amigo para empazar una partida.",
+    "tournamentNotEnoughFriends": "Necesitas al menos 7 amigos para empezar un torneo.",
     "singleMatchInvitationMessage": "Selecciona a tu oponente:",
     "tournamentInvitationMessage": "Seleccione 7 participantes:",
     "invitationBtn": "Convidar",
