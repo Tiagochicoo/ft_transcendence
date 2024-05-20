@@ -1,6 +1,5 @@
 import { Abstract } from "/static/js/components/index.js";
 import { Game } from "/static/js/pages/pong/index.js";
-import { isLoggedIn, getUserIDFromToken, navigateTo } from "/static/js/services/index.js";
 import { PongData } from "/static/js/api/index.js";
 
 export default class extends Abstract {
@@ -25,10 +24,7 @@ export default class extends Abstract {
   }
 
   async getHtml() {
-	// if (!isLoggedIn()) {
-	// 	navigateTo("/sign-in");
-	// 	return '';
-	// }
+	
     return `
 		<h1 class="mb-4">
 				${i18next.t("pong.title")}

@@ -11,7 +11,7 @@ export default class PongData {
 	static async createMatch(data) {
 		
 		try {
-			const response = await fetch("/api/match/", {
+			const response = await fetch(`${API_URL}/match/`, {
 				method: "POST",
 				headers: {
 					'Content-Type': 'application/json'
@@ -29,14 +29,14 @@ export default class PongData {
 	}
 
 	static getMatchById(id) {
-		return fetch(`/api/match/${id}`)
+		return fetch(`${API_URL}/match/${id}`)
 			.then((response) => response.json())
 			.catch((error) => console.log(error.message));
 	}
 
 	static async createTournament(data) {
 		try {
-			const response = await fetch("/api/tournament/", {
+			const response = await fetch(`${API_URL}/tournament/`, {
 				method: "POST",
 				headers: {
 					'Content-Type': 'application/json'
@@ -54,14 +54,14 @@ export default class PongData {
 	}
 
 	static getTournamentById(id) {
-		return fetch(`/api/tournament/${id}`)
+		return fetch(`${API_URL}/tournament/${id}`)
 			.then((response) => response.json())
 			.catch((error) => console.log(error.message));
 	}
 	
 	static async createTournamentUser(data) {
 		try {
-			const response = await fetch("/api/tournament_user/", {
+			const response = await fetch(`${API_URL}/tournament_user/`, {
 				method: "POST",
 				headers: {
 					'Content-Type': 'application/json'
@@ -79,7 +79,7 @@ export default class PongData {
 	}
 
 	static getTournamentUserByIds(userId, tournamentId) {
-		return fetch(`/api/tournament_user/${userId}/${tournamentId}/`)
+		return fetch(`${API_URL}/tournament_user/${userId}/${tournamentId}/`)
 		.then((response) => response.json())
 		.catch((error) => console.log(error.message));
 	}

@@ -1,7 +1,6 @@
 import { clearTokens } from "/static/js/services/authService.js";
 import { navigateTo } from "/static/js/services/index.js";
 import { Abstract, LanguageToggle } from "./index.js";
-import { isLoggedIn, getUserIDFromToken } from "../services/authService.js";
 
 export default class extends Abstract {
     constructor(props) {
@@ -73,7 +72,7 @@ export default class extends Abstract {
                             </li>
                             ${USER_ID ? `
                                 <li class="nav-item">
-                                    <a class="nav-link" href="${isUserLoggedIn ? '/pong' : '/sign-in'}" data-link>
+                                    <a class="nav-link" href="/pong" data-link>
                                         ${i18next.t("navbar.pong")}
                                     </a>
                                 </li>
@@ -83,12 +82,12 @@ export default class extends Abstract {
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a class="dropdown-item" href="${isUserLoggedIn ? '/dashboard/individual/' + getUserIDFromToken() : '/sign-in'}" data-link>
+                                            <a class="dropdown-item" href="/dashboard/individual/1" data-link>
                                                 ${i18next.t("navbar.individualDashboard")}
                                             </a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="${isUserLoggedIn ? '/dashboard/general' : '/sign-in'}" data-link>
+                                            <a class="dropdown-item" href="/dashboard/general" data-link>
                                                 ${i18next.t("navbar.generalDashboard")}
                                             </a>
                                         </li>

@@ -1,4 +1,4 @@
-import { navigateTo, isLoggedIn } from "/static/js/services/index.js";
+
 import { Abstract } from "/static/js/components/index.js";
 
 export default class extends Abstract {
@@ -11,10 +11,7 @@ export default class extends Abstract {
 	async addFunctionality() {}
   
 	async getHtml() {
-		// if (!isLoggedIn()) {
-		// 	navigateTo(/sign-in);
-		// 	return '';
-		// }
+
 	  return `
 		  <h1 class="mb-4">
 				  ${i18next.t("pong.title")}

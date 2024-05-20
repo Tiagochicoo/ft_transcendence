@@ -1,6 +1,5 @@
 import { Abstract } from "/static/js/components/index.js";
-import { isLoggedIn, getUserIDFromToken, navigateTo } from "/static/js/services/index.js";
-import { Friends, PongData, User } from "/static/js/api/index.js";
+import { Friends, PongData, Users } from "/static/js/api/index.js";
 
 
 export default class extends Abstract {
@@ -24,7 +23,7 @@ export default class extends Abstract {
 
 	// here we will retrieve user information using the id retrieved from localStorage with getUserIDFromToken();
 	// const user = await User.getUser(getUserIDFromToken());
-	const user = await User.getUser(1);
+	const user = await Users.get(1);
 	this.participants.push(user);
 
 	// only to test
@@ -153,10 +152,6 @@ export default class extends Abstract {
   }
 
   async getHtml() {
-	// if (!isLoggedIn()) {
-	// 	navigateTo("/sign-in");
-	// 	return '';
-	// }
 
 	return `
 		<h1 class="mb-4">
