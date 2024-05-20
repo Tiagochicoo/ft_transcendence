@@ -8,6 +8,7 @@ from ..serializers.serializers_match import MatchSerializer
 
 class MatchCreate(APIView):
 	def post(self, request):
+		print(request.data)
 		try:
 			user1_id = request.data.get('user1').get('id')
 			user1 = User.objects.get(pk=user1_id)

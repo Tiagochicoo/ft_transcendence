@@ -6,8 +6,6 @@ export default class extends Abstract {
   constructor(props) {
     super(props);
     this.params = props;
-	// this data will be fetched from database using logged user_id
-	// this.friends = ['Will', 'Joe', 'Jeff', 'John', 'Eva', 'Hannah', 'Diana', 'Alex', 'Tyna', 'Bob', 'Wendy', 'Martha'];
 	this.friends = [];
 	this.participants = [];
 	this.matchId = -1;
@@ -21,13 +19,8 @@ export default class extends Abstract {
 
   async addFunctionality() {
 
-	// here we will retrieve user information using the id retrieved from localStorage with getUserIDFromToken();
-	// const user = await User.getUser(getUserIDFromToken());
-	const user = await Users.get(1);
-	this.participants.push(user);
-
-	// only to test
-	// console.log(await User.getUserList());
+	Users.get(USER_ID).then((response) => this.participants.push(response.data));
+	
 
 	this.friends = await Friends.getAllFriends();
 
@@ -107,6 +100,7 @@ export default class extends Abstract {
   }
 
   async storeMatch() {
+	console.log(this.participants[0]);
 	const data = {
 		"user1": this.participants[0],
 		"user2": this.participants[1]

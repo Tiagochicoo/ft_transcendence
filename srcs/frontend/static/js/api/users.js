@@ -4,6 +4,7 @@ export default class Users {
   static async get(user_id) {
     const response = await fetch(`${API_URL}/users/${user_id}`);
     const responseJson = await response.json();
+    console.log(responseJson);
 
     return responseJson;
   }
