@@ -1,4 +1,4 @@
-import { renderPage } from "/static/js/services/index.js";
+import { renderPage } from "./index.js";
 
 const navigateTo = (url) => {
   history.pushState(null, null, url);

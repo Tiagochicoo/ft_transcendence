@@ -8,11 +8,12 @@ export default class extends Abstract {
     }
 
     async addFunctionality() {
-        document.querySelector("form").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const form = e.target;
+        const form = document.getElementById("form-sign-up");
 
-            document.querySelectorAll('.invalid-feedback').forEach(element => {
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            form.querySelectorAll('.invalid-feedback').forEach(element => {
                 element.textContent = '';
                 element.style.display = 'none';
             });
@@ -26,7 +27,7 @@ export default class extends Abstract {
                 console.log("Submitting data:", data);
 
                 try {
-                    const response = await fetch('http://localhost:8000/api/create_user/', {
+                    const response = await fetch('http://localhost:8000/api/users', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -38,8 +39,8 @@ export default class extends Abstract {
                     const responseData = await response.json();
                     console.log("Server response:", responseData);
 
-                    if (!response.ok) {
-                        this.handleErrors(responseData);
+                    if (!responseData.success) {
+                        this.handleErrors(responseData.errors);
                     } else {
                         console.log('User registered successfully:', responseData);
                         navigateTo('/sign-in');
@@ -59,31 +60,33 @@ export default class extends Abstract {
         return parts.length === 2 ? parts.pop().split(';').shift() : '';
     }
 
-    handleErrors(responseData) {
-        if (responseData.email) {
-            const emailErrorKey = `signUp.validation.${responseData.email[0]}`;
+    handleErrors(errors) {
+        const form = document.getElementById("form-sign-up");
+
+        if (errors.email) {
+            const emailErrorKey = `signUp.validation.${errors.email[0]}`;
             const emailErrorMessage = i18next.t(emailErrorKey);
-            document.getElementById('emailError').textContent = emailErrorMessage;
-            document.getElementById('emailError').style.display = 'block';
+            form.querySelector('#emailError').textContent = emailErrorMessage;
+            form.querySelector('#emailError').style.display = 'block';
         }
-        if (responseData.username) {
-            const usernameErrorKey = `signUp.validation.${responseData.username[0]}`;
+        if (errors.username) {
+            const usernameErrorKey = `signUp.validation.${errors.username[0]}`;
             const usernameErrorMessage = i18next.t(usernameErrorKey);
-            document.getElementById('usernameError').textContent = usernameErrorMessage;
-            document.getElementById('usernameError').style.display = 'block';
+            form.querySelector('#usernameError').textContent = usernameErrorMessage;
+            form.querySelector('#usernameError').style.display = 'block';
         }
-        if (responseData.password) {
-            const passwordErrorKey = `signUp.validation.${responseData.password[0]}`;
+        if (errors.password) {
+            const passwordErrorKey = `signUp.validation.${errors.password[0]}`;
             const passwordErrorMessage = i18next.t(passwordErrorKey);
-            document.getElementById('passwordError').textContent = passwordErrorMessage;
-            document.getElementById('passwordError').style.display = 'block';
+            form.querySelector('#passwordError').textContent = passwordErrorMessage;
+            form.querySelector('#passwordError').style.display = 'block';
         }
     }    
 
     async getHtml() {
         return `
             <h1 class="mb-4">${i18next.t('signUp.title')}</h1>
-            <form class="needs-validation" novalidate>
+            <form id="form-sign-up" class="needs-validation" novalidate>
                 <div class="mb-4">
                     <label for="email" class="form-label">${i18next.t('signUp.fields.email.label')}</label>
                     <input type="text" class="form-control" id="email" name="email">
@@ -103,4 +106,4 @@ export default class extends Abstract {
             </form>
         `;
     }
-}    
+}

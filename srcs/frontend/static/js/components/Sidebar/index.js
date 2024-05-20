@@ -6,22 +6,29 @@ export default class extends Abstract {
 		super(props);
 
 		this.params = props;
-		this.friendsSection = new FriendsSection();
 	}
 
 	async addFunctionality() {
-		await this.friendsSection.addFunctionality();
+		if (!USER_ID) {
+			return;
+		}
+
+		await FriendsSection.addFunctionality();
 	}
 
 	async getHtml() {
+		if (!USER_ID) {
+			return '';
+		}
+
 		return `
-			<div class="sidebar-outter-wrapper">
-				<div class="sidebar-wrapper position-absolute top-0 start-0 p-3 overflow-y-scroll rounded">
+			<div class="sidebar-wrapper">
+				<div class="sidebar-inner-wrapper position-absolute top-0 start-0 py-4 px-3 overflow-y-scroll rounded">
 					<h2 class="text-white lh-1 mb-4">
 						Menu
 					</h2>
 
-					${await this.friendsSection.getHtml()}
+					${await FriendsSection.getHtml()}
 				</div>
 			</div>
 		`;

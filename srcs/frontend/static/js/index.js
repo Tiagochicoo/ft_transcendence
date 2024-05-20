@@ -1,6 +1,6 @@
-import { i18nextInit, navigateTo, renderPage, renderSidebar } from "/static/js/services/index.js";
+import { i18nextInit, navigateTo, renderPage } from "/static/js/services/index.js";
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   // Handle Page Links
   document.body.addEventListener("click", (e) => {
     let currentElement = e.target;
@@ -30,10 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
     renderPage();
   });
 
-  const renderAll = () => {
-    renderPage();
-    renderSidebar();
-  }
-
-  i18nextInit().then(renderAll);
+  // Render Page
+  await i18nextInit().then(renderPage);
 });

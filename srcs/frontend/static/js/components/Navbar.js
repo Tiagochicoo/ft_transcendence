@@ -1,4 +1,4 @@
-import { isLoggedIn } from "/static/js/services/authService.js";
+import { clearTokens } from "/static/js/services/authService.js";
 import { navigateTo } from "/static/js/services/index.js";
 import { Abstract, LanguageToggle } from "./index.js";
 import { isLoggedIn, getUserIDFromToken } from "../services/authService.js";
@@ -13,8 +13,7 @@ export default class extends Abstract {
 
     handleLogout() {
         console.log("Logging out user.");
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
+        clearTokens();
         navigateTo('/sign-in');
     }
 
@@ -28,10 +27,7 @@ export default class extends Abstract {
     // navbar.individualDashboard should pass the logged userId on href
     // now it is hardcoded
     async getHtml() {
-        // const isUserLoggedIn = isLoggedIn();
-    const isUserLoggedIn = true;
-
-        const userManagementLinks = isUserLoggedIn ? '' : `
+        const userManagementLinks = USER_ID ? '' : `
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     ${i18next.t("navbar.userManagement")}
@@ -51,7 +47,7 @@ export default class extends Abstract {
             </li>
         `;
 
-        const logoutLink = isUserLoggedIn ? `
+        const logoutLink = USER_ID ? `
             <li class="nav-item" style="margin-right: 20px;">
                 <button id="logoutButton" class="btn btn-link nav-link" style="color: inherit;">
                     ${i18next.t("navbar.logout")}
@@ -75,7 +71,7 @@ export default class extends Abstract {
                                     ${i18next.t("navbar.home")}
                                 </a>
                             </li>
-                            ${isUserLoggedIn ? `
+                            ${USER_ID ? `
                                 <li class="nav-item">
                                     <a class="nav-link" href="${isUserLoggedIn ? '/pong' : '/sign-in'}" data-link>
                                         ${i18next.t("navbar.pong")}
