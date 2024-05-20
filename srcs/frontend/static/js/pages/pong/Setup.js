@@ -12,6 +12,7 @@ export default class extends Abstract {
 	this.friends = [];
 	this.participants = [];
 	this.matchId = -1;
+	this.tournamentId = -1;
 
 	// it could be better manipulated if included in a global state!
 	let url = window.location.toString();
@@ -88,7 +89,7 @@ export default class extends Abstract {
 			if (response) setupArea.innerHTML = this.enableStartGame();
 		}).catch((error) => {
 			console.log(error.message);
-			setupArea.innerHTML = '<p style="color: red;">We could not create your match. Please try again.</p>'
+			setupArea.innerHTML = '<p style="color: red;">We could not create your match. Please try again.</p>';
 		});
 	}
   }
@@ -97,7 +98,13 @@ export default class extends Abstract {
 	// include a loader to wait for the response. A friend can accept or decline the invitation. 
 	// If it was accepted, we show the start button, if it was not, we must show a notification and allow the user to choose another friend.
 	// Depending on socket connection
-	setupArea.innerHTML = this.enableStartGame();
+	this.storeTournament().then((response) => {
+		if (response) setupArea.innerHTML = this.enableStartGame();
+	}).catch((error) => {
+		console.log(error.message);
+			setupArea.innerHTML = '<p style="color: red;">We could not create your tournament. Please try again.</p>';
+	})
+	
   }
 
   async storeMatch() {
@@ -108,6 +115,33 @@ export default class extends Abstract {
 	
 	this.matchId = await PongData.createMatch(data);
 	return this.matchId === -1 ? false : true;
+  }
+
+  async storeTournament() {
+	const data = {
+		"creator": this.participants[0]
+	};
+
+	this.tournamentId = await PongData.createTournament(data);
+
+	if (this.tournamentId !== -1) {
+		for (const user of this.participants) {
+			const response = await PongData.createTournamentUser(
+				{
+					"tournamentId": this.tournamentId,
+					"userId": user.id
+				}
+			);
+
+			if (!response) {
+				console.log("Error creating tournament_user.");
+				return false;
+			}
+		}
+	}
+	
+
+	return this.tournamentId === -1 ? false : true;
   }
 
   enableStartGame() {

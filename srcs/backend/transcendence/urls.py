@@ -3,6 +3,8 @@ from .views.chatroom import ChatRoomCreate, ChatRoomBlock, ChatRoomUnblock, Chat
 from .views.friendrequest import FriendCreate, FriendCancel, FriendAccept, FriendRefuse, FriendDetails, UserFriendDetails
 from .views.user import UserCreate, UserList, UserDetail, UserUpdate, UserDelete, UserLogin
 from .views.match import MatchCreate, MatchDetail
+from .views.tournament import TournamentCreate, TournamentDetail
+from .views.tournament_user import TournamentUserCreate, TournamentUserDetail
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
 urlpatterns = [
@@ -31,5 +33,10 @@ urlpatterns = [
     path('users/<int:userId>/chat_rooms', UserChatRoomDetails.as_view(), name='user_chat_room_details'),
 	
     path('match/', MatchCreate.as_view(), name='create_match'),
-	path('match/<int:pk>/', MatchDetail.as_view(), name='match_detail'),
+	path('match/<int:id>/', MatchDetail.as_view(), name='match_detail'),
+	
+    path('tournament/', TournamentCreate.as_view(), name='create_tournament'),
+	path('tournament/<int:id>/', TournamentDetail.as_view(), name='tournament_detail'),
+    path('tournament_user/', TournamentUserCreate.as_view(), name='create_tournament_user'),
+	path('tournament_user/<int:user_id>/<int:tournament_id>/', TournamentUserDetail.as_view(), name='tournament_user_detail'),
 ]
