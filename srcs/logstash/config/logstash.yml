@@ -1,0 +1,38 @@
+# logstash.yml
+
+# Settings file for Logstash
+
+# ------------ Core Settings --------------
+# Where to find the pipeline configuration files
+# path.data:
+path.data: /usr/share/logstash/data
+
+# Logstash pipeline settings
+pipeline:
+  # Pipeline identifier
+  id: main
+  # Pipeline configurations location
+  path.config: "/usr/share/logstash/pipeline"
+
+# ------------ HTTP API Settings -------------
+# Bind address for the metrics REST endpoint
+http.host: "0.0.0.0"
+# Port for the metrics REST endpoint
+http.port: 9600
+
+# ------------ Other Settings --------------
+# Where to write the log file
+path.logs: /usr/share/logstash/logs
+
+# Monitoring
+xpack.monitoring.enabled: false
+
+# Pipeline settings for multi-pipelines
+config:
+  # Location of the pipeline configuration files
+  reload.automatic: true
+  reload.interval: 3s
+
+# ------------ Elasticsearch Output Plugin Settings --------------
+# Action to take when there is a problem with an event sent to Elasticsearch
+dead_letter_queue.enable: true
