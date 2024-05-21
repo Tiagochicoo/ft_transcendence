@@ -9,7 +9,7 @@ echo "Database started"
 
 # Apply database migrations
 echo "Applying database migrations..."
-python manage.py makemigrations
+python manage.py makemigrations transcendence
 python manage.py migrate
 
 if [ "$DJANGO_CREATE_SUPERUSER" = "True" ]; then
