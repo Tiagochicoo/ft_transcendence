@@ -71,6 +71,35 @@
   width: 175px;
 }
 
+.bracket {
+	display: flex;
+}
+
+.round {
+	flex: 1;
+	display: flex;
+	margin-right: 30px;
+	flex-direction: column;
+	justify-content: space-around;
+}
+
+.match {
+	margin: 15px 0;
+	overflow: hidden;
+	border-radius: 5px;
+}
+
+.team {
+	color: white;
+	padding: 10px 8px;
+	background-color: #14dd50;
+  text-align: center;
+}
+
+.team:nth-child(odd) {
+	border-bottom: 1px solid white;
+}
+
 @media (max-width: 992px) {
   .buttons {
     flex-direction: column;

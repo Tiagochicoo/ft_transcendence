@@ -161,23 +161,69 @@ export default class extends Abstract {
 			console.log("Error creating match.");
 				return false;
 		}
+		
 		counter = counter + 2;
 		matchesIds.push(response);
 	}
 
 	console.log("Matches ids: ", matchesIds);
 
-	
-
 	return this.tournamentId === -1 ? false : true;
   }
 
   enableStartGame() {
+	let content = '';
+	if (this.mode === 'tournament') {
+		let bracket = `<div class='bracket'>
+							<div class='round'>
+								<div class="match">
+									<div class="team">User1</div>
+									<div class="team">User2</div>
+								</div>
+								<div class="match">
+									<div class="team">User3</div>
+									<div class="team">User4</div>
+								</div>
+								<div class="match">
+									<div class="team">User5</div>
+									<div class="team">User6</div>
+								</div>
+								<div class="match">
+									<div class="team">User7</div>
+									<div class="team">User8</div>
+								</div>
+							</div>
+							<div class='round'>
+								<div class="match">
+									<div class="team">User1</div>
+									<div class="team">User3</div>
+								</div>
+								<div class="match">
+									<div class="team">User5</div>
+									<div class="team">User7</div>
+								</div>
+							</div>
+							<div class='round'>
+								<div class="match">
+									<div class="team">User1</div>
+									<div class="team">User5</div>
+								</div>
+							</div>
+							<div class='round'>
+								<div class="team">WINNER: User5</div>
+							</div>
+						</div>`;
+		content += bracket;
+	}
+
+
 	let startBtn = `<a id="start-match-button" href="${this.mode === 'single' ? '/pong/single/match/' + this.matchId : '/pong/tournament/match/' + this.matchId}" data-link>
 						${i18next.t("pong.startGame")}
 					</a>`;
+	
+	content += startBtn;
 
-	return startBtn;
+	return content;
   }
 
   async getHtml() {
