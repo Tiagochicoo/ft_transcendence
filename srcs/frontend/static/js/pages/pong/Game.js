@@ -1,5 +1,6 @@
 import { User } from "/static/js/pages/pong/index.js";
 import { PongData } from "/static/js/api/index.js";
+import { navigateTo } from "/static/js/services/index.js";
 
 
 export default class Game {
@@ -64,7 +65,7 @@ export default class Game {
     this.closeMOdalBtn.addEventListener("click", () => {
       this.modal.style.display = "none";
       this.modal.className = "modal fade";
-      this.restart();
+      navigateTo('/pong');
     });
   }
 
