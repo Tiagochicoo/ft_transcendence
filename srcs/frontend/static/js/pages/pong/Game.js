@@ -4,7 +4,7 @@ import { navigateTo } from "/static/js/services/index.js";
 
 
 export default class Game {
-  constructor(player1, player2, matchId) {
+  constructor(player1, player2, matchId, mode) {
     // Getting canvas context
     this.canvas = document.querySelector("#canvas");
     this.ctx = this.canvas.getContext("2d");
@@ -13,6 +13,7 @@ export default class Game {
     this.rightPlayer = new User(player2.username, player2.id);
     this.animation;
     this.matchId = matchId;
+    this.mode = mode;
 
     // Getting elements references on DOM
     this.startBtn = document.querySelector("#start-btn");
@@ -65,7 +66,11 @@ export default class Game {
     this.closeMOdalBtn.addEventListener("click", () => {
       this.modal.style.display = "none";
       this.modal.className = "modal fade";
-      navigateTo('/pong');
+      if (this.mode === 'single') {
+        navigateTo('/pong');
+      } else if (this.mode === 'tournament') {
+        navigateTo(`/pong/tournament/${this.tournamentId}/rounds`)
+      }
     });
   }
 

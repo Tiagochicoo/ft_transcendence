@@ -1,5 +1,6 @@
 import { Abstract } from "/static/js/components/index.js";
 import { Friends, PongData, Users } from "/static/js/api/index.js";
+import { navigateTo } from "/static/js/services/index.js";
 
 
 export default class extends Abstract {
@@ -10,8 +11,8 @@ export default class extends Abstract {
 	this.participants = [];
 	this.matchId = -1;
 	this.tournamentId = -1;
-	this.rounds = {"rd1": [], "rd2": [{"user1": "?", "user2": "?"}, {"user1": "?", "user2": "?"}], "rd3": [{"user1": "?", "user2": "?"}]};
-	this.tournamentWinner = "?";
+	// this.rounds = {"rd1": [], "rd2": [{"id": -1, "user1": "?", "user2": "?"}, {"id": -1, "user1": "?", "user2": "?"}], "rd3": [{"id": -1, "user1": "?", "user2": "?"}]};
+	// this.tournamentWinner = "?";
 	// it could be better manipulated if included in a global state!
 	let url = window.location.toString();
 	if (url.indexOf('single') > 0) this.mode = 'single';
@@ -106,7 +107,8 @@ export default class extends Abstract {
 	// If it was accepted, we show the start button, if it was not, we must show a notification and allow the user to choose another friend.
 	// Depending on socket connection
 	this.storeTournament().then((response) => {
-		if (response) setupArea.innerHTML = this.enableStartGame();
+		// if (response) setupArea.innerHTML = this.enableStartGame(); //navigateTo()
+			if (response) navigateTo(`/pong/tournament/${this.tournamentId}/rounds`);
 	}).catch((error) => {
 		console.log(error.message);
 			setupArea.innerHTML = `<p style="color: red;">${i18next.t("pong.createError")}</p>`;
@@ -149,29 +151,30 @@ export default class extends Abstract {
 	}
 
 	// Creating matches
-	let counter = 0;
-	for (let i = 0; i < 4; i++) {
-		const response = await PongData.createMatch({
-			"user1": this.participants[counter],
-			"user2": this.participants[counter + 1],
-			"tournament": this.tournamentId
-		});
+	// let counter = 0;
+	// for (let i = 0; i < 4; i++) {
+	// 	const response = await PongData.createMatch({
+	// 		"user1": this.participants[counter],
+	// 		"user2": this.participants[counter + 1],
+	// 		"tournament": this.tournamentId
+	// 	});
 
-		if (response === -1) {
-			console.log("Error creating match.");
-				return false;
-		}
+	// 	if (response === -1) {
+	// 		console.log("Error creating match.");
+	// 			return false;
+	// 	}
 		
-		let match = {
-			"user1": this.participants[counter].username,
-			"user2": this.participants[counter + 1].username,
-			"winner": ''
-		}
-		this.rounds.rd1.push(match);
-		counter = counter + 2;
-	}
+	// 	let match = {
+	// 		"id": response,
+	// 		"user1": this.participants[counter].username,
+	// 		"user2": this.participants[counter + 1].username,
+	// 		"winner": ''
+	// 	}
+	// 	this.rounds.rd1.push(match);
+	// 	counter = counter + 2;
+	// }
 
-	console.log("Round 1: ", this.rounds);
+	// console.log("Round 1: ", this.rounds);
 
 	return this.tournamentId === -1 ? false : true;
   }
@@ -222,7 +225,7 @@ export default class extends Abstract {
 	}
 
 
-	let startBtn = `<a id="start-match-button" href="${this.mode === 'single' ? '/pong/single/match/' + this.matchId : '/pong/tournament/match/' + this.matchId}" data-link>
+	let startBtn = `<a id="start-match-button" href="${this.mode === 'single' ? '/pong/single/match/' + this.matchId : '/pong/tournament/match/' + this.rounds.rd1[0].id}" data-link>
 						${i18next.t("pong.startGame")}
 					</a>`;
 	

@@ -95,9 +95,11 @@ export default class PongData {
 		}
 	}
 
-	static getTournamentUserByIds(userId, tournamentId) {
-		return fetch(`${API_URL}/tournament_user/${userId}/${tournamentId}/`)
+	static getTournamentUserById(tournamentId) {
+		return fetch(`${API_URL}/tournament_user/${tournamentId}/`)
 		.then((response) => response.json())
 		.catch((error) => console.log(error.message));
 	}
+
+
   }

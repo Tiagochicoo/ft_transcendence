@@ -19,10 +19,14 @@ class TournamentUserCreate(APIView):
 			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class TournamentUserDetail(APIView):
-	def get(self, request, user_id, tournament_id, format=None):
+	def get(self, request, tournament_id, format=None):
+		response = []
 		try:
-			tournament_user = TournamentUser.objects.get(tournament=tournament_id, user=user_id)
-			serializer = TournamentUserSerializer(tournament_user)
+			all = TournamentUser.objects.all()
+			for elem in all:
+				if elem.tournament.id == tournament_id:
+					response.append(elem)
+			serializer = TournamentUserSerializer(response, many=True)
 			return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
 		except Exception as error:
 			return JsonResponse({'success': False, 'error': 'No tournament_user found.'}, status=status.HTTP_404_NOT_FOUND)

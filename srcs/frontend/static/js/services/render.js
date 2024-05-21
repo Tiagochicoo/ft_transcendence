@@ -7,8 +7,9 @@ import {
   SignUp,
   Match,
   Pong,
-  Setup,
+  Setup
 } from "/static/js/pages/index.js";
+import { Tournament } from "/static/js/pages/pong/index.js";
 import { refreshUserID } from "./authService.js";
 import { navigateTo } from "./index.js";
 
@@ -18,6 +19,7 @@ const ROUTES = [
   { path: "/pong/single/setup", title: "Pong", page: Setup },
   { path: "/pong/single/match/:matchId", title: "Pong", page: Match },
   { path: "/pong/tournament/setup", title: "Pong", page: Setup },
+  { path: "/pong/tournament/:id/rounds", title: "Pong", page: Tournament },
   { path: "/pong/tournament/match/:matchId", title: "Pong", page: Match },
   { path: "/sign-up", title: "Sign-up", page: SignUp },
   { path: "/sign-in", title: "Sign-in", page: SignIn },

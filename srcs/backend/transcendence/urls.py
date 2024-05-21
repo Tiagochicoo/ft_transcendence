@@ -39,5 +39,5 @@ urlpatterns = [
     path('tournament/', TournamentCreate.as_view(), name='create_tournament'),
 	path('tournament/<int:id>/', TournamentDetail.as_view(), name='tournament_detail'),
     path('tournament_user/', TournamentUserCreate.as_view(), name='create_tournament_user'),
-	path('tournament_user/<int:user_id>/<int:tournament_id>/', TournamentUserDetail.as_view(), name='tournament_user_detail'),
+	path('tournament_user/<int:tournament_id>/', TournamentUserDetail.as_view(), name='tournament_user_detail'),
 ]
