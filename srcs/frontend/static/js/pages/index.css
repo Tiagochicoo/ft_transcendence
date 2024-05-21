@@ -96,6 +96,13 @@
   text-align: center;
 }
 
+.team-winner {
+  color: white;
+	padding: 10px 8px;
+	background-color: darkgreen;
+  text-align: center;
+}
+
 .team:nth-child(odd) {
 	border-bottom: 1px solid white;
 }

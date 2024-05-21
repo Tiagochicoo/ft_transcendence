@@ -10,7 +10,8 @@ export default class extends Abstract {
 	this.participants = [];
 	this.matchId = -1;
 	this.tournamentId = -1;
-
+	this.rounds = {"rd1": [], "rd2": [{"user1": "?", "user2": "?"}, {"user1": "?", "user2": "?"}], "rd3": [{"user1": "?", "user2": "?"}]};
+	this.tournamentWinner = "?";
 	// it could be better manipulated if included in a global state!
 	let url = window.location.toString();
 	if (url.indexOf('single') > 0) this.mode = 'single';
@@ -148,7 +149,6 @@ export default class extends Abstract {
 	}
 
 	// Creating matches
-	let matchesIds = [];
 	let counter = 0;
 	for (let i = 0; i < 4; i++) {
 		const response = await PongData.createMatch({
@@ -162,11 +162,16 @@ export default class extends Abstract {
 				return false;
 		}
 		
+		let match = {
+			"user1": this.participants[counter].username,
+			"user2": this.participants[counter + 1].username,
+			"winner": ''
+		}
+		this.rounds.rd1.push(match);
 		counter = counter + 2;
-		matchesIds.push(response);
 	}
 
-	console.log("Matches ids: ", matchesIds);
+	console.log("Round 1: ", this.rounds);
 
 	return this.tournamentId === -1 ? false : true;
   }
@@ -177,40 +182,40 @@ export default class extends Abstract {
 		let bracket = `<div class='bracket'>
 							<div class='round'>
 								<div class="match">
-									<div class="team">User1</div>
-									<div class="team">User2</div>
+									<div class="team">${this.rounds.rd1[0].user1}</div>
+									<div class="team">${this.rounds.rd1[0].user2}</div>
 								</div>
 								<div class="match">
-									<div class="team">User3</div>
-									<div class="team">User4</div>
+									<div class="team">${this.rounds.rd1[1].user1}</div>
+									<div class="team">${this.rounds.rd1[1].user2}</div>
 								</div>
 								<div class="match">
-									<div class="team">User5</div>
-									<div class="team">User6</div>
+									<div class="team">${this.rounds.rd1[2].user1}</div>
+									<div class="team">${this.rounds.rd1[2].user2}</div>
 								</div>
 								<div class="match">
-									<div class="team">User7</div>
-									<div class="team">User8</div>
+									<div class="team">${this.rounds.rd1[3].user1}</div>
+									<div class="team">${this.rounds.rd1[3].user2}</div>
 								</div>
 							</div>
 							<div class='round'>
 								<div class="match">
-									<div class="team">User1</div>
-									<div class="team">User3</div>
+									<div class="team">${this.rounds.rd2[0].user1}</div>
+									<div class="team">${this.rounds.rd2[0].user2}</div>
 								</div>
 								<div class="match">
-									<div class="team">User5</div>
-									<div class="team">User7</div>
+									<div class="team">${this.rounds.rd2[1].user1}</div>
+									<div class="team">${this.rounds.rd2[1].user2}</div>
 								</div>
 							</div>
 							<div class='round'>
 								<div class="match">
-									<div class="team">User1</div>
-									<div class="team">User5</div>
+									<div class="team">${this.rounds.rd3[0].user1}</div>
+									<div class="team">${this.rounds.rd3[0].user2}</div>
 								</div>
 							</div>
 							<div class='round'>
-								<div class="team">WINNER: User5</div>
+								<div class="team-winner">${this.tournamentWinner}</div>
 							</div>
 						</div>`;
 		content += bracket;
