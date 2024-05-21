@@ -22,6 +22,7 @@
     "tournament": "Tournament",
     "singleMatchNotEnoughFriends": "You need at least 1 friends to star a match.",
     "tournamentNotEnoughFriends": "You need at least 7 friends to star a tournament.",
+    "createError": "We could not create your match. Please try again.",
     "singleMatchInvitationMessage": "Select your opponent:",
     "tournamentInvitationMessage": "Select 7 participants:",
     "invitationBtn": "Invite",

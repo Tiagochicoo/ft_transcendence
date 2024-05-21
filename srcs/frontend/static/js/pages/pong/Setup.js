@@ -95,7 +95,7 @@ export default class extends Abstract {
 			if (response) setupArea.innerHTML = this.enableStartGame();
 		}).catch((error) => {
 			console.log(error.message);
-			setupArea.innerHTML = '<p style="color: red;">We could not create your match. Please try again.</p>';
+			setupArea.innerHTML = `<p style="color: red;">${i18next.t("pong.createError")}</p>`;
 		});
 	}
   }
@@ -108,7 +108,7 @@ export default class extends Abstract {
 		if (response) setupArea.innerHTML = this.enableStartGame();
 	}).catch((error) => {
 		console.log(error.message);
-			setupArea.innerHTML = '<p style="color: red;">We could not create your tournament. Please try again.</p>';
+			setupArea.innerHTML = `<p style="color: red;">${i18next.t("pong.createError")}</p>`;
 	})
 	
   }
@@ -145,6 +145,8 @@ export default class extends Abstract {
 			}
 		}
 	}
+
+
 	
 
 	return this.tournamentId === -1 ? false : true;
