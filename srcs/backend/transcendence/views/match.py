@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from ..models import Match, User
+from ..models import Match, User, Tournament
 from ..serializers.serializers_match import MatchSerializer
 
 
@@ -13,8 +13,11 @@ class MatchCreate(APIView):
 			user1 = User.objects.get(pk=user1_id)
 			user2_id = request.data.get('user2').get('id')
 			user2 = User.objects.get(pk=user2_id)
-			tournament = request.data.get('tournament') if request.data.get('tournament') else None
-			match = Match.objects.create(user1=user1, user2=user2, tournament=tournament, was_accepted=True)
+			if 'tournament' in request.data:
+				tournament = Tournament.objects.get(pk=request.data.get('tournament'))
+				match = Match.objects.create(user1=user1, user2=user2, tournament=tournament, was_accepted=True)
+			else:
+				match = Match.objects.create(user1=user1, user2=user2, was_accepted=True)
 			serializer = MatchSerializer(match)
 			return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
 		except Exception as error:

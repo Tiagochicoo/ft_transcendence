@@ -130,6 +130,7 @@ export default class extends Abstract {
 
 	this.tournamentId = await PongData.createTournament(data);
 
+	// Creating tournament_user to each user
 	if (this.tournamentId !== -1) {
 		for (const user of this.participants) {
 			const response = await PongData.createTournamentUser(
@@ -146,6 +147,25 @@ export default class extends Abstract {
 		}
 	}
 
+	// Creating matches
+	let matchesIds = [];
+	let counter = 0;
+	for (let i = 0; i < 4; i++) {
+		const response = await PongData.createMatch({
+			"user1": this.participants[counter],
+			"user2": this.participants[counter + 1],
+			"tournament": this.tournamentId
+		});
+
+		if (response === -1) {
+			console.log("Error creating match.");
+				return false;
+		}
+		counter = counter + 2;
+		matchesIds.push(response);
+	}
+
+	console.log("Matches ids: ", matchesIds);
 
 	
 
