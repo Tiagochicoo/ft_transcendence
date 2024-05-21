@@ -34,6 +34,23 @@ export default class PongData {
 			.catch((error) => console.log(error.message));
 	}
 
+	static async updateMatch(data) {
+		try {
+			const response = await fetch(`${API_URL}/match/update`, {
+				method: "PATCH",
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data),
+			});
+
+			const responseData = await response.json();
+			console.log("Success: ", responseData);
+		} catch(error) {
+			console.error("Error: ", error);
+		}
+	}
+
 	static async createTournament(data) {
 		try {
 			const response = await fetch(`${API_URL}/tournament/`, {

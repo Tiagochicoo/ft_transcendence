@@ -21,4 +21,21 @@ export default class Users {
 
     return responseJson;
   }
+
+  static async updateUser(data) {
+    try {
+      const response = await fetch(`${API_URL}/users/update`, {
+        method: "PATCH",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+      });
+
+      const responseData = await response.json();
+			console.log("Success: ", responseData);
+    } catch(error) {
+			console.error("Error: ", error);
+		}
+  }
 }

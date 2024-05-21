@@ -19,7 +19,9 @@ export default class extends Abstract {
 
 	const match = await PongData.getMatchById(this.matchId);
 
-    let game = new Game(match.user1.username, match.user2.username);
+	await PongData.updateMatch({"matchId": this.matchId, "wasAccepted": true });
+
+    let game = new Game(match.user1, match.user2, this.matchId);
     game.draw();
   }
 

@@ -29,3 +29,19 @@ class MatchDetail(APIView):
 			return Response(serializer.data)
 		except Exception as error:
 			return JsonResponse({'success': False, 'error': 'No match found.'}, status=status.HTTP_404_NOT_FOUND)
+		
+class MatchUpdate(APIView):
+	def patch(self, request):
+		try:
+			match = Match.objects.get(pk=request.data.get('matchId'))
+			if 'wasAccepted' in request.data:
+				match.was_accepted = request.data.get('wasAccepted')
+			if 'score' in request.data:
+				match.score = request.data.get('score')
+				match.has_finished = True
+			match.save()
+			serializer = MatchSerializer(match)
+			return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
+		except Exception as error:
+			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+		

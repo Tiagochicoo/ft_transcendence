@@ -1,16 +1,17 @@
 import { User } from "/static/js/pages/pong/index.js";
+import { PongData } from "/static/js/api/index.js";
+
 
 export default class Game {
-  constructor(player1, player2) {
+  constructor(player1, player2, matchId) {
     // Getting canvas context
     this.canvas = document.querySelector("#canvas");
     this.ctx = this.canvas.getContext("2d");
     this.canvasArea = document.querySelector("#pong");
-    // Users should be created on Sign-Up.
-    // Here we will retreive data from database by userId
-    this.leftPlayer = new User(player1);
-    this.rightPlayer = new User(player2);
+    this.leftPlayer = new User(player1.username, player1.id);
+    this.rightPlayer = new User(player2.username, player2.id);
     this.animation;
+    this.matchId = matchId;
 
     // Getting elements references on DOM
     this.startBtn = document.querySelector("#start-btn");
@@ -66,9 +67,6 @@ export default class Game {
       this.restart();
     });
   }
-  static history = [];
-
-  static id = 1;
 
   start() {
     if (!this.isGameOn) {
@@ -208,34 +206,20 @@ export default class Game {
   }
 
   storeResult(winner, looser) {
-    winner.storeGames(
-      Game.id,
-      "win",
-      looser.username,
-      this.leftPlayer.score,
-      this.rightPlayer.score,
-    );
-    looser.storeGames(
-      Game.id,
-      "loose",
-      winner.username,
-      this.leftPlayer.score,
-      this.rightPlayer.score,
-    );
-    // only for test
-    // winner.printGames();
-    // looser.printGames();
-    // winner.printScores();
-    // looser.printScores();
 
-    // this will be pushed to database
-    Game.history.push({
-      id: Game.id,
-      leftPlayer: this.leftPlayer.username,
-      rightPlayer: this.rightPlayer.username,
-      leftPts: this.leftPlayer.score,
-      rightPts: this.rightPlayer.score,
-    });
+    this.storeGames();
+    winner.update('win');
+    looser.update('loose');
+
+  }
+
+  async storeGames() {
+    const data = {
+      "matchId": this.matchId,
+      "score": parseInt(`${this.leftPlayer.score}${this.rightPlayer.score}`)
+    }
+    
+    await PongData.updateMatch(data);
   }
 
   endGame(winner) {
@@ -244,7 +228,6 @@ export default class Game {
     this.modal.style.display = "block";
     this.modal.className = "modal fade show";
     this.isGameOn = false;
-    Game.id++;
   }
 
   draw() {
