@@ -8,8 +8,7 @@ from ..serializers.serializers_tournament import TournamentSerializer
 class TournamentCreate(APIView):
 	def post(self, request):
 		try:
-			creator_id = request.data.get('creator').get('id')
-			creator = User.objects.get(pk=creator_id)
+			creator = User.objects.get(pk=request.data.get('creator'))
 			tournament = Tournament.objects.create(creator=creator)
 			serializer = TournamentSerializer(tournament)
 			return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)

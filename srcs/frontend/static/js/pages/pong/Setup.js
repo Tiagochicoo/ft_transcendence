@@ -125,7 +125,7 @@ export default class extends Abstract {
 
   async storeTournament() {
 	const data = {
-		"creator": this.participants[0]
+		"creator": this.participants[0].id
 	};
 
 	this.tournamentId = await PongData.createTournament(data);
