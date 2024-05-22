@@ -6,7 +6,6 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('transcendence', '0013_message_created_at'),
         ('transcendence', '0014_alter_match_created_on'),
     ]
 
