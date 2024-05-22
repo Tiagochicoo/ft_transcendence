@@ -27,8 +27,8 @@ class FriendCreate(APIView):
 
                 existing_request = already_exists.filter(was_accepted=True, was_refused=False, was_canceled=False).first()
                 if existing_request:
-                    raise Exception('already_friends')
-    
+                    raise Exception('is_already_friend')
+
                 fr_refused_canceled = already_exists.filter(Q(was_refused=True) | Q(was_canceled=True)).first()
                 if fr_refused:
                     fr_refused_canceled.was_refused = False
@@ -43,7 +43,7 @@ class FriendCreate(APIView):
             serializer = FriendRequestSerializer(friend_request)
             return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception as error:
-            return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return JsonResponse({'success': False, 'message': str(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class FriendCancel(APIView):
     def patch(self, request, friendRequestId, format=None):
