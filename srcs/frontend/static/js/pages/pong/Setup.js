@@ -11,8 +11,7 @@ export default class extends Abstract {
 	this.participants = [];
 	this.matchId = -1;
 	this.tournamentId = -1;
-	// this.rounds = {"rd1": [], "rd2": [{"id": -1, "user1": "?", "user2": "?"}, {"id": -1, "user1": "?", "user2": "?"}], "rd3": [{"id": -1, "user1": "?", "user2": "?"}]};
-	// this.tournamentWinner = "?";
+
 	// it could be better manipulated if included in a global state!
 	let url = window.location.toString();
 	if (url.indexOf('single') > 0) this.mode = 'single';
@@ -107,7 +106,6 @@ export default class extends Abstract {
 	// If it was accepted, we show the start button, if it was not, we must show a notification and allow the user to choose another friend.
 	// Depending on socket connection
 	this.storeTournament().then((response) => {
-		// if (response) setupArea.innerHTML = this.enableStartGame(); //navigateTo()
 			if (response) navigateTo(`/pong/tournament/${this.tournamentId}/rounds`);
 	}).catch((error) => {
 		console.log(error.message);
@@ -150,88 +148,17 @@ export default class extends Abstract {
 		}
 	}
 
-	// Creating matches
-	// let counter = 0;
-	// for (let i = 0; i < 4; i++) {
-	// 	const response = await PongData.createMatch({
-	// 		"user1": this.participants[counter],
-	// 		"user2": this.participants[counter + 1],
-	// 		"tournament": this.tournamentId
-	// 	});
-
-	// 	if (response === -1) {
-	// 		console.log("Error creating match.");
-	// 			return false;
-	// 	}
-		
-	// 	let match = {
-	// 		"id": response,
-	// 		"user1": this.participants[counter].username,
-	// 		"user2": this.participants[counter + 1].username,
-	// 		"winner": ''
-	// 	}
-	// 	this.rounds.rd1.push(match);
-	// 	counter = counter + 2;
-	// }
-
-	// console.log("Round 1: ", this.rounds);
-
 	return this.tournamentId === -1 ? false : true;
   }
 
   enableStartGame() {
-	let content = '';
-	if (this.mode === 'tournament') {
-		let bracket = `<div class='bracket'>
-							<div class='round'>
-								<div class="match">
-									<div class="team">${this.rounds.rd1[0].user1}</div>
-									<div class="team">${this.rounds.rd1[0].user2}</div>
-								</div>
-								<div class="match">
-									<div class="team">${this.rounds.rd1[1].user1}</div>
-									<div class="team">${this.rounds.rd1[1].user2}</div>
-								</div>
-								<div class="match">
-									<div class="team">${this.rounds.rd1[2].user1}</div>
-									<div class="team">${this.rounds.rd1[2].user2}</div>
-								</div>
-								<div class="match">
-									<div class="team">${this.rounds.rd1[3].user1}</div>
-									<div class="team">${this.rounds.rd1[3].user2}</div>
-								</div>
-							</div>
-							<div class='round'>
-								<div class="match">
-									<div class="team">${this.rounds.rd2[0].user1}</div>
-									<div class="team">${this.rounds.rd2[0].user2}</div>
-								</div>
-								<div class="match">
-									<div class="team">${this.rounds.rd2[1].user1}</div>
-									<div class="team">${this.rounds.rd2[1].user2}</div>
-								</div>
-							</div>
-							<div class='round'>
-								<div class="match">
-									<div class="team">${this.rounds.rd3[0].user1}</div>
-									<div class="team">${this.rounds.rd3[0].user2}</div>
-								</div>
-							</div>
-							<div class='round'>
-								<div class="team-winner">${this.tournamentWinner}</div>
-							</div>
-						</div>`;
-		content += bracket;
-	}
 
-
-	let startBtn = `<a id="start-match-button" href="${this.mode === 'single' ? '/pong/single/match/' + this.matchId : '/pong/tournament/match/' + this.rounds.rd1[0].id}" data-link>
+	let startBtn = `<a id="start-match-button" href="/pong/single/match/${this.matchId}" data-link>
 						${i18next.t("pong.startGame")}
 					</a>`;
 	
-	content += startBtn;
 
-	return content;
+	return startBtn;
   }
 
   async getHtml() {
