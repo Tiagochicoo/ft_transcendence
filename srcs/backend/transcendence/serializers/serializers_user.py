@@ -32,7 +32,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'email', 'password', 'username', 'num_games', 'num_games_won', 'num_tournaments', 'num_tournaments_won']
+        fields = ['id', 'email', 'password', 'username', 'avatar', 'num_games', 'num_games_won', 'num_tournaments', 'num_tournaments_won']
         extra_kwargs = {'password': {'write_only': True}}
 
     def validate_email(self, value):
@@ -71,6 +71,7 @@ class UserSerializer(serializers.ModelSerializer):
             username=validated_data['username'],
             email=validated_data['email'],
             password=make_password(validated_data['password']),
+            avatar=validated_data.get('avatar', None),            
             num_games=validated_data.get('num_games', 0),
             num_games_won=validated_data.get('num_games_won', 0),
             num_tournaments=validated_data.get('num_tournaments', 0),
