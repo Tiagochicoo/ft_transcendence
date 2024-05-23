@@ -13,7 +13,6 @@ export default class extends Abstract {
     handleLogout() {
         console.log("Logging out user.");
         clearTokens();
-        USER_ID = null;
         navigateTo('/sign-in');
     }
 

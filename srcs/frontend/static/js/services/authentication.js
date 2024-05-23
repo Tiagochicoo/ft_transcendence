@@ -13,6 +13,7 @@ function isTokenExpired(token) {
 function clearTokens() {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    USER_ID = null;
 }
 
 async function refreshUserID() {
@@ -21,8 +22,8 @@ async function refreshUserID() {
     // Get the USER_ID from the 'Access Token'
     try {
         const token = localStorage.getItem('accessToken');
-        if (!token) {
-            throw new Error('no accessToken');
+        if (isTokenExpired(token)) {
+            throw new Error('accessToken expired');
         }
         const payload = JSON.parse(atob(token.split('.')[1]));
         USER_ID = isTokenExpired(token) ? null : payload.user_id;
@@ -33,7 +34,6 @@ async function refreshUserID() {
         }
     } catch (e) {
         clearTokens();
-        USER_ID = null;
     }
 
     if (originalUserID == USER_ID) return;
