@@ -1,3 +1,4 @@
+
 import { Users } from "./index.js";
 
 export default class Friends {
@@ -61,5 +62,22 @@ export default class Friends {
     const responseJson = await response.json();
 
     return responseJson;
+  }
+
+  static async getAllFriends() {
+    const response = await fetch(`${API_URL}/users/${USER_ID}/friend_requests`);
+    const responseJson = await response.json();
+
+    let allFriends = [];
+
+    responseJson.data.forEach((obj) => {
+      for (const [key, value] of Object.entries(obj)) {
+        if (key === 'user1' && value.id === USER_ID && obj.was_accepted === true) {
+          allFriends.push(obj.user2);
+        }
+      }
+    });
+
+    return allFriends;
   }
 }

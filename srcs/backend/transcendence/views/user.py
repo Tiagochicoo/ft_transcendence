@@ -97,3 +97,17 @@ class UserLogin(APIView):
             return JsonResponse({'success': False, 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as error:
             return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class UserUpdate(APIView):
+    def patch(self, request):
+        try:
+            user = User.objects.get(pk=request.data.get('userId'))
+            if 'numGames' in request.data:
+                user.num_games += request.data.get('numGames')
+            if 'numGamesWon' in request.data:
+                user.num_games_won += request.data.get('numGamesWon')
+            user.save()
+            serializer = UserSerializer(user)
+            return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
+        except Exception as error:
+            return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

@@ -45,6 +45,22 @@ async function refreshUserID() {
     }
 }
 
+function getUserIDFromToken() {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+        console.log("No token found, user not logged in.");
+        return null;
+    }
+    try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.user_id;
+    } catch(e) {
+        console.error("Invalid token: ", e);
+        return null;
+    }
+}
+
+
 async function renewAccessToken(refreshToken) {
     console.log("Attempting to renew access token.");
     const response = await fetch('/api/token/refresh/', {
@@ -94,4 +110,4 @@ async function fetchWithToken(url, options = {}) {
     return jsonResponse;
 }
 
-export { clearTokens, refreshUserID, renewAccessToken, fetchWithToken };
+export { clearTokens, refreshUserID, getUserIDFromToken, renewAccessToken, fetchWithToken };
