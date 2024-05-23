@@ -1,18 +1,14 @@
+import { fetchWithToken } from "/static/js/services/index.js";
+
 export default class ChatRooms {
   constructor() {}
 
   static async get(chat_room_id) {
-    const response = await fetch(`${API_URL}/chat_rooms/${chat_room_id}`);
-    const responseJson = await response.json();
-
-    return responseJson;
+    return await fetchWithToken(`/chat_rooms/${chat_room_id}`);
   }
 
   static async getMessages(chat_room_id) {
-    const response = await fetch(`${API_URL}/chat_rooms/${chat_room_id}/messages`);
-    const responseJson = await response.json();
-
-    return responseJson;
+    return await fetchWithToken(`/chat_rooms/${chat_room_id}/messages`);
   }
 
   static async sendMessage(chat_room_id, content) {
@@ -22,7 +18,7 @@ export default class ChatRooms {
       }
     }
 
-    const response = await fetch(`${API_URL}/chat_rooms/${chat_room_id}/messages`, {
+    return await fetchWithToken(`/chat_rooms/${chat_room_id}/messages`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -30,8 +26,5 @@ export default class ChatRooms {
       },
       body: JSON.stringify({ content })
     });
-    const responseJson = await response.json();
-
-    return responseJson;
   }
 }
