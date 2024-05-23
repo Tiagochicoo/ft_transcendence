@@ -69,10 +69,6 @@ export default class extends Abstract {
     this.games = this.data.games;
     this.users = this.data.users;
 
-	// testing communication with Django API
-	const test = await PongData.getUserList();
-	console.log(test);
-
     return `
 			<h1>
 				${i18next.t("generalDashboard.title")}

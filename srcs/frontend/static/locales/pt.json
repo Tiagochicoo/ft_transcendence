@@ -20,7 +20,10 @@
     },
     "singleMatch": "Partida única",
     "tournament": "Campeonato",
-    "invitationMessage": "Escolha seu adversário:",
+    "singleMatchNotEnoughFriends": "É preciso pelo menos 1 amigo para iniciar uma partida.",
+    "tournamentNotEnoughFriends": "São precisos pelo menos 7 amigos para iniciar um campeonato.",
+    "singleMatchInvitationMessage": "Escolha seu adversário:",
+    "tournamentInvitationMessage": "Escolha 7 participantes:",
     "invitationBtn": "Convidar",
     "startGame": "Jogar"
   },

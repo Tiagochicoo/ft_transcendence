@@ -45,7 +45,9 @@ export default class extends Abstract {
   async getHtml() {
     // fetching data mocked on db.json
     this.data = await PongData.getMockedData();
-    this.user = this.data.users.filter((user) => user.userId == this.userId)[0];
+    // this.user = this.data.users.filter((user) => user.userId == this.userId)[0];
+	// mocked for now
+	this.user = this.data.users[0];
 
     return `
 			<h1>

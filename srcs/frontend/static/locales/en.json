@@ -20,7 +20,10 @@
     },
     "singleMatch": "Single Match",
     "tournament": "Tournament",
-    "invitationMessage": "Select your opponent:",
+    "singleMatchNotEnoughFriends": "You need at least 1 friends to star a match.",
+    "tournamentNotEnoughFriends": "You need at least 7 friends to star a tournament.",
+    "singleMatchInvitationMessage": "Select your opponent:",
+    "tournamentInvitationMessage": "Select 7 participants:",
     "invitationBtn": "Invite",
     "startGame": "Start Game"
   },

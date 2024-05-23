@@ -1,20 +1,32 @@
 import { Abstract } from "/static/js/components/index.js";
 import { Game } from "/static/js/pages/pong/index.js";
+import { PongData } from "/static/js/api/index.js";
 
 export default class extends Abstract {
   constructor(props) {
     super(props);
 
     this.params = props;
+	this.matchId = this.params.matchId;
+
+	// it could be better manipulated if included in a global state!
+	let url = window.location.toString();
+	if (url.indexOf('single') > 0) this.mode = 'single';
+	else if (url.indexOf('tournament') > 0) this.mode = 'tournament';
   }
 
   async addFunctionality() {
-    //it is hardcoded but should be properties being received by app management
-    let game = new Game("ansilva-", "tpereira");
+
+	const match = await PongData.getMatchById(this.matchId);
+
+	await PongData.updateMatch({"matchId": this.matchId, "wasAccepted": true });
+
+    let game = new Game(match.user1, match.user2, this.matchId);
     game.draw();
   }
 
   async getHtml() {
+	
     return `
 		<h1 class="mb-4">
 				${i18next.t("pong.title")}

@@ -4,6 +4,7 @@ export default class Users {
   static async get(user_id) {
     const response = await fetch(`${API_URL}/users/${user_id}`);
     const responseJson = await response.json();
+    console.log(responseJson);
 
     return responseJson;
   }
@@ -19,5 +20,22 @@ export default class Users {
     const responseJson = await response.json();
 
     return responseJson;
+  }
+
+  static async updateUser(data) {
+    try {
+      const response = await fetch(`${API_URL}/users/update`, {
+        method: "PATCH",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+      });
+
+      const responseData = await response.json();
+			console.log("Success: ", responseData);
+    } catch(error) {
+			console.error("Error: ", error);
+		}
   }
 }
