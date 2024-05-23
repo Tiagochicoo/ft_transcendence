@@ -17,8 +17,6 @@ class FriendCreate(APIView):
         try:
             user1 = get_user_id_from_request(request)
             user2 = request.data.get('invited_user_id')
-            #user1 = request.data.get('user1')
-            #user2 = request.data.get('user2')
             if user1 == user2:
                 raise Exception('cant_ask_yourself')
 
