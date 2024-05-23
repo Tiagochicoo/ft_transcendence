@@ -9,8 +9,7 @@ import {
   Pong,
   Setup,
 } from "/static/js/pages/index.js";
-import { refreshUserID } from "./authService.js";
-import { navigateTo } from "./index.js";
+import { refreshUserID, navigateTo } from "./index.js";
 
 const ROUTES = [
   { path: "/", title: "Home", page: Home },

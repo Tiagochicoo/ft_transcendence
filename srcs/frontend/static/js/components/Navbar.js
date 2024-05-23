@@ -1,4 +1,4 @@
-import { clearTokens } from "/static/js/services/authService.js";
+import { clearTokens } from "/static/js/services/index.js";
 import { navigateTo } from "/static/js/services/index.js";
 import { Abstract, LanguageToggle } from "./index.js";
 
@@ -13,6 +13,7 @@ export default class extends Abstract {
     handleLogout() {
         console.log("Logging out user.");
         clearTokens();
+        USER_ID = null;
         navigateTo('/sign-in');
     }
 
