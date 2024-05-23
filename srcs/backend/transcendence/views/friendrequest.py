@@ -6,6 +6,7 @@ from ..models import FriendRequest as FriendRequest
 from ..models import User as User
 from ..serializers.serializers_friendrequest import FriendRequestSerializer
 from ..utils.access_token import get_user_id_from_request
+from django.db.models import Q
 
 # POST sends data to the server.
 # PATCH updates resources on the server.
@@ -16,6 +17,8 @@ class FriendCreate(APIView):
         try:
             user1 = get_user_id_from_request(request)
             user2 = request.data.get('invited_user_id')
+            #user1 = request.data.get('user1')
+            #user2 = request.data.get('user2')
             if user1 == user2:
                 raise Exception('cant_ask_yourself')
 
@@ -30,7 +33,7 @@ class FriendCreate(APIView):
                     raise Exception('is_already_friend')
 
                 fr_refused_canceled = already_exists.filter(Q(was_refused=True) | Q(was_canceled=True)).first()
-                if fr_refused:
+                if fr_refused_canceled:
                     fr_refused_canceled.was_refused = False
                     fr_refused_canceled.was_canceled = False
                     fr_refused_canceled.was_accepted = False
