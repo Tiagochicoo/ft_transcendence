@@ -1,6 +1,11 @@
 export default class Users {
   constructor() {}
 
+  static getAuthToken() {
+    // Retrieve the JWT token from localStorage
+    return localStorage.getItem('token');
+  }
+
   static async get(user_id) {
     const response = await fetch(`${API_URL}/users/${user_id}`);
     const responseJson = await response.json();

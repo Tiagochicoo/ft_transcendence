@@ -6,6 +6,35 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from ..models import User
 from ..serializers.serializers_user import UserSerializer
 from ..serializers.serializers_signin import SignInSerializer
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+import logging
+
+logger = logging.getLogger(__name__)
+
+class WhoAmI(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        # Retrieve session data
+        session_data = dict(request.session.items())
+        
+        # Prepare user information if the user is authenticated
+        if request.user.is_authenticated:
+            user_info = {
+                'username': request.user.username,
+                'user_id': request.user.id,
+                'is_active': request.user.is_active
+            }
+        else:
+            user_info = {'message': 'User is not authenticated'}
+
+        # Include session data in the response
+        return Response({
+            'message': 'This is a protected view',
+            'user_info': user_info,
+            'session_data': session_data  # Display session data for debugging
+        })
 
 class UserList(APIView):
     def get(self, request, format=None):
