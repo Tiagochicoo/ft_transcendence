@@ -10,8 +10,7 @@ import {
   Setup
 } from "/static/js/pages/index.js";
 import { Tournament } from "/static/js/pages/pong/index.js";
-import { refreshUserID } from "./authService.js";
-import { navigateTo } from "./index.js";
+import { refreshUserID, navigateTo } from "./index.js";
 
 const ROUTES = [
   { path: "/", title: "Home", page: Home },

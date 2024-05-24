@@ -1,3 +1,4 @@
+import { clearTokens, refreshUserID, fetchWithToken } from "./authentication.js";
 import generateSocket from "./generate-socket.js";
 import i18nextInit from "./i18next.js";
 import navigateTo from "./navigation.js";
@@ -6,4 +7,4 @@ import renderPage from "./render.js";
 import socketListeners from "./socket-listeners.js";
 import { fetchWithToken } from "./authService.js";
 
-export { generateSocket, i18nextInit, navigateTo, sendNotification, renderPage, socketListeners, fetchWithToken };
+export { clearTokens, refreshUserID, fetchWithToken, generateSocket, i18nextInit, navigateTo, sendNotification, renderPage, socketListeners };

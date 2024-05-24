@@ -23,10 +23,17 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Tournament',
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_on', models.DateTimeField(default=django.utils.timezone.now)),
                 ('has_started', models.BooleanField(default=False)),
                 ('has_finished', models.BooleanField(default=False)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='ChatRoom',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('was_blocked', models.BooleanField(default=False)),
             ],
         ),
         migrations.CreateModel(
@@ -77,7 +84,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Match',
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_on', models.DateTimeField(default=django.utils.timezone.now)),
                 ('was_accepted', models.BooleanField(default=False)),
                 ('was_canceled', models.BooleanField(default=False)),

@@ -1,11 +1,12 @@
 
+import { fetchWithToken } from "/static/js/services/index.js";
 import { Users } from "./index.js";
 
 export default class Friends {
   constructor() {}
 
   static async create(invited_user_id) {
-    const response = await fetch(`${API_URL}/friend_requests`, {
+    return await fetchWithToken('/friend_requests', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -13,9 +14,6 @@ export default class Friends {
       },
       body: JSON.stringify({ invited_user_id })
     });
-    const responseJson = await response.json();
-
-    return responseJson;
   }
 
   static async createByUsername(username) {
@@ -31,46 +29,33 @@ export default class Friends {
   }
 
   static async cancel(friend_request_id) {
-    const response = await fetch(`${API_URL}/friend_requests/${friend_request_id}/cancel`, {
+    return await fetchWithToken(`/friend_requests/${friend_request_id}/cancel`, {
       method: 'PATCH'
     });
-    const responseJson = await response.json();
-
-    return responseJson;
   }
 
   static async accept(friend_request_id) {
-    const response = await fetch(`${API_URL}/friend_requests/${friend_request_id}/accept`, {
+    return await fetchWithToken(`/friend_requests/${friend_request_id}/accept`, {
       method: 'PATCH'
     });
-    const responseJson = await response.json();
-
-    return responseJson;
   }
 
   static async refuse(friend_request_id) {
-    const response = await fetch(`${API_URL}/friend_requests/${friend_request_id}/refuse`, {
+    return await fetchWithToken(`/friend_requests/${friend_request_id}/refuse`, {
       method: 'PATCH'
     });
-    const responseJson = await response.json();
-
-    return responseJson;
   }
 
   static async getAll() {
-    const response = await fetch(`${API_URL}/users/${USER_ID}/friend_requests`);
-    const responseJson = await response.json();
-
-    return responseJson;
+    return await fetchWithToken(`/users/${USER_ID}/friend_requests`);
   }
 
   static async getAllFriends() {
-    const response = await fetch(`${API_URL}/users/${USER_ID}/friend_requests`);
-    const responseJson = await response.json();
+    const response = await fetchWithToken(`/users/${USER_ID}/friend_requests`);
 
     let allFriends = [];
 
-    responseJson.data.forEach((obj) => {
+    response.data.forEach((obj) => {
       for (const [key, value] of Object.entries(obj)) {
         if (key === 'user1' && value.id === USER_ID && obj.was_accepted === true) {
           allFriends.push(obj.user2);

@@ -1,5 +1,7 @@
 import { fetchWithToken } from "/static/js/services/index.js";
 
+import { fetchWithToken } from "/static/js/services/index.js";
+
 export default class Users {
   constructor() {}
 
@@ -14,10 +16,7 @@ export default class Users {
       }
     }
 
-    const response = await fetch(`${API_URL}/users?` + new URLSearchParams({ username }));
-    const responseJson = await response.json();
-
-    return responseJson;
+    return await fetchWithToken(`/users?` + new URLSearchParams({ username }));
   }
 
   static async updateUser(data) {

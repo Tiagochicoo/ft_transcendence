@@ -13,6 +13,7 @@ function isTokenExpired(token) {
 function clearTokens() {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    USER_ID = null;
 }
 
 async function refreshUserID() {
@@ -21,8 +22,8 @@ async function refreshUserID() {
     // Get the USER_ID from the 'Access Token'
     try {
         const token = localStorage.getItem('accessToken');
-        if (!token) {
-            throw new Error('no accessToken');
+        if (isTokenExpired(token)) {
+            throw new Error('accessToken expired');
         }
         const payload = JSON.parse(atob(token.split('.')[1]));
         USER_ID = isTokenExpired(token) ? null : payload.user_id;
@@ -33,7 +34,6 @@ async function refreshUserID() {
         }
     } catch (e) {
         clearTokens();
-        USER_ID = null;
     }
 
     if (originalUserID == USER_ID) return;
@@ -45,69 +45,49 @@ async function refreshUserID() {
     }
 }
 
-function getUserIDFromToken() {
-    const token = localStorage.getItem('accessToken');
-    if (!token) {
-        console.log("No token found, user not logged in.");
-        return null;
-    }
-    try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        return payload.user_id;
-    } catch(e) {
-        console.error("Invalid token: ", e);
-        return null;
-    }
-}
-
-
 async function renewAccessToken(refreshToken) {
-    console.log("Attempting to renew access token.");
-    const response = await fetch('/api/token/refresh/', {
+    const response = await fetch(`${API_URL}/api/token/refresh/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ refresh: refreshToken })
     });
-    const data = await response.json();
+
     if (response.ok) {
-        localStorage.setItem('accessToken', data.access);
+        const jsonResponse = await response.json();
+        localStorage.setItem('accessToken', jsonResponse.access);
         console.log("Access token successfully renewed.");
-        return data.access;
+        return jsonResponse.access;
     } else {
-        console.error('Failed to renew access token:', data);
+        console.error('Failed to renew access token');
         throw new Error('Failed to renew access token');
     }
 }
 
-async function fetchWithToken(url, options = {}) {
-    let accessToken = localStorage.getItem('accessToken');
-    const refreshToken = localStorage.getItem('refreshToken');
+async function fetchWithToken(path, options = {}) {
+    let accessToken = localStorage.getItem('accessToken'),
+        refreshToken = localStorage.getItem('refreshToken');
 
     if (isTokenExpired(accessToken)) {
         console.log("Access token is expired, renewing token...");
         try {
             accessToken = await renewAccessToken(refreshToken);
         } catch (error) {
-            console.error('Token renewal failed or refresh token expired:', error);
-            navigateTo('/sign-in');
-            return;
+            console.error('Token renewal failed:', error);
+            return navigateTo('/sign-in');
         }
     }
 
-    console.log(`Making API call to ${url}`);
-    const response = await fetch(url, {
+    const response = await fetch(`${API_URL}${path}`, {
         ...options,
-        headers: {
-            ...options.headers,
+        headers: Object.assign({}, options.headers, {
             Authorization: `Bearer ${accessToken}`,
-        },
+        })
     });
-
     const jsonResponse = await response.json();
-    console.log(`Response from ${url}:`, jsonResponse);
+
     return jsonResponse;
 }
 
-export { clearTokens, refreshUserID, getUserIDFromToken, renewAccessToken, fetchWithToken };
+export { clearTokens, refreshUserID, fetchWithToken };
