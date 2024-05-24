@@ -27,7 +27,7 @@ export default class extends Abstract{
 		} else if (this.matches.length === 7) {
 			await PongData.updateTournament({
 				"id": this.id,
-				"winner": this.participants.filter((user) => user.username === this.winner)[0],
+				"winner": this.participants.filter((user) => user.username === this.winner)[0].id,
 				"hasFinished": true
 			});
 		}
@@ -37,20 +37,24 @@ export default class extends Abstract{
 		const tournamentBracket = document.getElementById('tournament-bracket');
 		
 		tournamentBracket.innerHTML = this.showBracket();
-		console.log("Participants: ", this.participants);
 		
-		
-		const startBtn = document.getElementById('start-match-button');
-		startBtn.addEventListener("click", async () => {
-			let nextMatch = this.rounds.filter((match) => match.user1 !== '?' && match.winner === '?')[0];
-			console.log("This match: ", nextMatch);
-			let id = await this.getMatchId(nextMatch);
-			navigateTo(`/pong/tournament/match/${id}`)
-		});
+		if (this.winner === '?') {
+			const startBtn = document.getElementById('start-match-button');
+			startBtn.addEventListener("click", async () => {
+				let nextMatch = this.rounds.filter((match) => match.user1 !== '?' && match.winner === '?')[0];
+				let id = await this.getMatchId(nextMatch);
+				navigateTo(`/pong/tournament/match/${id}`)
+			});
+		}
 		
 	}
 
 	async getMatchId(match) {
+		console.log("Creating match: ", {
+			"user1": this.participants.filter((user) => user.username === match.user1)[0],
+			"user2": this.participants.filter((user) => user.username === match.user2)[0],
+			"tournament": this.id
+		});
 		const id = await PongData.createMatch({
 			"user1": this.participants.filter((user) => user.username === match.user1)[0],
 			"user2": this.participants.filter((user) => user.username === match.user2)[0],
@@ -67,84 +71,102 @@ export default class extends Abstract{
 			this.participants.push(obj.user);
 		});
 		this.participants.sort((a, b) => a.id - b.id);
-		console.log("sorted participants: ", this.participants);
 	}
 
 	async getMatches() {
-		console.log("Getting matches: ");
 		const allMatches = await PongData.getAllMatchesFromTournament(this.id);
 		console.log(allMatches.data);
 		console.log(allMatches.data.length);
 		if (allMatches.data.length > 0) {
 			this.matches = [...allMatches.data];
 			this.matches.sort((a, b) => a.id - b.id);
-			console.log("SORTED MTCHES: ", this.matches);
 		}
 	}
 	
 	async createRounds() {
-		await this.getMatches();	
+		await this.getMatches();
 		console.log("Matchs: ", this.matches);
-		if (this.matches.length > 0) {
-			for (const [index, match] of Object.entries(this.matches)) {
-				this.rounds.push({
-					"user1": match.user1.username,
-					"user2": match.user2.username,
-					"winner": match.has_finished ? match.winner.username : '?'
-				});
-			}
-		}
-		console.log(this.rounds);
-		console.log(this.rounds.length);
-		
-		if (this.rounds.length < 4) {
-			for (let i = this.rounds.length; i < 4; i++) {
-				console.log("i: ", i);
-				let index = i * 2;
-				this.rounds.push({
-					"user1": this.participants[index].username,
-					"user2": this.participants[index + 1].username,
-					"winner": '?'
-				});
-			}
-		}
-		console.log(this.rounds);
-		console.log(this.rounds.length < 6);
 
-		if (this.rounds.length < 6) {
-			console.log("Creating match 4 and 5: ");
-			console.log("from rounds: ", this.rounds[0], this.rounds[1]);
-			let index = 0;
-			for (let i = this.rounds.length; i < 6; i++) {
+		let k = 0;
+		for (let i = 0; i < 7; i++) {
+			console.log("i: ", i);
+			if (i < 4) {
+				let j = i * 2;
+				console.log("j: ", j);
 				this.rounds.push({
-					"user1": this.rounds[index].winner,
-					"user2": this.rounds[index + 1].winner,
-					"winner": '?'
+					"user1": this.matches.length > i ? this.matches[i].user1.username : this.participants[j].username,
+					"user2": this.matches.length > i ? this.matches[i].user2.username : this.participants[j + 1].username,
+					"winner": this.matches.length > i ? this.matches[i].winner.username : '?'
 				});
-				index = index + 2;
+			} else {
+				console.log("k: ", k);
+				this.rounds.push({
+					"user1": this.rounds[k].winner,
+					"user2": this.rounds[k + 1].winner,
+					"winner": this.matches.length > i ? this.matches[i].winner.username : '?'
+				});
+				k = k + 2;
 			}
+			console.log("rounds: ", this.rounds);
 		}
-		console.log(this.rounds);
-		console.log(this.matches.length);
 
-		if (this.rounds.length === 6) {
-			this.rounds.push({
-				"user1": this.rounds[4].winner,
-				"user2": this.rounds[5].winner,
-				"winner": '?'
-			});
-		} else if (this.rounds.length === 7) {
-			this.winner = this.rounds[6].winner;
-		} else {
-			for (let i = this.rounds.length; i < 7; i++) {
-				this.rounds.push({
-					"user1": '?',
-					"user2": '?',
-					"winner": '?'
-				});
-			}
-		}
+		this.winner = this.rounds[6].winner;
+
 	}
+
+	// 	// if some match have finished, we retrieve them here
+	// 	if (this.matches.length > 0) {
+	// 		for (const [index, match] of Object.entries(this.matches)) {
+	// 			this.rounds.push({
+	// 				"user1": match.user1.username,
+	// 				"user2": match.user2.username,
+	// 				"winner": match.has_finished ? match.winner.username : '?'
+	// 			});
+	// 		}
+	// 	}
+		
+	// 	if (this.rounds.length < 4) {
+	// 		for (let i = this.rounds.length; i < 4; i++) {
+	// 			let index = i * 2;
+	// 			this.rounds.push({
+	// 				"user1": this.participants[index].username,
+	// 				"user2": this.participants[index + 1].username,
+	// 				"winner": '?'
+	// 			});
+	// 		}
+	// 	}
+
+	// 	// end of first round!
+
+	// 	this.rounds[4] = 
+
+	// 	this.rounds.push({
+	// 		"user1": this.rounds[0].winner,
+	// 		"user2": this.rounds[1].winner,
+	// 		"winner": '?'
+	// 	});
+
+	// 	this.rounds.push({
+	// 		"user1": this.rounds[2].winner,
+	// 		"user2": this.rounds[3].winner,
+	// 		"winner": '?'
+	// 	});
+		
+	// 	this.rounds.push({
+	// 		"user1": this.rounds[4].winner,
+	// 		"user2": this.rounds[5].winner,
+	// 		"winner": '?'
+	// 	});
+	
+	// 	this.winner = this.rounds[6].winner;
+	
+	// 	this.rounds.push({
+	// 		"user1": '?',
+	// 		"user2": '?',
+	// 		"winner": '?'
+	// 	});
+		
+	// }
 
 	showBracket() {
 		let content = '';

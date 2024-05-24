@@ -31,7 +31,7 @@ class TournamentUpdate(APIView):
 			if 'hasStarted' in request.data:
 				tournament.has_started = request.data.get('hasStarted')
 			if 'winner' in request.data:
-				tournament.winner = request.data.get('winner')
+				tournament.winner = User.objects.get(pk=request.data.get('winner'))
 			if 'hasFinished' in request.data:
 				tournament.has_finished = request.data.get('hasFinished')
 			tournament.save()
