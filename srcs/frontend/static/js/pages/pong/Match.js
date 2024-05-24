@@ -44,10 +44,6 @@ export default class extends Abstract {
 						</div>
 					</div>
 				</div>
-				<div class="chat-area">
-					<p>Chat appears here!</p>
-					<img src="https://cdn5.vectorstock.com/i/1000x1000/58/09/concept-online-chat-man-and-woman-vector-26235809.jpg" style="width: 50%;">
-				</div>
 			</div>
 
 		<div class="modal fade" tabindex="-1" role="dialog" id="message-modal">
