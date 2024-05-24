@@ -1,12 +1,10 @@
+import { fetchWithToken } from "/static/js/services/index.js";
+
 export default class Users {
   constructor() {}
 
   static async get(user_id) {
-    const response = await fetch(`${API_URL}/users/${user_id}`);
-    const responseJson = await response.json();
-    console.log(responseJson);
-
-    return responseJson;
+    return await fetchWithToken(`${API_URL}/users/${user_id}`);
   }
 
   static async getByUsername(username) {
@@ -23,19 +21,18 @@ export default class Users {
   }
 
   static async updateUser(data) {
+
     try {
-      const response = await fetch(`${API_URL}/users/update`, {
+      const response = await fetchWithToken(`${API_URL}/users/update`, {
         method: "PATCH",
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(data),
       });
-
-      const responseData = await response.json();
-			console.log("Success: ", responseData);
     } catch(error) {
 			console.error("Error: ", error);
 		}
+
   }
 }

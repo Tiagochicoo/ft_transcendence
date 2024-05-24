@@ -1,3 +1,5 @@
+import { fetchWithToken } from "/static/js/services/index.js";
+
 export default class PongData {
 	constructor() {}
   
@@ -11,55 +13,49 @@ export default class PongData {
 	static async createMatch(data) {
 		
 		try {
-			const response = await fetch(`${API_URL}/match/`, {
+			const response = await fetchWithToken(`${API_URL}/match/`, {
 				method: "POST",
 				headers: {
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify(data),
 			});
-
-			const responseData = await response.json();
-			console.log("Success: ", responseData);
-			return responseData.data.id;
+			return response.data.id;
 		} catch(error) {
 			console.error("Error: ", error);
 			return -1;
 		}
 	}
 
-	static getMatchById(id) {
-		return fetch(`${API_URL}/match/${id}`)
-			.then((response) => response.json())
-			.catch((error) => console.log(error.message));
+	static async getMatchById(id) {
+		
+		return await fetchWithToken(`${API_URL}/match/${id}`);
 	}
 
 	static async updateMatch(data) {
+		
 		try {
-			const response = await fetch(`${API_URL}/match/update`, {
+			const response = await fetchWithToken(`${API_URL}/match/update`, {
 				method: "PATCH",
 				headers: {
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify(data),
 			});
-
-			const responseData = await response.json();
-			console.log("Success: ", responseData);
 		} catch(error) {
 			console.error("Error: ", error);
 		}
 	}
 
-	static getAllMatchesFromTournament(tournamentId) {
-		return fetch(`${API_URL}/match/on-tournament/${tournamentId}/`)
-				.then((response) => response.json())
-				.catch((error) => console.log(error.message));
+	static async getAllMatchesFromTournament(tournamentId) {
+		
+		return await fetchWithToken(`${API_URL}/match/on-tournament/${tournamentId}/`);
 	}
 
 	static async createTournament(data) {
+		
 		try {
-			const response = await fetch(`${API_URL}/tournament/`, {
+			const response = await fetchWithToken(`${API_URL}/tournament/`, {
 				method: "POST",
 				headers: {
 					'Content-Type': 'application/json'
@@ -67,9 +63,7 @@ export default class PongData {
 				body: JSON.stringify(data),
 			});
 
-			const responseData = await response.json();
-			console.log("Success: ", responseData);
-			return responseData.data.id;
+			return response.data.id;
 		} catch(error) {
 			console.error("Error: ", error);
 			return -1;
@@ -77,40 +71,35 @@ export default class PongData {
 	}
 
 	static async updateTournament(data) {
+		
 		try {
-			const response = await fetch(`${API_URL}/tournament/update`, {
+			const response = await fetchWithToken(`${API_URL}/tournament/update`, {
 				method: "PATCH",
 				headers: {
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify(data),
 			});
-
-			const responseData = await response.json();
-			console.log("Success: ", responseData);
 		} catch(error) {
 			console.error("Error: ", error);
 		}
 	}
 
-	static getTournamentById(id) {
-		return fetch(`${API_URL}/tournament/${id}`)
-			.then((response) => response.json())
-			.catch((error) => console.log(error.message));
+	static async getTournamentById(id) {
+		
+		return await fetchWithToken(`${API_URL}/tournament/${id}`);
 	}
 	
 	static async createTournamentUser(data) {
+		
 		try {
-			const response = await fetch(`${API_URL}/tournament_user/`, {
+			const response = await fetchWithToken(`${API_URL}/tournament_user/`, {
 				method: "POST",
 				headers: {
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify(data),
 			});
-
-			const responseData = await response.json();
-			console.log("Success: ", responseData);
 			return true;
 		} catch(error) {
 			console.log("Error: ", error);
@@ -118,11 +107,9 @@ export default class PongData {
 		}
 	}
 
-	static getTournamentUserById(tournamentId) {
-		return fetch(`${API_URL}/tournament_user/${tournamentId}/`)
-		.then((response) => response.json())
-		.catch((error) => console.log(error.message));
+	static async getTournamentUserById(tournamentId) {
+		
+		return await fetchWithToken(`${API_URL}/tournament_user/${tournamentId}/`);
 	}
-
 
   }
