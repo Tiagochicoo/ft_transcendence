@@ -242,7 +242,7 @@ export default class Game {
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    // #BDBDBD
+
     this.ctx.fillStyle = "#37ff8b";
 
     //paddles

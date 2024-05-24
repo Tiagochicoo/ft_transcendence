@@ -26,7 +26,8 @@
     "singleMatchInvitationMessage": "Selecciona a tu oponente:",
     "tournamentInvitationMessage": "Seleccione 7 participantes:",
     "invitationBtn": "Convidar",
-    "startGame": "Jugar"
+    "startGame": "Jugar",
+    "winner": "GANADOR"
   },
   "individualDashboard": {
     "title": "Estadísticas",

@@ -18,7 +18,7 @@ export default class extends Abstract{
 		await this.getUsers();
 		await this.createRounds();
 		
-		// to assure it will call API just once
+		// to assure it will call API just once at the beginning and at the end of the tournament
 		if (this.matches.length === 1) {
 			await PongData.updateTournament({
 				"id": this.id,
@@ -32,7 +32,6 @@ export default class extends Abstract{
 			});
 		}
 		
-		console.log("Rounds: ", this.rounds);
 		
 		const tournamentBracket = document.getElementById('tournament-bracket');
 		
@@ -43,18 +42,13 @@ export default class extends Abstract{
 			startBtn.addEventListener("click", async () => {
 				let nextMatch = this.rounds.filter((match) => match.user1 !== '?' && match.winner === '?')[0];
 				let id = await this.getMatchId(nextMatch);
-				navigateTo(`/pong/tournament/match/${id}`)
+				if (id !== -1) navigateTo(`/pong/tournament/match/${id}`);
 			});
 		}
 		
 	}
 
 	async getMatchId(match) {
-		console.log("Creating match: ", {
-			"user1": this.participants.filter((user) => user.username === match.user1)[0],
-			"user2": this.participants.filter((user) => user.username === match.user2)[0],
-			"tournament": this.id
-		});
 		const id = await PongData.createMatch({
 			"user1": this.participants.filter((user) => user.username === match.user1)[0],
 			"user2": this.participants.filter((user) => user.username === match.user2)[0],
@@ -64,6 +58,8 @@ export default class extends Abstract{
 		if (id === -1) console.log("Error creating match");
 		return id;
 	}
+
+	// Users and matches are always being sorted to assure that we are checking for them in the same order everytime we pass through this point
 
 	async getUsers() {
 		const allTournamentUsers = await PongData.getTournamentUserById(this.id);
@@ -75,8 +71,6 @@ export default class extends Abstract{
 
 	async getMatches() {
 		const allMatches = await PongData.getAllMatchesFromTournament(this.id);
-		console.log(allMatches.data);
-		console.log(allMatches.data.length);
 		if (allMatches.data.length > 0) {
 			this.matches = [...allMatches.data];
 			this.matches.sort((a, b) => a.id - b.id);
@@ -85,21 +79,17 @@ export default class extends Abstract{
 	
 	async createRounds() {
 		await this.getMatches();
-		console.log("Matchs: ", this.matches);
 
-		let k = 0;
+		let k = 0; // to check for players that has passed to round 2
 		for (let i = 0; i < 7; i++) {
-			console.log("i: ", i);
 			if (i < 4) {
-				let j = i * 2;
-				console.log("j: ", j);
+				let j = i * 2; // to get players from list of users when they were not included yet on any match on database
 				this.rounds.push({
 					"user1": this.matches.length > i ? this.matches[i].user1.username : this.participants[j].username,
 					"user2": this.matches.length > i ? this.matches[i].user2.username : this.participants[j + 1].username,
 					"winner": this.matches.length > i ? this.matches[i].winner.username : '?'
 				});
 			} else {
-				console.log("k: ", k);
 				this.rounds.push({
 					"user1": this.rounds[k].winner,
 					"user2": this.rounds[k + 1].winner,
@@ -107,66 +97,11 @@ export default class extends Abstract{
 				});
 				k = k + 2;
 			}
-			console.log("rounds: ", this.rounds);
 		}
 
 		this.winner = this.rounds[6].winner;
-
 	}
 
-	// 	// if some match have finished, we retrieve them here
-	// 	if (this.matches.length > 0) {
-	// 		for (const [index, match] of Object.entries(this.matches)) {
-	// 			this.rounds.push({
-	// 				"user1": match.user1.username,
-	// 				"user2": match.user2.username,
-	// 				"winner": match.has_finished ? match.winner.username : '?'
-	// 			});
-	// 		}
-	// 	}
-		
-	// 	if (this.rounds.length < 4) {
-	// 		for (let i = this.rounds.length; i < 4; i++) {
-	// 			let index = i * 2;
-	// 			this.rounds.push({
-	// 				"user1": this.participants[index].username,
-	// 				"user2": this.participants[index + 1].username,
-	// 				"winner": '?'
-	// 			});
-	// 		}
-	// 	}
-
-	// 	// end of first round!
-
-	// 	this.rounds[4] = 
-
-	// 	this.rounds.push({
-	// 		"user1": this.rounds[0].winner,
-	// 		"user2": this.rounds[1].winner,
-	// 		"winner": '?'
-	// 	});
-
-	// 	this.rounds.push({
-	// 		"user1": this.rounds[2].winner,
-	// 		"user2": this.rounds[3].winner,
-	// 		"winner": '?'
-	// 	});
-		
-	// 	this.rounds.push({
-	// 		"user1": this.rounds[4].winner,
-	// 		"user2": this.rounds[5].winner,
-	// 		"winner": '?'
-	// 	});
-	
-	// 	this.winner = this.rounds[6].winner;
-	
-	// 	this.rounds.push({
-	// 		"user1": '?',
-	// 		"user2": '?',
-	// 		"winner": '?'
-	// 	});
-		
-	// }
 
 	showBracket() {
 		let content = '';
@@ -207,7 +142,7 @@ export default class extends Abstract{
 								</div>
 							</div>
 							<div class='round'>
-								<div class="winner"><p>WINNER</p>${this.winner}</div>
+								<div class="winner"><p>${i18next.t("pong.winner")}</p>${this.winner}</div>
 							</div>
 						</div>`;
 		
@@ -217,6 +152,7 @@ export default class extends Abstract{
 							${i18next.t("pong.startGame")}
 						</button>`;
 		
+		// if tournament is over, that is no reason to show this button
 		if (this.winner === '?') content += startBtn;
 
 		return content;
