@@ -13,7 +13,7 @@ class JWTAuthenticationMiddleware:
     def __call__(self, request):
         logger.debug("JWTAuthenticationMiddleware: Called")
         authorization_header = request.headers.get('Authorization')
-        print(f"Authorization Header: {authorization_header}")
+        # print(f"Authorization Header: {authorization_header}")
 
         # Skip JWT authentication for admin, sign-in, and sign-up URLs
         if resolve(request.path_info).route.startswith('admin') or ((request.method == 'POST') and (resolve(request.path_info).url_name in ['users', 'user_login'])):

@@ -1,12 +1,10 @@
 import { fetchWithToken } from "/static/js/services/index.js";
 
-import { fetchWithToken } from "/static/js/services/index.js";
-
 export default class Users {
   constructor() {}
 
   static async get(user_id) {
-    return await fetchWithToken(`${API_URL}/users/${user_id}`);
+    return await fetchWithToken(`/users/${user_id}`);
   }
 
   static async getByUsername(username) {
@@ -22,7 +20,7 @@ export default class Users {
   static async updateUser(data) {
 
     try {
-      const response = await fetchWithToken(`${API_URL}/users/update`, {
+      const response = await fetchWithToken('/users/update', {
         method: "PATCH",
         headers: {
           'Content-Type': 'application/json'

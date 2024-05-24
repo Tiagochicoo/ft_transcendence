@@ -5,6 +5,5 @@ import navigateTo from "./navigation.js";
 import sendNotification from "./notifications.js";
 import renderPage from "./render.js";
 import socketListeners from "./socket-listeners.js";
-import { fetchWithToken } from "./authService.js";
 
 export { clearTokens, refreshUserID, fetchWithToken, generateSocket, i18nextInit, navigateTo, sendNotification, renderPage, socketListeners };

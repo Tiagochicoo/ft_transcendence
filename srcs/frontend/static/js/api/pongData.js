@@ -13,7 +13,7 @@ export default class PongData {
 	static async createMatch(data) {
 		
 		try {
-			const response = await fetchWithToken(`${API_URL}/match/`, {
+			const response = await fetchWithToken('/match/', {
 				method: "POST",
 				headers: {
 					'Content-Type': 'application/json'
@@ -29,13 +29,13 @@ export default class PongData {
 
 	static async getMatchById(id) {
 		
-		return await fetchWithToken(`${API_URL}/match/${id}`);
+		return await fetchWithToken(`/match/${id}`);
 	}
 
 	static async updateMatch(data) {
 		
 		try {
-			const response = await fetchWithToken(`${API_URL}/match/update`, {
+			const response = await fetchWithToken('/match/update', {
 				method: "PATCH",
 				headers: {
 					'Content-Type': 'application/json'
@@ -49,13 +49,13 @@ export default class PongData {
 
 	static async getAllMatchesFromTournament(tournamentId) {
 		
-		return await fetchWithToken(`${API_URL}/match/on-tournament/${tournamentId}/`);
+		return await fetchWithToken(`/match/on-tournament/${tournamentId}/`);
 	}
 
 	static async createTournament(data) {
 		
 		try {
-			const response = await fetchWithToken(`${API_URL}/tournament/`, {
+			const response = await fetchWithToken('/tournament/', {
 				method: "POST",
 				headers: {
 					'Content-Type': 'application/json'
@@ -73,7 +73,7 @@ export default class PongData {
 	static async updateTournament(data) {
 		
 		try {
-			const response = await fetchWithToken(`${API_URL}/tournament/update`, {
+			const response = await fetchWithToken('/tournament/update', {
 				method: "PATCH",
 				headers: {
 					'Content-Type': 'application/json'
@@ -87,13 +87,13 @@ export default class PongData {
 
 	static async getTournamentById(id) {
 		
-		return await fetchWithToken(`${API_URL}/tournament/${id}`);
+		return await fetchWithToken(`/tournament/${id}`);
 	}
 	
 	static async createTournamentUser(data) {
 		
 		try {
-			const response = await fetchWithToken(`${API_URL}/tournament_user/`, {
+			const response = await fetchWithToken('/tournament_user/', {
 				method: "POST",
 				headers: {
 					'Content-Type': 'application/json'
@@ -109,7 +109,7 @@ export default class PongData {
 
 	static async getTournamentUserById(tournamentId) {
 		
-		return await fetchWithToken(`${API_URL}/tournament_user/${tournamentId}/`);
+		return await fetchWithToken(`/tournament_user/${tournamentId}/`);
 	}
 
   }
