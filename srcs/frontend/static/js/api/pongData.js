@@ -51,6 +51,12 @@ export default class PongData {
 		}
 	}
 
+	static getAllMatchesFromTournament(tournamentId) {
+		return fetch(`${API_URL}/match/on-tournament/${tournamentId}/`)
+				.then((response) => response.json())
+				.catch((error) => console.log(error.message));
+	}
+
 	static async createTournament(data) {
 		try {
 			const response = await fetch(`${API_URL}/tournament/`, {
@@ -67,6 +73,23 @@ export default class PongData {
 		} catch(error) {
 			console.error("Error: ", error);
 			return -1;
+		}
+	}
+
+	static async updateTournament(data) {
+		try {
+			const response = await fetch(`${API_URL}/tournament/update`, {
+				method: "PATCH",
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data),
+			});
+
+			const responseData = await response.json();
+			console.log("Success: ", responseData);
+		} catch(error) {
+			console.error("Error: ", error);
 		}
 	}
 

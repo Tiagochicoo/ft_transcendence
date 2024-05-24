@@ -14,6 +14,7 @@ class Match(models.Model):
 	was_refused = models.BooleanField(default=False)
 	has_finished = models.BooleanField(default=False)
 	score = models.IntegerField(default=0)
+	winner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='matches_as_winner')
 
 	def __str__(self):
 		return f"Match {self.id} of {self.user1} with {self.user2}"

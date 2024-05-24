@@ -23,3 +23,19 @@ class TournamentDetail(APIView):
 			return Response(serializer.data)
 		except Exception as error:
 			return JsonResponse({'success': False, 'error': 'No tournament found.' }, status=status.HTTP_404_NOT_FOUND)
+		
+class TournamentUpdate(APIView):
+	def patch(self, request):
+		try:
+			tournament = Tournament.objects.get(pk=request.data.get('id'))
+			if 'hasStarted' in request.data:
+				tournament.has_started = request.data.get('hasStarted')
+			if 'winner' in request.data:
+				tournament.winner = request.data.get('winner')
+			if 'hasFinished' in request.data:
+				tournament.has_finished = request.data.get('hasFinished')
+			tournament.save()
+			serializer = TournamentSerializer(tournament)
+			return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
+		except Exception as error:
+			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

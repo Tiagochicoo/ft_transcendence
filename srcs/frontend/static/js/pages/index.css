@@ -89,21 +89,21 @@
 	border-radius: 5px;
 }
 
-.team {
+.player {
 	color: white;
 	padding: 10px 8px;
 	background-color: #14dd50;
   text-align: center;
 }
 
-.team-winner {
+.winner {
   color: white;
 	padding: 10px 8px;
 	background-color: darkgreen;
   text-align: center;
 }
 
-.team:nth-child(odd) {
+.player:nth-child(odd) {
 	border-bottom: 1px solid white;
 }
 

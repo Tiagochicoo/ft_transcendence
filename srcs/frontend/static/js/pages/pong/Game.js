@@ -1,19 +1,21 @@
 import { User } from "/static/js/pages/pong/index.js";
-import { PongData } from "/static/js/api/index.js";
+import { PongData, Users } from "/static/js/api/index.js";
 import { navigateTo } from "/static/js/services/index.js";
 
 
 export default class Game {
-  constructor(player1, player2, matchId, mode) {
+  constructor(match, mode) {
     // Getting canvas context
     this.canvas = document.querySelector("#canvas");
     this.ctx = this.canvas.getContext("2d");
     this.canvasArea = document.querySelector("#pong");
-    this.leftPlayer = new User(player1.username, player1.id);
-    this.rightPlayer = new User(player2.username, player2.id);
+    this.leftPlayer = new User(match.user1.username, match.user1.id);
+    this.rightPlayer = new User(match.user2.username, match.user2.id);
     this.animation;
-    this.matchId = matchId;
+    this.matchId = match.id;
     this.mode = mode;
+    this.tournamentId = this.mode === 'tournament' ? match.tournament : null;
+
 
     // Getting elements references on DOM
     this.startBtn = document.querySelector("#start-btn");
@@ -213,16 +215,18 @@ export default class Game {
 
   storeResult(winner, looser) {
 
-    this.storeGames();
+    this.storeGames(winner);
     winner.update('win');
     looser.update('loose');
 
   }
 
-  async storeGames() {
+  async storeGames(winner) {
+
     const data = {
       "matchId": this.matchId,
-      "score": parseInt(`${this.leftPlayer.score}${this.rightPlayer.score}`)
+      "score": parseInt(`${this.leftPlayer.score}${this.rightPlayer.score}`),
+      'winner': winner.id
     }
     
     await PongData.updateMatch(data);
