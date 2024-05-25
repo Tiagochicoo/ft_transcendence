@@ -1,14 +1,15 @@
-from rest_framework import serializers
-from ..models import User
+import os
 from django.contrib.auth.hashers import make_password
 from django.core.validators import EmailValidator, MaxLengthValidator
+from rest_framework import serializers
+from ..models import User
 
 class UserSerializer(serializers.ModelSerializer):
 
     email = serializers.EmailField(
         error_messages={
             'blank': 'email_cannot_be_blank',
-            'invalid': 'invalid_email_format'
+            'invalid': 'email_invalid_format'
         }
     )
 
@@ -37,7 +38,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     def validate_email(self, value):
         # Validate email format
-        validator = EmailValidator(message="invalid_email_format")
+        validator = EmailValidator(message="email_invalid_format")
         validator(value)
 
         # Validate email length
@@ -60,6 +61,15 @@ class UserSerializer(serializers.ModelSerializer):
         if User.objects.filter(username=value).exists():
             raise serializers.ValidationError("username_in_use")
         return value
+
+    def validate_avatar(self, value):
+        valid_extensions = ['.png', '.jpg', '.jpeg']
+        extension = os.path.splitext(value.name)[1].lower()
+        if not extension in valid_extensions:
+            raise serializers.ValidationError(f'unsupported_file_extension')
+        limit_kb = 100
+        if value.size > limit_kb * 1024:
+            raise serializers.ValidationError(f'file_size_exceed_limit')
 
     def validate_password(self, value):
         if len(value) < 8:
