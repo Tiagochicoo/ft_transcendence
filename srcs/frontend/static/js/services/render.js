@@ -3,8 +3,9 @@ import {
   GeneralDashboard,
   IndividualDashboard,
   Home,
-  SignIn,
   SignUp,
+  SignIn,
+  EditProfile,
   Match,
   Pong,
   Setup
@@ -22,6 +23,7 @@ const ROUTES = [
   { path: "/pong/tournament/match/:matchId", title: "Pong", page: Match },
   { path: "/sign-up", title: "Sign-up", page: SignUp },
   { path: "/sign-in", title: "Sign-in", page: SignIn },
+  { path: "/edit-profile", title: "Edit Profile", page: EditProfile },
   {
     path: "/dashboard/general",
     title: "General statistics",

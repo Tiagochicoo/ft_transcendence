@@ -8,6 +8,7 @@
     "signUp": "Sign-up",
     "signIn": "Sign-in",
     "pong": "Pong",
+    "editProfile": "Edit profile",
     "logout": "Log out"
   },
   "sidebar": {
@@ -89,33 +90,29 @@
   "signUp": {
     "title": "Sign up",
     "fields": {
-      "email": {
-        "label": "Email address",
-        "invalidFeedback": "Please choose a valid email.",
-        "help": "We'll never share your email with anyone else."
-      },
-      "username": {
-        "label": "Username",
-        "invalidFeedback": "This username is already taken.",
-        "help": "How the other players will see you"
-      },
-      "password": {
-        "label": "Password",
-        "invalidFeedback": "The password must be at least 8 characters."
-      }
+      "email": "Email address",
+      "username": "Username",
+      "avatar": "Avatar",
+      "password": "Password"
     },
     "validation": {
+      "default_error": "Invalid value",
       "email_cannot_be_blank": "Email cannot be blank",
-      "invalid_email_format": "Invalid email format",
+      "email_invalid_format": "Invalid email format",
       "email_too_long": "Email is too long",
       "email_in_use": "This email is already registered",
       "username_cannot_be_blank": "Username cannot be blank",
       "username_too_long": "Username is too long",
       "username_in_use": "This username is already in use",
       "username_too_short": "Username must be at least 5 characters",
+      "avatar_unsupported_file_extension": "Avatar only supports the following formats: PNG, JPG or JPEG",
+      "avatar_file_size_exceed_limit": "Avatar can't exceed the size limit of 100kb",
       "password_cannot_be_blank": "Password cannot be blank",
       "password_too_short": "Password must be at least 8 characters"
       },
       "submitButton": "Submit"
+    },
+    "editProfile" : {
+      "title": "Edit profile"
     }
 }

@@ -1,5 +1,6 @@
 import { ChatRooms } from "/static/js/api/index.js";
 import { Abstract } from "/static/js/components/index.js";
+import { User } from "/static/js/generators/index.js";
 
 // Utility Class
 export default class extends Abstract {
@@ -92,11 +93,7 @@ export default class extends Abstract {
 		return `
 			<div class="chat-box-wrapper" data-chat-room-id="${this.chatRoomId}">
 				<div class="chat-box-header">
-					<img src="${otherUser.avatar}" class="rounded-circle" />
-
-					<span class="lh-1">
-						${otherUser.username}
-					</span>
+					${User.getBadge(otherUser)}
 
 					<button class="chat-box-close" data-action="close">
 						<i class="bi bi-x-circle-fill"></i>

@@ -1,5 +1,6 @@
+import { sendNotification } from "/static/js/services/index.js";
+import { Users } from "/static/js/api/index.js";
 import { Abstract } from "/static/js/components/index.js";
-import { getCSRFToken, navigateTo } from "/static/js/services/index.js";
 
 export default class extends Abstract {
     constructor(props) {
@@ -8,7 +9,7 @@ export default class extends Abstract {
     }
 
     async addFunctionality() {
-        const form = document.getElementById("form-sign-up");
+        const form = document.getElementById("form-edit-profile");
 
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
@@ -20,27 +21,15 @@ export default class extends Abstract {
 
             if (form.checkValidity()) {
                 const formData = new FormData(form);
+                const response = await Users.update(formData);;
 
-                try {
-                    const response = await fetch('http://localhost:8000/api/users', {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRFToken': getCSRFToken()
-                        },
-                        body: formData
+                if (response.success) {
+                    this.clearFields();
+                    sendNotification({
+                        body: 'The profile was successfully updated'
                     });
-
-                    const responseData = await response.json();
-                    console.log("Server response:", responseData);
-
-                    if (!responseData.success) {
-                        this.handleErrors(responseData.errors);
-                    } else {
-                        console.log('User registered successfully:', responseData);
-                        navigateTo('/sign-in');
-                    }
-                } catch (error) {
-                    console.error('Network or other error:', error);
+                } else {
+                    this.handleErrors(response.errors);
                 }
             } else {
                 form.classList.add("was-validated");
@@ -49,7 +38,7 @@ export default class extends Abstract {
     }
 
     handleErrors(errors) {
-        const form = document.getElementById("form-sign-up");
+        const form = document.getElementById("form-edit-profile");
 
         const handleError = (key, errors) => {
             const errorField = form.querySelector(`#${key}Error`);
@@ -67,33 +56,56 @@ export default class extends Abstract {
         handleError('username', errors.username);
         handleError('avatar', errors.avatar);
         handleError('password', errors.password);
-    }    
+    }
+
+    clearFields() {
+        const form = document.getElementById("form-edit-profile");
+        const formFields = form.querySelectorAll('input');
+        formFields.forEach(field => field.value = '');
+    }
 
     async getHtml() {
         return `
-            <h1 class="mb-4">${i18next.t('signUp.title')}</h1>
-            <form id="form-sign-up" class="needs-validation" novalidate>
+            <h1 class="mb-4">
+                ${i18next.t('editProfile.title')}
+            </h1>
+
+            <form id="form-edit-profile" class="needs-validation" novalidate>
                 <div class="mb-4">
-                    <label for="email" class="form-label">${i18next.t('signUp.fields.email')}</label>
+                    <label for="email" class="form-label">
+                        ${i18next.t('signUp.fields.email')}
+                    </label>
                     <input type="text" class="form-control" id="email" name="email">
                     <div id="emailError" class="invalid-feedback" style="display: none;"></div>
                 </div>
+
                 <div class="mb-4">
-                    <label for="username" class="form-label">${i18next.t('signUp.fields.username')}</label>
+                    <label for="username" class="form-label">
+                        ${i18next.t('signUp.fields.username')}
+                    </label>
                     <input type="text" class="form-control" id="username" name="username">
                     <div id="usernameError" class="invalid-feedback" style="display: none;"></div>
                 </div>
+
                 <div class="mb-4">
-                    <label for="avatar" class="form-label">${i18next.t('signUp.fields.avatar')}</label>
+                    <label for="avatar" class="form-label">
+                        ${i18next.t('signUp.fields.avatar')}
+                    </label>
                     <input type="file" accept="image/png, image/jpg, image/jpeg" class="form-control" id="avatar" name="avatar">
                     <div id="avatarError" class="invalid-feedback" style="display: none;"></div>
                 </div>
+
                 <div class="mb-4">
-                    <label for="password" class="form-label">${i18next.t('signUp.fields.password')}</label>
+                    <label for="password" class="form-label">
+                        ${i18next.t('signUp.fields.password')}
+                    </label>
                     <input type="password" class="form-control" id="password" name="password">
                     <div id="passwordError" class="invalid-feedback" style="display: none;"></div>
                 </div>
-                <button type="submit" class="btn btn-primary">${i18next.t('signUp.submitButton')}</button>
+
+                <button type="submit" class="btn btn-primary">
+                    ${i18next.t('signUp.submitButton')}
+                </button>
             </form>
         `;
     }

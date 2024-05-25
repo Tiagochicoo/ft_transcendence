@@ -7,7 +7,9 @@
 *.pyc
 __pycache__
 db.sqlite3
-media
+# Ignore all files in avatar media images, except for the default image
+srcs/backend/media/avatars/*
+!srcs/backend/media/avatars/default.jpeg
 
 # Frontend
 node_modules
