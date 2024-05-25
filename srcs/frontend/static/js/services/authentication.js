@@ -1,6 +1,16 @@
 import { Users } from "/static/js/api/index.js";
 import { generateSocket, navigateTo } from "./index.js";
 
+function getCSRFToken() {
+    try {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; csrftoken=`);
+        return parts.length === 2 ? parts.pop().split(';').shift() : '';
+    } catch(e) {
+        return null;
+    }
+}
+
 function isTokenExpired(token) {
     try {
         const payload = JSON.parse(atob(token.split('.')[1]));
@@ -90,4 +100,4 @@ async function fetchWithToken(path, options = {}) {
     return jsonResponse;
 }
 
-export { clearTokens, refreshUserID, fetchWithToken };
+export { getCSRFToken, clearTokens, refreshUserID, fetchWithToken };

@@ -1,5 +1,5 @@
 import { Abstract } from "/static/js/components/index.js";
-import { navigateTo } from "/static/js/services/index.js";
+import { getCSRFToken, navigateTo } from "/static/js/services/index.js";
 
 export default class extends Abstract {
     constructor(props) {
@@ -31,7 +31,7 @@ export default class extends Abstract {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-CSRFToken': this.getCSRFToken()
+                            'X-CSRFToken': getCSRFToken()
                         },
                         body: JSON.stringify(data)
                     });
@@ -52,12 +52,6 @@ export default class extends Abstract {
                 form.classList.add("was-validated");
             }
         });
-    }
-
-    getCSRFToken() {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; csrftoken=`);
-        return parts.length === 2 ? parts.pop().split(';').shift() : '';
     }
 
     handleErrors(errors) {
