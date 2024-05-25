@@ -93,3 +93,13 @@ class UserSerializer(serializers.ModelSerializer):
             user.avatar = validated_data['avatar']
         user.save()
         return user
+
+    def update(self, instance, validated_data):
+        if 'password' in validated_data:
+            validated_data['password'] = make_password(validated_data['password'])
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        instance.save()
+        return instance
