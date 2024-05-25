@@ -260,7 +260,7 @@ export default class extends Abstract {
 				this.doDataUpdate(response.data);
 				this.updateFriendsSent();
 			} else {
-				usernameErrorEl.textContent = 'Invalid username';
+				usernameErrorEl.textContent = i18next.t(`sidebar.validation.${response?.message || 'default_error'}`);
 				usernameErrorEl.style.display = 'block';
 			}
 		});

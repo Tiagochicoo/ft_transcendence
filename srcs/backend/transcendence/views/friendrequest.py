@@ -6,6 +6,7 @@ from ..models import FriendRequest as FriendRequest
 from ..models import User as User
 from ..serializers.serializers_friendrequest import FriendRequestSerializer
 from ..utils.access_token import get_user_id_from_request
+from django.db.models import Q
 
 # POST sends data to the server.
 # PATCH updates resources on the server.
@@ -16,16 +17,34 @@ class FriendCreate(APIView):
         try:
             user1 = get_user_id_from_request(request)
             user2 = request.data.get('invited_user_id')
-            # Check if instance already exists
+            if user1 == user2:
+                raise Exception('cant_ask_yourself')
+
             already_exists = FriendRequest.objects.filter(user1=user1, user2=user2) | FriendRequest.objects.filter(user1=user2, user2=user1)
             if already_exists:
-                raise Exception('Friend Request already exists')
+                existing_request = already_exists.filter(was_accepted=False, was_refused=False, was_canceled=False).first()
+                if existing_request:
+                    raise Exception('pending_friend_request')
+
+                existing_request = already_exists.filter(was_accepted=True, was_refused=False, was_canceled=False).first()
+                if existing_request:
+                    raise Exception('is_already_friend')
+
+                fr_refused_canceled = already_exists.filter(Q(was_refused=True) | Q(was_canceled=True)).first()
+                if fr_refused_canceled:
+                    fr_refused_canceled.was_refused = False
+                    fr_refused_canceled.was_canceled = False
+                    fr_refused_canceled.was_accepted = False
+                    fr_refused_canceled.save()
+                    serializer = FriendRequestSerializer(fr_refused_canceled)
+                    return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
+
             chat_room = ChatRoom.objects.create(user1_id=user1, user2_id=user2)
             friend_request = FriendRequest.objects.create(user1_id=user1, user2_id=user2, chat_room=chat_room)
             serializer = FriendRequestSerializer(friend_request)
             return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception as error:
-            return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return JsonResponse({'success': False, 'message': str(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class FriendCancel(APIView):
     def patch(self, request, friendRequestId, format=None):
