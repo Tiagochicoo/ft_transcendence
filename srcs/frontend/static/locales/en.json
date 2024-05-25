@@ -10,6 +10,14 @@
     "pong": "Pong",
     "logout": "Log out"
   },
+  "sidebar": {
+    "validation": {
+      "default_error": "Invalid username",
+      "cant_ask_yourself": "Can't ask yourself",
+      "pending_friend_request": "Pending friend request",
+      "is_already_friend": "Is already your friend"
+    }
+  },
   "pong": {
     "title": "Pong",
     "buttons": {

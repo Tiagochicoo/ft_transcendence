@@ -10,6 +10,14 @@
     "pong": "Pong",
     "logout": "Cerrar sesión"
   },
+  "sidebar": {
+    "validation": {
+      "default_error": "Nombre de usuario inválido",
+      "cant_ask_yourself": "No puedes preguntarte a ti mismo",
+      "pending_friend_request": "Solicitud de amistad pendiente",
+      "is_already_friend": "Ya es tu amigo"
+    }
+  },
   "pong": {
     "title": "Pong",
     "buttons": {
