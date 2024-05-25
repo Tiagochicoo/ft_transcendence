@@ -23,6 +23,7 @@
     <script>
       // Declare Global Variables for the client
       const API_URL = 'http://localhost:8000/api';
+      const MEDIA_URL = 'http://localhost:8000';
       let USER_ID, SOCKET;
     </script>
   </head>
@@ -38,11 +39,12 @@
         <div id="app"></div>
         <div id="chat-box"></div>
         <div id="toast" class="toast top-0 end-0 bg-body-secondary" role="alert" aria-live="assertive" aria-atomic="true">
-          <div class="toast-header">
-            <img src="..." class="toast-img rounded me-2" alt="...">
-            <strong class="toast-author me-auto"></strong>
-            <small>just now</small>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          <div class="toast-header justify-content-between">
+            <div class="toast-user"></div>
+            <div class="d-flex align-items-center">
+              <small>just now</small>
+              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
           </div>
           <div class="toast-body"></div>
         </div>

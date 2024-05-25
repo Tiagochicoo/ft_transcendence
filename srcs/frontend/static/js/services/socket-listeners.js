@@ -1,4 +1,4 @@
-import ChatBox from "/static/js/components/ChatBox/index.js";
+import { ChatBox } from "/static/js/components/index.js";
 import FriendsSection from "/static/js/components/Sidebar/FriendsSection.js";
 import { sendNotification } from "./index.js";
 
@@ -12,7 +12,7 @@ const chatMessageSocketListener = () => {
     // but if the ChatBox is not open then send a notification
     if (!ChatBox.appendMessage(data)) {
       sendNotification({
-        author: data.sender.username,
+        user: data.sender,
         body: data.content
       });
     }

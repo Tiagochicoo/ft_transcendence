@@ -1,6 +1,6 @@
 import { Friends } from "/static/js/api/index.js";
-import { Abstract } from "/static/js/components/index.js";
-import ChatBox from "/static/js/components/ChatBox/index.js";
+import { Abstract, ChatBox } from "/static/js/components/index.js";
+import { User } from "/static/js/generators/index.js";
 import { sendNotification } from "/static/js/services/index.js";
 
 // Utility Class
@@ -39,13 +39,7 @@ export default class extends Abstract {
 					<ul class="list-unstyled d-flex flex-column gap-2 mb-0">
 						${list.map(({ id, user }) => `
 							<div class="sidebar-section-element d-flex justify-content-between gap-1 p-1 bg-light rounded" data-friend-id="${id}">
-								<div class="d-flex align-items-center gap-1">
-									<img src="${user.avatar}" class="rounded-circle" />
-
-									<span class="lh-1">
-										${user.username}
-									</span>
-								</div>
+								${User.getBadge(user)}
 
 								<div class="d-flex align-items-center gap-1">
 									${options.actions.map(({ action, icon }) => `
@@ -156,7 +150,7 @@ export default class extends Abstract {
 		this.doDataUpdate(data);
 		this.updateFriendsReceived();
 		sendNotification({
-			author: data.user1.username,
+			user: data.user1,
 			body: 'Sent a friend request'
 		});
 	}
@@ -166,7 +160,7 @@ export default class extends Abstract {
 		this.updateFriendsAccepted();
 		this.updateFriendsSent();
 		sendNotification({
-			author: data.user2.username,
+			user: data.user2,
 			body: 'Refused your friend request'
 		});
 	}
@@ -176,7 +170,7 @@ export default class extends Abstract {
 		this.updateFriendsAccepted();
 		this.updateFriendsSent();
 		sendNotification({
-			author: data.user2.username,
+			user: data.user2,
 			body: 'Accepted your friend request'
 		});
 	}
@@ -185,7 +179,7 @@ export default class extends Abstract {
 		this.doDataUpdate(data);
 		this.updateFriendsReceived();
 		sendNotification({
-			author: data.user1.username,
+			user: data.user1,
 			body: 'Canceled his friend request'
 		});
 	}
