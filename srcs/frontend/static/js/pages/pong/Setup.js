@@ -1,5 +1,6 @@
 import { Abstract } from "/static/js/components/index.js";
 import { Friends, PongData, Users } from "/static/js/api/index.js";
+import { navigateTo } from "/static/js/services/index.js";
 
 
 export default class extends Abstract {
@@ -95,7 +96,7 @@ export default class extends Abstract {
 			if (response) setupArea.innerHTML = this.enableStartGame();
 		}).catch((error) => {
 			console.log(error.message);
-			setupArea.innerHTML = '<p style="color: red;">We could not create your match. Please try again.</p>';
+			setupArea.innerHTML = `<p style="color: red;">${i18next.t("pong.createError")}</p>`;
 		});
 	}
   }
@@ -105,10 +106,10 @@ export default class extends Abstract {
 	// If it was accepted, we show the start button, if it was not, we must show a notification and allow the user to choose another friend.
 	// Depending on socket connection
 	this.storeTournament().then((response) => {
-		if (response) setupArea.innerHTML = this.enableStartGame();
+			if (response) navigateTo(`/pong/tournament/${this.tournamentId}/rounds`);
 	}).catch((error) => {
 		console.log(error.message);
-			setupArea.innerHTML = '<p style="color: red;">We could not create your tournament. Please try again.</p>';
+			setupArea.innerHTML = `<p style="color: red;">${i18next.t("pong.createError")}</p>`;
 	})
 	
   }
@@ -125,11 +126,12 @@ export default class extends Abstract {
 
   async storeTournament() {
 	const data = {
-		"creator": this.participants[0]
+		"creator": this.participants[0].id
 	};
 
 	this.tournamentId = await PongData.createTournament(data);
 
+	// Creating tournament_user to each user
 	if (this.tournamentId !== -1) {
 		for (const user of this.participants) {
 			const response = await PongData.createTournamentUser(
@@ -145,15 +147,16 @@ export default class extends Abstract {
 			}
 		}
 	}
-	
 
 	return this.tournamentId === -1 ? false : true;
   }
 
   enableStartGame() {
-	let startBtn = `<a id="start-match-button" href="${this.mode === 'single' ? '/pong/single/match/' + this.matchId : '/pong/tournament/match/' + this.matchId}" data-link>
+
+	let startBtn = `<a id="start-match-button" href="/pong/single/match/${this.matchId}" data-link>
 						${i18next.t("pong.startGame")}
 					</a>`;
+	
 
 	return startBtn;
   }

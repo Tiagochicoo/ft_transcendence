@@ -21,7 +21,7 @@ export default class extends Abstract {
 
 	await PongData.updateMatch({"matchId": this.matchId, "wasAccepted": true });
 
-    let game = new Game(match.user1, match.user2, this.matchId);
+    let game = new Game(match.data, this.mode);
     game.draw();
   }
 
@@ -43,10 +43,6 @@ export default class extends Abstract {
 							<button class="pong-buttons" id="restart-btn" type="button"> ${i18next.t("pong.buttons.restart")}</button>
 						</div>
 					</div>
-				</div>
-				<div class="chat-area">
-					<p>Chat appears here!</p>
-					<img src="https://cdn5.vectorstock.com/i/1000x1000/58/09/concept-online-chat-man-and-woman-vector-26235809.jpg" style="width: 50%;">
 				</div>
 			</div>
 

@@ -22,10 +22,12 @@
     "tournament": "Campeonato",
     "singleMatchNotEnoughFriends": "É preciso pelo menos 1 amigo para iniciar uma partida.",
     "tournamentNotEnoughFriends": "São precisos pelo menos 7 amigos para iniciar um campeonato.",
+    "createError": "Não foi possível criar o jogo. Por favor, tente novamente.",
     "singleMatchInvitationMessage": "Escolha seu adversário:",
     "tournamentInvitationMessage": "Escolha 7 participantes:",
     "invitationBtn": "Convidar",
-    "startGame": "Jogar"
+    "startGame": "Jogar",
+    "winner": "GANHADOR"
   },
   "individualDashboard": {
     "title": "Estatísticas",

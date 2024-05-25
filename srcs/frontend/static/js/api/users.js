@@ -18,6 +18,7 @@ export default class Users {
   }
 
   static async updateUser(data) {
+
     try {
       const response = await fetchWithToken('/users/update', {
         method: "PATCH",
@@ -26,9 +27,9 @@ export default class Users {
         },
         body: JSON.stringify(data),
       });
-      console.log("Success: ", response);
     } catch(error) {
-      console.error("Error: ", error);
-    }
+			console.error("Error: ", error);
+		}
+
   }
 }
