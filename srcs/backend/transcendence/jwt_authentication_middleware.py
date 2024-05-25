@@ -15,8 +15,9 @@ class JWTAuthenticationMiddleware:
         authorization_header = request.headers.get('Authorization')
         # print(f"Authorization Header: {authorization_header}")
 
-        # Skip JWT authentication for admin, sign-in, and sign-up URLs
-        if resolve(request.path_info).route.startswith('admin') or ((request.method == 'POST') and (resolve(request.path_info).url_name in ['users', 'user_login'])):
+        # Skip JWT authentication for admin, media, sign-in, and sign-up URLs
+        is_media_or_admin_route = any(map(lambda prefix: resolve(request.path_info).route.startswith(prefix), ['admin', '^media/']))
+        if is_media_or_admin_route or ((request.method == 'POST') and (resolve(request.path_info).url_name in ['users', 'user_login'])):
             return self.get_response(request)
 
         if authorization_header:
