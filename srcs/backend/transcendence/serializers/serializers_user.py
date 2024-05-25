@@ -66,10 +66,10 @@ class UserSerializer(serializers.ModelSerializer):
         valid_extensions = ['.png', '.jpg', '.jpeg']
         extension = os.path.splitext(value.name)[1].lower()
         if not extension in valid_extensions:
-            raise serializers.ValidationError(f'unsupported_file_extension')
+            raise serializers.ValidationError("avatar_unsupported_file_extension")
         limit_kb = 100
         if value.size > limit_kb * 1024:
-            raise serializers.ValidationError(f'file_size_exceed_limit')
+            raise serializers.ValidationError("avatar_file_size_exceed_limit")
 
     def validate_password(self, value):
         if len(value) < 8:

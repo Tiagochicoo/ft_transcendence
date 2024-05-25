@@ -81,30 +81,23 @@
     "signUp": {
       "title": "Inscribirse",
       "fields": {
-        "email": {
-          "label": "Correo electrónico",
-          "invalidFeedback": "Por favor, elige un correo electrónico válido.",
-          "help": "Nunca compartiremos su correo electrónico con nadie más."
-        },
-        "username": {
-          "label": "Nombre de usuario",
-          "invalidFeedback": "Este nombre de usuario ya está tomado.",
-          "help": "Cómo te verán los otros jugadores."
-        },
-        "password": {
-          "label": "Contraseña",
-          "invalidFeedback": "La contraseña debe tener al menos 8 caracteres."
-        }
+        "email": "Correo electrónico",
+        "username": "Nombre de usuario",
+        "avatar": "Avatar",
+        "password": "Contraseña"
       },
       "validation": {
+        "default_error": "Valor no válido",
         "email_cannot_be_blank": "El correo no puede estar vacío",
-        "invalid_email_format": "Formato de correo inválido",
+        "email_invalid_format": "Formato de correo inválido",
         "email_too_long": "El correo es demasiado largo",
         "email_in_use": "Este correo electrónico ya está registrado",
         "username_cannot_be_blank": "El nombre de usuario no puede estar vacío",
         "username_too_long": "El nombre de usuario es demasiado largo",
         "username_in_use": "Este nombre de usuario ya está en uso",
         "username_too_short": "El nombre de usuario debe tener al menos 5 caracteres",
+        "avatar_unsupported_file_extension": "El avatar solo admite los siguientes formatos: PNG, JPG o JPEG",
+        "avatar_file_size_exceed_limit": "El avatar no puede exceder el límite de tamaño de 100kb",
         "password_cannot_be_blank": "La contraseña no puede estar vacía",
         "password_too_short": "La contraseña debe tener al menos 8 caracteres"
       },
