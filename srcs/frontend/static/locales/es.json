@@ -102,5 +102,8 @@
         "password_too_short": "La contraseña debe tener al menos 8 caracteres"
       },
       "submitButton": "Registrar"
+    },
+    "editProfile" : {
+      "title": "Editar perfil"
     }
   } 

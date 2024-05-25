@@ -102,5 +102,8 @@
       "password_too_short": "Password must be at least 8 characters"
       },
       "submitButton": "Submit"
+    },
+    "editProfile" : {
+      "title": "Edit profile"
     }
 }
