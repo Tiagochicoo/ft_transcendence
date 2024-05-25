@@ -20,11 +20,6 @@ export default class extends Abstract {
 
             if (form.checkValidity()) {
                 const formData = new FormData(form);
-                const data = {};
-                for (const key of formData.keys()) {
-                    data[key] = formData.get(key);
-                }
-                console.log("Submitting data:", data);
 
                 try {
                     const response = await fetch('http://localhost:8000/api/users', {
@@ -65,9 +60,6 @@ export default class extends Abstract {
                 const errorMessage = i18next.t(errorKey);
                 errorField.textContent = errorMessage;
                 errorField.style.display = 'block';
-            } else {
-                errorField.textContent = '';
-                errorField.style.display = 'none';
             }
         }
 
