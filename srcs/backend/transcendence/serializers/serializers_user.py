@@ -70,6 +70,7 @@ class UserSerializer(serializers.ModelSerializer):
         limit_kb = 100
         if value.size > limit_kb * 1024:
             raise serializers.ValidationError("avatar_file_size_exceed_limit")
+        return value
 
     def validate_password(self, value):
         if len(value) < 8:
@@ -81,7 +82,7 @@ class UserSerializer(serializers.ModelSerializer):
             username=validated_data['username'],
             email=validated_data['email'],
             password=make_password(validated_data['password']),
-            avatar=validated_data.get('avatar', None),            
+            avatar=validated_data.get('avatar', None),
             num_games=validated_data.get('num_games', 0),
             num_games_won=validated_data.get('num_games_won', 0),
             num_tournaments=validated_data.get('num_tournaments', 0),
