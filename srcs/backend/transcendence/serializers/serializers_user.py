@@ -82,11 +82,14 @@ class UserSerializer(serializers.ModelSerializer):
             username=validated_data['username'],
             email=validated_data['email'],
             password=make_password(validated_data['password']),
-            avatar=validated_data.get('avatar', None),
             num_games=validated_data.get('num_games', 0),
             num_games_won=validated_data.get('num_games_won', 0),
             num_tournaments=validated_data.get('num_tournaments', 0),
             num_tournaments_won=validated_data.get('num_tournaments_won', 0)
         )
+        # Only set the avatar if provided
+        # The default value was not working properly otherwise
+        if 'avatar' in validated_data:
+            user.avatar = validated_data['avatar']
         user.save()
         return user
