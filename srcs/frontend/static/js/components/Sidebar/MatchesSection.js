@@ -141,6 +141,15 @@ export default class extends Abstract {
 		}
 	}
 
+	static matchInviteNotification(data) {
+		this.doDataUpdate(data);
+		this.updateMatchesReceived();
+		sendNotification({
+			user: data.user1,
+			body: i18next.t("sidebar.matches.notification_messages.sent")
+		});
+	}
+
 	static matchRefuseNotification(data) {
 		this.doDataUpdate(data);
 		this.updateMatchesAccepted();

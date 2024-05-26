@@ -1,3 +1,11 @@
+const matchInviteSocketListener = (socket, io) => {
+  // Listen to the 'match_invite_' event
+  socket.on('match_invite', (data) => {
+    // console.log(`match_invite_${data.user2.id}`);
+    io.emit(`match_invite_${data.user2.id}`, data);
+  });
+}
+
 const matchRefuseSocketListener = (socket, io) => {
   // Listen to the 'match_refuse' event
   socket.on('match_refuse', (data) => {
@@ -23,6 +31,7 @@ const matchCancelSocketListener = (socket, io) => {
 }
 
 const matchRequests = (socket, io) => {
+  matchInviteSocketListener(socket, io);
   matchRefuseSocketListener(socket, io);
   matchAcceptSocketListener(socket, io);
   matchCancelSocketListener(socket, io);
