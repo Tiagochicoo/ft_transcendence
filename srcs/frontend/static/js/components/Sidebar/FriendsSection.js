@@ -90,7 +90,7 @@ export default class extends Abstract {
 
 		const htmlList = this.getList(list, {
 			id: 'friends-received-list',
-			title: 'Invitations Received',
+			title: i18next.t("sidebar.invitations_received"),
 			actions: [
 				{
 					action: 'refuse',
@@ -123,7 +123,7 @@ export default class extends Abstract {
 
 		const htmlList = this.getList(list, {
 			id: 'friends-sent-list',
-			title: 'Invitations Sent',
+			title: i18next.t("sidebar.invitations_sent"),
 			actions: [
 				{
 					action: 'cancel',
@@ -151,7 +151,7 @@ export default class extends Abstract {
 		this.updateFriendsReceived();
 		sendNotification({
 			user: data.user1,
-			body: 'Sent a friend request'
+			body: i18next.t("sidebar.friends.notification_messages.sent")
 		});
 	}
 
@@ -161,7 +161,7 @@ export default class extends Abstract {
 		this.updateFriendsSent();
 		sendNotification({
 			user: data.user2,
-			body: 'Refused your friend request'
+			body: i18next.t("sidebar.friends.notification_messages.refused")
 		});
 	}
 
@@ -171,7 +171,7 @@ export default class extends Abstract {
 		this.updateFriendsSent();
 		sendNotification({
 			user: data.user2,
-			body: 'Accepted your friend request'
+			body: i18next.t("sidebar.friends.notification_messages.accepted")
 		});
 	}
 
@@ -180,7 +180,7 @@ export default class extends Abstract {
 		this.updateFriendsReceived();
 		sendNotification({
 			user: data.user1,
-			body: 'Canceled his friend request'
+			body: i18next.t("sidebar.friends.notification_messages.canceled")
 		});
 	}
 
@@ -283,13 +283,13 @@ export default class extends Abstract {
 		return `
 			<div id="friends-wrapper" class="sidebar-section">
 				<h4 class="text-white mb-0">
-					Friends
+					${i18next.t("sidebar.friends.title")}
 				</h4>
 
 				<form id="friends-add" novalidate>
 					<input type="text" class="form-control" id="username" name="username">
 					<button type="submit" class="btn btn-primary">
-						Add
+						${i18next.t("sidebar.add")}
 					</button>
 					<div id="usernameError" class="invalid-feedback" style="display: none;"></div>
 				</form>

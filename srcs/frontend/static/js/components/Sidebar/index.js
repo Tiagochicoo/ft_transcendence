@@ -1,14 +1,13 @@
 import { Abstract } from "/static/js/components/index.js";
 import FriendsSection from "./FriendsSection.js";
 
+// Utility Class
 export default class extends Abstract {
-	constructor(props) {
-		super(props);
-
-		this.params = props;
+	constructor() {
+		throw new Error("Cannot be instantiated");
 	}
 
-	async addFunctionality() {
+	static async addFunctionality() {
 		if (!USER_ID) {
 			return;
 		}
@@ -16,7 +15,7 @@ export default class extends Abstract {
 		await FriendsSection.addFunctionality();
 	}
 
-	async getHtml() {
+	static async getHtml() {
 		if (!USER_ID) {
 			return '';
 		}
@@ -26,7 +25,7 @@ export default class extends Abstract {
 				<div class="sidebar-wrapper">
 					<div class="sidebar-inner-wrapper ${window.innerWidth < 768 ? 'offcanvas' : ''} offcanvas-start" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
 						<h2 class="text-white lh-1 mb-4">
-							Menu
+              ${i18next.t("sidebar.menu")}
 						</h2>
 
 						${await FriendsSection.getHtml()}

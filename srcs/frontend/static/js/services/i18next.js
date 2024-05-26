@@ -1,5 +1,5 @@
 import { LOCALES } from "/static/variables.js";
-import { renderPage } from "./index.js";
+import { renderSidebar, renderPage } from "./index.js";
 
 const i18nextInit = async () => {
   await Promise.all(
@@ -31,7 +31,10 @@ const i18nextInit = async () => {
       fallbackLng: LOCALES[0],
       resources: localesData.reduce((acc, curr) => ({ ...acc, ...curr }), {}),
     });
-    i18next.on("languageChanged", renderPage);
+    i18next.on("languageChanged", async () => {
+      await renderSidebar();
+      await renderPage();
+    });
   })
   .catch((error) => {
     throw new Error(`Failed to initiate the i18next: ${error}`);
