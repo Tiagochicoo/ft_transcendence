@@ -47,6 +47,12 @@ export default class extends Abstract {
 											${icon}
 										</button>
 									`).join("")}
+
+									${(options.id == 'matches-accepted-list') ? `
+										<strong class="px-2">
+											#${id}
+										</strong>
+									` : ''}
 								</div>
 							</div>
 						`).join("")}
