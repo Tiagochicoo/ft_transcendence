@@ -1,4 +1,4 @@
-import { Friends } from "/static/js/api/index.js";
+import { Matches } from "/static/js/api/index.js";
 import { Abstract } from "/static/js/components/index.js";
 import { User } from "/static/js/generators/index.js";
 import { sendNotification } from "/static/js/services/index.js";
@@ -57,7 +57,7 @@ export default class extends Abstract {
 	}
 
 	static getMatchesAccepted() {
-		const list = this.data.filter(el => el.was_accepted && !el.was_canceled && !el.was_refused)
+		const list = this.data.filter(el => el.was_accepted && !el.was_canceled && !el.was_refused && !el.has_finished)
 			.map(({ id, user1, user2 }) => ({ id, user: (user1.id == USER_ID) ? user2 : user1 }));
 
 		const htmlList = this.getList(list, {
@@ -170,22 +170,6 @@ export default class extends Abstract {
 		});
 	}
 
-	static updateOnlineStatus() {
-		const matchesID = this.data.map(({ user1, user2 }) => (user1.id == USER_ID) ? user2.id : user1.id);
-
-		matchesID.forEach(matchID => {
-			const isOnline = ONLINE_USERS.find(onlineUserID => onlineUserID == matchID);
-
-			document.querySelectorAll(`.user-badge[data-user-id="${matchID}"]`).forEach(element => {
-				if (isOnline) {
-					element.classList.add("is-online");
-				} else {
-					element.classList.remove("is-online");
-				}
-			});
-		});
-	}
-
 	static async addFunctionality() {
 		const wrapper = document.getElementById('matches-wrapper');
 
@@ -198,7 +182,7 @@ export default class extends Abstract {
 			let response;
 			switch (action) {
 				case 'refuse':
-					response = await Friends.refuse(id);
+					response = await Matches.refuse(id);
 					if (response.success) {
 						SOCKET.emit('match_refuse', response.data);
 						this.doDataUpdate(response.data);
@@ -208,7 +192,7 @@ export default class extends Abstract {
 					break;
 
 				case 'accept':
-					response = await Friends.accept(id);
+					response = await Matches.accept(id);
 					if (response.success) {
 						SOCKET.emit('match_accept', response.data);
 						this.doDataUpdate(response.data);
@@ -218,7 +202,7 @@ export default class extends Abstract {
 					break;
 
 				case 'cancel':
-					response = await Friends.cancel(id);
+					response = await Matches.cancel(id);
 					if (response.success) {
 						SOCKET.emit('match_cancel', response.data);
 						this.doDataUpdate(response.data);
@@ -237,7 +221,7 @@ export default class extends Abstract {
 	}
 
 	static async getHtml() {
-		const response = await Friends.getAll();
+		const response = await Matches.getAll();
 		this.data = response.success ? response.data : [];
 
 		return `
