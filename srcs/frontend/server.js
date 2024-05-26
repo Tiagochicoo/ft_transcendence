@@ -8,6 +8,8 @@ const server = http.createServer(app);
 const io = socket(server);
 const port = process.env.PORT || 3000;
 
+const ONLINE_USERS = {};
+
 app.get("/*", (req, res) => {
   if (/^.*(?:\.js|\.css|\.png|\.json|\.jpg)$/.test(req.url)) {
     res.sendFile(path.resolve(__dirname, req.path.slice(1)));
@@ -25,8 +27,22 @@ io.on('connection', async (socket) => {
 
   console.log(`User-${user_id} connected`);
 
+  // Notify that the User logged in
+  if (ONLINE_USERS[user_id]) {
+    ONLINE_USERS[user_id]++;
+  } else {
+    ONLINE_USERS[user_id] = 1;
+  }
+  io.emit('online_users', Object.keys(ONLINE_USERS).filter(key => ONLINE_USERS[key]));
+
   socket.on('disconnect', () => {
     console.log(`User-${user_id} disconnected`);
+
+    // Notify that the User logged out
+    ONLINE_USERS[user_id]--;
+    if (ONLINE_USERS[user_id] <= 0) {
+      io.emit('online_users', Object.keys(ONLINE_USERS).filter(key => ONLINE_USERS[key]));
+    }
   });
 
   // Listen to he 'chat_message' event
