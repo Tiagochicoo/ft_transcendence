@@ -28,6 +28,15 @@
         "canceled": "Canceled his friend request"
       }
     },
+    "matches": {
+      "title": "Matches",
+      "notification_messages": {
+        "sent": "Sent a match request",
+        "refused": "Refused your match request",
+        "accepted": "Accepted your match request",
+        "canceled": "Canceled his match request"
+      }
+    },
     "validation": {
       "default_error": "Invalid username",
       "cant_ask_yourself": "Can't ask yourself",

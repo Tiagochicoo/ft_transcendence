@@ -28,6 +28,15 @@
         "canceled": "Cancelou sua solicitação de amizade"
       }
     },
+    "matches": {
+      "title": "Partidas",
+      "notification_messages": {
+        "sent": "Enviou uma solicitação de partida",
+        "refused": "Recusou sua solicitação de partida",
+        "accepted": "Aceitou sua solicitação de partida",
+        "canceled": "Cancelou sua solicitação de partida"
+      }
+    },
     "validation": {
       "default_error": "Nome de usuário inválido",
       "cant_ask_yourself": "Não pode perguntar a si mesmo",
