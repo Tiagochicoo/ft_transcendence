@@ -40,11 +40,11 @@ const friendCancelSocketListener = () => {
   });
 }
 
-const FriendRequests = () => {
+const friendRequests = () => {
   friendAddSocketListener();
   friendRefuseSocketListener();
   friendAcceptSocketListener();
   friendCancelSocketListener();
 }
 
-export default FriendRequests;
+export default friendRequests;

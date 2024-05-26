@@ -1,10 +1,12 @@
 import chatMessageSocketListener from "./chat-message.js";
-import FriendRequests from "./friend-requests.js";
+import friendRequests from "./friend-requests.js";
+import matchRequests from "./match-requests.js";
 import onlineUsersSocketListener from "./online-users.js";
 
 const socketListeners = () => {
   chatMessageSocketListener();
-  FriendRequests();
+  friendRequests();
+  matchRequests();
   onlineUsersSocketListener();
 }
 
