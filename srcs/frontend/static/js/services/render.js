@@ -72,9 +72,8 @@ const isRouteValid = (route) => (
 )
 
 const renderSidebar = async () => {
-  const sidebar = new Sidebar();
-  document.getElementById("sidebar").innerHTML = await sidebar.getHtml();
-  await sidebar.addFunctionality();
+  document.getElementById("sidebar").innerHTML = await Sidebar.getHtml();
+  await Sidebar.addFunctionality();
 }
 
 const renderPage = async () => {

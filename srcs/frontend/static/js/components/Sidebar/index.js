@@ -1,14 +1,13 @@
 import { Abstract } from "/static/js/components/index.js";
 import FriendsSection from "./FriendsSection.js";
 
+// Utility Class
 export default class extends Abstract {
-	constructor(props) {
-		super(props);
-
-		this.params = props;
+	constructor() {
+		throw new Error("Cannot be instantiated");
 	}
 
-	async addFunctionality() {
+	static async addFunctionality() {
 		if (!USER_ID) {
 			return;
 		}
@@ -16,7 +15,7 @@ export default class extends Abstract {
 		await FriendsSection.addFunctionality();
 	}
 
-	async getHtml() {
+	static async getHtml() {
 		if (!USER_ID) {
 			return '';
 		}
