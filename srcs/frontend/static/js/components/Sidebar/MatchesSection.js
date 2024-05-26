@@ -170,6 +170,18 @@ export default class extends Abstract {
 		});
 	}
 
+	static async createMatch(invited_user_id) {
+		const response = await Matches.create(invited_user_id);
+
+		if (response.success) {
+			SOCKET.emit('match_invite', response.data);
+			this.doDataUpdate(response.data);
+			this.updateMatchesSent();
+		}
+
+		return response;
+	}
+
 	static async addFunctionality() {
 		const wrapper = document.getElementById('matches-wrapper');
 
