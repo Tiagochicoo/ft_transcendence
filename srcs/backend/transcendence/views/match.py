@@ -12,9 +12,9 @@ class MatchCreate(APIView):
 			user2 = request.data.get('invited_user_id')
 			if 'tournament' in request.data:
 				tournament = Tournament.objects.get(pk=request.data.get('tournament'))
-				match = Match.objects.create(user1=user1, user2=user2, tournament=tournament, was_accepted=True)
+				match = Match.objects.create(user1_id=user1, user2_id=user2, tournament=tournament, was_accepted=True)
 			else:
-				match = Match.objects.create(user1=user1, user2=user2, was_accepted=True)
+				match = Match.objects.create(user1_id=user1, user2_id=user2)
 			serializer = MatchSerializer(match)
 			return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
 		except Exception as error:
