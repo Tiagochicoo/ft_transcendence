@@ -6,10 +6,12 @@ export default class extends Abstract {
 		throw new Error("Cannot be instantiated");
 	}
 
-	static getBadge({ avatar, username }) {
+	static getBadge({ id, avatar, username }) {
+		const isOnline = ONLINE_USERS.find(onlineUserID => onlineUserID == id);
+
 		return `
-			<div class="user-badge d-flex align-items-center gap-1">
-				<img src="${MEDIA_URL}${avatar}" class="rounded-circle" style="height:20px; width:20px;" alt="User avatar" />
+			<div class="user-badge d-flex align-items-center gap-2 ${isOnline ? 'is-online' : ''}" data-user-id="${id}">
+				<img src="${MEDIA_URL}${avatar}" class="rounded-circle" style="height:28px; width:28px;" alt="User avatar" />
 
 				<span class="lh-1">
 					${username}
