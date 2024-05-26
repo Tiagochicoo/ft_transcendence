@@ -31,14 +31,47 @@ main {
 }
 
 /* SideBar */
+.sidebar-outter-wrapper, .sidebar-wrapper {
+  min-width: 250px;
+  max-width: 250px;
+}
+
+.sidebar-wrapper, .sidebar-inner-wrapper {
+  background-color: var(--bs-dark) !important;
+}
+
 .sidebar-wrapper {
-  width: 238px;
+  position: fixed;
+  height: calc(100vh - 100px);
+  border-radius: 5px;
+  overflow: hidden;
 }
 
 .sidebar-inner-wrapper {
-  background-color: var(--bs-dark);
-  height: calc(100vh - 100px);
-  width: 250px;
+  padding: 24px 16px;
+  overflow-y: scroll;
+}
+
+@media (min-width: 768px) {
+  .sidebar-inner-wrapper {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    height: 100% !important;
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .sidebar-outter-wrapper, .sidebar-wrapper {
+    min-width: 72px;
+    max-width: 72px;
+  }
+
+  .sidebar-inner-wrapper {
+    top: 66px !important;
+    max-width: max(250px, 75vw) !important;
+  }
 }
 
 .sidebar-section {
