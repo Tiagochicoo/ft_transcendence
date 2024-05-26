@@ -1,6 +1,7 @@
 
 const chatMessageSocketListener = require("./chat-message.js");
 const friendRequests = require("./friend-requests.js");
+const matchRequests = require("./match-requests.js");
 
 const ONLINE_USERS = {};
 
@@ -33,6 +34,7 @@ const socketListeners = (io) => {
 
     chatMessageSocketListener(socket, io);
     friendRequests(socket, io);
+    matchRequests(socket, io);
   });
 }
 
