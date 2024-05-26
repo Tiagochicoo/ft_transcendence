@@ -1,6 +1,5 @@
 import { ChatBox } from "/static/js/components/index.js";
 import FriendsSection from "/static/js/components/Sidebar/FriendsSection.js";
-import { User } from "/static/js/generators/index.js";
 import { sendNotification } from "./index.js";
 
 const onlineUsersSocketListener = () => {

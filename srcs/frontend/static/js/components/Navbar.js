@@ -1,5 +1,4 @@
-import { clearTokens } from "/static/js/services/index.js";
-import { navigateTo } from "/static/js/services/index.js";
+import { doLogout } from "/static/js/services/index.js";
 import { Abstract, LanguageToggle } from "./index.js";
 
 export default class extends Abstract {
@@ -12,8 +11,7 @@ export default class extends Abstract {
 
     handleLogout() {
         console.log("Logging out user.");
-        clearTokens();
-        navigateTo('/sign-in');
+        doLogout();
     }
 
     async addFunctionality() {
