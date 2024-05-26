@@ -1,6 +1,12 @@
 import { Users } from "/static/js/api/index.js";
 import { generateSocket, navigateTo } from "./index.js";
 
+function doLogout() {
+    SOCKET.disconnect();
+    clearTokens();
+    navigateTo('/sign-in');
+}
+
 function getCSRFToken() {
     try {
         const value = `; ${document.cookie}`;
@@ -85,7 +91,7 @@ async function fetchWithToken(path, options = {}) {
             accessToken = await renewAccessToken(refreshToken);
         } catch (error) {
             console.error('Token renewal failed:', error);
-            return navigateTo('/sign-in');
+            return doLogout();
         }
     }
 
@@ -100,4 +106,4 @@ async function fetchWithToken(path, options = {}) {
     return jsonResponse;
 }
 
-export { getCSRFToken, clearTokens, refreshUserID, fetchWithToken };
+export { doLogout, getCSRFToken, clearTokens, refreshUserID, fetchWithToken };

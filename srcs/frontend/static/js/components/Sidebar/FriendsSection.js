@@ -184,6 +184,22 @@ export default class extends Abstract {
 		});
 	}
 
+	static updateOnlineStatus() {
+		const friendsID = this.data.map(({ user1, user2 }) => (user1.id == USER_ID) ? user2.id : user1.id);
+
+		friendsID.forEach(friendID => {
+			const isOnline = ONLINE_USERS.find(onlineUserID => onlineUserID == friendID);
+
+			document.querySelectorAll(`.user-badge[data-user-id="${friendID}"]`).forEach(element => {
+				if (isOnline) {
+					element.classList.add("is-online");
+				} else {
+					element.classList.remove("is-online");
+				}
+			});
+		});
+	}
+
 	static async addFunctionality() {
 		const wrapper = document.getElementById('friends-wrapper');
 

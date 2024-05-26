@@ -159,3 +159,20 @@ main {
 #toast {
   position: absolute;
 }
+
+/* User Badge */
+.user-badge.is-online {
+  position: relative;
+}
+
+.user-badge.is-online::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  left: 20px;
+  display: block;
+  height: 10px;
+  width: 10px;
+  background: green;
+  border-radius: 50%;
+}

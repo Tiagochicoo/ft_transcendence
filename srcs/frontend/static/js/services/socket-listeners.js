@@ -2,6 +2,17 @@ import { ChatBox } from "/static/js/components/index.js";
 import FriendsSection from "/static/js/components/Sidebar/FriendsSection.js";
 import { sendNotification } from "./index.js";
 
+const onlineUsersSocketListener = () => {
+  // Remove 'online_users' listener
+  SOCKET.off('online_users');
+
+  // Listen to the 'online_users' event
+  SOCKET.on('online_users', (data) => {
+    ONLINE_USERS = data;
+    FriendsSection.updateOnlineStatus();
+  });
+}
+
 const chatMessageSocketListener = () => {
   // Remove 'chat_message_id' listener
   SOCKET.off(`chat_message_${USER_ID}`);
@@ -60,6 +71,7 @@ const friendCancelSocketListener = () => {
 }
 
 const socketListeners = () => {
+  onlineUsersSocketListener();
   chatMessageSocketListener();
   friendAddSocketListener();
   friendRefuseSocketListener();
