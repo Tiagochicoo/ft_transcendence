@@ -31,14 +31,18 @@ main {
 }
 
 /* SideBar */
+.sidebar-outter-wrapper, .sidebar-wrapper {
+  min-width: 250px;
+  max-width: 250px;
+}
+
 .sidebar-wrapper {
-  width: 238px;
+  position: fixed;
+  height: calc(100vh - 100px);
 }
 
 .sidebar-inner-wrapper {
   background-color: var(--bs-dark);
-  height: calc(100vh - 100px);
-  width: 250px;
 }
 
 .sidebar-section {
