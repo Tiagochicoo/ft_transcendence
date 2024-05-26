@@ -114,4 +114,4 @@ const renderPage = async () => {
   }
 };
 
-export default renderPage;
+export { renderSidebar, renderPage };
