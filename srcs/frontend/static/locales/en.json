@@ -11,7 +11,23 @@
     "editProfile": "Edit profile",
     "logout": "Log out"
   },
+  "toast": {
+    "just_now": "just now"
+  },
   "sidebar": {
+    "menu": "Menu",
+    "add": "Add",
+    "invitations_received": "Invitations Received",
+    "invitations_sent": "Invitations Sent",
+    "friends": {
+      "title": "Friends",
+      "notification_messages": {
+        "sent": "Sent a friend request",
+        "refused": "Refused your friend request",
+        "accepted": "Accepted your friend request",
+        "canceled": "Canceled his friend request"
+      }
+    },
     "validation": {
       "default_error": "Invalid username",
       "cant_ask_yourself": "Can't ask yourself",

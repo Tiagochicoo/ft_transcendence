@@ -11,7 +11,23 @@
     "editProfile": "Editar perfil",
     "logout": "Sair"
   },
+  "toast": {
+    "just_now": "agora mesmo"
+  },
   "sidebar": {
+    "menu": "Menu",
+    "add": "Adicionar",
+    "invitations_received": "Convites Recebidos",
+    "invitations_sent": "Convites Enviados",
+    "friends": {
+      "title": "Amigos",
+      "notification_messages": {
+        "sent": "Enviou uma solicitação de amizade",
+        "refused": "Recusou sua solicitação de amizade",
+        "accepted": "Aceitou sua solicitação de amizade",
+        "canceled": "Cancelou sua solicitação de amizade"
+      }
+    },
     "validation": {
       "default_error": "Nome de usuário inválido",
       "cant_ask_yourself": "Não pode perguntar a si mesmo",
