@@ -43,7 +43,7 @@ export default class Game {
     this.ballSpeedX = 5;
     this.ballSpeedY = 5;
 
-    this.paddleHeight = 100;
+    this.paddleHeight = this.canvas.height / 4;
     this.paddleWidth = 10;
     this.leftPaddleY = this.canvas.height / 2 - this.paddleHeight / 2;
     this.rightPaddleY = this.canvas.height / 2 - this.paddleHeight / 2;
