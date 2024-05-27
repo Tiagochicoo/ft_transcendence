@@ -6,7 +6,12 @@ export default class extends Abstract {
 		throw new Error("Cannot be instantiated");
 	}
 
-	static getBadge({ id, avatar, username }) {
+	static getBadge(user) {
+		if (!user || !user.id) {
+			return '';
+		}
+
+		const { id, avatar, username } = user;
 		const isOnline = ONLINE_USERS.find(onlineUserID => onlineUserID == id);
 
 		return `
