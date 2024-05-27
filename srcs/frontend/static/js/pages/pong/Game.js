@@ -8,18 +8,21 @@ export default class Game {
     // Getting canvas context
     this.canvas = document.querySelector("#canvas");
     this.ctx = this.canvas.getContext("2d");
-    this.width = document.querySelector('#pong-container').clientWidth * 0.7;
-    this.height = document.querySelector('#pong-container').clientWidth * 0.4;
-    
-    const observer = new ResizeObserver((entries) => {
-      this.width = this.canvas.clientWidth;
-      this.height = this.canvas.clientHeight;
-    });
-    
-    observer.observe(this.canvas);
+    this.pongDiv = document.querySelector('#pong-container');
+    this.width = this.pongDiv.clientWidth;
+    this.height = this.pongDiv.clientWidth * 0.6;
 
     this.canvas.width = this.width;
     this.canvas.height = this.height;
+
+    const observer = new ResizeObserver((entries) => {
+      if (this.pongDiv !== null) {
+        this.width = this.pongDiv.clientWidth;
+        this.height = this.pongDiv.clientWidth * 0.6;
+      }
+    });
+    
+    observer.observe(this.canvas);
 
     this.canvasArea = document.querySelector("#pong");
     this.leftPlayer = new User(match.user1.username, match.user1.id);
@@ -254,7 +257,8 @@ export default class Game {
   }
 
   draw() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.fillStyle = "#000";
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.ctx.fillStyle = "#37ff8b";
 
@@ -278,7 +282,7 @@ export default class Game {
     this.ctx.fill();
 
     // scoreboard
-    this.ctx.font = "14px helvetica";
+    this.ctx.font = "20px helvetica";
     this.ctx.textAlign = "center";
     this.ctx.fillText(
       this.leftPlayer.username + " - " + this.leftPlayer.score,

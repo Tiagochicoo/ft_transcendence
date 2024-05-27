@@ -35,7 +35,7 @@ export default class extends Abstract {
 				<div class="game-area">
 					<div id="pong" tabindex="1" class="d-flex flex-column align-items-center m-4">
 						<div class="d-flex flex-column align-items-center">
-							<canvas id="canvas" class="bg-dark"></canvas>
+							<canvas id="canvas"></canvas>
 						</div>
 						<div class="d-flex justify-content-around mt-2" style="width: 100%;">
 							<button class="pong-buttons" id="start-btn" type="button"> ${i18next.t("pong.buttons.start")}</button>
