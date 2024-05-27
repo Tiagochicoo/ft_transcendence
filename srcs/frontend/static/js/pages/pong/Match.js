@@ -31,11 +31,11 @@ export default class extends Abstract {
 		<h1 class="mb-4">
 				${i18next.t("pong.title")}
 		</h1>
-			<div class="d-flex flex-row justify-content-around">
+			<div class="d-flex flex-row justify-content-around" id="pong-container">
 				<div class="game-area">
 					<div id="pong" tabindex="1" class="d-flex flex-column align-items-center m-4">
 						<div class="d-flex flex-column align-items-center">
-							<canvas id="canvas" width="600" height="400" class="bg-dark"></canvas>
+							<canvas id="canvas" class="bg-dark"></canvas>
 						</div>
 						<div class="d-flex justify-content-around mt-2" style="width: 600px;">
 							<button class="pong-buttons" id="start-btn" type="button"> ${i18next.t("pong.buttons.start")}</button>

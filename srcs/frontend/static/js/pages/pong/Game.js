@@ -8,6 +8,19 @@ export default class Game {
     // Getting canvas context
     this.canvas = document.querySelector("#canvas");
     this.ctx = this.canvas.getContext("2d");
+    this.width = document.querySelector('#pong-container').clientWidth * 0.7;
+    this.height = document.querySelector('#pong-container').clientWidth * 0.4;
+    
+    const observer = new ResizeObserver((entries) => {
+      this.width = this.canvas.clientWidth;
+      this.height = this.canvas.clientHeight;
+    });
+    
+    observer.observe(this.canvas);
+
+    this.canvas.width = this.width;
+    this.canvas.height = this.height;
+
     this.canvasArea = document.querySelector("#pong");
     this.leftPlayer = new User(match.user1.username, match.user1.id);
     this.rightPlayer = new User(match.user2.username, match.user2.id);
@@ -255,8 +268,8 @@ export default class Game {
     );
 
     // central line
-    for (let i = 0; i < 40; i++) {
-      this.ctx.fillRect(this.canvas.width / 2, 0 + i * 10, 2, 5);
+    for (let i = 0; i < this.canvas.height * 0.1; i++) {
+      this.ctx.fillRect(this.canvas.width / 2, i * 10, 2, 5);
     }
 
     // ball
