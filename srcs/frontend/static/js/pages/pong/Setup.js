@@ -48,7 +48,6 @@ export default class extends Abstract {
 						checkGroup[i].onclick = function() {
 							let checkedCount = 0;
 							for (let j = 0; j < checkGroup.length; j++) {
-								console.log(checkGroup[j].value, " : ", checkGroup[j].checked);
 								checkedCount += (checkGroup[j].checked) ? 1 : 0;
 							}
 							if (checkedCount > limit) {
@@ -70,7 +69,7 @@ export default class extends Abstract {
 				this.participants.push(this.user);
 				for (let opponent of checkGroup) {
 					if (opponent.checked) {
-						this.participants.push(this.friends.filter((friend) => friend.username === opponent.value)[0]);
+						this.participants.push(this.friends.filter((friend) => friend.id == opponent.id)[0]);
 					}
  				}
 				if (this.participants.length === 8) this.startTournament(setupArea);
@@ -100,7 +99,7 @@ export default class extends Abstract {
 	this.friends.forEach((friend) => {
 		list += `<div class="form-check">
 					<input class="form-check-input" type="${this.mode === 'single' ? 'radio' : 'checkbox'}" name="friends" value="${friend.username}" id="${friend.id}">
-					<label class="form-check-label" for="friends">
+					<label class="form-check-label" for="${friend.id}">
 					${friend.username}
 					</label>
 				</div>`;
