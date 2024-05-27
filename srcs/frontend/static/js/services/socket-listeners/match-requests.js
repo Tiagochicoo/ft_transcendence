@@ -6,7 +6,6 @@ const matchInviteSocketListener = () => {
 
   // Listen to the 'match_invite_id' event
   SOCKET.on(`match_invite_${USER_ID}`, (data) => {
-    console.log(`match_invite_${USER_ID}`)
     MatchesSection.matchInviteNotification(data);
   });
 }

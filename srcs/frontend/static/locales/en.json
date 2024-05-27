@@ -33,8 +33,9 @@
       "notification_messages": {
         "sent": "Sent a match request",
         "refused": "Refused your match request",
-        "accepted": "Accepted your match request",
-        "canceled": "Canceled his match request"
+        "accepted": "Accepted your match request. The match will start in 10s",
+        "canceled": "Canceled his match request",
+        "start": "The match will start in 10s"
       }
     },
     "validation": {

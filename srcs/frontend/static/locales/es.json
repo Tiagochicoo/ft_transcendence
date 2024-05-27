@@ -24,8 +24,9 @@
       "notification_messages": {
         "sent": "Envió una solicitud de amistad",
         "refused": "Rechazó tu solicitud de amistad",
-        "accepted": "Aceptó tu solicitud de amistad",
-        "canceled": "Canceló su solicitud de amistad"
+        "accepted": "Aceptó tu solicitud de amistad. El partido comenzará en 10s",
+        "canceled": "Canceló su solicitud de amistad",
+        "start": "El partido comenzará en 10s"
       }
     },
     "matches": {

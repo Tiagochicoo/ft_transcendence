@@ -33,8 +33,9 @@
       "notification_messages": {
         "sent": "Enviou uma solicitação de partida",
         "refused": "Recusou sua solicitação de partida",
-        "accepted": "Aceitou sua solicitação de partida",
-        "canceled": "Cancelou sua solicitação de partida"
+        "accepted": "Aceitou sua solicitação de partida. O jogo irá começar dentro de 10s",
+        "canceled": "Cancelou sua solicitação de partida",
+        "start": "O jogo irá começar dentro de 10s"
       }
     },
     "validation": {

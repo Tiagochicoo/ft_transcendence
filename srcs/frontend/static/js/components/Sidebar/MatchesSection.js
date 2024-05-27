@@ -225,6 +225,10 @@ export default class extends Abstract {
 						this.doDataUpdate(response.data);
 						this.updateMatchesAccepted();
 						this.updateMatchesReceived();
+						sendNotification({
+							user: response.data.user1,
+							body: i18next.t("sidebar.matches.notification_messages.start")
+						});
 					}
 					break;
 
