@@ -1,3 +1,7 @@
+const matches = require("./matches.js");
+
+const { initGame } = matches;
+
 const matchInviteSocketListener = (socket, io) => {
   // Listen to the 'match_invite_' event
   socket.on('match_invite', (data) => {
@@ -17,6 +21,8 @@ const matchRefuseSocketListener = (socket, io) => {
 const matchAcceptSocketListener = (socket, io) => {
   // Listen to the 'match_accept' event
   socket.on('match_accept', (data) => {
+    initGame(io, data);
+
     // console.log(`match_accept_${data.user1.id}`);
     io.emit(`match_accept_${data.user1.id}`, data);
   });
