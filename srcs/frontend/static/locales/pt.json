@@ -50,6 +50,7 @@
     "createError": "Não foi possível criar o jogo. Por favor, tente novamente.",
     "singleMatchInvitationMessage": "Escolha seu adversário:",
     "tournamentInvitationMessage": "Escolha 7 participantes:",
+    "invitationError": "Você deve selecionar 7 participantes para convidar.",
     "invitationBtn": "Convidar",
     "startGame": "Jogar",
     "winner": "GANHADOR"
