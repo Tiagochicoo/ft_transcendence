@@ -19,32 +19,26 @@ export default class extends Abstract {
 
 	const match = await PongData.getMatchById(this.matchId);
 
-	await PongData.updateMatch({"matchId": this.matchId, "wasAccepted": true });
-
-    let game = new Game(match.data, this.mode);
-    game.draw();
+    const game = new Game(match.data, this.mode);
+    game.drawGame();
   }
 
   async getHtml() {
 	
     return `
 		<h1 class="mb-4">
-				${i18next.t("pong.title")}
+			${i18next.t("pong.title")}
 		</h1>
-			<div class="d-flex flex-row justify-content-around" id="pong-container">
-				<div class="game-area">
-					<div id="pong" tabindex="1" class="d-flex flex-column align-items-center m-4">
-						<div class="d-flex flex-column align-items-center">
-							<canvas id="canvas"></canvas>
-						</div>
-						<div class="d-flex justify-content-around mt-2" style="width: 100%;">
-							<button class="pong-buttons" id="start-btn" type="button"> ${i18next.t("pong.buttons.start")}</button>
-							<button class="pong-buttons" id="pause-btn" type="button"> ${i18next.t("pong.buttons.pause")}</button>
-							<button class="pong-buttons" id="restart-btn" type="button"> ${i18next.t("pong.buttons.restart")}</button>
-						</div>
+
+		<div class="d-flex flex-row justify-content-around">
+			<div class="game-area">
+				<div id="pong" tabindex="1" class="d-flex flex-column align-items-center m-4">
+					<div class="d-flex flex-column align-items-center">
+						<canvas id="canvas" width="600" height="400" class="bg-dark"></canvas>
 					</div>
 				</div>
 			</div>
+		</div>
 
 		<div class="modal fade" tabindex="-1" role="dialog" id="message-modal">
 			<div class="modal-dialog modal-dialog-centered" role="document">
@@ -58,7 +52,7 @@ export default class extends Abstract {
 				</div>
 			</div>
 		</div>
-		`;
+	`;
   }
 }
 
