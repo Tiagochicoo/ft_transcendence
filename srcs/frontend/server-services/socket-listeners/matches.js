@@ -1,3 +1,5 @@
+const fetch = require("node-fetch");
+
 const MATCHES_STATE = {};
 const height = 400;
 const width = 600;
@@ -149,6 +151,28 @@ const doUpdate = (io, matchId) => {
     clearInterval(gameState.meta.intervalId);
     gameState.meta.status = "ended";
     gameState.meta.winner_id = (gameState.user1.score == maxScore) ? gameState.user1.id : gameState.user2.id;
+
+    fetch(`http://backend:8000/api/matches/${matchId}/finish/`, {
+      method: 'PATCH',
+      headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': process.env.API_KEY,
+      },
+      body: JSON.stringify({
+        user1_score: gameState.user1.score,
+        user2_score: gameState.user2.score,
+      })
+    }).then(response => {
+      return response.json();
+    }).then(resposeJson => {
+      if (resposeJson.success) {
+        console.log(resposeJson.success);
+      } else {
+        throw new Error();
+      }
+    }).catch(error => {
+      console.log(`Error finishing the match ${matchId}:`, error);
+    });
   }
 
   // Send updated game data to the clients
