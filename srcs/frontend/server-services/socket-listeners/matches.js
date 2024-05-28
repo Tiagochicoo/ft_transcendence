@@ -173,6 +173,8 @@ const doUpdate = (io, matchId) => {
       }
     }).catch(error => {
       console.log(`Error finishing the match ${matchId}:`, error);
+    }).finally(() => {
+      delete MATCHES_STATE[matchId];
     });
   }
 
