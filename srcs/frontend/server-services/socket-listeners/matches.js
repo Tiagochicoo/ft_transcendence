@@ -197,7 +197,7 @@ const doReset = (matchId) => {
 // First a countdown of 10s
 // Then run the game
 const initGame = (io, data) => {
-  let countDown = 10;
+  let countDown = 100;
   const intervalId = setInterval(() => {
     countDown--;
 
@@ -210,12 +210,12 @@ const initGame = (io, data) => {
     io.emit(`match_data_${data.id}`, {
       meta: {
         status: "stand-by",
-        countDown: countDown,
+        countDown: Math.ceil(countDown / 10),
       },
       height: height,
       width: width,
     });
-  }, 1000);
+  }, 100);
 }
 
 module.exports = {

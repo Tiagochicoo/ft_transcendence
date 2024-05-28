@@ -1,7 +1,7 @@
 import { Matches } from "/static/js/api/index.js";
 import { Abstract } from "/static/js/components/index.js";
 import { User } from "/static/js/generators/index.js";
-import { sendNotification } from "/static/js/services/index.js";
+import { navigateTo, sendNotification } from "/static/js/services/index.js";
 
 // Utility Class
 export default class extends Abstract {
@@ -175,6 +175,7 @@ export default class extends Abstract {
 			user: data.user2,
 			body: i18next.t("sidebar.matches.notification_messages.accepted")
 		});
+		navigateTo(`/pong/single/match/${data.id}`);
 	}
 
 	static matchCancelNotification(data) {
@@ -235,6 +236,7 @@ export default class extends Abstract {
 							user: response.data.user1,
 							body: i18next.t("sidebar.matches.notification_messages.start")
 						});
+						navigateTo(`/pong/single/match/${response.data.id}`);
 					}
 					break;
 
