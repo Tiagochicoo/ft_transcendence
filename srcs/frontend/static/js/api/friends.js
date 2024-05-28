@@ -54,14 +54,17 @@ export default class Friends {
 
     let allFriends = [];
 
+
     response.data.forEach((obj) => {
       for (const [key, value] of Object.entries(obj)) {
-        if (key === 'user1' && value.id === USER_ID && obj.was_accepted === true) {
-          allFriends.push(obj.user2);
+        if (obj.was_accepted) {
+          let friend = obj.user1.id === USER_ID ? obj.user2 : obj.user1;
+          allFriends.push(friend);
         }
       }
     });
+    let friendsNoDuplicates = [...new Set(allFriends)];
 
-    return allFriends;
+    return friendsNoDuplicates;
   }
 }

@@ -63,7 +63,10 @@
     "invitationError": "You should select 7 participants to invite.",
     "invitationBtn": "Invite",
     "startGame": "Start Game",
-    "winner": "WINNER"
+    "winner": "WINNER",
+    "matchAlreadyFinished": "This match has already finished.",
+    "userNotInvited": "You were not invited to this match.",
+    "noMatchFound": "No match found."
   },
   "individualDashboard": {
     "title": "Statistics",
