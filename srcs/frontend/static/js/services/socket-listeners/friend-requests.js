@@ -1,23 +1,4 @@
-import ChatBox from "/static/js/components/ChatBox/index.js";
 import FriendsSection from "/static/js/components/Sidebar/FriendsSection.js";
-import { sendNotification } from "./index.js";
-
-const chatMessageSocketListener = () => {
-  // Remove 'chat_message_id' listener
-  SOCKET.off(`chat_message_${USER_ID}`);
-
-  // Listen to the 'chat_message_id' event
-  SOCKET.on(`chat_message_${USER_ID}`, (data) => {
-    // Try to append a message to the ChatBox
-    // but if the ChatBox is not open then send a notification
-    if (!ChatBox.appendMessage(data)) {
-      sendNotification({
-        author: data.sender.username,
-        body: data.content
-      });
-    }
-  });
-}
 
 const friendAddSocketListener = () => {
   // Remove 'friend_add_id' listener
@@ -59,12 +40,11 @@ const friendCancelSocketListener = () => {
   });
 }
 
-const socketListeners = () => {
-  chatMessageSocketListener();
+const friendRequests = () => {
   friendAddSocketListener();
   friendRefuseSocketListener();
   friendAcceptSocketListener();
   friendCancelSocketListener();
 }
 
-export default socketListeners;
+export default friendRequests;

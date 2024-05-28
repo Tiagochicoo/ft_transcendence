@@ -1,5 +1,7 @@
 import { Abstract } from "/static/js/components/index.js";
+import MatchesSection from "/static/js/components/Sidebar/MatchesSection.js";
 import { Friends, PongData, Users } from "/static/js/api/index.js";
+import { navigateTo } from "/static/js/services/index.js";
 
 
 export default class extends Abstract {
@@ -10,6 +12,7 @@ export default class extends Abstract {
 	this.participants = [];
 	this.matchId = -1;
 	this.tournamentId = -1;
+	this.user;
 
 	// it could be better manipulated if included in a global state!
 	let url = window.location.toString();
@@ -19,7 +22,7 @@ export default class extends Abstract {
 
   async addFunctionality() {
 
-	Users.get(USER_ID).then((response) => this.participants.push(response.data));
+	Users.get(USER_ID).then((response) => this.user = response.data);
 	
 	this.friends = await Friends.getAllFriends();
 
@@ -29,26 +32,50 @@ export default class extends Abstract {
 
 	if (this.checkAvailability) {
 		const invitationBtn = document.querySelector('#invitation-btn');
-		invitationBtn.style.display = 'none';
+
+		let checkGroup = document.querySelectorAll('input[name="friends"]');
 		
-		for (let opponent of document.querySelectorAll('input[name="friends"]')) {
+		for (let opponent of checkGroup) {
 			opponent.addEventListener("input", (event) => {
 				if (this.mode === 'single') {
+					this.participants[0] = this.user;
 					this.participants[1] = this.friends.filter((friend => friend.username === event.target.value))[0];
 					invitationBtn.style.display = 'block';
 				} else if (this.mode === 'tournament') {
-					if (this.participants.length === 8) document.getElementById('invitation-error').innerHTML = "Only the first 7 selected participants will be invited."
-					if (this.participants.length < 8) {
-						this.participants.push(this.friends.filter((friend => friend.username === event.target.value))[0]);
+
+					let limit = 7;
+
+					for (let i = 0; i < checkGroup.length; i++) {
+						checkGroup[i].onclick = function() {
+							let checkedCount = 0;
+							for (let j = 0; j < checkGroup.length; j++) {
+								checkedCount += (checkGroup[j].checked) ? 1 : 0;
+							}
+							if (checkedCount > limit) {
+								document.getElementById('invitation-error').innerHTML = `${i18next.t("pong.invitationError")}`;
+								checkGroup[i].checked = false;
+							} else {
+								document.getElementById('invitation-error').innerHTML = "";
+							}
+						}
 					}
-					if (this.participants.length === 8) invitationBtn.style.display = 'block';
 				}
 			});
 		}
 	
 		invitationBtn.addEventListener("click", () => {
 			if (this.mode === 'single') this.startSingleMatch(setupArea);
-			else if (this.mode === 'tournament') this.startTournament(setupArea);
+			else if (this.mode === 'tournament') {
+				this.participants = [];
+				this.participants.push(this.user);
+				for (let opponent of checkGroup) {
+					if (opponent.checked) {
+						this.participants.push(this.friends.filter((friend) => friend.id == opponent.id)[0]);
+					}
+ 				}
+				if (this.participants.length === 8) this.startTournament(setupArea);
+				else document.getElementById('invitation-error').innerHTML = `${i18next.t("pong.invitationError")}`;
+			}
 		});
 	}
   }
@@ -73,7 +100,7 @@ export default class extends Abstract {
 	this.friends.forEach((friend) => {
 		list += `<div class="form-check">
 					<input class="form-check-input" type="${this.mode === 'single' ? 'radio' : 'checkbox'}" name="friends" value="${friend.username}" id="${friend.id}">
-					<label class="form-check-label" for="friends">
+					<label class="form-check-label" for="${friend.id}">
 					${friend.username}
 					</label>
 				</div>`;
@@ -95,7 +122,7 @@ export default class extends Abstract {
 			if (response) setupArea.innerHTML = this.enableStartGame();
 		}).catch((error) => {
 			console.log(error.message);
-			setupArea.innerHTML = '<p style="color: red;">We could not create your match. Please try again.</p>';
+			setupArea.innerHTML = `<p style="color: red;">${i18next.t("pong.createError")}</p>`;
 		});
 	}
   }
@@ -105,31 +132,28 @@ export default class extends Abstract {
 	// If it was accepted, we show the start button, if it was not, we must show a notification and allow the user to choose another friend.
 	// Depending on socket connection
 	this.storeTournament().then((response) => {
-		if (response) setupArea.innerHTML = this.enableStartGame();
+			if (response) navigateTo(`/pong/tournament/${this.tournamentId}/rounds`);
 	}).catch((error) => {
 		console.log(error.message);
-			setupArea.innerHTML = '<p style="color: red;">We could not create your tournament. Please try again.</p>';
+			setupArea.innerHTML = `<p style="color: red;">${i18next.t("pong.createError")}</p>`;
 	})
 	
   }
 
   async storeMatch() {
-	const data = {
-		"user1": this.participants[0],
-		"user2": this.participants[1]
-	};
-	
-	this.matchId = await PongData.createMatch(data);
-	return this.matchId === -1 ? false : true;
+	const response = await MatchesSection.createMatch(this.participants[1]?.id);
+	this.matchId = response.success ? response.data.id : -1;
+	return response.success;
   }
 
   async storeTournament() {
 	const data = {
-		"creator": this.participants[0]
+		"creator": this.participants[0].id
 	};
 
 	this.tournamentId = await PongData.createTournament(data);
 
+	// Creating tournament_user to each user
 	if (this.tournamentId !== -1) {
 		for (const user of this.participants) {
 			const response = await PongData.createTournamentUser(
@@ -145,15 +169,16 @@ export default class extends Abstract {
 			}
 		}
 	}
-	
 
 	return this.tournamentId === -1 ? false : true;
   }
 
   enableStartGame() {
-	let startBtn = `<a id="start-match-button" href="${this.mode === 'single' ? '/pong/single/match/' + this.matchId : '/pong/tournament/match/' + this.matchId}" data-link>
+
+	let startBtn = `<a id="start-match-button" href="/pong/single/match/${this.matchId}" data-link>
 						${i18next.t("pong.startGame")}
 					</a>`;
+	
 
 	return startBtn;
   }

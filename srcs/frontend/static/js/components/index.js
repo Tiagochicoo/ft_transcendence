@@ -1,6 +1,7 @@
 import Abstract from "./_Abstract.js";
+import ChatBox from "./ChatBox/index.js";
+import Sidebar from "./Sidebar/index.js";
 import LanguageToggle from "./LanguageToggle.js";
 import Navbar from "./Navbar.js";
-import Sidebar from "./Sidebar/index.js";
 
-export { Abstract, LanguageToggle, Navbar, Sidebar };
+export { Abstract, ChatBox, Sidebar, LanguageToggle, Navbar };

@@ -9,8 +9,7 @@ export default class Friends {
     return await fetchWithToken('/friend_requests', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'x-access-token': localStorage.getItem('accessToken'),
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({ invited_user_id })
     });

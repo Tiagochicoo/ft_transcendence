@@ -68,10 +68,10 @@ class UserDetails(APIView):
         except Exception as error:
             return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    def put(self, request, userId, format=None):
+    def patch(self, request, userId, format=None):
         try:
             user = User.objects.get(pk=userId)
-            serializer = UserSerializer(user, data=request.data)
+            serializer = UserSerializer(user, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)

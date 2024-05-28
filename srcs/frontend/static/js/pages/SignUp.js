@@ -1,5 +1,5 @@
 import { Abstract } from "/static/js/components/index.js";
-import { navigateTo } from "/static/js/services/index.js";
+import { getCSRFToken, navigateTo } from "/static/js/services/index.js";
 
 export default class extends Abstract {
     constructor(props) {
@@ -20,20 +20,14 @@ export default class extends Abstract {
 
             if (form.checkValidity()) {
                 const formData = new FormData(form);
-                const data = {};
-                for (const key of formData.keys()) {
-                    data[key] = formData.get(key);
-                }
-                console.log("Submitting data:", data);
 
                 try {
                     const response = await fetch('http://localhost:8000/api/users', {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRFToken': this.getCSRFToken()
+                            'X-CSRFToken': getCSRFToken()
                         },
-                        body: JSON.stringify(data)
+                        body: formData
                     });
 
                     const responseData = await response.json();
@@ -54,33 +48,25 @@ export default class extends Abstract {
         });
     }
 
-    getCSRFToken() {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; csrftoken=`);
-        return parts.length === 2 ? parts.pop().split(';').shift() : '';
-    }
-
     handleErrors(errors) {
         const form = document.getElementById("form-sign-up");
 
-        if (errors.email) {
-            const emailErrorKey = `signUp.validation.${errors.email[0]}`;
-            const emailErrorMessage = i18next.t(emailErrorKey);
-            form.querySelector('#emailError').textContent = emailErrorMessage;
-            form.querySelector('#emailError').style.display = 'block';
+        const handleError = (key, errors) => {
+            const errorField = form.querySelector(`#${key}Error`);
+            if (!errorField) return;
+
+            if (errors?.length) {
+                const errorKey = `signUp.validation.${errors[0].includes(' ') ? 'default_error' : errors[0]}`;
+                const errorMessage = i18next.t(errorKey);
+                errorField.textContent = errorMessage;
+                errorField.style.display = 'block';
+            }
         }
-        if (errors.username) {
-            const usernameErrorKey = `signUp.validation.${errors.username[0]}`;
-            const usernameErrorMessage = i18next.t(usernameErrorKey);
-            form.querySelector('#usernameError').textContent = usernameErrorMessage;
-            form.querySelector('#usernameError').style.display = 'block';
-        }
-        if (errors.password) {
-            const passwordErrorKey = `signUp.validation.${errors.password[0]}`;
-            const passwordErrorMessage = i18next.t(passwordErrorKey);
-            form.querySelector('#passwordError').textContent = passwordErrorMessage;
-            form.querySelector('#passwordError').style.display = 'block';
-        }
+
+        handleError('email', errors.email);
+        handleError('username', errors.username);
+        handleError('avatar', errors.avatar);
+        handleError('password', errors.password);
     }    
 
     async getHtml() {
@@ -88,19 +74,24 @@ export default class extends Abstract {
             <h1 class="mb-4">${i18next.t('signUp.title')}</h1>
             <form id="form-sign-up" class="needs-validation" novalidate>
                 <div class="mb-4">
-                    <label for="email" class="form-label">${i18next.t('signUp.fields.email.label')}</label>
+                    <label for="email" class="form-label">${i18next.t('signUp.fields.email')}</label>
                     <input type="text" class="form-control" id="email" name="email">
                     <div id="emailError" class="invalid-feedback" style="display: none;"></div>
                 </div>
                 <div class="mb-4">
-                    <label for="username" class="form-label">${i18next.t('signUp.fields.username.label')}</label>
+                    <label for="username" class="form-label">${i18next.t('signUp.fields.username')}</label>
                     <input type="text" class="form-control" id="username" name="username">
                     <div id="usernameError" class="invalid-feedback" style="display: none;"></div>
                 </div>
                 <div class="mb-4">
-                    <label for="password" class="form-label">${i18next.t('signUp.fields.password.label')}</label>
+                    <label for="avatar" class="form-label">${i18next.t('signUp.fields.avatar')}</label>
+                    <input type="file" accept="image/png, image/jpg, image/jpeg" class="form-control" id="avatar" name="avatar">
+                    <div id="avatarError" class="invalid-feedback" style="display: none;"></div>
+                </div>
+                <div class="mb-4">
+                    <label for="password" class="form-label">${i18next.t('signUp.fields.password')}</label>
                     <input type="password" class="form-control" id="password" name="password">
-                    <div id="passwordError" class="invalid-feedback" style="display: none;">${i18next.t('signUp.fields.password.invalidFeedback')}</div>
+                    <div id="passwordError" class="invalid-feedback" style="display: none;"></div>
                 </div>
                 <button type="submit" class="btn btn-primary">${i18next.t('signUp.submitButton')}</button>
             </form>

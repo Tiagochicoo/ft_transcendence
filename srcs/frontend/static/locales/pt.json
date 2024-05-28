@@ -8,7 +8,42 @@
     "signUp": "Inscrever-se",
     "signIn": "Iniciar Sessão",
     "pong": "Pong",
+    "editProfile": "Editar perfil",
     "logout": "Sair"
+  },
+  "toast": {
+    "just_now": "agora mesmo"
+  },
+  "sidebar": {
+    "menu": "Menu",
+    "add": "Adicionar",
+    "invitations_received": "Convites Recebidos",
+    "invitations_sent": "Convites Enviados",
+    "friends": {
+      "title": "Amigos",
+      "notification_messages": {
+        "sent": "Enviou uma solicitação de amizade",
+        "refused": "Recusou sua solicitação de amizade",
+        "accepted": "Aceitou sua solicitação de amizade",
+        "canceled": "Cancelou sua solicitação de amizade"
+      }
+    },
+    "matches": {
+      "title": "Partidas",
+      "notification_messages": {
+        "sent": "Enviou uma solicitação de partida",
+        "refused": "Recusou sua solicitação de partida",
+        "accepted": "Aceitou sua solicitação de partida. O jogo irá começar dentro de 10s",
+        "canceled": "Cancelou sua solicitação de partida",
+        "start": "O jogo irá começar dentro de 10s"
+      }
+    },
+    "validation": {
+      "default_error": "Nome de usuário inválido",
+      "cant_ask_yourself": "Não pode perguntar a si mesmo",
+      "pending_friend_request": "Pedido de amizade pendente",
+      "is_already_friend": "Já é seu amigo"
+    }
   },
   "pong": {
     "title": "Pong",
@@ -22,10 +57,13 @@
     "tournament": "Campeonato",
     "singleMatchNotEnoughFriends": "É preciso pelo menos 1 amigo para iniciar uma partida.",
     "tournamentNotEnoughFriends": "São precisos pelo menos 7 amigos para iniciar um campeonato.",
+    "createError": "Não foi possível criar o jogo. Por favor, tente novamente.",
     "singleMatchInvitationMessage": "Escolha seu adversário:",
     "tournamentInvitationMessage": "Escolha 7 participantes:",
+    "invitationError": "Você deve selecionar 7 participantes para convidar.",
     "invitationBtn": "Convidar",
-    "startGame": "Jogar"
+    "startGame": "Jogar",
+    "winner": "GANHADOR"
   },
   "individualDashboard": {
     "title": "Estatísticas",
@@ -79,33 +117,29 @@
   "signUp": {
     "title": "Inscrever-se",
     "fields": {
-      "email": {
-        "label": "Endereço de email",
-        "invalidFeedback": "Por favor escolha um endereço de email válido.",
-        "help": "Nós nunca iremos partilhar seu email com ninguém."
-      },
-      "username": {
-        "label": "Nome de usuário",
-        "invalidFeedback": "Este nome de usuário já está em uso.",
-        "help": "Como os outros jogadores vão vê-lo."
-      },
-      "password": {
-        "label": "Senha",
-        "invalidFeedback": "A senha deve ter pelo menos 8 caracteres."
-      }
+      "email": "Endereço de email",
+      "username": "Nome de usuário",
+      "avatar": "Avatar",
+      "password": "Senha"
     },
     "validation": {
+      "default_error": "Valor inválido",
       "email_cannot_be_blank": "O email não pode estar vazio",
-      "invalid_email_format": "Formato de email inválido",
+      "email_invalid_format": "Formato de email inválido",
       "email_too_long": "O email é muito longo",
       "email_in_use": "Este email já está registrado",
       "username_cannot_be_blank": "O nome de usuário não pode estar vazio",
       "username_too_long": "O nome de usuário é muito longo",
       "username_in_use": "Este nome de usuário já está em uso",
       "username_too_short": "O nome de usuário deve ter pelo menos 5 caracteres",
+      "avatar_unsupported_file_extension": "O avatar só suporta os seguintes formatos: PNG, JPG ou JPEG",
+      "avatar_file_size_exceed_limit": "O avatar não pode exceder o tamanho limite de 100kb",
       "password_cannot_be_blank": "A senha não pode estar vazia",
       "password_too_short": "A senha deve ter pelo menos 8 caracteres"
     },
     "submitButton": "Registrar"
+  },
+  "editProfile" : {
+    "title": "Editar perfil"
   }
 }

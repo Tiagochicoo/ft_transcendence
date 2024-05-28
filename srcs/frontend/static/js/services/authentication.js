@@ -1,6 +1,22 @@
 import { Users } from "/static/js/api/index.js";
 import { generateSocket, navigateTo } from "./index.js";
 
+function doLogout() {
+    SOCKET.disconnect();
+    clearTokens();
+    navigateTo('/sign-in');
+}
+
+function getCSRFToken() {
+    try {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; csrftoken=`);
+        return parts.length === 2 ? parts.pop().split(';').shift() : '';
+    } catch(e) {
+        return null;
+    }
+}
+
 function isTokenExpired(token) {
     try {
         const payload = JSON.parse(atob(token.split('.')[1]));
@@ -89,7 +105,7 @@ async function fetchWithToken(path, options = {}) {
 
     if (!accessToken || !refreshToken) {
         console.log("No tokens found, redirecting to login.");
-        return navigateTo('/sign-in');
+        return doLogout();
     }
 
     if (isTokenExpired(accessToken)) {
@@ -98,16 +114,16 @@ async function fetchWithToken(path, options = {}) {
             accessToken = await renewAccessToken(refreshToken);
         } catch (error) {
             console.error('Token renewal failed:', error);
-            return navigateTo('/sign-in');
+            return doLogout();
         }
     }
     
-    console.log(`Making API call to ${API_URL}${path} with token: ${accessToken}`);
     try {
         const response = await fetch(`${API_URL}${path}`, {
             ...options,
             headers: {
                 Authorization: `Bearer ${accessToken}`,
+                "x-access-token": accessToken,
                 ...options.headers,
             }
         });
@@ -124,14 +140,10 @@ async function fetchWithToken(path, options = {}) {
             throw new Error('API call failed');
         }
 
-        const jsonResponse = await response.json();
-        console.log(`Response from ${API_URL}${path}:`, jsonResponse);
-        return jsonResponse;
+        return await response.json();
     } catch (error) {
         console.error('Error during API call:', error);
-        alert('An error occurred while communicating with the server. Please try again later.');
-        throw error;
     }
 }
 
-export { clearTokens, refreshUserID, fetchWithToken };
+export { doLogout, getCSRFToken, clearTokens, refreshUserID, fetchWithToken };

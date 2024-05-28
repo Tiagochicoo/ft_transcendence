@@ -8,7 +8,42 @@
     "signUp": "Sign-up",
     "signIn": "Sign-in",
     "pong": "Pong",
+    "editProfile": "Edit profile",
     "logout": "Log out"
+  },
+  "toast": {
+    "just_now": "just now"
+  },
+  "sidebar": {
+    "menu": "Menu",
+    "add": "Add",
+    "invitations_received": "Invitations Received",
+    "invitations_sent": "Invitations Sent",
+    "friends": {
+      "title": "Friends",
+      "notification_messages": {
+        "sent": "Sent a friend request",
+        "refused": "Refused your friend request",
+        "accepted": "Accepted your friend request",
+        "canceled": "Canceled his friend request"
+      }
+    },
+    "matches": {
+      "title": "Matches",
+      "notification_messages": {
+        "sent": "Sent a match request",
+        "refused": "Refused your match request",
+        "accepted": "Accepted your match request. The match will start in 10s",
+        "canceled": "Canceled his match request",
+        "start": "The match will start in 10s"
+      }
+    },
+    "validation": {
+      "default_error": "Invalid username",
+      "cant_ask_yourself": "Can't ask yourself",
+      "pending_friend_request": "Pending friend request",
+      "is_already_friend": "Is already your friend"
+    }
   },
   "pong": {
     "title": "Pong",
@@ -22,10 +57,13 @@
     "tournament": "Tournament",
     "singleMatchNotEnoughFriends": "You need at least 1 friends to star a match.",
     "tournamentNotEnoughFriends": "You need at least 7 friends to star a tournament.",
+    "createError": "We could not create your match. Please try again.",
     "singleMatchInvitationMessage": "Select your opponent:",
     "tournamentInvitationMessage": "Select 7 participants:",
+    "invitationError": "You should select 7 participants to invite.",
     "invitationBtn": "Invite",
-    "startGame": "Start Game"
+    "startGame": "Start Game",
+    "winner": "WINNER"
   },
   "individualDashboard": {
     "title": "Statistics",
@@ -79,33 +117,29 @@
   "signUp": {
     "title": "Sign up",
     "fields": {
-      "email": {
-        "label": "Email address",
-        "invalidFeedback": "Please choose a valid email.",
-        "help": "We'll never share your email with anyone else."
-      },
-      "username": {
-        "label": "Username",
-        "invalidFeedback": "This username is already taken.",
-        "help": "How the other players will see you"
-      },
-      "password": {
-        "label": "Password",
-        "invalidFeedback": "The password must be at least 8 characters."
-      }
+      "email": "Email address",
+      "username": "Username",
+      "avatar": "Avatar",
+      "password": "Password"
     },
     "validation": {
+      "default_error": "Invalid value",
       "email_cannot_be_blank": "Email cannot be blank",
-      "invalid_email_format": "Invalid email format",
+      "email_invalid_format": "Invalid email format",
       "email_too_long": "Email is too long",
       "email_in_use": "This email is already registered",
       "username_cannot_be_blank": "Username cannot be blank",
       "username_too_long": "Username is too long",
       "username_in_use": "This username is already in use",
       "username_too_short": "Username must be at least 5 characters",
+      "avatar_unsupported_file_extension": "Avatar only supports the following formats: PNG, JPG or JPEG",
+      "avatar_file_size_exceed_limit": "Avatar can't exceed the size limit of 100kb",
       "password_cannot_be_blank": "Password cannot be blank",
       "password_too_short": "Password must be at least 8 characters"
       },
       "submitButton": "Submit"
+    },
+    "editProfile" : {
+      "title": "Edit profile"
     }
 }

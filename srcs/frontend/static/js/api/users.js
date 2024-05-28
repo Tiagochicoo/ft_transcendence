@@ -17,7 +17,26 @@ export default class Users {
     return await fetchWithToken(`/users?` + new URLSearchParams({ username }));
   }
 
+  static async update(formData) {
+    // Delete empty fields
+    const fieldsToDelete = [];
+    for (const key of formData.keys()) {
+      if (!formData.get(key) || ((key == 'avatar') && !formData.get(key).size)) {
+        fieldsToDelete.push(key);
+      }
+    }
+    for (const key of fieldsToDelete) {
+      formData.delete(key);
+    }
+
+    return await fetchWithToken(`/users/${USER_ID}`, {
+      method: 'PATCH',
+      body: formData
+    });
+  }
+
   static async updateUser(data) {
+
     try {
       const response = await fetchWithToken('/users/update', {
         method: "PATCH",
@@ -26,9 +45,9 @@ export default class Users {
         },
         body: JSON.stringify(data),
       });
-      console.log("Success: ", response);
     } catch(error) {
-      console.error("Error: ", error);
-    }
+			console.error("Error: ", error);
+		}
+
   }
 }

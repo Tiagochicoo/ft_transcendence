@@ -30,6 +30,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderPage();
   });
 
+  // Handle Resize for the OffCanvas Sidebar
+  window.addEventListener('resize', (e) => {
+    const sidebarOffCanvas = document.querySelector("#sidebar .sidebar-inner-wrapper");
+    if (!sidebarOffCanvas) return;
+
+    if (window.innerWidth < 768) {
+      sidebarOffCanvas.classList.add("offcanvas");
+    } else {
+      sidebarOffCanvas.classList.remove("offcanvas");
+    }
+  });
+
   // Render Page
   await i18nextInit().then(renderPage);
 });

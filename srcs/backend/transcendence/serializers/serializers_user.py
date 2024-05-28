@@ -1,14 +1,15 @@
-from rest_framework import serializers
-from ..models import User
+import os
 from django.contrib.auth.hashers import make_password
 from django.core.validators import EmailValidator, MaxLengthValidator
+from rest_framework import serializers
+from ..models import User
 
 class UserSerializer(serializers.ModelSerializer):
 
     email = serializers.EmailField(
         error_messages={
             'blank': 'email_cannot_be_blank',
-            'invalid': 'invalid_email_format'
+            'invalid': 'email_invalid_format'
         }
     )
 
@@ -37,7 +38,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     def validate_email(self, value):
         # Validate email format
-        validator = EmailValidator(message="invalid_email_format")
+        validator = EmailValidator(message="email_invalid_format")
         validator(value)
 
         # Validate email length
@@ -61,6 +62,16 @@ class UserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("username_in_use")
         return value
 
+    def validate_avatar(self, value):
+        valid_extensions = ['.png', '.jpg', '.jpeg']
+        extension = os.path.splitext(value.name)[1].lower()
+        if not extension in valid_extensions:
+            raise serializers.ValidationError("avatar_unsupported_file_extension")
+        limit_kb = 100
+        if value.size > limit_kb * 1024:
+            raise serializers.ValidationError("avatar_file_size_exceed_limit")
+        return value
+
     def validate_password(self, value):
         if len(value) < 8:
             raise serializers.ValidationError("password_too_short")
@@ -71,11 +82,24 @@ class UserSerializer(serializers.ModelSerializer):
             username=validated_data['username'],
             email=validated_data['email'],
             password=make_password(validated_data['password']),
-            avatar=validated_data.get('avatar', None),            
             num_games=validated_data.get('num_games', 0),
             num_games_won=validated_data.get('num_games_won', 0),
             num_tournaments=validated_data.get('num_tournaments', 0),
             num_tournaments_won=validated_data.get('num_tournaments_won', 0)
         )
+        # Only set the avatar if provided
+        # The default value was not working properly otherwise
+        if 'avatar' in validated_data:
+            user.avatar = validated_data['avatar']
         user.save()
         return user
+
+    def update(self, instance, validated_data):
+        if 'password' in validated_data:
+            validated_data['password'] = make_password(validated_data['password'])
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        instance.save()
+        return instance

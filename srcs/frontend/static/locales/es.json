@@ -8,7 +8,42 @@
     "signUp": "Inscribirse",
     "signIn": "Iniciar Sesión",
     "pong": "Pong",
+    "editProfile": "Editar perfil",
     "logout": "Cerrar sesión"
+  },
+  "toast": {
+    "just_now": "ahora mismo"
+  },
+  "sidebar": {
+    "menu": "Menú",
+    "add": "Añadir",
+    "invitations_received": "Invitaciones Recibidas",
+    "invitations_sent": "Invitaciones Enviadas",
+    "friends": {
+      "title": "Amigos",
+      "notification_messages": {
+        "sent": "Envió una solicitud de amistad",
+        "refused": "Rechazó tu solicitud de amistad",
+        "accepted": "Aceptó tu solicitud de amistad. El partido comenzará en 10s",
+        "canceled": "Canceló su solicitud de amistad",
+        "start": "El partido comenzará en 10s"
+      }
+    },
+    "matches": {
+      "title": "Partidos",
+      "notification_messages": {
+        "sent": "Envió una solicitud de partido",
+        "refused": "Rechazó tu solicitud de partido",
+        "accepted": "Aceptó tu solicitud de partido",
+        "canceled": "Canceló su solicitud de partido"
+      }
+    },
+    "validation": {
+      "default_error": "Nombre de usuario inválido",
+      "cant_ask_yourself": "No puedes preguntarte a ti mismo",
+      "pending_friend_request": "Solicitud de amistad pendiente",
+      "is_already_friend": "Ya es tu amigo"
+    }
   },
   "pong": {
     "title": "Pong",
@@ -22,10 +57,13 @@
     "tournament": "Torneo",
     "singleMatchNotEnoughFriends": "Necesitas al menos 1 amigo para empazar una partida.",
     "tournamentNotEnoughFriends": "Necesitas al menos 7 amigos para empezar un torneo.",
+    "createError": "No se pudo crear tu partida. Inténtalo de nuevo.",
     "singleMatchInvitationMessage": "Selecciona a tu oponente:",
     "tournamentInvitationMessage": "Seleccione 7 participantes:",
+    "invitationError": "Debes seleccionar 7 participantes para convidar.",
     "invitationBtn": "Convidar",
-    "startGame": "Jugar"
+    "startGame": "Jugar",
+    "winner": "GANADOR"
   },
   "individualDashboard": {
     "title": "Estadísticas",
@@ -79,33 +117,29 @@
     "signUp": {
       "title": "Inscribirse",
       "fields": {
-        "email": {
-          "label": "Correo electrónico",
-          "invalidFeedback": "Por favor, elige un correo electrónico válido.",
-          "help": "Nunca compartiremos su correo electrónico con nadie más."
-        },
-        "username": {
-          "label": "Nombre de usuario",
-          "invalidFeedback": "Este nombre de usuario ya está tomado.",
-          "help": "Cómo te verán los otros jugadores."
-        },
-        "password": {
-          "label": "Contraseña",
-          "invalidFeedback": "La contraseña debe tener al menos 8 caracteres."
-        }
+        "email": "Correo electrónico",
+        "username": "Nombre de usuario",
+        "avatar": "Avatar",
+        "password": "Contraseña"
       },
       "validation": {
+        "default_error": "Valor no válido",
         "email_cannot_be_blank": "El correo no puede estar vacío",
-        "invalid_email_format": "Formato de correo inválido",
+        "email_invalid_format": "Formato de correo inválido",
         "email_too_long": "El correo es demasiado largo",
         "email_in_use": "Este correo electrónico ya está registrado",
         "username_cannot_be_blank": "El nombre de usuario no puede estar vacío",
         "username_too_long": "El nombre de usuario es demasiado largo",
         "username_in_use": "Este nombre de usuario ya está en uso",
         "username_too_short": "El nombre de usuario debe tener al menos 5 caracteres",
+        "avatar_unsupported_file_extension": "El avatar solo admite los siguientes formatos: PNG, JPG o JPEG",
+        "avatar_file_size_exceed_limit": "El avatar no puede exceder el límite de tamaño de 100kb",
         "password_cannot_be_blank": "La contraseña no puede estar vacía",
         "password_too_short": "La contraseña debe tener al menos 8 caracteres"
       },
       "submitButton": "Registrar"
+    },
+    "editProfile" : {
+      "title": "Editar perfil"
     }
   } 

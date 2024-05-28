@@ -3,12 +3,14 @@ import {
   GeneralDashboard,
   IndividualDashboard,
   Home,
-  SignIn,
   SignUp,
+  SignIn,
+  EditProfile,
   Match,
   Pong,
-  Setup,
+  Setup
 } from "/static/js/pages/index.js";
+import { Tournament } from "/static/js/pages/pong/index.js";
 import { refreshUserID, navigateTo } from "./index.js";
 
 const ROUTES = [
@@ -17,9 +19,11 @@ const ROUTES = [
   { path: "/pong/single/setup", title: "Pong", page: Setup },
   { path: "/pong/single/match/:matchId", title: "Pong", page: Match },
   { path: "/pong/tournament/setup", title: "Pong", page: Setup },
+  { path: "/pong/tournament/:id/rounds", title: "Pong", page: Tournament },
   { path: "/pong/tournament/match/:matchId", title: "Pong", page: Match },
   { path: "/sign-up", title: "Sign-up", page: SignUp },
   { path: "/sign-in", title: "Sign-in", page: SignIn },
+  { path: "/edit-profile", title: "Edit Profile", page: EditProfile },
   {
     path: "/dashboard/general",
     title: "General statistics",
@@ -68,9 +72,8 @@ const isRouteValid = (route) => (
 )
 
 const renderSidebar = async () => {
-  const sidebar = new Sidebar();
-  document.getElementById("sidebar").innerHTML = await sidebar.getHtml();
-  await sidebar.addFunctionality();
+  document.getElementById("sidebar").innerHTML = await Sidebar.getHtml();
+  await Sidebar.addFunctionality();
 }
 
 const renderPage = async () => {
@@ -110,4 +113,4 @@ const renderPage = async () => {
   }
 };
 
-export default renderPage;
+export { renderSidebar, renderPage };

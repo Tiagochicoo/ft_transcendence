@@ -1,6 +1,6 @@
 import { Friends } from "/static/js/api/index.js";
-import { Abstract } from "/static/js/components/index.js";
-import ChatBox from "/static/js/components/ChatBox/index.js";
+import { Abstract, ChatBox } from "/static/js/components/index.js";
+import { User } from "/static/js/generators/index.js";
 import { sendNotification } from "/static/js/services/index.js";
 
 // Utility Class
@@ -39,13 +39,7 @@ export default class extends Abstract {
 					<ul class="list-unstyled d-flex flex-column gap-2 mb-0">
 						${list.map(({ id, user }) => `
 							<div class="sidebar-section-element d-flex justify-content-between gap-1 p-1 bg-light rounded" data-friend-id="${id}">
-								<div class="d-flex align-items-center gap-1">
-									<img src="${user.avatar}" class="rounded-circle" />
-
-									<span class="lh-1">
-										${user.username}
-									</span>
-								</div>
+								${User.getBadge(user)}
 
 								<div class="d-flex align-items-center gap-1">
 									${options.actions.map(({ action, icon }) => `
@@ -96,7 +90,7 @@ export default class extends Abstract {
 
 		const htmlList = this.getList(list, {
 			id: 'friends-received-list',
-			title: 'Invitations Received',
+			title: i18next.t("sidebar.invitations_received"),
 			actions: [
 				{
 					action: 'refuse',
@@ -129,7 +123,7 @@ export default class extends Abstract {
 
 		const htmlList = this.getList(list, {
 			id: 'friends-sent-list',
-			title: 'Invitations Sent',
+			title: i18next.t("sidebar.invitations_sent"),
 			actions: [
 				{
 					action: 'cancel',
@@ -156,8 +150,8 @@ export default class extends Abstract {
 		this.doDataUpdate(data);
 		this.updateFriendsReceived();
 		sendNotification({
-			author: data.user1.username,
-			body: 'Sent a friend request'
+			user: data.user1,
+			body: i18next.t("sidebar.friends.notification_messages.sent")
 		});
 	}
 
@@ -166,8 +160,8 @@ export default class extends Abstract {
 		this.updateFriendsAccepted();
 		this.updateFriendsSent();
 		sendNotification({
-			author: data.user2.username,
-			body: 'Refused your friend request'
+			user: data.user2,
+			body: i18next.t("sidebar.friends.notification_messages.refused")
 		});
 	}
 
@@ -176,8 +170,8 @@ export default class extends Abstract {
 		this.updateFriendsAccepted();
 		this.updateFriendsSent();
 		sendNotification({
-			author: data.user2.username,
-			body: 'Accepted your friend request'
+			user: data.user2,
+			body: i18next.t("sidebar.friends.notification_messages.accepted")
 		});
 	}
 
@@ -185,8 +179,24 @@ export default class extends Abstract {
 		this.doDataUpdate(data);
 		this.updateFriendsReceived();
 		sendNotification({
-			author: data.user1.username,
-			body: 'Canceled his friend request'
+			user: data.user1,
+			body: i18next.t("sidebar.friends.notification_messages.canceled")
+		});
+	}
+
+	static updateOnlineStatus() {
+		const friendsID = this.data.map(({ user1, user2 }) => (user1.id == USER_ID) ? user2.id : user1.id);
+
+		friendsID.forEach(friendID => {
+			const isOnline = ONLINE_USERS.find(onlineUserID => onlineUserID == friendID);
+
+			document.querySelectorAll(`.user-badge[data-user-id="${friendID}"]`).forEach(element => {
+				if (isOnline) {
+					element.classList.add("is-online");
+				} else {
+					element.classList.remove("is-online");
+				}
+			});
 		});
 	}
 
@@ -260,7 +270,7 @@ export default class extends Abstract {
 				this.doDataUpdate(response.data);
 				this.updateFriendsSent();
 			} else {
-				usernameErrorEl.textContent = 'Invalid username';
+				usernameErrorEl.textContent = i18next.t(`sidebar.validation.${response?.message || 'default_error'}`);
 				usernameErrorEl.style.display = 'block';
 			}
 		});
@@ -273,13 +283,13 @@ export default class extends Abstract {
 		return `
 			<div id="friends-wrapper" class="sidebar-section">
 				<h4 class="text-white mb-0">
-					Friends
+					${i18next.t("sidebar.friends.title")}
 				</h4>
 
 				<form id="friends-add" novalidate>
 					<input type="text" class="form-control" id="username" name="username">
 					<button type="submit" class="btn btn-primary">
-						Add
+						${i18next.t("sidebar.add")}
 					</button>
 					<div id="usernameError" class="invalid-feedback" style="display: none;"></div>
 				</form>

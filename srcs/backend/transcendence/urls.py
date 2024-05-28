@@ -1,8 +1,8 @@
 from django.urls import path
 from .views.chatroom import ChatRoomCreate, ChatRoomBlock, ChatRoomUnblock, ChatRoomMessages, ChatRoomDetails, UserChatRoomDetails
 from .views.friendrequest import FriendCreate, FriendCancel, FriendAccept, FriendRefuse, FriendDetails, UserFriendDetails
-from .views.match import MatchCreate, MatchDetail, MatchUpdate
-from .views.tournament import TournamentCreate, TournamentDetail
+from .views.match import MatchCreate, MatchDetail, MatchUpdate, MatchCancel, MatchAccept, MatchRefuse, MatchByTournament, UserMatchDetails
+from .views.tournament import TournamentCreate, TournamentDetail, TournamentUpdate
 from .views.tournament_user import TournamentUserCreate, TournamentUserDetail
 from .views.user import UserList, UserDetails, UserLogin, UserUpdate, WhoAmI
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
@@ -33,12 +33,18 @@ urlpatterns = [
     path('chat_rooms/<int:chatRoomId>', ChatRoomDetails.as_view(), name='chat_room_details'),
     path('users/<int:userId>/chat_rooms', UserChatRoomDetails.as_view(), name='user_chat_room_details'),
 	
-    path('match/', MatchCreate.as_view(), name='create_match'),
-	path('match/<int:id>/', MatchDetail.as_view(), name='match_detail'),
-	path('match/update', MatchUpdate.as_view(), name='match_update'),
+    path('matches/', MatchCreate.as_view(), name='create_match'),
+    path('matches/<int:id>/', MatchDetail.as_view(), name='match_detail'),
+    path('matches/update', MatchUpdate.as_view(), name='match_update'),
+    path('matches/<int:MatchId>/cancel/', MatchCancel.as_view(), name='match_cancel'),
+    path('matches/<int:MatchId>/accept/', MatchAccept.as_view(), name='match_accept'),
+    path('matches/<int:MatchId>/refuse/', MatchRefuse.as_view(), name='match_refuse'),
+    path('matches/on-tournament/<int:tournament_id>/', MatchByTournament.as_view(), name='match_by_tournament'),
+    path('users/<int:userId>/matches/', UserMatchDetails.as_view(), name='user_match_details'),
 	
     path('tournament/', TournamentCreate.as_view(), name='create_tournament'),
+	path('tournament/update', TournamentUpdate.as_view(), name='tournament_update'),
 	path('tournament/<int:id>/', TournamentDetail.as_view(), name='tournament_detail'),
     path('tournament_user/', TournamentUserCreate.as_view(), name='create_tournament_user'),
-	path('tournament_user/<int:user_id>/<int:tournament_id>/', TournamentUserDetail.as_view(), name='tournament_user_detail'),
+	path('tournament_user/<int:tournament_id>/', TournamentUserDetail.as_view(), name='tournament_user_detail'),
 ]

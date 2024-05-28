@@ -1,5 +1,4 @@
-import { clearTokens } from "/static/js/services/index.js";
-import { navigateTo } from "/static/js/services/index.js";
+import { doLogout } from "/static/js/services/index.js";
 import { Abstract, LanguageToggle } from "./index.js";
 
 export default class extends Abstract {
@@ -12,8 +11,7 @@ export default class extends Abstract {
 
     handleLogout() {
         console.log("Logging out user.");
-        clearTokens();
-        navigateTo('/sign-in');
+        doLogout();
     }
 
     async addFunctionality() {
@@ -26,33 +24,38 @@ export default class extends Abstract {
     // navbar.individualDashboard should pass the logged userId on href
     // now it is hardcoded
     async getHtml() {
-        const userManagementLinks = USER_ID ? '' : `
+        const userManagementLinks = `
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     ${i18next.t("navbar.userManagement")}
                 </a>
                 <ul class="dropdown-menu">
-                    <li>
-                        <a class="dropdown-item" href="/sign-up" data-link>
-                            ${i18next.t("navbar.signUp")}
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="/sign-in" data-link>
-                            ${i18next.t("navbar.signIn")}
-                        </a>
-                    </li>
+                    ${USER_ID ? `
+                        <li>
+                            <a class="dropdown-item" href="/edit-profile" data-link>
+                                ${i18next.t("navbar.editProfile")}
+                            </a>
+                        </li>
+                        <li>
+                            <button id="logoutButton" class="dropdown-item"">
+                                ${i18next.t("navbar.logout")}
+                            </button>
+                        </li>
+                    ` : `
+                        <li>
+                            <a class="dropdown-item" href="/sign-up" data-link>
+                                ${i18next.t("navbar.signUp")}
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/sign-in" data-link>
+                                ${i18next.t("navbar.signIn")}
+                            </a>
+                        </li>
+                    `}
                 </ul>
             </li>
         `;
-
-        const logoutLink = USER_ID ? `
-            <li class="nav-item" style="margin-right: 20px;">
-                <button id="logoutButton" class="btn btn-link nav-link" style="color: inherit;">
-                    ${i18next.t("navbar.logout")}
-                </button>
-            </li>
-        ` : '';
 
         return `
             <nav class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
@@ -60,7 +63,7 @@ export default class extends Abstract {
                     <a class="navbar-brand" href="/" data-link>
                         <img src="/static/images/logo-42.png" style="height: 40px;"/>
                     </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navbar navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -95,7 +98,6 @@ export default class extends Abstract {
                                 </li>
                             ` : ''}
                             ${userManagementLinks}
-                            ${logoutLink}
                         </ul>
                     </div>
                     ${await this.languageToggle.getHtml()}
