@@ -1,7 +1,7 @@
 from django.urls import path
 from .views.chatroom import ChatRoomCreate, ChatRoomBlock, ChatRoomUnblock, ChatRoomMessages, ChatRoomDetails, UserChatRoomDetails
 from .views.friendrequest import FriendCreate, FriendCancel, FriendAccept, FriendRefuse, FriendDetails, UserFriendDetails
-from .views.match import MatchCreate, MatchDetail, MatchUpdate, MatchCancel, MatchAccept, MatchRefuse, MatchByTournament, UserMatchDetails
+from .views.match import MatchCreate, MatchDetail, MatchUpdate, MatchCancel, MatchAccept, MatchRefuse, MatchFinish, MatchByTournament, UserMatchDetails
 from .views.tournament import TournamentCreate, TournamentDetail, TournamentUpdate
 from .views.tournament_user import TournamentUserCreate, TournamentUserDetail
 from .views.user import UserList, UserDetails, UserLogin, UserUpdate, WhoAmI
@@ -39,6 +39,7 @@ urlpatterns = [
     path('matches/<int:MatchId>/cancel/', MatchCancel.as_view(), name='match_cancel'),
     path('matches/<int:MatchId>/accept/', MatchAccept.as_view(), name='match_accept'),
     path('matches/<int:MatchId>/refuse/', MatchRefuse.as_view(), name='match_refuse'),
+    path('matches/<int:MatchId>/finish/', MatchFinish.as_view(), name='match_finish'),
     path('matches/on-tournament/<int:tournament_id>/', MatchByTournament.as_view(), name='match_by_tournament'),
     path('users/<int:userId>/matches/', UserMatchDetails.as_view(), name='user_match_details'),
 	

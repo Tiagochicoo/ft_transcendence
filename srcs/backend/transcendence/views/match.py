@@ -79,6 +79,26 @@ class MatchRefuse(APIView):
 		except Exception as error:
 			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+class MatchFinish(APIView):
+	def patch(self, request, MatchId, format=None):
+		try:
+			match = Match.objects.get(pk=MatchId)
+			if (match.has_finished):
+				raise Exception('Match already finished')
+			match.has_finished = True
+			user1_score = request.data.get('user1_score')
+			user2_score = request.data.get('user2_score')
+			match.score = abs(user1_score - user2_score)
+			if (user1_score > user2_score):
+				match.winner = match.user1
+			else:
+				match.winner = match.user2
+			match.save()
+			serializer = MatchSerializer(match)
+			return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
+		except Exception as error:
+			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 class MatchByTournament(APIView):
 	def get(self, request, tournament_id, format=None):
 		response = []
