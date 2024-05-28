@@ -37,12 +37,17 @@ async function refreshUserID() {
 
     // Get the USER_ID from the 'Access Token'
     try {
-        const token = localStorage.getItem('accessToken');
-        if (isTokenExpired(token)) {
-            throw new Error('accessToken expired');
+        let token = localStorage.getItem('accessToken');
+        const refreshToken = localStorage.getItem('refreshToken');
+        if (!token || isTokenExpired(token)) {
+            console.log("Access token is null or expired, attempting to renew...");
+            token = await renewAccessToken(refreshToken);
+            if (!token) {
+                throw new Error('Failed to renew access token');
+            }
         }
         const payload = JSON.parse(atob(token.split('.')[1]));
-        USER_ID = isTokenExpired(token) ? null : payload.user_id;
+        USER_ID = payload.user_id;
 
         const response = await Users.get(USER_ID);
         if (!response.success) {
@@ -50,6 +55,7 @@ async function refreshUserID() {
         }
     } catch (e) {
         clearTokens();
+        return;
     }
 
     if (originalUserID == USER_ID) return;
@@ -62,28 +68,45 @@ async function refreshUserID() {
 }
 
 async function renewAccessToken(refreshToken) {
-    const response = await fetch(`${API_URL}/api/token/refresh/`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ refresh: refreshToken })
-    });
+    if (!refreshToken) {
+        console.error("Refresh token is null or undefined");
+        throw new Error("Refresh token is null or undefined");
+    }
 
-    if (response.ok) {
-        const jsonResponse = await response.json();
-        localStorage.setItem('accessToken', jsonResponse.access);
-        console.log("Access token successfully renewed.");
-        return jsonResponse.access;
-    } else {
-        console.error('Failed to renew access token');
-        throw new Error('Failed to renew access token');
+    console.log("Attempting to renew access token with refresh token:", refreshToken);
+    try {
+        const response = await fetch(`${API_URL}/token/refresh/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ refresh: refreshToken })
+        });
+
+        if (response.ok) {
+            const jsonResponse = await response.json();
+            localStorage.setItem('accessToken', jsonResponse.access);
+            console.log("Access token successfully renewed.");
+            return jsonResponse.access;
+        } else {
+            const errorText = await response.text();
+            console.error('Failed to renew access token');
+            throw new Error('Failed to renew access token');
+        }
+    } catch (error) {
+    console.error('Error during token renewal:', error);
+    throw error;
     }
 }
 
 async function fetchWithToken(path, options = {}) {
     let accessToken = localStorage.getItem('accessToken'),
         refreshToken = localStorage.getItem('refreshToken');
+
+    if (!accessToken || !refreshToken) {
+        console.log("No tokens found, redirecting to login.");
+        return doLogout();
+    }
 
     if (isTokenExpired(accessToken)) {
         console.log("Access token is expired, renewing token...");
@@ -94,17 +117,33 @@ async function fetchWithToken(path, options = {}) {
             return doLogout();
         }
     }
+    
+    try {
+        const response = await fetch(`${API_URL}${path}`, {
+            ...options,
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                "x-access-token": accessToken,
+                ...options.headers,
+            }
+        });
 
-    const response = await fetch(`${API_URL}${path}`, {
-        ...options,
-        headers: Object.assign({}, options.headers, {
-            Authorization: `Bearer ${accessToken}`,
-            "x-access-token": accessToken,
-        })
-    });
-    const jsonResponse = await response.json();
+        if (!response.ok) {
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.indexOf('application/json') !== -1) {
+                const errorJson = await response.json();
+                console.error('API call failed with JSON error:', errorJson);
+            } else {
+                const errorText = await response.text();
+                console.error('API call failed with text error:', errorText);
+            }
+            throw new Error('API call failed');
+        }
 
-    return jsonResponse;
+        return await response.json();
+    } catch (error) {
+        console.error('Error during API call:', error);
+    }
 }
 
 export { doLogout, getCSRFToken, clearTokens, refreshUserID, fetchWithToken };
