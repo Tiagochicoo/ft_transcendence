@@ -18,9 +18,26 @@ export default class extends Abstract {
   async addFunctionality() {
 
 	const match = await PongData.getMatchById(this.matchId);
+	const gameDiv = document.getElementById('pong');
+	
+	if (match.success) {
+		if (match.data.has_finished) {
+			gameDiv.innerHTML = this.showGame(false, 'This match is already finished.');
+			
+		} else if (match.data.user1.id !== USER_ID && match.data.user2.id !== USER_ID) {
+			gameDiv.innerHTML = this.showGame(false, 'You were not invited to this match.');
+		} else {
+			gameDiv.innerHTML = this.showGame(true, '');
+			const game = new Game(match.data, this.mode, match.success);
+			game.drawGame();
+		}
+	} else {
+		gameDiv.innerHTML = this.showGame(false, 'No match found.');
+	}
+  }
 
-    const game = new Game(match.data, this.mode);
-    game.drawGame();
+  showGame(status, message) {
+	return status ? '<canvas id="canvas" width="600" height="400" class="bg-dark"></canvas>' : `<p id="match-error">${message}</p>`;
   }
 
   async getHtml() {
@@ -31,7 +48,6 @@ export default class extends Abstract {
 		</h1>
 
 		<div id="pong" tabindex="1" class="d-flex flex-column align-items-center">
-			<canvas id="canvas" width="600" height="400" class="bg-dark"></canvas>
 		</div>
 
 		<div id="pong-end-btn"></div>
