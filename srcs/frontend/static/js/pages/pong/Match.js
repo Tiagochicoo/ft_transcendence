@@ -30,12 +30,11 @@ export default class extends Abstract {
 			${i18next.t("pong.title")}
 		</h1>
 
-		<div class="d-flex flex-row justify-content-around">
-			<div id="pong" tabindex="1" class="d-flex flex-column align-items-center">
-				<canvas id="canvas" width="600" height="400" class="bg-dark"></canvas>
-			</div>
+		<div id="pong" tabindex="1" class="d-flex flex-column align-items-center">
+			<canvas id="canvas" width="600" height="400" class="bg-dark"></canvas>
+		</div>
 
-			<div id="pong-end-btn"></div>
+		<div id="pong-end-btn"></div>
 		</div>
 	`;
   }
