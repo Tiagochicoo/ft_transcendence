@@ -22,17 +22,17 @@ export default class extends Abstract {
 	
 	if (match.success) {
 		if (match.data.has_finished) {
-			gameDiv.innerHTML = this.showGame(false, 'This match is already finished.');
+			gameDiv.innerHTML = this.showGame(false, `${i18next.t("pong.matchAlreadyFinished")}`);
 			
 		} else if (match.data.user1.id !== USER_ID && match.data.user2.id !== USER_ID) {
-			gameDiv.innerHTML = this.showGame(false, 'You were not invited to this match.');
+			gameDiv.innerHTML = this.showGame(false, `${i18next.t("pong.userNotInvited")}`);
 		} else {
 			gameDiv.innerHTML = this.showGame(true, '');
 			const game = new Game(match.data, this.mode, match.success);
 			game.drawGame();
 		}
 	} else {
-		gameDiv.innerHTML = this.showGame(false, 'No match found.');
+		gameDiv.innerHTML = this.showGame(false, `${i18next.t("pong.noMatchFound")}`);
 	}
   }
 
