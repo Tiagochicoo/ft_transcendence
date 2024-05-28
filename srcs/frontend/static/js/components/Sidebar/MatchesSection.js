@@ -185,6 +185,11 @@ export default class extends Abstract {
 		});
 	}
 
+	static matchFinishlNotification(data) {
+		this.doDataUpdate(data);
+		this.updateMatchesAccepted();
+	}
+
 	static async createMatch(invited_user_id) {
 		const response = await Matches.create(invited_user_id);
 

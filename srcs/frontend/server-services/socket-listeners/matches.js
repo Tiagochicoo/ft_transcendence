@@ -166,7 +166,8 @@ const doUpdate = (io, matchId) => {
       return response.json();
     }).then(resposeJson => {
       if (resposeJson.success) {
-        console.log(resposeJson.success);
+        io.emit(`match_finish_${gameState.user1.id}`, resposeJson.data);
+        io.emit(`match_finish_${gameState.user2.id}`, resposeJson.data);
       } else {
         throw new Error();
       }
