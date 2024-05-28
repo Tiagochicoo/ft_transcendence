@@ -22,6 +22,7 @@ export default class extends Abstract {
 	static getList(list, options) {
 		const element = document.querySelector(`#matches-wrapper [data-bs-target="#${options.id}"]`);
 		const isExpanded = !options.title || (element && (element.getAttribute("aria-expanded") === 'true'));
+		const isAccepted = (options.id == 'matches-accepted-list');
 
 		return `
 			${options.title ? `
@@ -38,7 +39,7 @@ export default class extends Abstract {
 				<div id="${options.id}" class="collapse ${isExpanded ? "show" : ""} ${options.title ? 'mt-3' : ''}">
 					<ul class="list-unstyled d-flex flex-column gap-2 mb-0">
 						${list.map(({ id, user }) => `
-							<div class="sidebar-section-element d-flex justify-content-between gap-1 p-1 bg-light rounded" data-match-id="${id}">
+							<div class="sidebar-section-element d-flex justify-content-between gap-1 p-1 bg-light rounded" data-match-id="${id}" ${isAccepted ? `href="/pong/single/match/${id}" data-link` : ''}>
 								${User.getBadge(user)}
 
 								<div class="d-flex align-items-center gap-1">
@@ -48,7 +49,7 @@ export default class extends Abstract {
 										</button>
 									`).join("")}
 
-									${(options.id == 'matches-accepted-list') ? `
+									${isAccepted ? `
 										<strong class="px-2">
 											#${id}
 										</strong>

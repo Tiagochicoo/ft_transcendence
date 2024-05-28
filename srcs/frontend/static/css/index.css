@@ -84,6 +84,10 @@ main {
   background-color: var(--bs-gray-400);
 }
 
+.sidebar-section-element[data-link] {
+  cursor: pointer;
+}
+
 .sidebar-section-element span {
   font-size: 14px;
 }
