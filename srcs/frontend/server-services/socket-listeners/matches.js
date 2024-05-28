@@ -48,6 +48,7 @@ const startGame = (io, data) => {
       status: "running",
       countDown: 0,
       intervalId: null,
+      winner_id: null,
     },
     height: height,
     width: width,
@@ -147,7 +148,7 @@ const doUpdate = (io, matchId) => {
   if (gameState.user1.score == maxScore || gameState.user2.score == maxScore) {
     clearInterval(gameState.meta.intervalId);
     gameState.meta.status = "ended";
-    gameState.winner = (gameState.user1.score == maxScore) ? 1 : 2;
+    gameState.meta.winner_id = (gameState.user1.score == maxScore) ? gameState.user1.id : gameState.user2.id;
   }
 
   // Send updated game data to the clients

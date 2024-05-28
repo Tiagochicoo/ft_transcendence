@@ -1,5 +1,4 @@
 import { User } from "/static/js/pages/pong/index.js";
-import { navigateTo } from "/static/js/services/index.js";
 
 export default class Game {
   constructor(match, mode) {
@@ -13,22 +12,8 @@ export default class Game {
     this.mode = mode;
     this.tournamentId = this.mode === 'tournament' ? this.match.tournament : null;
 
-    // Getting elements references on DOM
-    this.modal = document.querySelector("#message-modal");
-    this.closeMOdalBtn = document.querySelector("#message-modal-close");
-
     // Game state
     this.gameState = {};
-
-    this.closeMOdalBtn.addEventListener("click", () => {
-      this.modal.style.display = "none";
-      this.modal.className = "modal fade";
-      if (this.mode === 'single') {
-        navigateTo('/pong');
-      } else if (this.mode === 'tournament') {
-        navigateTo(`/pong/tournament/${this.tournamentId}/rounds`)
-      }
-    });
 
     this.socketFunctionality();
   }
@@ -45,7 +30,7 @@ export default class Game {
       } else if (this.gameState.meta.status == 'running') {
         this.drawGame();
       } else if (this.gameState.meta.status == 'ended') {
-        this.endGame(this.gameState.winner.username);
+        this.drawEnd();
       }
     });
 
@@ -70,14 +55,6 @@ export default class Game {
         userId: USER_ID,
       });
     });
-  }
-
-  // Update the canvas with the end of the game
-  endGame(winner) {
-    document.querySelector("#message").innerHTML =
-      "Congratulations! " + winner + " wins!";
-    this.modal.style.display = "block";
-    this.modal.className = "modal fade show";
   }
 
   // Update the canvas with the countdown
@@ -132,5 +109,30 @@ export default class Game {
       (3 * this.gameState.width) / 4,
       20,
     );
+  }
+
+  // Update the canvas with the end of the game
+  drawEnd() {
+    this.ctx.clearRect(0, 0, this.gameState.width, this.gameState.height);
+
+    this.ctx.fillStyle = "#37ff8b";
+    this.ctx.font = '48px helvetica';
+    this.ctx.textAlign = 'center';
+    this.ctx.textBaseline = 'middle';
+
+    const text = (USER_ID == this.gameState.meta.winner_id) ? "Congratulations, you won!" : "Ooops, you lost...";
+
+    this.ctx.fillText(text, this.gameState.width / 2, this.gameState.height / 2);
+
+    // Add 'Go Back' button
+    const pongWrapper = document.getElementById("pong-end-btn");
+    if (pongWrapper) {
+      const linkHref = (this.mode === 'single') ? '/pong' : `/pong/tournament/${this.tournamentId}/rounds`;
+      pongWrapper.innerHTML = `
+        <a class="btn btn-secondary mt-4" href="${linkHref}" data-link>
+          Go Back
+        </a>
+      `;
+    }
   }
 }

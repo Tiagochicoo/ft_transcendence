@@ -31,26 +31,11 @@ export default class extends Abstract {
 		</h1>
 
 		<div class="d-flex flex-row justify-content-around">
-			<div class="game-area">
-				<div id="pong" tabindex="1" class="d-flex flex-column align-items-center m-4">
-					<div class="d-flex flex-column align-items-center">
-						<canvas id="canvas" width="600" height="400" class="bg-dark"></canvas>
-					</div>
-				</div>
+			<div id="pong" tabindex="1" class="d-flex flex-column align-items-center">
+				<canvas id="canvas" width="600" height="400" class="bg-dark"></canvas>
 			</div>
-		</div>
 
-		<div class="modal fade" tabindex="-1" role="dialog" id="message-modal">
-			<div class="modal-dialog modal-dialog-centered" role="document">
-				<div class="modal-content">
-					<div class="modal-body">
-						<h5 id="message"></h5>
-					</div>
-					<div class="modal-footer">
-						<button type="button" id="message-modal-close" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					</div>
-				</div>
-			</div>
+			<div id="pong-end-btn"></div>
 		</div>
 	`;
   }
