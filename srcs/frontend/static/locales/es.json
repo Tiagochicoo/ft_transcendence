@@ -63,7 +63,10 @@
     "invitationError": "Debes seleccionar 7 participantes para convidar.",
     "invitationBtn": "Convidar",
     "startGame": "Jugar",
-    "winner": "GANADOR"
+    "winner": "GANADOR",
+    "matchAlreadyFinished": "Este juego ya terminó.",
+    "userNotInvited": "No fuiste invitado a este juego.",
+    "noMatchFound": "No se han encontrado juegos."
   },
   "individualDashboard": {
     "title": "Estadísticas",
