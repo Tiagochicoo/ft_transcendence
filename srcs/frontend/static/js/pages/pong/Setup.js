@@ -1,4 +1,5 @@
 import { Abstract } from "/static/js/components/index.js";
+import MatchesSection from "/static/js/components/Sidebar/MatchesSection.js";
 import { Friends, PongData, Users } from "/static/js/api/index.js";
 import { navigateTo } from "/static/js/services/index.js";
 
@@ -140,13 +141,9 @@ export default class extends Abstract {
   }
 
   async storeMatch() {
-	const data = {
-		"user1": this.participants[0],
-		"user2": this.participants[1]
-	};
-	
-	this.matchId = await PongData.createMatch(data);
-	return this.matchId === -1 ? false : true;
+	const response = await MatchesSection.createMatch(this.participants[1]?.id);
+	this.matchId = response.success ? response.data.id : -1;
+	return response.success;
   }
 
   async storeTournament() {

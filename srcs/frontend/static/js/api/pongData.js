@@ -13,7 +13,7 @@ export default class PongData {
 	static async createMatch(data) {
 		
 		try {
-			const response = await fetchWithToken('/match/', {
+			const response = await fetchWithToken('/matches/', {
 				method: "POST",
 				headers: {
 					'Content-Type': 'application/json'
@@ -29,13 +29,13 @@ export default class PongData {
 
 	static async getMatchById(id) {
 		
-		return await fetchWithToken(`/match/${id}`);
+		return await fetchWithToken(`/matches/${id}`);
 	}
 
 	static async updateMatch(data) {
 		
 		try {
-			const response = await fetchWithToken('/match/update', {
+			const response = await fetchWithToken('/matches/update', {
 				method: "PATCH",
 				headers: {
 					'Content-Type': 'application/json'
@@ -49,7 +49,7 @@ export default class PongData {
 
 	static async getAllMatchesFromTournament(tournamentId) {
 		
-		return await fetchWithToken(`/match/on-tournament/${tournamentId}/`);
+		return await fetchWithToken(`/matches/on-tournament/${tournamentId}/`);
 	}
 
 	static async createTournament(data) {

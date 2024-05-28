@@ -99,6 +99,7 @@ async function fetchWithToken(path, options = {}) {
         ...options,
         headers: Object.assign({}, options.headers, {
             Authorization: `Bearer ${accessToken}`,
+            "x-access-token": accessToken,
         })
     });
     const jsonResponse = await response.json();

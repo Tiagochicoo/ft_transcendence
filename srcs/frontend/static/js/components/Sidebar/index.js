@@ -1,5 +1,6 @@
 import { Abstract } from "/static/js/components/index.js";
 import FriendsSection from "./FriendsSection.js";
+import MatchesSection from "./MatchesSection.js";
 
 // Utility Class
 export default class extends Abstract {
@@ -13,6 +14,7 @@ export default class extends Abstract {
 		}
 
 		await FriendsSection.addFunctionality();
+		await MatchesSection.addFunctionality();
 	}
 
 	static async getHtml() {
@@ -25,10 +27,12 @@ export default class extends Abstract {
 				<div class="sidebar-wrapper">
 					<div class="sidebar-inner-wrapper ${window.innerWidth < 768 ? 'offcanvas' : ''} offcanvas-start" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
 						<h2 class="text-white lh-1 mb-4">
-              ${i18next.t("sidebar.menu")}
+							${i18next.t("sidebar.menu")}
 						</h2>
 
 						${await FriendsSection.getHtml()}
+
+						${await MatchesSection.getHtml()}
 					</div>
 
 					<div class="navbar d-block d-md-none" data-bs-theme="dark" style="--bs-navbar-padding-y:0.75rem; --bs-navbar-padding-x:0.5rem;">
