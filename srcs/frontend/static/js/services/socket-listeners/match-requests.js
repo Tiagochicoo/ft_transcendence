@@ -40,11 +40,22 @@ const matchCancelSocketListener = () => {
   });
 }
 
+const matchFinishSocketListener = () => {
+  // Remove 'match_finish_id' listener
+  SOCKET.off(`match_finish_${USER_ID}`);
+
+  // Listen to the 'match_finish_id' event
+  SOCKET.on(`match_finish_${USER_ID}`, (data) => {
+    MatchesSection.matchFinishlNotification(data);
+  });
+}
+
 const matchRequests = () => {
   matchInviteSocketListener();
   matchRefuseSocketListener();
   matchAcceptSocketListener();
   matchCancelSocketListener();
+  matchFinishSocketListener();
 }
 
 export default matchRequests;

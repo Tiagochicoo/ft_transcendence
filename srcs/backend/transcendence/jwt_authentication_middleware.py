@@ -1,4 +1,5 @@
 import jwt
+import os
 from django.conf import settings
 from django.http import JsonResponse
 from django.urls import resolve
@@ -14,6 +15,11 @@ class JWTAuthenticationMiddleware:
         logger.debug("JWTAuthenticationMiddleware: Called")
         authorization_header = request.headers.get('Authorization')
         # print(f"Authorization Header: {authorization_header}")
+
+        # Skip JWT authentication if the request comes with the API_KEY
+        # Used for requests done by the frontend server (NodeJS client)
+        if request.headers.get('x-api-key') == os.environ['API_KEY']:
+            return self.get_response(request)
 
         # Skip JWT authentication for admin, media, sign-in, and sign-up URLs
         is_media_or_admin_route = any(map(lambda prefix: resolve(request.path_info).route.startswith(prefix), ['admin', '^media/']))

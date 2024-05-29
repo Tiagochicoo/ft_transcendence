@@ -1,3 +1,5 @@
+const fetch = require("node-fetch");
+
 const MATCHES_STATE = {};
 const height = 400;
 const width = 600;
@@ -149,6 +151,31 @@ const doUpdate = (io, matchId) => {
     clearInterval(gameState.meta.intervalId);
     gameState.meta.status = "ended";
     gameState.meta.winner_id = (gameState.user1.score == maxScore) ? gameState.user1.id : gameState.user2.id;
+
+    fetch(`http://backend:8000/api/matches/${matchId}/finish/`, {
+      method: 'PATCH',
+      headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': process.env.API_KEY,
+      },
+      body: JSON.stringify({
+        user1_score: gameState.user1.score,
+        user2_score: gameState.user2.score,
+      })
+    }).then(response => {
+      return response.json();
+    }).then(resposeJson => {
+      if (resposeJson.success) {
+        io.emit(`match_finish_${gameState.user1.id}`, resposeJson.data);
+        io.emit(`match_finish_${gameState.user2.id}`, resposeJson.data);
+      } else {
+        throw new Error();
+      }
+    }).catch(error => {
+      console.log(`Error finishing the match ${matchId}:`, error);
+    }).finally(() => {
+      delete MATCHES_STATE[matchId];
+    });
   }
 
   // Send updated game data to the clients
@@ -170,7 +197,7 @@ const doReset = (matchId) => {
 // First a countdown of 10s
 // Then run the game
 const initGame = (io, data) => {
-  let countDown = 10;
+  let countDown = 100;
   const intervalId = setInterval(() => {
     countDown--;
 
@@ -183,12 +210,12 @@ const initGame = (io, data) => {
     io.emit(`match_data_${data.id}`, {
       meta: {
         status: "stand-by",
-        countDown: countDown,
+        countDown: Math.ceil(countDown / 10),
       },
       height: height,
       width: width,
     });
-  }, 1000);
+  }, 100);
 }
 
 module.exports = {
