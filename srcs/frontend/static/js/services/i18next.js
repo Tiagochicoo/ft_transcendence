@@ -47,15 +47,18 @@ const changeLanguage = async (newLang) => {
 
   const formData = new FormData();
   formData.append('preferred_language', newLang);
-  const response = await Users.update(formData);
+  await Users.update(formData);
 }
 
-const checkUserPreferredLanguage = async () => {
-  if (!USER_ID) {
+const checkUserPreferredLanguage = async (userId) => {
+  if (!userId) {
+    userId = USER_ID;
+  }
+  if (!userId) {
     return;
   }
 
-  const response = await Users.get(USER_ID);
+  const response = await Users.get(userId);
   if (response.success) {
     const userPreferredLang = response.data.preferred_language;
     if (userPreferredLang != i18next.language) {
