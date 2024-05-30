@@ -62,7 +62,7 @@ main {
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .sidebar-outter-wrapper, .sidebar-wrapper {
     min-width: 72px;
     max-width: 72px;

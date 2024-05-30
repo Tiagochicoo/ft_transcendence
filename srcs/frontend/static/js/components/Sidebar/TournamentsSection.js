@@ -160,7 +160,6 @@ export default class extends Abstract {
 			user: data.user,
 			body: i18next.t("sidebar.tournaments.notification_messages.accepted")
 		});
-		navigateTo(`/pong/single/tournament/${data.id}`);
 	}
 
 	static tournamentFinishlNotification(data) {
@@ -207,11 +206,7 @@ export default class extends Abstract {
 						this.doDataUpdate(response.data);
 						this.updateTournamentsAccepted();
 						this.updateTournamentsReceived();
-						sendNotification({
-							user: response.data.tournament.creator,
-							body: i18next.t("sidebar.tournaments.notification_messages.start")
-						});
-						navigateTo(`/pong/single/tournament/${response.data.id}`);
+						navigateTo(`/pong/tournament/${response.data.id}/rounds`);
 					}
 					break;
 			}

@@ -39,6 +39,16 @@
         "start": "O jogo irá começar dentro de 10s"
       }
     },
+    "tournaments": {
+      "title": "Torneios",
+      "notification_messages": {
+        "create": "Recebemos sua solicitação de torneio",
+        "sent": "Enviou uma solicitação de torneio",
+        "refused": "Recusou sua solicitação de torneio",
+        "accepted": "Aceitou sua solicitação de torneio",
+        "start": "O torneio começará em 10s"
+      }
+    },
     "validation": {
       "default_error": "Nome de usuário inválido",
       "cant_ask_yourself": "Não pode perguntar a si mesmo",

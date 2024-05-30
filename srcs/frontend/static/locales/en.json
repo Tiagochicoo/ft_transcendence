@@ -39,6 +39,16 @@
         "start": "The match will start in 10s"
       }
     },
+    "tournaments": {
+      "title": "Tournaments",
+      "notification_messages": {
+        "create": "Received your tournament request",
+        "sent": "Sent a tournament request",
+        "refused": "Refused your tournament request",
+        "accepted": "Accepted your tournament request",
+        "start": "The tournament will start in 10s"
+      }
+    },
     "validation": {
       "default_error": "Invalid username",
       "cant_ask_yourself": "Can't ask yourself",

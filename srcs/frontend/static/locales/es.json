@@ -39,6 +39,16 @@
         "canceled": "Canceló su solicitud de partido"
       }
     },
+    "tournaments": {
+      "title": "Torneos",
+      "notification_messages": {
+        "create": "Recibimos tu solicitud de torneo",
+        "sent": "Envió una solicitud de torneo",
+        "refused": "Rechazó tu solicitud de torneo",
+        "accepted": "Aceptó tu solicitud de torneo",
+        "start": "El torneo comenzará en 10s"
+      }
+    },
     "validation": {
       "default_error": "Nombre de usuario inválido",
       "cant_ask_yourself": "No puedes preguntarte a ti mismo",
