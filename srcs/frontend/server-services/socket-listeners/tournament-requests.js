@@ -26,15 +26,13 @@ const tournamentInviteSocketListener = (socket, io) => {
   });
 }
 
-/*
-const matchRefuseSocketListener = (socket, io) => {
-  // Listen to the 'match_refuse' event
-  socket.on('match_refuse', (data) => {
-    // console.log(`match_refuse_${data.user1.id}`);
-    io.emit(`match_refuse_${data.user1.id}`, data);
+const tournamentRefuseSocketListener = (socket, io) => {
+  socket.on('tournament_refuse', (data) => {
+    io.emit(`tournament_refuse_${data.tournament.creator.id}`, data);
   });
 }
 
+/*
 const matchAcceptSocketListener = (socket, io) => {
   // Listen to the 'match_accept' event
   socket.on('match_accept', (data) => {
@@ -56,8 +54,8 @@ const matchCancelSocketListener = (socket, io) => {
 
 const tournamentRequests = (socket, io) => {
   tournamentInviteSocketListener(socket, io);
+  tournamentRefuseSocketListener(socket, io);
   /*
-  matchRefuseSocketListener(socket, io);
   matchAcceptSocketListener(socket, io);
   matchCancelSocketListener(socket, io);
   */
