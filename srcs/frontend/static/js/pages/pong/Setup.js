@@ -1,5 +1,6 @@
 import { Abstract } from "/static/js/components/index.js";
 import MatchesSection from "/static/js/components/Sidebar/MatchesSection.js";
+import TournamentsSection from "/static/js/components/Sidebar/TournamentsSection.js";
 import { Friends, PongData, Users } from "/static/js/api/index.js";
 import { navigateTo } from "/static/js/services/index.js";
 
@@ -64,7 +65,7 @@ export default class extends Abstract {
 		}
 	
 		invitationBtn.addEventListener("click", () => {
-			if (this.mode === 'single') this.startSingleMatch(setupArea);
+			if (this.mode === 'single') this.startSingleMatch();
 			else if (this.mode === 'tournament') {
 				this.participants = [];
 				this.participants.push(this.user);
@@ -73,7 +74,7 @@ export default class extends Abstract {
 						this.participants.push(this.friends.filter((friend) => friend.id == opponent.id)[0]);
 					}
  				}
-				if (this.participants.length === 8) this.startTournament(setupArea);
+				if (this.participants.length === 8) this.startTournament();
 				else document.getElementById('invitation-error').innerHTML = `${i18next.t("pong.invitationError")}`;
 			}
 		});
@@ -119,44 +120,9 @@ export default class extends Abstract {
 	}
   }
 
-  startTournament(setupArea) {
-	// include a loader to wait for the response. A friend can accept or decline the invitation. 
-	// If it was accepted, we show the start button, if it was not, we must show a notification and allow the user to choose another friend.
-	// Depending on socket connection
-	this.storeTournament().then((response) => {
-			if (response) navigateTo(`/pong/tournament/${this.tournamentId}/rounds`);
-	}).catch((error) => {
-		console.log(error.message);
-			setupArea.innerHTML = `<p style="color: red;">${i18next.t("pong.createError")}</p>`;
-	})
-	
-  }
-
-  async storeTournament() {
-	const data = {
-		"creator": this.participants[0].id
-	};
-
-	this.tournamentId = await PongData.createTournament(data);
-
-	// Creating tournament_user to each user
-	if (this.tournamentId !== -1) {
-		for (const user of this.participants) {
-			const response = await PongData.createTournamentUser(
-				{
-					"tournamentId": this.tournamentId,
-					"userId": user.id
-				}
-			);
-
-			if (!response) {
-				console.log("Error creating tournament_user.");
-				return false;
-			}
-		}
-	}
-
-	return this.tournamentId === -1 ? false : true;
+  async startTournament() {
+	const invitedUserIds = this.participants.map(({ id }) => id);
+	await TournamentsSection.tournamentCreate(invitedUserIds);
   }
 
   async getHtml() {

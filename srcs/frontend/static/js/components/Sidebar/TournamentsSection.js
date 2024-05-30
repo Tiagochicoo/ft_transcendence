@@ -155,7 +155,7 @@ export default class extends Abstract {
 			user: data.user2,
 			body: i18next.t("sidebar.tournaments.notification_messages.create")
 		});
-		navigateTo(`/pong/single/tournament/${data.id}`);
+		navigateTo(`/pong/tournament/${data.id}/rounds`);
 	}
 
 	static tournamentInviteNotification(data) {
@@ -202,8 +202,8 @@ export default class extends Abstract {
 		this.updateTournamentsAccepted();
 	}
 
-	static async tournamentCreate(invited_user_id) {
-		const response = await Tournaments.create(invited_user_id);
+	static async tournamentCreate(invited_user_ids) {
+		const response = await Tournaments.create(invited_user_ids);
 
 		if (response.success) {
 			SOCKET.emit('tournament_invite', response.data);
