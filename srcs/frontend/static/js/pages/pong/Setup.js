@@ -113,17 +113,9 @@ export default class extends Abstract {
 	return list;
   }
 
-  startSingleMatch(setupArea) {
+  async startSingleMatch() {
 	if (this.participants.length == 2) {
-		// include a loader to wait for the response. A friend can accept or decline the invitation. 
-		// If it was accepted, we show the start button, if it was not, we must show a notification and allow the user to choose another friend.
-		// Depending on socket connection
-		this.storeMatch().then((response) => {
-			if (response) setupArea.innerHTML = this.enableStartGame();
-		}).catch((error) => {
-			console.log(error.message);
-			setupArea.innerHTML = `<p style="color: red;">${i18next.t("pong.createError")}</p>`;
-		});
+		await MatchesSection.matchCreate(this.participants[1]?.id);
 	}
   }
 
@@ -138,12 +130,6 @@ export default class extends Abstract {
 			setupArea.innerHTML = `<p style="color: red;">${i18next.t("pong.createError")}</p>`;
 	})
 	
-  }
-
-  async storeMatch() {
-	const response = await MatchesSection.createMatch(this.participants[1]?.id);
-	this.matchId = response.success ? response.data.id : -1;
-	return response.success;
   }
 
   async storeTournament() {
@@ -171,16 +157,6 @@ export default class extends Abstract {
 	}
 
 	return this.tournamentId === -1 ? false : true;
-  }
-
-  enableStartGame() {
-
-	let startBtn = `<a id="start-match-button" href="/pong/single/match/${this.matchId}" data-link>
-						${i18next.t("pong.startGame")}
-					</a>`;
-	
-
-	return startBtn;
   }
 
   async getHtml() {

@@ -32,6 +32,7 @@
     "matches": {
       "title": "Partidos",
       "notification_messages": {
+        "create": "Recibida su solicitud de partido",
         "sent": "Envió una solicitud de partido",
         "refused": "Rechazó tu solicitud de partido",
         "accepted": "Aceptó tu solicitud de partido",

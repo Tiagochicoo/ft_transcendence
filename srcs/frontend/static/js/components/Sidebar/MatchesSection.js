@@ -148,6 +148,16 @@ export default class extends Abstract {
 		}
 	}
 
+	static matchCreateNotification(data) {
+		this.doDataUpdate(data);
+		this.updateMatchesSent();
+		sendNotification({
+			user: data.user2,
+			body: i18next.t("sidebar.matches.notification_messages.create")
+		});
+		navigateTo(`/pong/single/match/${data.id}`);
+	}
+
 	static matchInviteNotification(data) {
 		this.doDataUpdate(data);
 		this.updateMatchesReceived();
@@ -192,13 +202,12 @@ export default class extends Abstract {
 		this.updateMatchesAccepted();
 	}
 
-	static async createMatch(invited_user_id) {
+	static async matchCreate(invited_user_id) {
 		const response = await Matches.create(invited_user_id);
 
 		if (response.success) {
 			SOCKET.emit('match_invite', response.data);
-			this.doDataUpdate(response.data);
-			this.updateMatchesSent();
+			this.matchCreateNotification(response.data);
 		}
 
 		return response;

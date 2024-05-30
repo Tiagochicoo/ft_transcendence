@@ -31,6 +31,7 @@
     "matches": {
       "title": "Matches",
       "notification_messages": {
+        "create": "Received your match request",
         "sent": "Sent a match request",
         "refused": "Refused your match request",
         "accepted": "Accepted your match request. The match will start in 10s",
