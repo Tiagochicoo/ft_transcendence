@@ -38,23 +38,25 @@ export default class extends Abstract {
 			${list.length ? `
 				<div id="${options.id}" class="collapse ${isExpanded ? "show" : ""} ${options.title ? 'mt-3' : ''}">
 					<ul class="list-unstyled d-flex flex-column gap-2 mb-0">
-						${list.map(({ id, user }) => `
-							<div class="sidebar-section-element d-flex justify-content-between gap-1 p-1 bg-light rounded" data-tournament-id="${id}" ${isAccepted ? `href="/pong/tournament/${id}/rounds" data-link` : ''}>
+						${list.map(({ id, user, tournament }) => `
+							<div class="sidebar-section-element d-flex align-items-center justify-content-between gap-1 p-1 bg-light rounded" data-tournament-id="${id}" ${isAccepted ? `href="/pong/tournament/${id}/rounds" data-link` : ''}>
 								${User.getBadge(user)}
 
-								<div class="d-flex align-items-center gap-1">
-									${options.actions.map(({ action, icon }) => `
-										<button class="bg-transparent p-1 border-0" data-action="${action}" data-id="${id}">
-											${icon}
-										</button>
-									`).join("")}
+								${isAccepted ? `
+									<strong class="px-2">
+										#${id}
+									</strong>
+								` : ''}
 
-									${isAccepted ? `
-										<strong class="px-2">
-											#${id}
-										</strong>
-									` : ''}
-								</div>
+								${!tournament.has_started ? `
+									<div class="d-flex align-items-center gap-1">
+										${options.actions.map(({ action, icon }) => `
+											<button class="bg-transparent p-1 border-0" data-action="${action}" data-id="${id}">
+												${icon}
+											</button>
+										`).join("")}
+									</div>
+								` : ''}
 							</div>
 						`).join("")}
 					</ul>
@@ -65,11 +67,16 @@ export default class extends Abstract {
 
 	static getTournamentsAccepted() {
 		const list = this.data.filter(el => el.was_accepted && !el.was_canceled && !el.was_refused && !el.has_finished)
-			.map(({ id }) => ({ id }));
+			.map(({ id, tournament }) => ({ id, tournament }));
 
 		const htmlList = this.getList(list, {
 			id: 'tournaments-accepted-list',
-			actions: []
+			actions: [
+				{
+					action: 'none',
+					icon: '<i class="bi bi-hourglass-split"></i>'
+				},
+			]
 		});
 
 		return `
