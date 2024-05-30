@@ -14,19 +14,13 @@ export default class Tournaments {
     });
   }
 
+  static async accept(tournament_id) {
+    return await fetchWithToken(`/tournament_users/${tournament_id}/accept/`, {
+      method: 'PATCH'
+    });
+  }
+
   /*
-  static async cancel(match_id) {
-    return await fetchWithToken(`/matches/${match_id}/cancel/`, {
-      method: 'PATCH'
-    });
-  }
-
-  static async accept(match_id) {
-    return await fetchWithToken(`/matches/${match_id}/accept/`, {
-      method: 'PATCH'
-    });
-  }
-
   static async refuse(match_id) {
     return await fetchWithToken(`/matches/${match_id}/refuse/`, {
       method: 'PATCH'

@@ -38,20 +38,20 @@ export default class extends Abstract {
 			${list.length ? `
 				<div id="${options.id}" class="collapse ${isExpanded ? "show" : ""} ${options.title ? 'mt-3' : ''}">
 					<ul class="list-unstyled d-flex flex-column gap-2 mb-0">
-						${list.map(({ id, user, tournament }) => `
-							<div class="sidebar-section-element d-flex align-items-center justify-content-between gap-1 p-1 bg-light rounded" data-tournament-id="${id}" ${isAccepted ? `href="/pong/tournament/${id}/rounds" data-link` : ''}>
+						${list.map(({ user, tournament }) => `
+							<div class="sidebar-section-element d-flex align-items-center justify-content-between gap-1 p-1 bg-light rounded" data-tournament-id="${tournament.id}" ${isAccepted ? `href="/pong/tournament/${tournament.id}/rounds" data-link` : ''}>
 								${User.getBadge(user)}
 
 								${isAccepted ? `
 									<strong class="px-2">
-										#${id}
+										#${tournament.id}
 									</strong>
 								` : ''}
 
 								${!tournament.has_started ? `
 									<div class="d-flex align-items-center gap-1">
 										${options.actions.map(({ action, icon }) => `
-											<button class="bg-transparent p-1 border-0" data-action="${action}" data-id="${id}">
+											<button class="bg-transparent p-1 border-0" data-action="${action}" data-id="${tournament.id}">
 												${icon}
 											</button>
 										`).join("")}
@@ -67,7 +67,7 @@ export default class extends Abstract {
 
 	static getTournamentsAccepted() {
 		const list = this.data.filter(el => el.was_accepted && !el.was_canceled && !el.was_refused && !el.has_finished)
-			.map(({ id, tournament }) => ({ id, tournament }));
+			.map(({ tournament }) => ({ tournament }));
 
 		const htmlList = this.getList(list, {
 			id: 'tournaments-accepted-list',
@@ -95,7 +95,7 @@ export default class extends Abstract {
 
 	static getTournamentsReceived() {
 		const list = this.data.filter(el => !el.was_accepted && !el.was_canceled && !el.was_refused && (el.user.id == USER_ID) && (el.tournament.creator.id != USER_ID) && !el.tournament.has_started && !el.tournament.has_finished)
-			.map(({ id, tournament }) => ({ id, user: tournament.creator }));
+			.map(({ tournament }) => ({ user: tournament.creator, tournament }));
 
 		const htmlList = this.getList(list, {
 			id: 'tournaments-received-list',
@@ -163,15 +163,6 @@ export default class extends Abstract {
 		navigateTo(`/pong/single/tournament/${data.id}`);
 	}
 
-	static tournamentCancelNotification(data) {
-		this.doDataUpdate(data);
-		this.updateTournamentsReceived();
-		sendNotification({
-			user: data.tournament.creator,
-			body: i18next.t("sidebar.tournaments.notification_messages.canceled")
-		});
-	}
-
 	static tournamentFinishlNotification(data) {
 		this.doDataUpdate(data);
 		this.updateTournamentsAccepted();
@@ -221,14 +212,6 @@ export default class extends Abstract {
 							body: i18next.t("sidebar.tournaments.notification_messages.start")
 						});
 						navigateTo(`/pong/single/tournament/${response.data.id}`);
-					}
-					break;
-
-				case 'cancel':
-					response = await Tournaments.cancel(id);
-					if (response.success) {
-						SOCKET.emit('tournament_cancel', response.data);
-						this.doDataUpdate(response.data);
 					}
 					break;
 			}
