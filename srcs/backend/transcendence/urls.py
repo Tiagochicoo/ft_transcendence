@@ -2,7 +2,7 @@ from django.urls import path
 from .views.chatroom import ChatRoomCreate, ChatRoomBlock, ChatRoomUnblock, ChatRoomMessages, ChatRoomDetails, UserChatRoomDetails
 from .views.friendrequest import FriendCreate, FriendCancel, FriendAccept, FriendRefuse, FriendDetails, UserFriendDetails
 from .views.match import MatchCreate, MatchDetail, MatchUpdate, MatchCancel, MatchAccept, MatchRefuse, MatchFinish, MatchByTournament, UserMatchDetails
-from .views.tournament import TournamentCreate, TournamentDetail, TournamentUpdate
+from .views.tournament import TournamentCreate, UserTournamentDetails, TournamentDetail, TournamentUpdate
 from .views.tournament_user import TournamentUserCreate, TournamentUserDetail
 from .views.user import UserList, UserDetails, UserLogin, UserUpdate, WhoAmI
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
@@ -44,6 +44,7 @@ urlpatterns = [
     path('users/<int:userId>/matches/', UserMatchDetails.as_view(), name='user_match_details'),
 	
     path('tournaments/', TournamentCreate.as_view(), name='create_tournament'),
+    path('users/<int:userId>/tournaments/', UserTournamentDetails.as_view(), name='user_tournament_details'),
 	path('tournament/update', TournamentUpdate.as_view(), name='tournament_update'),
 	path('tournament/<int:id>/', TournamentDetail.as_view(), name='tournament_detail'),
     path('tournament_user/', TournamentUserCreate.as_view(), name='create_tournament_user'),

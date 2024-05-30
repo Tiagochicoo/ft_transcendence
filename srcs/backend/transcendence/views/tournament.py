@@ -13,11 +13,23 @@ class TournamentCreate(APIView):
 			creator_id = get_user_id_from_request(request)
 			invited_user_ids = request.data.get('invited_user_ids')
 			tournament = Tournament.objects.create(creator_id=creator_id)
-			serializer_tournament = TournamentSerializer(tournament)
+			TournamentSerializer(tournament)
+			tournament_user = TournamentUser.objects.create(tournament=tournament, user_id=creator_id, was_accepted=True)
+			serializer_tournament_user = TournamentUserSerializer(tournament_user)
 			for user_id in invited_user_ids:
 				tournament_user = TournamentUser.objects.create(tournament=tournament, user_id=user_id)
 				TournamentUserSerializer(tournament_user)
-			return JsonResponse({'success': True, 'data': serializer_tournament.data}, status=status.HTTP_200_OK)
+			return JsonResponse({'success': True, 'data': serializer_tournament_user.data}, status=status.HTTP_200_OK)
+		except Exception as error:
+			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class UserTournamentDetails(APIView):
+	def get(self, request, userId, format=None):
+		try:
+			user = User.objects.get(pk=userId)
+			tournament_users = TournamentUser.objects.filter(user=user)
+			serializer = TournamentUserSerializer(tournament_users, many=True)
+			return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
 		except Exception as error:
 			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
