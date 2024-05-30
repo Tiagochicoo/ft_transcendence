@@ -29,14 +29,6 @@ export default class extends Abstract {
 	const setupArea = document.getElementById('setup-area');
 	setupArea.innerHTML = this.showListOfFriends();
 
-	let gameColor = document.querySelector('#gameColor');
-	console.log("game color before: ", gameColor.value);
-	localStorage.setItem('gameColor', gameColor.value);
-	gameColor.addEventListener("input", (event) => {
-		console.log("game color: ", gameColor.value);
-		localStorage.setItem('gameColor', gameColor.value);
-	});
-
 	if (this.checkAvailability) {
 		const invitationBtn = document.querySelector('#invitation-btn');
 
@@ -197,15 +189,7 @@ export default class extends Abstract {
 				${i18next.t("pong.title")}
 		</h1>
 
-		<div class="d-flex justify-content-around">
-			<div id="setup-area" class="d-flex flex-column mt-2" >
-			</div>
-			<div class="mt-2">
-				<form>
-					<label for="gameColor" class="form-label mb-3">Select a game color style:</label>
-					<input type="color" class="form-control form-control-color" id="gameColor" value="#14dd50" title="Choose a color">
-				</form>
-			</div>
+		<div id="setup-area" class="d-flex flex-column mt-2" >
 		</div>
 		
 	  </div>

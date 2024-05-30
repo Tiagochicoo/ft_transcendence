@@ -11,14 +11,14 @@ export default class Game {
     this.rightPlayer = new User(this.match.user2.username, this.match.user2.id);
     this.mode = mode;
     this.tournamentId = this.mode === 'tournament' ? this.match.tournament : null;
-    this.gameColor = localStorage.getItem('gameColor') ? localStorage.getItem('gameColor') : '#14dd50';
-
+    this.gameColor;
     // Game state
     this.gameState = {};
-
+    
     this.socketFunctionality();
   }
 
+  
   socketFunctionality() {
     // Listen for game state updates
     SOCKET.off(`match_data_${this.match.id}`);
@@ -26,6 +26,7 @@ export default class Game {
     SOCKET.on(`match_data_${this.match.id}`, (data) => {
       this.gameState = data;
 
+      this.gameColor = localStorage.getItem('gameColor') ? localStorage.getItem('gameColor') : '#14dd50';
       if (this.gameState.meta.status == 'stand-by') {
         this.drawCountdown(this.gameState.meta.countDown);
       } else if (this.gameState.meta.status == 'running') {
