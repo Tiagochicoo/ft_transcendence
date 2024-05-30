@@ -32,6 +32,15 @@ function clearTokens() {
     USER_ID = null;
 }
 
+function getUserIDfromToken(token) {
+    try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.user_id;
+    } catch(e) {
+        return null;
+    }
+}
+
 async function refreshUserID() {
     const originalUserID = USER_ID;
 
@@ -46,8 +55,7 @@ async function refreshUserID() {
                 throw new Error('Failed to renew access token');
             }
         }
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        USER_ID = payload.user_id;
+        USER_ID = getUserIDfromToken(token);
 
         const response = await Users.get(USER_ID);
         if (!response.success) {
@@ -141,4 +149,4 @@ async function fetchWithToken(path, options = {}) {
     }
 }
 
-export { doLogout, getCSRFToken, clearTokens, refreshUserID, fetchWithToken };
+export { doLogout, getCSRFToken, getUserIDfromToken, clearTokens, refreshUserID, fetchWithToken };
