@@ -1,4 +1,4 @@
-import { Matches } from "/static/js/api/index.js";
+import { Tournaments } from "/static/js/api/index.js";
 import { Abstract } from "/static/js/components/index.js";
 import { User } from "/static/js/generators/index.js";
 import { navigateTo, sendNotification } from "/static/js/services/index.js";
@@ -20,9 +20,9 @@ export default class extends Abstract {
 	}
 
 	static getList(list, options) {
-		const element = document.querySelector(`#matches-wrapper [data-bs-target="#${options.id}"]`);
+		const element = document.querySelector(`#tournaments-wrapper [data-bs-target="#${options.id}"]`);
 		const isExpanded = !options.title || (element && (element.getAttribute("aria-expanded") === 'true'));
-		const isAccepted = (options.id == 'matches-accepted-list');
+		const isAccepted = (options.id == 'tournaments-accepted-list');
 
 		return `
 			${options.title ? `
@@ -39,7 +39,7 @@ export default class extends Abstract {
 				<div id="${options.id}" class="collapse ${isExpanded ? "show" : ""} ${options.title ? 'mt-3' : ''}">
 					<ul class="list-unstyled d-flex flex-column gap-2 mb-0">
 						${list.map(({ id, user }) => `
-							<div class="sidebar-section-element d-flex justify-content-between gap-1 p-1 bg-light rounded" data-match-id="${id}" ${isAccepted ? `href="/pong/single/match/${id}" data-link` : ''}>
+							<div class="sidebar-section-element d-flex justify-content-between gap-1 p-1 bg-light rounded" data-tournament-id="${id}" ${isAccepted ? `href="/pong/single/tournament/${id}" data-link` : ''}>
 								${User.getBadge(user)}
 
 								<div class="d-flex align-items-center gap-1">
@@ -63,12 +63,12 @@ export default class extends Abstract {
 		`;
 	}
 
-	static getMatchesAccepted() {
+	static getTournamentsAccepted() {
 		const list = this.data.filter(el => el.was_accepted && !el.was_canceled && !el.was_refused && !el.has_finished)
 			.map(({ id, user1, user2 }) => ({ id, user: (user1.id == USER_ID) ? user2 : user1 }));
 
 		const htmlList = this.getList(list, {
-			id: 'matches-accepted-list',
+			id: 'tournaments-accepted-list',
 			actions: []
 		});
 
@@ -79,19 +79,19 @@ export default class extends Abstract {
 		`;
 	}
 
-	static updateMatchesAccepted() {
-		const wrapper = document.querySelector('#matches-wrapper #matches-accepted');
+	static updateTournamentsAccepted() {
+		const wrapper = document.querySelector('#tournaments-wrapper #tournaments-accepted');
 		if (wrapper) {
-			wrapper.innerHTML = this.getMatchesAccepted();
+			wrapper.innerHTML = this.getTournamentsAccepted();
 		}
 	}
 
-	static getMatchesReceived() {
+	static getTournamentsReceived() {
 		const list = this.data.filter(el => !el.was_accepted && !el.was_canceled && !el.was_refused && (el.user2.id == USER_ID))
 			.map(({ id, user1 }) => ({ id, user: user1 }));
 
 		const htmlList = this.getList(list, {
-			id: 'matches-received-list',
+			id: 'tournaments-received-list',
 			title: i18next.t("sidebar.invitations_received"),
 			actions: [
 				{
@@ -112,19 +112,19 @@ export default class extends Abstract {
 		`;
 	}
 
-	static updateMatchesReceived() {
-		const wrapper = document.querySelector('#matches-wrapper #matches-received');
+	static updateTournamentsReceived() {
+		const wrapper = document.querySelector('#tournaments-wrapper #tournaments-received');
 		if (wrapper) {
-			wrapper.innerHTML = this.getMatchesReceived();
+			wrapper.innerHTML = this.getTournamentsReceived();
 		}
 	}
 
-	static getMatchesSent() {
+	static getTournamentsSent() {
 		const list = this.data.filter(el => !el.was_accepted && !el.was_canceled && !el.was_refused && (el.user1.id == USER_ID))
 			.map(({ id, user2 }) => ({ id, user: user2 }));
 
 		const htmlList = this.getList(list, {
-			id: 'matches-sent-list',
+			id: 'tournaments-sent-list',
 			title: i18next.t("sidebar.invitations_sent"),
 			actions: [
 				{
@@ -141,80 +141,80 @@ export default class extends Abstract {
 		`;
 	}
 
-	static updateMatchesSent() {
-		const wrapper = document.querySelector('#matches-wrapper #matches-sent');
+	static updateTournamentsSent() {
+		const wrapper = document.querySelector('#tournaments-wrapper #tournaments-sent');
 		if (wrapper) {
-			wrapper.innerHTML = this.getMatchesSent();
+			wrapper.innerHTML = this.getTournamentsSent();
 		}
 	}
 
-	static matchCreateNotification(data) {
+	static tournamentCreateNotification(data) {
 		this.doDataUpdate(data);
-		this.updateMatchesSent();
+		this.updateTournamentsSent();
 		sendNotification({
 			user: data.user2,
-			body: i18next.t("sidebar.matches.notification_messages.create")
+			body: i18next.t("sidebar.tournaments.notification_messages.create")
 		});
-		navigateTo(`/pong/single/match/${data.id}`);
+		navigateTo(`/pong/single/tournament/${data.id}`);
 	}
 
-	static matchInviteNotification(data) {
+	static tournamentInviteNotification(data) {
 		this.doDataUpdate(data);
-		this.updateMatchesReceived();
+		this.updateTournamentsReceived();
 		sendNotification({
 			user: data.user1,
-			body: i18next.t("sidebar.matches.notification_messages.sent")
+			body: i18next.t("sidebar.tournaments.notification_messages.sent")
 		});
 	}
 
-	static matchRefuseNotification(data) {
+	static tournamentRefuseNotification(data) {
 		this.doDataUpdate(data);
-		this.updateMatchesAccepted();
-		this.updateMatchesSent();
+		this.updateTournamentsAccepted();
+		this.updateTournamentsSent();
 		sendNotification({
 			user: data.user2,
-			body: i18next.t("sidebar.matches.notification_messages.refused")
+			body: i18next.t("sidebar.tournaments.notification_messages.refused")
 		});
 	}
 
-	static matchAcceptNotification(data) {
+	static tournamentAcceptNotification(data) {
 		this.doDataUpdate(data);
-		this.updateMatchesAccepted();
-		this.updateMatchesSent();
+		this.updateTournamentsAccepted();
+		this.updateTournamentsSent();
 		sendNotification({
 			user: data.user2,
-			body: i18next.t("sidebar.matches.notification_messages.accepted")
+			body: i18next.t("sidebar.tournaments.notification_messages.accepted")
 		});
-		navigateTo(`/pong/single/match/${data.id}`);
+		navigateTo(`/pong/single/tournament/${data.id}`);
 	}
 
-	static matchCancelNotification(data) {
+	static tournamentCancelNotification(data) {
 		this.doDataUpdate(data);
-		this.updateMatchesReceived();
+		this.updateTournamentsReceived();
 		sendNotification({
 			user: data.user1,
-			body: i18next.t("sidebar.matches.notification_messages.canceled")
+			body: i18next.t("sidebar.tournaments.notification_messages.canceled")
 		});
 	}
 
-	static matchFinishlNotification(data) {
+	static tournamentFinishlNotification(data) {
 		this.doDataUpdate(data);
-		this.updateMatchesAccepted();
+		this.updateTournamentsAccepted();
 	}
 
-	static async matchCreate(invited_user_id) {
-		const response = await Matches.create(invited_user_id);
+	static async tournamentCreate(invited_user_id) {
+		const response = await Tournaments.create(invited_user_id);
 
 		if (response.success) {
-			SOCKET.emit('match_invite', response.data);
-			this.matchCreateNotification(response.data);
+			SOCKET.emit('tournament_invite', response.data);
+			this.tournamentCreateNotification(response.data);
 		}
 
 		return response;
 	}
 
 	static async addFunctionality() {
-		const wrapper = document.getElementById('matches-wrapper');
+		const wrapper = document.getElementById('tournaments-wrapper');
 
 		const handleClick = async (target) => {
 			const {
@@ -225,36 +225,36 @@ export default class extends Abstract {
 			let response;
 			switch (action) {
 				case 'refuse':
-					response = await Matches.refuse(id);
+					response = await Tournaments.refuse(id);
 					if (response.success) {
-						SOCKET.emit('match_refuse', response.data);
+						SOCKET.emit('tournament_refuse', response.data);
 						this.doDataUpdate(response.data);
-						this.updateMatchesAccepted();
-						this.updateMatchesReceived();
+						this.updateTournamentsAccepted();
+						this.updateTournamentsReceived();
 					}
 					break;
 
 				case 'accept':
-					response = await Matches.accept(id);
+					response = await Tournaments.accept(id);
 					if (response.success) {
-						SOCKET.emit('match_accept', response.data);
+						SOCKET.emit('tournament_accept', response.data);
 						this.doDataUpdate(response.data);
-						this.updateMatchesAccepted();
-						this.updateMatchesReceived();
+						this.updateTournamentsAccepted();
+						this.updateTournamentsReceived();
 						sendNotification({
 							user: response.data.user1,
-							body: i18next.t("sidebar.matches.notification_messages.start")
+							body: i18next.t("sidebar.tournaments.notification_messages.start")
 						});
-						navigateTo(`/pong/single/match/${response.data.id}`);
+						navigateTo(`/pong/single/tournament/${response.data.id}`);
 					}
 					break;
 
 				case 'cancel':
-					response = await Matches.cancel(id);
+					response = await Tournaments.cancel(id);
 					if (response.success) {
-						SOCKET.emit('match_cancel', response.data);
+						SOCKET.emit('tournament_cancel', response.data);
 						this.doDataUpdate(response.data);
-						this.updateMatchesSent();
+						this.updateTournamentsSent();
 					}
 					break;
 			}
@@ -269,25 +269,25 @@ export default class extends Abstract {
 	}
 
 	static async getHtml() {
-		const response = await Matches.getAll();
+		const response = await Tournaments.getAll();
 		this.data = response.success ? response.data : [];
 
 		return `
-			<div id="matches-wrapper" class="sidebar-section">
+			<div id="tournaments-wrapper" class="sidebar-section">
 				<h4 class="text-white mb-0">
-					${i18next.t("sidebar.matches.title")}
+					${i18next.t("sidebar.tournaments.title")}
 				</h4>
 
-				<div id="matches-accepted">
-					${this.getMatchesAccepted()}
+				<div id="tournaments-accepted">
+					${this.getTournamentsAccepted()}
 				</div>
 
-				<div id="matches-received">
-					${this.getMatchesReceived()}
+				<div id="tournaments-received">
+					${this.getTournamentsReceived()}
 				</div>
 
-				<div id="matches-sent">
-					${this.getMatchesSent()}
+				<div id="tournaments-sent">
+					${this.getTournamentsSent()}
 				</div>
 			</div>
 		`;
