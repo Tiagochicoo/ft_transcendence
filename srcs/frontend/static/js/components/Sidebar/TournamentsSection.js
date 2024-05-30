@@ -131,7 +131,7 @@ export default class extends Abstract {
 		sendNotification({
 			body: i18next.t("sidebar.tournaments.notification_messages.create")
 		});
-		navigateTo(`/pong/tournament/${data.id}/rounds`);
+		navigateTo(`/pong/tournament/${data.tournament.id}/rounds`);
 	}
 
 	static tournamentInviteNotification(data) {
@@ -205,7 +205,7 @@ export default class extends Abstract {
 						this.doDataUpdate(response.data);
 						this.updateTournamentsAccepted();
 						this.updateTournamentsReceived();
-						navigateTo(`/pong/tournament/${response.data.id}/rounds`);
+						navigateTo(`/pong/tournament/${response.data.tournament.id}/rounds`);
 					}
 					break;
 			}
