@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from ..models import User, Tournament, TournamentUser
 from django.http import JsonResponse
-from ..serializers.serializer_tournament_user import TournamentUserSerializer
+from ..serializers.serializers_tournament_user import TournamentUserSerializer
 
 class TournamentUserCreate(APIView):
 	def post(sel, request):
