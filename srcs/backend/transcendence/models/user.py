@@ -12,6 +12,7 @@ class User(models.Model):
 	num_tournaments_won = models.IntegerField(default=0)
 	is_active = models.BooleanField(default=True)
 	is_authenticated = models.BooleanField(default=True)
+	preferred_language = models.CharField(max_length=2, default='en')
 
 	def __str__(self):
 		return f"{self.username} ({self.email})"

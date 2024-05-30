@@ -21,7 +21,7 @@ export default class extends Abstract {
 
             if (form.checkValidity()) {
                 const formData = new FormData(form);
-                const response = await Users.update(formData);;
+                const response = await Users.update(formData);
 
                 if (response.success) {
                     this.clearFields();
