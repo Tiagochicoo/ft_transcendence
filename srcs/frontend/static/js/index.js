@@ -1,13 +1,14 @@
-import { i18nextInit, navigateTo, renderPage } from "/static/js/services/index.js";
+import { i18nextInit, changeLanguage, checkUserPreferredLanguage, navigateTo, renderPage } from "/static/js/services/index.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   // Handle Page Links
-  document.body.addEventListener("click", (e) => {
+  document.body.addEventListener("click", async (e) => {
     let currentElement = e.target;
 
     if (currentElement.matches("[data-link-locale]")) {
       e.preventDefault();
-      i18next.changeLanguage(currentElement.getAttribute("data-link-locale"));
+      const newLang = currentElement.getAttribute("data-link-locale");
+      changeLanguage(newLang);
       return;
     }
 
@@ -44,4 +45,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Render Page
   await i18nextInit().then(renderPage);
+
+  // Check if language is the same one the User preferes
+  await checkUserPreferredLanguage();
 });
