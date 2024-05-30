@@ -23,6 +23,26 @@ class TournamentCreate(APIView):
 		except Exception as error:
 			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+class TournamentTournamentUserDetails(APIView):
+	def get(self, request, tournamentId, format=None):
+		try:
+			tournament = Tournament.objects.get(pk=tournamentId)
+			tournament_users = TournamentUser.objects.filter(tournament=tournament)
+			serializer = TournamentUserSerializer(tournament_users, many=True)
+			return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
+		except Exception as error:
+			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class UserTournamentDetails(APIView):
+	def get(self, request, userId, format=None):
+		try:
+			user = User.objects.get(pk=userId)
+			tournament_users = TournamentUser.objects.filter(user=user)
+			serializer = TournamentUserSerializer(tournament_users, many=True)
+			return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
+		except Exception as error:
+			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 class TournamentUserAccept(APIView):
 	def patch(self, request, tournamentUserId, format=None):
 		try:
@@ -41,16 +61,6 @@ class TournamentUserRefuse(APIView):
 			tournament_user.was_refused = True
 			tournament_user.save()
 			serializer = TournamentUserSerializer(tournament_user)
-			return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
-		except Exception as error:
-			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-class UserTournamentDetails(APIView):
-	def get(self, request, userId, format=None):
-		try:
-			user = User.objects.get(pk=userId)
-			tournament_users = TournamentUser.objects.filter(user=user)
-			serializer = TournamentUserSerializer(tournament_users, many=True)
 			return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
 		except Exception as error:
 			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
