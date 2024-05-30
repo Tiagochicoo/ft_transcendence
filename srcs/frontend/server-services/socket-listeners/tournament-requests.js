@@ -32,33 +32,16 @@ const tournamentRefuseSocketListener = (socket, io) => {
   });
 }
 
-/*
-const matchAcceptSocketListener = (socket, io) => {
-  // Listen to the 'match_accept' event
-  socket.on('match_accept', (data) => {
-    initGame(io, data);
-
-    // console.log(`match_accept_${data.user1.id}`);
-    io.emit(`match_accept_${data.user1.id}`, data);
+const tournamentAcceptSocketListener = (socket, io) => {
+  socket.on('tournament_accept', (data) => {
+    io.emit(`tournament_accept_${data.tournament.creator.id}`, data);
   });
 }
-
-const matchCancelSocketListener = (socket, io) => {
-  // Listen to the 'match_cancel' event
-  socket.on('match_cancel', (data) => {
-    // console.log(`match_cancel_${data.user2.id}`);
-    io.emit(`match_cancel_${data.user2.id}`, data);
-  });
-}
-*/
 
 const tournamentRequests = (socket, io) => {
   tournamentInviteSocketListener(socket, io);
   tournamentRefuseSocketListener(socket, io);
-  /*
-  matchAcceptSocketListener(socket, io);
-  matchCancelSocketListener(socket, io);
-  */
+  tournamentAcceptSocketListener(socket, io);
 }
 
 module.exports = tournamentRequests;
