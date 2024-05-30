@@ -11,6 +11,7 @@ export default class Game {
     this.rightPlayer = new User(this.match.user2.username, this.match.user2.id);
     this.mode = mode;
     this.tournamentId = this.mode === 'tournament' ? this.match.tournament : null;
+    this.gameColor = localStorage.getItem('gameColor') ? localStorage.getItem('gameColor') : '#14dd50';
 
     // Game state
     this.gameState = {};
@@ -61,7 +62,7 @@ export default class Game {
   drawCountdown(countdownTime) {
     this.ctx.clearRect(0, 0, this.gameState.width, this.gameState.height);
 
-    this.ctx.fillStyle = "#37ff8b";
+    this.ctx.fillStyle = this.gameColor;
 
     this.ctx.font = '48px helvetica';
     this.ctx.textAlign = 'center';
@@ -74,7 +75,7 @@ export default class Game {
   drawGame() {
     this.ctx.clearRect(0, 0, this.gameState.width, this.gameState.height);
 
-    this.ctx.fillStyle = "#37ff8b";
+    this.ctx.fillStyle = this.gameColor;
 
     //paddles
     this.ctx.fillRect(0, this.gameState.leftPaddleY, this.gameState.paddleWidth, this.gameState.paddleHeight);
@@ -115,7 +116,7 @@ export default class Game {
   drawEnd() {
     this.ctx.clearRect(0, 0, this.gameState.width, this.gameState.height);
 
-    this.ctx.fillStyle = "#37ff8b";
+    this.ctx.fillStyle = this.gameColor;
     this.ctx.font = '48px helvetica';
     this.ctx.textAlign = 'center';
     this.ctx.textBaseline = 'middle';
