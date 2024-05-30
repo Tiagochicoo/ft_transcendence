@@ -33,7 +33,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'email', 'password', 'username', 'avatar', 'num_games', 'num_games_won', 'num_tournaments', 'num_tournaments_won']
+        fields = ['id', 'email', 'password', 'username', 'avatar', 'num_games', 'num_games_won', 'num_tournaments', 'num_tournaments_won', 'preferred_language']
         extra_kwargs = {'password': {'write_only': True}}
 
     def validate_email(self, value):
