@@ -191,8 +191,6 @@ export default class extends Abstract {
 
 		<div id="setup-area" class="d-flex flex-column mt-2" >
 		</div>
-		
-	  </div>
 		`;
   }
 }
