@@ -20,6 +20,7 @@ export default class extends Abstract {
 
             if (form.checkValidity()) {
                 const formData = new FormData(form);
+                formData.append('preferred_language', i18next.language || 'en');
 
                 try {
                     const response = await fetch('http://localhost:8000/api/users', {

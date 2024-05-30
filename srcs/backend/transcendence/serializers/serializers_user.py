@@ -85,7 +85,8 @@ class UserSerializer(serializers.ModelSerializer):
             num_games=validated_data.get('num_games', 0),
             num_games_won=validated_data.get('num_games_won', 0),
             num_tournaments=validated_data.get('num_tournaments', 0),
-            num_tournaments_won=validated_data.get('num_tournaments_won', 0)
+            num_tournaments_won=validated_data.get('num_tournaments_won', 0),
+            preferred_language=validated_data.get('preferred_language', 'en')
         )
         # Only set the avatar if provided
         # The default value was not working properly otherwise
