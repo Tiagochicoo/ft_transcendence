@@ -42,7 +42,7 @@
     "tournaments": {
       "title": "Torneos",
       "notification_messages": {
-        "create": "Recibimos tu solicitud de torneo",
+        "create": "Se enviaron solicitudes de torneo",
         "sent": "Envió una solicitud de torneo",
         "refused": "Rechazó tu solicitud de torneo",
         "accepted": "Aceptó tu solicitud de torneo",

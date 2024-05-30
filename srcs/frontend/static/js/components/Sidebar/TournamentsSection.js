@@ -129,7 +129,6 @@ export default class extends Abstract {
 	static tournamentCreateNotification(data) {
 		this.doDataUpdate(data);
 		sendNotification({
-			user: data.user,
 			body: i18next.t("sidebar.tournaments.notification_messages.create")
 		});
 		navigateTo(`/pong/tournament/${data.id}/rounds`);
@@ -171,7 +170,7 @@ export default class extends Abstract {
 		const response = await Tournaments.create(invited_user_ids);
 
 		if (response.success) {
-			SOCKET.emit('tournament_invite', response.data);
+			SOCKET.emit('tournament_invite', response.data.tournament.id);
 			this.tournamentCreateNotification(response.data);
 		}
 

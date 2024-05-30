@@ -42,10 +42,10 @@
     "tournaments": {
       "title": "Torneios",
       "notification_messages": {
-        "create": "Recebemos sua solicitação de torneio",
-        "sent": "Enviou uma solicitação de torneio",
-        "refused": "Recusou sua solicitação de torneio",
-        "accepted": "Aceitou sua solicitação de torneio",
+        "create": "Foram enviados os pedidos de torneio",
+        "sent": "Enviou um pedido de torneio",
+        "refused": "Recusou o seu pedido de torneio",
+        "accepted": "Aceitou o seu pedido de torneio",
         "start": "O torneio começará em 10s"
       }
     },
