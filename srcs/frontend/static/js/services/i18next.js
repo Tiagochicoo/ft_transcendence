@@ -1,3 +1,4 @@
+import { Users } from "/static/js/api/index.js";
 import { LOCALES } from "/static/variables.js";
 import { renderSidebar, renderPage } from "./index.js";
 
@@ -41,4 +42,26 @@ const i18nextInit = async () => {
   });
 };
 
-export default i18nextInit;
+const changeLanguage = async (newLang) => {
+  i18next.changeLanguage(newLang);
+
+  const formData = new FormData();
+  formData.append('preferred_language', newLang);
+  const response = await Users.update(formData);
+}
+
+const checkUserPreferredLanguage = async () => {
+  if (!USER_ID) {
+    return;
+  }
+
+  const response = await Users.get(USER_ID);
+  if (response.success) {
+    const userPreferredLang = response.data.preferred_language;
+    if (userPreferredLang != i18next.language) {
+      changeLanguage(userPreferredLang);
+    }
+  }
+}
+
+export { i18nextInit, changeLanguage, checkUserPreferredLanguage };
