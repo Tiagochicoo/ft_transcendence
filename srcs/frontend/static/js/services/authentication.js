@@ -69,11 +69,10 @@ async function refreshUserID() {
 
 async function renewAccessToken(refreshToken) {
     if (!refreshToken) {
-        console.error("Refresh token is null or undefined");
-        throw new Error("Refresh token is null or undefined");
+        console.log("Refresh token is null or undefined");
+        return null;
     }
 
-    console.log("Attempting to renew access token with refresh token:", refreshToken);
     try {
         const response = await fetch(`${API_URL}/token/refresh/`, {
             method: 'POST',
@@ -89,13 +88,11 @@ async function renewAccessToken(refreshToken) {
             console.log("Access token successfully renewed.");
             return jsonResponse.access;
         } else {
-            const errorText = await response.text();
-            console.error('Failed to renew access token');
             throw new Error('Failed to renew access token');
         }
     } catch (error) {
-    console.error('Error during token renewal:', error);
-    throw error;
+        console.error('Error during token renewal:', error);
+        return null;
     }
 }
 
@@ -110,10 +107,8 @@ async function fetchWithToken(path, options = {}) {
 
     if (isTokenExpired(accessToken)) {
         console.log("Access token is expired, renewing token...");
-        try {
-            accessToken = await renewAccessToken(refreshToken);
-        } catch (error) {
-            console.error('Token renewal failed:', error);
+        accessToken = await renewAccessToken(refreshToken);
+        if (!accessToken) {
             return doLogout();
         }
     }
