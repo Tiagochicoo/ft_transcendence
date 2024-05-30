@@ -8,17 +8,15 @@ const tournamentInviteSocketListener = () => {
   });
 }
 
-/*
-const matchRefuseSocketListener = () => {
-  // Remove 'match_refuse_id' listener
-  SOCKET.off(`match_refuse_${USER_ID}`);
+const tournamentRefuseSocketListener = () => {
+  SOCKET.off(`tournament_refuse_${USER_ID}`);
 
-  // Listen to the 'match_refuse_id' event
-  SOCKET.on(`match_refuse_${USER_ID}`, (data) => {
-    MatchesSection.matchRefuseNotification(data);
+  SOCKET.on(`tournament_refuse_${USER_ID}`, (data) => {
+    TournamentsSection.tournamentRefuseNotification(data);
   });
 }
 
+/*
 const matchAcceptSocketListener = () => {
   // Remove 'match_accept_id' listener
   SOCKET.off(`match_accept_${USER_ID}`);
@@ -26,16 +24,6 @@ const matchAcceptSocketListener = () => {
   // Listen to the 'match_accept_id' event
   SOCKET.on(`match_accept_${USER_ID}`, (data) => {
     MatchesSection.matchAcceptNotification(data);
-  });
-}
-
-const matchCancelSocketListener = () => {
-  // Remove 'match_cancel_id' listener
-  SOCKET.off(`match_cancel_${USER_ID}`);
-
-  // Listen to the 'match_cancel_id' event
-  SOCKET.on(`match_cancel_${USER_ID}`, (data) => {
-    MatchesSection.matchCancelNotification(data);
   });
 }
 
@@ -52,6 +40,7 @@ const matchFinishSocketListener = () => {
 
 const tournamentRequests = () => {
   tournamentInviteSocketListener();
+  tournamentRefuseSocketListener();
   /*
   matchRefuseSocketListener();
   matchAcceptSocketListener();
