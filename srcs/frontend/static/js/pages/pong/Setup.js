@@ -68,13 +68,12 @@ export default class extends Abstract {
 			if (this.mode === 'single') this.startSingleMatch();
 			else if (this.mode === 'tournament') {
 				this.participants = [];
-				this.participants.push(this.user);
 				for (let opponent of checkGroup) {
 					if (opponent.checked) {
 						this.participants.push(this.friends.filter((friend) => friend.id == opponent.id)[0]);
 					}
  				}
-				if (this.participants.length === 8) this.startTournament();
+				if (this.participants.length === 7) this.startTournament();
 				else document.getElementById('invitation-error').innerHTML = `${i18next.t("pong.invitationError")}`;
 			}
 		});

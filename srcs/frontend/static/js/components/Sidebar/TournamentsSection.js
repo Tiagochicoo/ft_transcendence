@@ -39,7 +39,7 @@ export default class extends Abstract {
 				<div id="${options.id}" class="collapse ${isExpanded ? "show" : ""} ${options.title ? 'mt-3' : ''}">
 					<ul class="list-unstyled d-flex flex-column gap-2 mb-0">
 						${list.map(({ id, user }) => `
-							<div class="sidebar-section-element d-flex justify-content-between gap-1 p-1 bg-light rounded" data-tournament-id="${id}" ${isAccepted ? `href="/pong/single/tournament/${id}" data-link` : ''}>
+							<div class="sidebar-section-element d-flex justify-content-between gap-1 p-1 bg-light rounded" data-tournament-id="${id}" ${isAccepted ? `href="/pong/tournament/${id}/rounds" data-link` : ''}>
 								${User.getBadge(user)}
 
 								<div class="d-flex align-items-center gap-1">
@@ -65,7 +65,7 @@ export default class extends Abstract {
 
 	static getTournamentsAccepted() {
 		const list = this.data.filter(el => el.was_accepted && !el.was_canceled && !el.was_refused && !el.has_finished)
-			.map(({ id, user1, user2 }) => ({ id, user: (user1.id == USER_ID) ? user2 : user1 }));
+			.map(({ id }) => ({ id }));
 
 		const htmlList = this.getList(list, {
 			id: 'tournaments-accepted-list',
@@ -87,8 +87,8 @@ export default class extends Abstract {
 	}
 
 	static getTournamentsReceived() {
-		const list = this.data.filter(el => !el.was_accepted && !el.was_canceled && !el.was_refused && (el.user2.id == USER_ID))
-			.map(({ id, user1 }) => ({ id, user: user1 }));
+		const list = this.data.filter(el => !el.was_accepted && !el.was_canceled && !el.was_refused && (el.user.id == USER_ID) && (el.tournament.creator.id != USER_ID) && !el.tournament.has_started && !el.tournament.has_finished)
+			.map(({ id, tournament }) => ({ id, user: tournament.creator }));
 
 		const htmlList = this.getList(list, {
 			id: 'tournaments-received-list',
@@ -119,40 +119,10 @@ export default class extends Abstract {
 		}
 	}
 
-	static getTournamentsSent() {
-		const list = this.data.filter(el => !el.was_accepted && !el.was_canceled && !el.was_refused && (el.user1.id == USER_ID))
-			.map(({ id, user2 }) => ({ id, user: user2 }));
-
-		const htmlList = this.getList(list, {
-			id: 'tournaments-sent-list',
-			title: i18next.t("sidebar.invitations_sent"),
-			actions: [
-				{
-					action: 'cancel',
-					icon: '<i class="bi bi-x-circle-fill"></i>'
-				}
-			]
-		});
-
-		return `
-			<div class="mt-1">
-				${htmlList}
-			</div>
-		`;
-	}
-
-	static updateTournamentsSent() {
-		const wrapper = document.querySelector('#tournaments-wrapper #tournaments-sent');
-		if (wrapper) {
-			wrapper.innerHTML = this.getTournamentsSent();
-		}
-	}
-
 	static tournamentCreateNotification(data) {
 		this.doDataUpdate(data);
-		this.updateTournamentsSent();
 		sendNotification({
-			user: data.user2,
+			user: data.user,
 			body: i18next.t("sidebar.tournaments.notification_messages.create")
 		});
 		navigateTo(`/pong/tournament/${data.id}/rounds`);
@@ -162,7 +132,7 @@ export default class extends Abstract {
 		this.doDataUpdate(data);
 		this.updateTournamentsReceived();
 		sendNotification({
-			user: data.user1,
+			user: data.tournament.creator,
 			body: i18next.t("sidebar.tournaments.notification_messages.sent")
 		});
 	}
@@ -170,9 +140,8 @@ export default class extends Abstract {
 	static tournamentRefuseNotification(data) {
 		this.doDataUpdate(data);
 		this.updateTournamentsAccepted();
-		this.updateTournamentsSent();
 		sendNotification({
-			user: data.user2,
+			user: data.user,
 			body: i18next.t("sidebar.tournaments.notification_messages.refused")
 		});
 	}
@@ -180,9 +149,8 @@ export default class extends Abstract {
 	static tournamentAcceptNotification(data) {
 		this.doDataUpdate(data);
 		this.updateTournamentsAccepted();
-		this.updateTournamentsSent();
 		sendNotification({
-			user: data.user2,
+			user: data.user,
 			body: i18next.t("sidebar.tournaments.notification_messages.accepted")
 		});
 		navigateTo(`/pong/single/tournament/${data.id}`);
@@ -192,7 +160,7 @@ export default class extends Abstract {
 		this.doDataUpdate(data);
 		this.updateTournamentsReceived();
 		sendNotification({
-			user: data.user1,
+			user: data.tournament.creator,
 			body: i18next.t("sidebar.tournaments.notification_messages.canceled")
 		});
 	}
@@ -242,7 +210,7 @@ export default class extends Abstract {
 						this.updateTournamentsAccepted();
 						this.updateTournamentsReceived();
 						sendNotification({
-							user: response.data.user1,
+							user: response.data.tournament.creator,
 							body: i18next.t("sidebar.tournaments.notification_messages.start")
 						});
 						navigateTo(`/pong/single/tournament/${response.data.id}`);
@@ -254,7 +222,6 @@ export default class extends Abstract {
 					if (response.success) {
 						SOCKET.emit('tournament_cancel', response.data);
 						this.doDataUpdate(response.data);
-						this.updateTournamentsSent();
 					}
 					break;
 			}
@@ -284,10 +251,6 @@ export default class extends Abstract {
 
 				<div id="tournaments-received">
 					${this.getTournamentsReceived()}
-				</div>
-
-				<div id="tournaments-sent">
-					${this.getTournamentsSent()}
 				</div>
 			</div>
 		`;

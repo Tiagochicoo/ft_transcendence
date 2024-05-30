@@ -32,9 +32,9 @@ export default class Tournaments {
       method: 'PATCH'
     });
   }
+  */
 
   static async getAll() {
     return await fetchWithToken(`/users/${USER_ID}/tournaments/`);
   }
-  */
 }

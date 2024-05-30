@@ -1,6 +1,7 @@
 import { Abstract } from "/static/js/components/index.js";
 import FriendsSection from "./FriendsSection.js";
 import MatchesSection from "./MatchesSection.js";
+import TournamentsSection from "./TournamentsSection.js";
 
 // Utility Class
 export default class extends Abstract {
@@ -15,6 +16,7 @@ export default class extends Abstract {
 
 		await FriendsSection.addFunctionality();
 		await MatchesSection.addFunctionality();
+		await TournamentsSection.addFunctionality();
 	}
 
 	static async getHtml() {
@@ -33,6 +35,8 @@ export default class extends Abstract {
 						${await FriendsSection.getHtml()}
 
 						${await MatchesSection.getHtml()}
+
+						${await TournamentsSection.getHtml()}
 					</div>
 
 					<div class="navbar d-block d-md-none" data-bs-theme="dark" style="--bs-navbar-padding-y:0.75rem; --bs-navbar-padding-x:0.5rem;">
