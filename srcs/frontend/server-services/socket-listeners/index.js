@@ -3,6 +3,7 @@ const chatMessageSocketListener = require("./chat-message.js");
 const friendRequests = require("./friend-requests.js");
 const matches = require("./matches.js");
 const matchRequests = require("./match-requests.js");
+const tournamentRequests = require("./tournament-requests.js");
 
 const { matchesSocketListener } = matches;
 
@@ -39,6 +40,7 @@ const socketListeners = (io) => {
     friendRequests(socket, io);
     matchRequests(socket, io);
     matchesSocketListener(socket, io);
+    tournamentRequests(socket, io);
   });
 }
 
