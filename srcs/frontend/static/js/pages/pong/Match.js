@@ -46,8 +46,8 @@ export default class extends Abstract {
 	return status ? `<canvas id="canvas" width="600" height="400" class="bg-dark"></canvas>
 						<div class=" d-flex mt-3">
 							<form class="d-flex flex-row align-items-center">
-									<label for="gameColor" class="form-label mx-3">Select a game color style:</label>
-									<input type="color" class="form-control form-control-color" id="gameColor" value="#14dd50" title="Choose a color">
+									<label for="gameColor" class="form-label mx-3">${i18next.t("pong.colorSelection")}</label>
+									<input type="color" class="form-control form-control-color" id="gameColor" value="${localStorage.getItem('gameColor') ? localStorage.getItem('gameColor') : '#14dd50'}" title="Choose a color">
 							</form>
 						</div>
 							` : `<p id="match-error">${message}</p>`;
