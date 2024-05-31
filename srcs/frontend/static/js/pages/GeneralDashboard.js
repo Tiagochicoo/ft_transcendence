@@ -1,95 +1,110 @@
 import { Abstract } from "/static/js/components/index.js";
-import { PongData } from "/static/js/api/index.js";
+import { Users } from "/static/js/api/index.js";
+import { Matches } from "/static/js/api/index.js";
 
 export default class extends Abstract {
-  constructor(props) {
-    super(props);
+	constructor(props) {
+		super(props);
+	}
 
-    this.params = props;
+	async addFunctionality() {}
 
-    this.data;
-    this.games;
-    this.users;
-  }
 
-  async addFunctionality() {}
+	errorMessage() {
+		return `
+			<h1>Something went wrong</h1>
+		`;
+	}
 
-  generateHistoryTable() {
-    let table = `<table class="table text-center">
-						<thead class="table-secondary">
-							<tr>
-								<th scope="col">${i18next.t("generalDashboard.columns.id")}</th>
-								<th scope="col" colspan="2">${i18next.t("generalDashboard.columns.players")}</th>
-							</tr>
-						</thead>
-						<tbody class="table-group-divider" style="border-top-color: #6c757d">`;
+	async getHtml() {
+		// fetching data mocked on db.json
+		this.user = await Users.get(2);
+		if (!this.user.success)
+			return errorMessage;
 
-    this.games.forEach((game) => {
-      table += `<tr>
-							<th scope="row" rowspan="2">${game.gameId}</th>
-							<td class="border-bottom-0">${game.leftPlayer}</td>
-							<td class="border-bottom-0">${game.rightPlayer}</td>
-						</tr>
-						<tr>
-							<td class="border-top-0">${game.leftPts}</td>
-							<td class="border-top-0">${game.rightPts}</td>
-						</tr>`;
-    });
-    table += "</tbody></table>";
-    return table;
-  }
+		var totalScore = 0;
+	
+		this.Matches = await Matches.getAll(2);
+		if (!this.Matches.success)
+			return errorMessage;
+		else
+		{
+			console.log(this.Matches);
+			console.log(this.user);
+			for (var i = 0; i < this.Matches.data.length; i++)
+			{
+				if (this.Matches.data[i].has_finished == true)
+				{
+					if (this.Matches.data[i].winner.username == this.user.data.username)
+					{
+						totalScore += 1;
+					}
+				}
+			}
+		}
 
-  generateRankingTable() {
-    // data can be sorted on SQL query
-    this.users.sort((a, b) => b.totalPoints - a.totalPoints);
-
-    let table = `<table class="table text-center table-hover">
-						<thead class="table-secondary">
-							<tr>
-								<th scope="col">${i18next.t("generalDashboard.columns.players")}</th>
-								<th scope="col">${i18next.t("generalDashboard.columns.points")}</th>
-							</tr>
-						</thead>
-						<tbody class="table-group-divider" style="border-top-color: #6c757d">`;
-
-    this.users.forEach((user) => {
-      table += `<tr href="/dashboard/individual/${user.userId}" data-link>
-							<th scope="row">${user.username}</th>
-							<td> ${user.totalPoints}</td>
-						</tr>`;
-    });
-    table += "</tbody></table>";
-
-    return table;
-  }
-
-  async getHtml() {
-    // fetching data mocked on db.json
-    this.data = await PongData.getMockedData();
-    this.games = this.data.games;
-    this.users = this.data.users;
-
-    return `
+		return `
 			<h1>
-				${i18next.t("generalDashboard.title")}
+				${i18next.t("General Dashboard")}
 			</h1>
-
 			<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
 				<li class="nav-item" role="presentation">
-					<button class="nav-link active" id="pills-history-tab" data-bs-toggle="pill" data-bs-target="#pills-history" type="button" role="tab" aria-controls="pills-history" aria-selected="true">${i18next.t("generalDashboard.tabs.history")}</button>
+					<button class="nav-link active" id="pills-ranking-tab" data-bs-toggle="pill" data-bs-target="#pills-ranking" type="button" role="tab" aria-controls="pills-ranking" aria-selected="false">${i18next.t("Ranking")}</button>
 				</li>
 				<li class="nav-item" role="presentation">
-					<button class="nav-link" id="pills-ranking-tab" data-bs-toggle="pill" data-bs-target="#pills-ranking" type="button" role="tab" aria-controls="pills-ranking" aria-selected="false">${i18next.t("generalDashboard.tabs.ranking")}</button>
+					<button class="nav-link" id="pills-history-tab" data-bs-toggle="pill" data-bs-target="#pills-history" type="button" role="tab" aria-controls="pills-history" aria-selected="true">${i18next.t("History")}</button>
 				</li>
 				<li class="nav-item" role="presentation">
-					<button class="nav-link" id="pills-graphs-tab" data-bs-toggle="pill" data-bs-target="#pills-graphs" type="button" role="tab" aria-controls="pills-graphs" aria-selected="false">${i18next.t("generalDashboard.tabs.graphs")}</button>
+					<button class="nav-link" id="pills-graphs-tab" data-bs-toggle="pill" data-bs-target="#pills-graphs" type="button" role="tab" aria-controls="pills-graphs" aria-selected="false">${i18next.t("Graphs")}</button>
 				</li>
 			</ul>
-			<div class="tab-content" id="pills-tabContent">
-				<div class="tab-pane fade show active" id="pills-history" role="tabpanel" aria-labelledby="pills-history-tab">${this.generateHistoryTable()}</div>
-				<div class="tab-pane fade" id="pills-ranking" role="tabpanel" aria-labelledby="pills-ranking-tab">${this.generateRankingTable()}</div>
-				<div class="tab-pane fade" id="pills-graphs" role="tabpanel" aria-labelledby="pills-gaphs-tab">Graphs are coming here</div>
+			<div class="dashboard">
+				<div class="tab-content" id="pills-tabContent">
+
+					<!--RANKING TABLE-->
+
+					<div class="tab-pane fade show active" id="pills-ranking" role="tabpanel" aria-labelledby="pills-ranking-tab">
+						<h2>${i18next.t("Ranking")}</h2>
+						<table class="table table-hover text-center">
+							<thead class="table-secondary">
+								<tr>
+									<!-- Ranking table headers -->
+								</tr>
+							</thead>
+							<tbody class="table-group-divider" style="border-top-color: #6c757d">
+								<!-- Render ranking table rows here -->
+							</tbody>
+						</table>
+					</div>
+
+
+					<!--HISTORY TABLE-->
+		
+					<div class="tab-pane fade show" id="pills-history" role="tabpanel" aria-labelledby="pills-history-tab">
+						<h2>${i18next.t("History")}</h2>
+						<table class="table table-hover text-center">
+							<thead class="table-secondary">
+								<tr>
+									<th scope="col">${i18next.t("Match_ID")}</th>
+									<th scope="col">${i18next.t("Opponent")}</th>
+									<th scope="col">${i18next.t("Winner")}</th>
+									<th scope="col">${i18next.t("Score")}</th>
+								</tr>
+							</thead>
+							<tbody class="table-group-divider" style="border-top-color: #6c757d">
+								<!-- Render history table rows here -->
+							</tbody>
+						</table>
+					</div>
+
+					
+					<!--GRAPHS TABLE-->
+
+					<div class="tab-pane fade" id="pills-graphs" role="tabpanel" aria-labelledby="pills-graphs-tab">
+						<h2>${i18next.t("Graphs")}</h2>
+					</div>
+				</div>
 			</div>
 		`;
-  }
+	}
 }
