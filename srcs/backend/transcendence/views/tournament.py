@@ -37,16 +37,28 @@ class TournamentMatches(APIView):
 	def post(self, request, tournamentId, format=None):
 		try:
 			tournament = Tournament.objects.get(pk=tournamentId)
+			matches = Match.objects.filter(tournament=tournament).order_by('id')
 			tournament_users = TournamentUser.objects.filter(tournament=tournament).order_by('id')
-			# Create batch of matches
-			i = 0
-			while i < len(tournament_users):
-				Match.objects.create(user1=tournament_users[i].user, user2=tournament_users[i + 1].user, tournament=tournament, was_accepted=True)
-				i += 2
+			# Create Quarterfinals
+			if (len(matches) == 0):
+				i = 0
+				while i < len(tournament_users):
+					Match.objects.create(user1=tournament_users[i].user, user2=tournament_users[i + 1].user, tournament=tournament, was_accepted=True)
+					i += 2
+			# Create Semifinals
+			elif (len(matches) == 4):
+				Match.objects.create(user1=matches[0].winner, user2=matches[1].winner, tournament=tournament, was_accepted=True)
+				Match.objects.create(user1=matches[2].winner, user2=matches[3].winner, tournament=tournament, was_accepted=True)
+			# Create Finals
+			elif (len(matches) == 6):
+				Match.objects.create(user1=matches[4].winner, user2=matches[5].winner, tournament=tournament, was_accepted=True)
+			else:
+				raise Exception('Invalid batch of tournament batches')
 			# Fetch batch of matches created
 			matches = Match.objects.filter(tournament=tournament, has_finished=False)
 			serializer = MatchSerializer(matches, many=True)
-			return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
+			tournament_users_serializer = TournamentUserSerializer(tournament_users, many=True)
+			return JsonResponse({'success': True, 'data': serializer.data, 'tournament_users': tournament_users_serializer.data}, status=status.HTTP_200_OK)
 		except Exception as error:
 			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 

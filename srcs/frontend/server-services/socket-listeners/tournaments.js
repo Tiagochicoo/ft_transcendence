@@ -31,21 +31,19 @@ const createTournamentMatches = async (tournamentId) => {
 // First a countdown of 5s
 // Then initialize the matches
 const initTournament = async (io, tournamentId) => {
-  await getAllTournamentUsers(tournamentId)
+  await createTournamentMatches(tournamentId)
     .then(responseJson => {
       if (!responseJson.success) {
         throw new Error();
       }
-      responseJson.data.forEach(tournamentUser => {
+      responseJson.tournament_users.forEach(tournamentUser => {
         io.emit(`tournament_start_${tournamentUser.user.id}`, tournamentUser);
       });
-      return createTournamentMatches(tournamentId);
-    }).then(matches => {
       setTimeout(() => {
-        matches.data.forEach(match => {
+        responseJson.data.forEach(match => {
           io.emit(`tournament_open_match_${match.user1.id}`, match.id);
           io.emit(`tournament_open_match_${match.user2.id}`, match.id);
-          initGame(io, match);
+          initGame(io, match, responseJson.tournament_users);
         });
       }, 5000);
     }).catch(error => {

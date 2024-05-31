@@ -1,5 +1,6 @@
 const fetch = require("node-fetch");
 
+const TOURNAMENT_DATA = {};
 const MATCHES_STATE = {};
 const height = 400;
 const width = 600;
@@ -167,6 +168,9 @@ const doUpdate = (io, matchId) => {
     }).then(resposeJson => {
       if (resposeJson.success) {
         if (resposeJson.data.tournament?.id) {
+          TOURNAMENT_DATA[resposeJson.data.tournament.id].tournament_users.forEach(tournamentUser => {
+            io.emit(`tournament_match_finish_${tournamentUser.user.id}`, tournamentUser);
+          })
           handleTournamentMatchFinish(io, resposeJson.data);
         } else {
           io.emit(`match_finish_${gameState.user1.id}`, resposeJson.data);
@@ -200,7 +204,14 @@ const doReset = (matchId) => {
 // Initialize the game
 // First a countdown of 10s
 // Then run the game
-const initGame = (io, data) => {
+const initGame = (io, data, tournament_users = []) => {
+  if (data.tournament?.id && tournament_users.length) {
+    TOURNAMENT_DATA[data.tournament.id] = {
+      matches_finished: 0,
+      tournament_users,
+    };
+  }
+
   let countDown = 100;
   const intervalId = setInterval(() => {
     countDown--;
@@ -222,29 +233,38 @@ const initGame = (io, data) => {
   }, 100);
 }
 
-const getAllTournamentUsers = async (tournamentId) => {
-  return fetch(`http://backend:8000/api/tournaments/${tournamentId}/tournament_users/`, {
+const createTournamentMatches = async (tournamentId) => {
+  return fetch(`http://backend:8000/api/tournaments/${tournamentId}/matches/`, {
+    method: 'POST',
     headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': process.env.API_KEY,
-    }
+      'Content-Type': 'application/json',
+      'x-api-key': process.env.API_KEY,
+    },
   }).then(response => {
     return response.json();
   });
 }
 
 const handleTournamentMatchFinish = async (io, data) => {
-  await getAllTournamentUsers(data.tournament.id)
-    .then(responseJson => {
-      if (!responseJson.success) {
-        throw new Error();
-      }
-      responseJson.data.forEach(tournamentUser => {
-        io.emit(`tournament_match_finish_${tournamentUser.user.id}`, data);
+  const tournamentId = data.tournament.id;
+  const tournamentData = TOURNAMENT_DATA[tournamentId];
+  tournamentData.matches_finished++;
+
+  if ([4, 6].includes(tournamentData.matches_finished)) {
+    console.log('HERE!');
+    return createTournamentMatches(tournamentId)
+      .then(matches => {
+        setTimeout(() => {
+          matches.data.forEach(match => {
+            io.emit(`tournament_open_match_${match.user1.id}`, match.id);
+            io.emit(`tournament_open_match_${match.user2.id}`, match.id);
+            initGame(io, match);
+          });
+        }, 5000);
       });
-    }).catch(error => {
-      console.log(`Error sending the start notifications for the tournament ${tournamentId}:`, error);
-    });
+  } else if (tournamentData.matches_finished == 7) {
+    console.log('FINISH!');
+  }
 }
 
 module.exports = {

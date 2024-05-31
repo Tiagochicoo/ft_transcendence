@@ -241,7 +241,7 @@ export default class extends Abstract {
 				rounds[6].user1 = rounds[4].winner;
 			}
 			if (rounds[5].winner) {
-				rounds[6].user2 = rounds[4].winner;
+				rounds[6].user2 = rounds[5].winner;
 			}
 			const match = matches.find(({ user1, user2 }) => (
 				(user1.id == rounds[6].user1.id) && (user2.id == rounds[6].user2.id) ||
@@ -276,11 +276,13 @@ export default class extends Abstract {
 						${rounds.slice(4, 6).map(round => getRound(round)).join("")}
 					</div>
 					<div class='round'>
-						${rounds.slice(6, 7).map(round => getRound(round)).join("")}
+						${getRound(rounds[6])}
 					</div>
-					<div class='round'>
-						<div class="winner"><p>${i18next.t("pong.winner")}</p>${winner}</div>
-					</div>
+					${winner ? `
+						<div class='round'>
+							<div class="winner"><p>${i18next.t("pong.winner")}</p>${winner.username}</div>
+						</div>
+					` : ''}
 				</div>
 			`;
 		}
