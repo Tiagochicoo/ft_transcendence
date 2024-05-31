@@ -74,7 +74,7 @@ export default class extends Abstract {
 										<td>${game.score}</td>
 									</tr>
 								`;
-							})
+							}).join('')
 						}
 					</tbody>
 					<tbody class="table-group-divider" style="border-top-color: #6c757d">
