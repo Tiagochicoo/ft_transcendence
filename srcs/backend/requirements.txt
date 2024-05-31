@@ -6,3 +6,5 @@ djangorestframework
 django-cors-headers
 Pillow
 djangorestframework-simplejwt>=4.7.2
+pyotp==2.6.0
+qrcode[pil]
