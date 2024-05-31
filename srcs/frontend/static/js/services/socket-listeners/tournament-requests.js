@@ -24,10 +24,19 @@ const tournamentAcceptSocketListener = () => {
   });
 }
 
+const tournamentStartSocketListener = () => {
+  SOCKET.off(`tournament_start_${USER_ID}`);
+
+  SOCKET.on(`tournament_start_${USER_ID}`, (data) => {
+    TournamentsSection.tournamentStartNotification(data);
+  });
+}
+
 const tournamentRequests = () => {
   tournamentInviteSocketListener();
   tournamentRefuseSocketListener();
   tournamentAcceptSocketListener();
+  tournamentStartSocketListener();
 }
 
 export default tournamentRequests;

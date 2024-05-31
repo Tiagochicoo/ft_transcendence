@@ -144,8 +144,6 @@ export default class extends Abstract {
 	}
 
 	static tournamentRefuseNotification(data) {
-		this.doDataUpdate(data);
-		this.updateTournamentsAccepted();
 		sendNotification({
 			user: data.user,
 			body: i18next.t("sidebar.tournaments.notification_messages.refused")
@@ -153,12 +151,20 @@ export default class extends Abstract {
 	}
 
 	static tournamentAcceptNotification(data) {
-		this.doDataUpdate(data);
-		this.updateTournamentsAccepted();
 		sendNotification({
 			user: data.user,
 			body: i18next.t("sidebar.tournaments.notification_messages.accepted")
 		});
+	}
+
+	static tournamentStartNotification(data) {
+		this.doDataUpdate(data);
+		this.updateTournamentsAccepted();
+		sendNotification({
+			user: data.tournament.creator.id,
+			body: i18next.t("sidebar.tournaments.notification_messages.start")
+		});
+		navigateTo(`/pong/tournament/${data.tournament.id}/rounds`);
 	}
 
 	static tournamentFinishlNotification(data) {
