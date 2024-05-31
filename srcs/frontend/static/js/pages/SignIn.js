@@ -53,6 +53,7 @@ export default class extends Abstract {
                         localStorage.setItem('refreshToken', responseData.data.refresh);
                         console.log('2FA verification successful:', responseData);
 
+                        // Update the language with the one the user preferes
                         const userId = getUserIDfromToken(responseData.data.access);
                         checkUserPreferredLanguage(userId);
 
@@ -78,6 +79,7 @@ export default class extends Abstract {
 
                     if (!responseData.success) {
                         this.handleErrors(responseData.errors);
+                        form.classList.add("was-validated"); // Add this line to indicate validation failure
                     } else if (responseData['2fa_required']) {
                         this.setState({ is2FARequired: true, userId: responseData.user_id });
                         document.getElementById('2fa-code').style.display = 'block';
