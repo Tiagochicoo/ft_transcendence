@@ -2,7 +2,8 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 from django.http import JsonResponse
-from ..models import User, Tournament, TournamentUser
+from ..models import User, Match, Tournament, TournamentUser
+from ..serializers.serializers_match import MatchSerializer
 from ..serializers.serializers_tournament import TournamentSerializer
 from ..serializers.serializers_tournament_user import TournamentUserSerializer
 from ..utils.access_token import get_user_id_from_request
@@ -20,6 +21,23 @@ class TournamentCreate(APIView):
 				tournament_user = TournamentUser.objects.create(tournament=tournament, user_id=user_id)
 				TournamentUserSerializer(tournament_user)
 			return JsonResponse({'success': True, 'data': serializer_tournament_user.data}, status=status.HTTP_200_OK)
+		except Exception as error:
+			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class TournamentMatchesCreate(APIView):
+	def post(self, request, tournamentId, format=None):
+		try:
+			tournament = Tournament.objects.get(pk=tournamentId)
+			tournament_users = TournamentUser.objects.filter(tournament=tournament)
+			# Create batch of matches
+			i = 0
+			while i < len(tournament_users):
+				Match.objects.create(user1=tournament_users[i].user, user2=tournament_users[i + 1].user, tournament=tournament, was_accepted=True)
+				i += 2
+			# Fetch batch of matches created
+			matches = Match.objects.filter(tournament=tournament, has_finished=False)
+			serializer = MatchSerializer(matches, many=True)
+			return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
 		except Exception as error:
 			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
