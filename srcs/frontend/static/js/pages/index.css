@@ -95,6 +95,10 @@
   text-align: center;
 }
 
+.player.round-winner {
+  background-color: red;
+}
+
 .winner {
   color: white;
 	padding: 10px 8px;
