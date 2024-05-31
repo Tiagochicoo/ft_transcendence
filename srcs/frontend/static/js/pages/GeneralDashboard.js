@@ -53,6 +53,7 @@ export default class extends Abstract {
 									match_id: MatchId++,
 									winner: this.Matches.data[x].winner.username,
 									opponent: opponent,
+									score_opponent: 5 - this.Matches.data[x].score,
 									score: this.Matches.data[x].score
 								});
 							}
@@ -77,6 +78,7 @@ export default class extends Abstract {
 			console.log(":", match.match_id);
 			console.log("winner:", match.winner);
 			console.log("opponent:", match.opponent);
+			console.log("opponent_score:", match.score_opponent);
 			console.log("Score:", match.score);
 			console.log("---------------------------");
 		}
@@ -135,7 +137,7 @@ export default class extends Abstract {
 									<th scope="col">${i18next.t("Match")}</th>
 									<th scope="col">${i18next.t("Winner")}</th>
 									<th scope="col">${i18next.t("Opponent")}</th>
-									<th scope="col">${i18next.t("End Score")}</th>
+									<th scope="col">${i18next.t("Diff Score")}</th>
 								</tr>
 							</thead>
 							<tbody class="table-group-divider" style="border-top-color: #6c757d">
@@ -143,8 +145,8 @@ export default class extends Abstract {
 									return `
 										<tr>
 											<th scope="row">${match.match_id}</th>
-											<td>${match.winner}</td>
-											<td>${match.opponent}</td>
+											<td>${match.winner} (5) </td>
+											<td>${match.opponent} (${match.score_opponent})</td>
 											<td>${match.score}</td>
 										</tr>
 									`;
