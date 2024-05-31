@@ -23,6 +23,9 @@ export default class extends Abstract {
 		//console.log(this.dataUser);
 
 		var userScores = [];
+		const MatchInfo = [];
+		var MatchId = 0;
+
 		for (var i = 0; i < this.dataUsers.data.length; i++) 
 		{
 			this.Matches = await Matches.getAllById(this.dataUsers.data[i].id);
@@ -33,12 +36,26 @@ export default class extends Abstract {
 				var TotalRankingScore = 0;
 				if (this.Matches.data.length > 0)
 				{
+					var opponent;
 					for (var x = 0; x < this.Matches.data.length; x++)
 					{
 						if (this.Matches.data[x].has_finished === true) 
 						{
 							if (this.Matches.data[x].winner.username == this.dataUsers.data[i].username)
+							{
 								TotalRankingScore += 5;
+								console.log(this.Matches.data[x]);
+								if (this.Matches.data[x].winner.username == this.Matches.data[x].user2.username)
+									opponent = this.Matches.data[x].user1.username
+								else
+									opponent = this.Matches.data[x].user2.username
+								MatchInfo.push({
+									match_id: MatchId++,
+									winner: this.Matches.data[x].winner.username,
+									opponent: opponent,
+									score: this.Matches.data[x].score
+								});
+							}
 							else
 								TotalRankingScore += (5 - this.Matches.data[x].score)
 						}
@@ -55,6 +72,14 @@ export default class extends Abstract {
 		}));
 
 		usersWithScores.sort((a, b) => b.score - a.score);
+
+		for (const match of MatchInfo) {
+			console.log(":", match.match_id);
+			console.log("winner:", match.winner);
+			console.log("opponent:", match.opponent);
+			console.log("Score:", match.score);
+			console.log("---------------------------");
+		}
 
 		return `
 			<h1>
@@ -100,7 +125,6 @@ export default class extends Abstract {
 						</table>
 					</div>
 
-
 					<!--HISTORY TABLE-->
 		
 					<div class="tab-pane fade show" id="pills-history" role="tabpanel" aria-labelledby="pills-history-tab">
@@ -108,14 +132,23 @@ export default class extends Abstract {
 						<table class="table table-hover text-center">
 							<thead class="table-secondary">
 								<tr>
-									<th scope="col">${i18next.t("Match_ID")}</th>
-									<th scope="col">${i18next.t("Opponent")}</th>
+									<th scope="col">${i18next.t("Match")}</th>
 									<th scope="col">${i18next.t("Winner")}</th>
-									<th scope="col">${i18next.t("Score")}</th>
+									<th scope="col">${i18next.t("Opponent")}</th>
+									<th scope="col">${i18next.t("End Score")}</th>
 								</tr>
 							</thead>
 							<tbody class="table-group-divider" style="border-top-color: #6c757d">
-								<!-- Render history table rows here -->
+								${MatchInfo.map((match, index) => {
+									return `
+										<tr>
+											<th scope="row">${match.match_id}</th>
+											<td>${match.winner}</td>
+											<td>${match.opponent}</td>
+											<td>${match.score}</td>
+										</tr>
+									`;
+								}).join('')}
 							</tbody>
 						</table>
 					</div>
