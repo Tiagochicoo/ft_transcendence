@@ -4,17 +4,6 @@ const matches = require("./matches.js");
 
 const { initGame } = matches;
 
-const getAllTournamentUsers = async (tournamentId) => {
-  return fetch(`http://backend:8000/api/tournaments/${tournamentId}/tournament_users/`, {
-    headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': process.env.API_KEY,
-    }
-  }).then(response => {
-    return response.json();
-  });
-}
-
 const createTournamentMatches = async (tournamentId) => {
   return fetch(`http://backend:8000/api/tournaments/${tournamentId}/matches/`, {
     method: 'POST',

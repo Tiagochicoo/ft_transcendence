@@ -284,10 +284,10 @@ const handleTournamentMatchFinish = async (io, data) => {
     .then(tournament => {
       setTimeout(() => {
         TOURNAMENT_DATA[tournamentId].tournament_users.forEach(tournamentUser => {
-          io.emit(`tournament_finish_${tournamentUser.user.id}`, tournament);
+          io.emit(`tournament_finish_${tournamentUser.user.id}`, tournament.data);
         });
       }, 2000);
-  });
+    });
   }
 }
 
