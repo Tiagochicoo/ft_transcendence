@@ -175,10 +175,10 @@ export default class extends Abstract {
 						<h2>${i18next.t("Metric")}</h2>
 						<ul class="nav nav-pills mb-3" id="pills-tab-metric" role="tablist">
 							<li class="nav-item" role="presentation">
-								<button class="nav-link active" id="pills-metric1-tab" data-bs-toggle="pill" data-bs-target="#pills-metric1" type="button" role="tab" aria-controls="pills-metric1" aria-selected="true">${i18next.t("Order By Average Score")}</button>
+								<button class="nav-link active" id="pills-metric1-tab" data-bs-toggle="pill" data-bs-target="#pills-metric1" type="button" role="tab" aria-controls="pills-metric1" aria-selected="true">${i18next.t("Order By Matches Played")}</button>
 							</li>
 							<li class="nav-item" role="presentation">
-								<button class="nav-link" id="pills-metric2-tab" data-bs-toggle="pill" data-bs-target="#pills-metric2" type="button" role="tab" aria-controls="pills-metric2" aria-selected="false">${i18next.t("Order by Matches Played")}</button>
+								<button class="nav-link" id="pills-metric2-tab" data-bs-toggle="pill" data-bs-target="#pills-metric2" type="button" role="tab" aria-controls="pills-metric2" aria-selected="false">${i18next.t("Order by Average Score")}</button>
 							</li>
 							<li class="nav-item" role="presentation">
 								<button class="nav-link" id="pills-metric3-tab" data-bs-toggle="pill" data-bs-target="#pills-metric3" type="button" role="tab" aria-controls="pills-metric3" aria-selected="false">${i18next.t("Order by Highest Score")}</button>
