@@ -1,3 +1,5 @@
+const fetch = require("node-fetch");
+
 const initTournament = require("./tournaments.js");
 
 const tournamentInviteSocketListener = (socket, io) => {
