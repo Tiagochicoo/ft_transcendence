@@ -62,6 +62,44 @@ class TournamentMatches(APIView):
 		except Exception as error:
 			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+class TournamentFinish(APIView):
+	def post(self, request, tournamentId, format=None):
+		try:
+			tournament = Tournament.objects.get(pk=tournamentId)
+			tournament_users = TournamentUser.objects.filter(tournament=tournament).order_by('id')
+			matches = Match.objects.filter(tournament=tournament).order_by('id')
+
+			did_all_matches_finish = all(match.has_finished for match in matches)
+			if not did_all_matches_finish:
+				raise Exception('Not all matches finished')
+
+			tournament.has_finished = True
+			tournament.winner = matches.last().winner
+			tournament.save()
+
+			ranking_dict = {}
+			for tournament_user in tournament_users:
+				ranking_dict[tournament_user.user_id] = 0
+			for match in matches:
+				ranking_dict[match.winner_id] += 100
+				if match.winner_id == match.user1_id:
+					ranking_dict[match.user2_id] += match.score
+				if match.winner_id == match.user2_id:
+					ranking_dict[match.user1_id] += match.score
+
+			ranking_list = sorted(ranking_dict, key=ranking_dict.get, reverse=True)
+			i = 0
+			while i < len(ranking_list):
+				tournament_user = TournamentUser.objects.get(tournament=tournament,user_id=ranking_list[i])
+				tournament_user.position = i
+				tournament_user.save()
+				i += 1
+
+			serializer = TournamentSerializer(tournament)
+			return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
+		except Exception as error:
+			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 class TournamentTournamentUserDetails(APIView):
 	def get(self, request, tournamentId, format=None):
 		try:
