@@ -191,15 +191,22 @@ export default class extends Abstract {
 		navigateTo(`/pong/tournament/match/${matchId}`);
 	}
 
-	static async tournamentMatchFinish(data) {
-		this.updateTournamentsPageContent(data.tournament.id);
+	static async tournamentMatchFinish(tournamentUser) {
+		this.updateTournamentsPageContent(tournamentUser.tournament.id);
 	}
 
-	static async tournamentRoundStart(data) {
+	static async tournamentRoundStart(match) {
 		sendNotification({
 			body: i18next.t("sidebar.tournaments.notification_messages.round_start")
 		});
-		navigateTo(`/pong/tournament/${data.tournament.id}/rounds`);
+		navigateTo(`/pong/tournament/${match.tournament.id}/rounds`);
+	}
+
+	static async tournamentFinish(tournament) {
+		sendNotification({
+			body: i18next.t("sidebar.tournaments.notification_messages.finish")
+		});
+		navigateTo(`/pong/tournament/${tournament.id}/rounds`);
 	}
 
 	static async getTournamentsPageContent(tournamentId) {
@@ -296,14 +303,11 @@ export default class extends Abstract {
 
 		let response = await Tournaments.getAllTournamentUsers(tournamentId);
 		tournamentUsers = response.data;
-		console.log('tournamentUsers', tournamentUsers);
 
 		response = await Tournaments.getAllMatches(tournamentId);
 		matches = response.data;
-		console.log('matches', matches);
 
 		generateRounds();
-		console.log('rounds', rounds);
 
 		return getBrackets();
 	}
