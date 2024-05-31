@@ -66,7 +66,7 @@ export default class extends Abstract {
 	}
 
 	static getTournamentsAccepted() {
-		const list = this.data.filter(el => el.was_accepted && !el.was_canceled && !el.was_refused && !el.has_finished)
+		const list = this.data.filter(el => el.was_accepted && !el.was_canceled && !el.was_refused)
 			.map(({ id, tournament }) => ({ id, tournament }));
 
 		const htmlList = this.getList(list, {
@@ -210,106 +210,110 @@ export default class extends Abstract {
 	}
 
 	static async getTournamentsPageContent(tournamentId) {
-		let tournamentUsers = [];
-		let matches = [];
-		let rounds = new Array(7).fill(null).map(() => ({
-			user1: {},
-			user2: {},
-			winner: {},
-		}));;
-		let winner;
+		try {
+			let tournamentUsers = [];
+			let matches = [];
+			let rounds = new Array(7).fill(null).map(() => ({
+				user1: {},
+				user2: {},
+				winner: {},
+			}));;
+			let winner;
 
-		const generateRounds = () => {
-			// Quarterfinals
-			for (let i = 0, j = 0; i < 4; i++) {
-				rounds[i].user1 = tournamentUsers[j++].user;
-				rounds[i].user2 = tournamentUsers[j++].user;
+			const generateRounds = () => {
+				// Quarterfinals
+				for (let i = 0, j = 0; i < 4; i++) {
+					rounds[i].user1 = tournamentUsers[j++].user;
+					rounds[i].user2 = tournamentUsers[j++].user;
+					const match = matches.find(({ user1, user2 }) => (
+						(user1.id == rounds[i].user1.id) && (user2.id == rounds[i].user2.id) ||
+						(user1.id == rounds[i].user2.id) && (user2.id == rounds[i].user1.id)
+					));
+					if (match && match.winner?.id) {
+						rounds[i].winner = match.winner;
+					}
+				}
+
+				// Semifinals
+				for (let i = 4, j = 0; i < 6; i++, j += 2) {
+					if (rounds[j].winner) {
+						rounds[i].user1 = rounds[j].winner;
+					}
+					if (rounds[j + 1].winner) {
+						rounds[i].user2 = rounds[j + 1].winner;
+					}
+					const match = matches.find(({ user1, user2 }) => (
+						(user1.id == rounds[i].user1.id) && (user2.id == rounds[i].user2.id) ||
+						(user1.id == rounds[i].user2.id) && (user2.id == rounds[i].user1.id)
+					));
+					if (match && match.winner?.id) {
+						rounds[i].winner = match.winner;
+					}
+				}
+
+				// Finals
+				if (rounds[4].winner) {
+					rounds[6].user1 = rounds[4].winner;
+				}
+				if (rounds[5].winner) {
+					rounds[6].user2 = rounds[5].winner;
+				}
 				const match = matches.find(({ user1, user2 }) => (
-					(user1.id == rounds[i].user1.id) && (user2.id == rounds[i].user2.id) ||
-					(user1.id == rounds[i].user2.id) && (user2.id == rounds[i].user1.id)
+					(user1.id == rounds[6].user1.id) && (user2.id == rounds[6].user2.id) ||
+					(user1.id == rounds[6].user2.id) && (user2.id == rounds[6].user1.id)
 				));
 				if (match && match.winner?.id) {
-					rounds[i].winner = match.winner;
+					rounds[6].winner = match.winner;
+					winner = match.winner;
 				}
 			}
 
-			// Semifinals
-			for (let i = 4, j = 0; i < 6; i++, j += 2) {
-				if (rounds[j].winner) {
-					rounds[i].user1 = rounds[j].winner;
-				}
-				if (rounds[j + 1].winner) {
-					rounds[i].user2 = rounds[j + 1].winner;
-				}
-				const match = matches.find(({ user1, user2 }) => (
-					(user1.id == rounds[i].user1.id) && (user2.id == rounds[i].user2.id) ||
-					(user1.id == rounds[i].user2.id) && (user2.id == rounds[i].user1.id)
-				));
-				if (match && match.winner?.id) {
-					rounds[i].winner = match.winner;
-				}
-			}
-
-			// Finals
-			if (rounds[4].winner) {
-				rounds[6].user1 = rounds[4].winner;
-			}
-			if (rounds[5].winner) {
-				rounds[6].user2 = rounds[5].winner;
-			}
-			const match = matches.find(({ user1, user2 }) => (
-				(user1.id == rounds[6].user1.id) && (user2.id == rounds[6].user2.id) ||
-				(user1.id == rounds[6].user2.id) && (user2.id == rounds[6].user1.id)
-			));
-			if (match && match.winner?.id) {
-				rounds[6].winner = match.winner;
-				winner = match.winner;
-			}
-		}
-
-		const getRound = (round) => {
-			return `
-				<div class="match">
-					<div class="player ${(round.winner.id && (round.user1.id == round.winner.id)) ? "round-winner" : ""}">
-						${round.user1.username || ""}
-					</div>
-					<div class="player ${(round.winner.id && (round.user2.id == round.winner.id)) ? "round-winner" : ""}">
-						${round.user2.username || ""}
-					</div>
-				</div>
-			`;
-		}
-
-		const getBrackets = () => {
-			return `
-				<div class='bracket'>
-					<div class='round'>
-						${rounds.slice(0, 4).map(round => getRound(round)).join("")}
-					</div>
-					<div class='round'>
-						${rounds.slice(4, 6).map(round => getRound(round)).join("")}
-					</div>
-					<div class='round'>
-						${getRound(rounds[6])}
-					</div>
-					${winner ? `
-						<div class='round'>
-							<div class="winner"><p>${i18next.t("pong.winner")}</p>${winner.username}</div>
+			const getRound = (round) => {
+				return `
+					<div class="match">
+						<div class="player ${(round.winner.id && (round.user1.id == round.winner.id)) ? "round-winner" : ""}">
+							${round.user1.username || ""}
 						</div>
-					` : ''}
-				</div>
-			`;
+						<div class="player ${(round.winner.id && (round.user2.id == round.winner.id)) ? "round-winner" : ""}">
+							${round.user2.username || ""}
+						</div>
+					</div>
+				`;
+			}
+
+			const getBrackets = () => {
+				return `
+					<div class='bracket'>
+						<div class='round'>
+							${rounds.slice(0, 4).map(round => getRound(round)).join("")}
+						</div>
+						<div class='round'>
+							${rounds.slice(4, 6).map(round => getRound(round)).join("")}
+						</div>
+						<div class='round'>
+							${getRound(rounds[6])}
+						</div>
+						${winner ? `
+							<div class='round'>
+								<div class="winner"><p>${i18next.t("pong.winner")}</p>${winner.username}</div>
+							</div>
+						` : ''}
+					</div>
+				`;
+			}
+
+			let response = await Tournaments.getAllTournamentUsers(tournamentId);
+			tournamentUsers = response.data;
+
+			response = await Tournaments.getAllMatches(tournamentId);
+			matches = response.data;
+
+			generateRounds();
+
+			return getBrackets();
+		} catch(e) {
+			return '';
 		}
-
-		let response = await Tournaments.getAllTournamentUsers(tournamentId);
-		tournamentUsers = response.data;
-
-		response = await Tournaments.getAllMatches(tournamentId);
-		matches = response.data;
-
-		generateRounds();
-
-		return getBrackets();
 	}
 
 	static async updateTournamentsPageContent(tournamentId) {
