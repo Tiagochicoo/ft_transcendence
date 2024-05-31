@@ -112,7 +112,11 @@ export default class Game {
   }
 
   // Update the canvas with the end of the game
-  drawEnd() {
+  drawEnd(defaultGameState = {}) {
+    if (Object.keys(this.gameState).length === 0) {
+      this.gameState = defaultGameState;
+    }
+
     this.ctx.clearRect(0, 0, this.gameState.width, this.gameState.height);
 
     this.ctx.fillStyle = "#37ff8b";
@@ -120,7 +124,7 @@ export default class Game {
     this.ctx.textAlign = 'center';
     this.ctx.textBaseline = 'middle';
 
-    const text = (USER_ID == this.gameState.meta.winner_id) ? "Congratulations, you won!" : "Ooops, you lost...";
+    const text = (USER_ID == this.gameState.meta.winner_id) ? i18next.t("pong.won") : i18next.t("pong.lost");
 
     this.ctx.fillText(text, this.gameState.width / 2, this.gameState.height / 2);
 

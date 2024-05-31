@@ -61,6 +61,8 @@
   },
   "pong": {
     "title": "Pong",
+    "won": "¡Felicidades, ganaste!",
+    "lost": "Ooops, perdiste...",
     "buttons": {
       "start": "Iniciar",
       "pause": "Pausar",
