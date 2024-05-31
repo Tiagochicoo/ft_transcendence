@@ -28,7 +28,7 @@ export default class extends Abstract {
 			<div class="sidebar-outter-wrapper">
 				<div class="sidebar-wrapper">
 					<div class="sidebar-inner-wrapper ${window.innerWidth < 768 ? 'offcanvas' : ''} offcanvas-start" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
-						<h2 class="text-white lh-1 mb-4">
+						<h2 class="text-white lh-1 mb-0">
 							${i18next.t("sidebar.menu")}
 						</h2>
 

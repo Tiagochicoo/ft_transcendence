@@ -128,6 +128,7 @@ export default class extends Abstract {
 
 	static tournamentCreateNotification(data) {
 		this.doDataUpdate(data);
+		this.updateTournamentsAccepted();
 		sendNotification({
 			body: i18next.t("sidebar.tournaments.notification_messages.create")
 		});

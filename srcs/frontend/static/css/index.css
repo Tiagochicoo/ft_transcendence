@@ -48,6 +48,9 @@ main {
 }
 
 .sidebar-inner-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
   padding: 24px 16px;
   overflow-y: scroll;
 }
@@ -78,6 +81,14 @@ main {
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.sidebar-section > div[id$="-accepted"] {
+  margin-top: -16px;
+}
+
+.sidebar-section > div[id$="-accepted"] > div > :first-child {
+  margin-top: 16px;
 }
 
 .sidebar-section-element {
