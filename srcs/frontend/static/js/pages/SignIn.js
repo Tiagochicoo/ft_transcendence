@@ -79,7 +79,7 @@ export default class extends Abstract {
 
                     if (!responseData.success) {
                         this.handleErrors(responseData.errors);
-                        form.classList.add("was-validated"); // Add this line to indicate validation failure
+                        form.classList.add("was-validated");
                     } else if (responseData['2fa_required']) {
                         this.setState({ is2FARequired: true, userId: responseData.user_id });
                         document.getElementById('2fa-code').style.display = 'block';
