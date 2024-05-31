@@ -24,7 +24,16 @@ class TournamentCreate(APIView):
 		except Exception as error:
 			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-class TournamentMatchesCreate(APIView):
+class TournamentMatches(APIView):
+	def get(self, request, tournamentId, format=None):
+		try:
+			tournament = Tournament.objects.get(pk=tournamentId)
+			matches = Match.objects.filter(tournament=tournament).order_by('id')
+			serializer = MatchSerializer(matches, many=True)
+			return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
+		except Exception as error:
+			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 	def post(self, request, tournamentId, format=None):
 		try:
 			tournament = Tournament.objects.get(pk=tournamentId)
@@ -45,7 +54,7 @@ class TournamentTournamentUserDetails(APIView):
 	def get(self, request, tournamentId, format=None):
 		try:
 			tournament = Tournament.objects.get(pk=tournamentId)
-			tournament_users = TournamentUser.objects.filter(tournament=tournament)
+			tournament_users = TournamentUser.objects.filter(tournament=tournament).order_by('id')
 			serializer = TournamentUserSerializer(tournament_users, many=True)
 			return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
 		except Exception as error:
