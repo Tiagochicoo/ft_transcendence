@@ -183,6 +183,13 @@ export default class extends Abstract {
 		return response;
 	}
 
+	static async tournamentOpenMatch(matchId) {
+		sendNotification({
+			body: i18next.t("sidebar.tournaments.notification_messages.match_start")
+		});
+		navigateTo(`/pong/tournament/match/${matchId}`);
+	}
+
 	static async addFunctionality() {
 		const wrapper = document.getElementById('tournaments-wrapper');
 

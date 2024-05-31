@@ -32,11 +32,20 @@ const tournamentStartSocketListener = () => {
   });
 }
 
+const tournamentOpenMatchSocketListener = () => {
+  SOCKET.off(`tournament_open_match_${USER_ID}`);
+
+  SOCKET.on(`tournament_open_match_${USER_ID}`, (matchId) => {
+    TournamentsSection.tournamentOpenMatch(matchId);
+  });
+}
+
 const tournamentRequests = () => {
   tournamentInviteSocketListener();
   tournamentRefuseSocketListener();
   tournamentAcceptSocketListener();
   tournamentStartSocketListener();
+  tournamentOpenMatchSocketListener();
 }
 
 export default tournamentRequests;
