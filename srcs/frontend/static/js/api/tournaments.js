@@ -29,4 +29,12 @@ export default class Tournaments {
   static async getAll() {
     return await fetchWithToken(`/users/${USER_ID}/tournaments/`);
   }
+
+  static async getAllTournamentUsers(tournament_id) {
+    return await fetchWithToken(`/tournaments/${tournament_id}/tournament_users/`);
+  }
+
+  static async getAllMatches(tournament_id) {
+    return await fetchWithToken(`/tournaments/${tournament_id}/matches/`);
+  }
 }

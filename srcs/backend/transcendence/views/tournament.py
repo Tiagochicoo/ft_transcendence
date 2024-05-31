@@ -37,7 +37,7 @@ class TournamentMatches(APIView):
 	def post(self, request, tournamentId, format=None):
 		try:
 			tournament = Tournament.objects.get(pk=tournamentId)
-			tournament_users = TournamentUser.objects.filter(tournament=tournament)
+			tournament_users = TournamentUser.objects.filter(tournament=tournament).order_by('id')
 			# Create batch of matches
 			i = 0
 			while i < len(tournament_users):
