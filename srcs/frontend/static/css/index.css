@@ -174,6 +174,7 @@ main {
 
 .chat-box-message {
   font-size: 14px;
+  word-break: break-word;
   background: #f8f9fa;
   width: 70%;
   padding: 5px 10px;
@@ -223,4 +224,11 @@ main {
   width: 10px;
   background: green;
   border-radius: 50%;
+}
+
+.user-badge span {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100px;
+  overflow: hidden;
 }
