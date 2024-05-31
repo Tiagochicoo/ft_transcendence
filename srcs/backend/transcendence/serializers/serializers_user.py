@@ -104,5 +104,10 @@ class UserSerializer(serializers.ModelSerializer):
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
 
+        if 'twofa_enabled' in validated_data:
+            instance.twofa_enabled = validated_data['twofa_enabled']
+            if not validated_data['twofa_enabled']:
+                instance.two_factor_secret = None
+
         instance.save()
         return instance

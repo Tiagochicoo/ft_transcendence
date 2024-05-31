@@ -2,6 +2,11 @@ import { sendNotification } from "/static/js/services/index.js";
 import { Users } from "/static/js/api/index.js";
 import { Abstract } from "/static/js/components/index.js";
 
+function getUserIDfromToken(token) {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.user_id;
+}
+
 export default class extends Abstract {
     constructor(props) {
         super(props);
@@ -10,6 +15,9 @@ export default class extends Abstract {
 
     async addFunctionality() {
         const form = document.getElementById("form-edit-profile");
+
+        // Fetch the current user data when the form loads
+        await this.fetchUserData();
 
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
@@ -26,12 +34,15 @@ export default class extends Abstract {
                 const response = await Users.update(formData);
 
                 if (response.success) {
-                    this.clearFields();
                     sendNotification({
                         body: 'The profile was successfully updated'
                     });
                     if (document.getElementById('is_2fa_enabled').checked) {
-                        this.generate2FAQRCode();
+                        await this.generate2FAQRCode();
+                        document.getElementById('2fa-text').textContent = "Disable Two-Factor Authentication";
+                    } else {
+                        this.clear2FAQRCode();
+                        document.getElementById('2fa-text').textContent = "Enable Two-Factor Authentication";
                     }
                 } else {
                     this.handleErrors(response.errors);
@@ -40,6 +51,41 @@ export default class extends Abstract {
                 form.classList.add("was-validated");
             }
         });
+    }
+
+    async fetchUserData() {
+        try {
+            const accessToken = localStorage.getItem('accessToken');
+            const userId = getUserIDfromToken(accessToken);
+            if (!userId) {
+                console.error('User ID is not available in the token');
+                return;
+            }
+            const response = await fetch(`http://localhost:8000/api/users/${userId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            });
+
+            const responseData = await response.json();
+            if (responseData.success) {
+                const user = responseData.data;
+                document.getElementById('is_2fa_enabled').checked = user.is_2fa_enabled;
+                if (user.is_2fa_enabled) {
+                    await this.generate2FAQRCode();
+                    document.getElementById('2fa-text').textContent = "Disable Two-Factor Authentication";
+                } else {
+                    this.clear2FAQRCode();
+                    document.getElementById('2fa-text').textContent = "Enable Two-Factor Authentication";
+                }
+            } else {
+                console.error('Failed to fetch user data:', responseData);
+            }
+        } catch (error) {
+            console.error('Network or other error:', error);
+        }
     }
 
     async generate2FAQRCode() {
@@ -62,6 +108,11 @@ export default class extends Abstract {
         } catch (error) {
             console.error('Network or other error:', error);
         }
+    }
+
+    clear2FAQRCode() {
+        document.getElementById('2fa-qrcode-section').style.display = 'none';
+        document.getElementById('2fa-qrcode').src = '';
     }
 
     handleErrors(errors) {
@@ -99,42 +150,42 @@ export default class extends Abstract {
 
             <form id="form-edit-profile" class="needs-validation" novalidate>
                 <div class="mb-4">
-                    <label for="email" class="form-label">
+                    <label for="edit-email" class="form-label">
                         ${i18next.t('signUp.fields.email')}
                     </label>
-                    <input type="text" class="form-control" id="email" name="email">
+                    <input type="text" class="form-control" id="edit-email" name="email">
                     <div id="emailError" class="invalid-feedback" style="display: none;"></div>
                 </div>
 
                 <div class="mb-4">
-                    <label for="username" class="form-label">
+                    <label for="edit-username" class="form-label">
                         ${i18next.t('signUp.fields.username')}
                     </label>
-                    <input type="text" class="form-control" id="username" name="username">
+                    <input type="text" class="form-control" id="edit-username" name="username">
                     <div id="usernameError" class="invalid-feedback" style="display: none;"></div>
                 </div>
 
                 <div class="mb-4">
-                    <label for="avatar" class="form-label">
+                    <label for="edit-avatar" class="form-label">
                         ${i18next.t('signUp.fields.avatar')}
                     </label>
-                    <input type="file" accept="image/png, image/jpg, image/jpeg" class="form-control" id="avatar" name="avatar">
+                    <input type="file" accept="image/png, image/jpg, image/jpeg" class="form-control" id="edit-avatar" name="avatar">
                     <div id="avatarError" class="invalid-feedback" style="display: none;"></div>
                 </div>
 
                 <div class="mb-4">
-                    <label for="password" class="form-label">
+                    <label for="edit-password" class="form-label">
                         ${i18next.t('signUp.fields.password')}
                     </label>
-                    <input type="password" class="form-control" id="password" name="password">
+                    <input type="password" class="form-control" id="edit-password" name="password">
                     <div id="passwordError" class="invalid-feedback" style="display: none;"></div>
                 </div>
 
                 <div class="mb-4">
-                    <label for="is_2fa_enabled" class="form-label">
+                    <input type="checkbox" class="form-check-input" id="is_2fa_enabled" name="is_2fa_enabled">
+                    <label for="is_2fa_enabled" class="form-check-label" id="2fa-text">
                         Enable Two-Factor Authentication
                     </label>
-                    <input type="checkbox" class="form-check-input" id="is_2fa_enabled" name="is_2fa_enabled">
                 </div>
 
                 <div class="mb-4" id="2fa-qrcode-section" style="display: none;">
