@@ -34,9 +34,11 @@ export default class extends Abstract {
                 const response = await Users.update(formData);
 
                 if (response.success) {
+                    this.clearFields();
                     sendNotification({
                         body: 'The profile was successfully updated'
                     });
+                    this.clearFields();
                     if (document.getElementById('is_2fa_enabled').checked) {
                         await this.generate2FAQRCode();
                         document.getElementById('2fa-text').textContent = "Disable Two-Factor Authentication";
@@ -148,36 +150,36 @@ export default class extends Abstract {
                 ${i18next.t('editProfile.title')}
             </h1>
 
-            <form id="form-edit-profile" class="needs-validation" novalidate>
+            <form id="form-profile" class="needs-validation" novalidate>
                 <div class="mb-4">
-                    <label for="edit-email" class="form-label">
+                    <label for="email" class="form-label">
                         ${i18next.t('signUp.fields.email')}
                     </label>
-                    <input type="text" class="form-control" id="edit-email" name="email">
+                    <input type="text" class="form-control" id="email" name="email">
                     <div id="emailError" class="invalid-feedback" style="display: none;"></div>
                 </div>
 
                 <div class="mb-4">
-                    <label for="edit-username" class="form-label">
+                    <label for="username" class="form-label">
                         ${i18next.t('signUp.fields.username')}
                     </label>
-                    <input type="text" class="form-control" id="edit-username" name="username">
+                    <input type="text" class="form-control" id="username" name="username">
                     <div id="usernameError" class="invalid-feedback" style="display: none;"></div>
                 </div>
 
                 <div class="mb-4">
-                    <label for="edit-avatar" class="form-label">
+                    <label for="avatar" class="form-label">
                         ${i18next.t('signUp.fields.avatar')}
                     </label>
-                    <input type="file" accept="image/png, image/jpg, image/jpeg" class="form-control" id="edit-avatar" name="avatar">
+                    <input type="file" accept="image/png, image/jpg, image/jpeg" class="form-control" id="avatar" name="avatar">
                     <div id="avatarError" class="invalid-feedback" style="display: none;"></div>
                 </div>
 
                 <div class="mb-4">
-                    <label for="edit-password" class="form-label">
+                    <label for="password" class="form-label">
                         ${i18next.t('signUp.fields.password')}
                     </label>
-                    <input type="password" class="form-control" id="edit-password" name="password">
+                    <input type="password" class="form-control" id="password" name="password">
                     <div id="passwordError" class="invalid-feedback" style="display: none;"></div>
                 </div>
 
