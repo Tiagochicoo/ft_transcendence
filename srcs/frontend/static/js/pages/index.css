@@ -24,7 +24,7 @@
   transition: 0.3s ease all;
   z-index: 1;
   background-color: transparent;
-  margin-top: 25px;
+  margin-top: 16px;
 }
 
 #single-match-button:before, #tournament-button:before, .pong-buttons:before, #invitation-btn:before, #start-match-button:before {
@@ -109,18 +109,3 @@
 .player:nth-child(odd) {
 	border-bottom: 1px solid white;
 }
-
-@media (max-width: 992px) {
-  .buttons {
-    flex-direction: column;
-  }
-
-  #single-match-button, #tournament-button {
-    margin-bottom: 25px;
-  }
-  .mode-images {
-    width: auto;
-    height: auto;
-  }
-}
-

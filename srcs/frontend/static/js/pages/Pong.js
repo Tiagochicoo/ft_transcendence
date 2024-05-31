@@ -12,25 +12,24 @@ export default class extends Abstract {
   
 	async getHtml() {
 
-	  return `
-		  <h1 class="mb-4">
-				  ${i18next.t("pong.title")}
-		  </h1>
-		  <div class="d-flex justify-content-around mt-2" >
-		  	<div class="d-flex flex-column">
-				<img src="/static/images/single-match.jpg" class="mode-images" >
-				<a id="single-match-button" href="/pong/single/setup" data-link>
-					${i18next.t("pong.singleMatch")}
-				</a>
+		return `
+			<h1 class="mb-4">
+				${i18next.t("pong.title")}
+			</h1>
+			<div class="d-flex flex-column flex-lg-row justify-content-around gap-4 gap-sm-5 gap-lg-3">
+				<div class="d-flex flex-column">
+					<img src="/static/images/single-match.jpg" class="h-75 w-100 object-fit-cover">
+					<a id="single-match-button" href="/pong/single/setup" data-link>
+						${i18next.t("pong.singleMatch")}
+					</a>
+				</div>
+				<div class="d-flex flex-column">
+					<img src="/static/images/tournament.jpg" class="h-75 w-100 object-fit-cover">
+					<a id="tournament-button" href="/pong/tournament/setup" data-link>
+					${i18next.t("pong.tournament")}
+					</a>
+				</div>
 			</div>
-			<div class="d-flex flex-column">
-				<img src="/static/images/tournament.jpg" class="mode-images">
-				<a id="tournament-button" href="/pong/tournament/setup" data-link>
-				${i18next.t("pong.tournament")}
-				</a>
-			</div>
-		</div>
-		  `;
+		`;
 	}
-  }
-  
+}
