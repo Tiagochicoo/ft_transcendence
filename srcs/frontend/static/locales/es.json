@@ -26,7 +26,10 @@
         "refused": "Rechazó tu solicitud de amistad",
         "accepted": "Aceptó tu solicitud de amistad. El partido comenzará en 10s",
         "canceled": "Canceló su solicitud de amistad",
-        "start": "El partido comenzará en 10s"
+        "start": "El partido comenzará en 5s",
+        "match_start": "El partido del torneo comenzará en 10s",
+        "round_start": "Una nueva ronda del torneo comenzará en 5s",
+        "finish": "El torneo terminó"
       }
     },
     "matches": {

@@ -46,7 +46,10 @@
         "sent": "Enviou um pedido de torneio",
         "refused": "Recusou o seu pedido de torneio",
         "accepted": "Aceitou o seu pedido de torneio",
-        "start": "O torneio começará em 10s"
+        "start": "O torneio começará em 5s",
+        "match_start": "A partida do torneio começará em 10s",
+        "round_start": "Uma nova ronda do torneio começará em 5s",
+        "finish": "O torneio terminou"
       }
     },
     "validation": {

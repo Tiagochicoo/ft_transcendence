@@ -46,7 +46,10 @@
         "sent": "Sent a tournament request",
         "refused": "Refused your tournament request",
         "accepted": "Accepted your tournament request",
-        "start": "The tournament will start in 10s"
+        "start": "The tournament will start in 5s",
+        "match_start": "The tournament match will start in 10s",
+        "round_start": "A new round of the tournament will start in 5s",
+        "finish": "The tournament finished"
       }
     },
     "validation": {
