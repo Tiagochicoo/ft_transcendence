@@ -1,5 +1,5 @@
 import { Abstract } from "/static/js/components/index.js";
-import { getCSRFToken, navigateTo } from "/static/js/services/index.js";
+import { getCSRFToken, getUserIDfromToken, checkUserPreferredLanguage, navigateTo } from "/static/js/services/index.js";
 
 export default class extends Abstract {
     constructor(props) {
@@ -45,6 +45,11 @@ export default class extends Abstract {
                         localStorage.setItem('accessToken', responseData.data.access);
                         localStorage.setItem('refreshToken', responseData.data.refresh);
                         console.log('Login successful:', responseData);
+
+                        // Update the language with the one the user preferes
+                        const userId = getUserIDfromToken(responseData.data.access);
+                        checkUserPreferredLanguage(userId);
+
                         navigateTo('/dashboard/general');
                     }
                 } catch (error) {
