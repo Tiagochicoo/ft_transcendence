@@ -245,6 +245,18 @@ const createTournamentMatches = async (tournamentId) => {
   });
 }
 
+const tournamentFinish = async (tournamentId) => {
+  return fetch(`http://backend:8000/api/tournaments/${tournamentId}/finish/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': process.env.API_KEY,
+    },
+  }).then(response => {
+    return response.json();
+  });
+}
+
 const handleTournamentMatchFinish = async (io, data) => {
   const tournamentId = data.tournament.id;
   const tournamentData = TOURNAMENT_DATA[tournamentId];
@@ -253,20 +265,29 @@ const handleTournamentMatchFinish = async (io, data) => {
   if ([4, 6].includes(tournamentData.matches_finished)) {
     return createTournamentMatches(tournamentId)
       .then(matches => {
-        matches.data.forEach(match => {
-          io.emit(`tournament_round_start_${match.user1.id}`, match);
-          io.emit(`tournament_round_start_${match.user2.id}`, match);
-        });
         setTimeout(() => {
           matches.data.forEach(match => {
-            io.emit(`tournament_open_match_${match.user1.id}`, match.id);
-            io.emit(`tournament_open_match_${match.user2.id}`, match.id);
-            initGame(io, match);
+            io.emit(`tournament_round_start_${match.user1.id}`, match);
+            io.emit(`tournament_round_start_${match.user2.id}`, match);
           });
-        }, 5000);
+          setTimeout(() => {
+            matches.data.forEach(match => {
+              io.emit(`tournament_open_match_${match.user1.id}`, match.id);
+              io.emit(`tournament_open_match_${match.user2.id}`, match.id);
+              initGame(io, match);
+            });
+          }, 5000);
+        }, 2000);
       });
   } else if (tournamentData.matches_finished == 7) {
-    console.log('FINISH!');
+    tournamentFinish(tournamentId)
+    .then(tournament => {
+      setTimeout(() => {
+        TOURNAMENT_DATA[tournamentId].tournament_users.forEach(tournamentUser => {
+          io.emit(`tournament_finish_${tournamentUser.user.id}`, tournament);
+        });
+      }, 2000);
+  });
   }
 }
 
