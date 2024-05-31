@@ -68,11 +68,26 @@ export default class extends Abstract {
 						<table class="table table-hover text-center">
 							<thead class="table-secondary">
 								<tr>
-									<!-- Ranking table headers -->
+								<th scope="col">${i18next.t("Rank")}</th>
+								<th scope="col">${i18next.t("Name")}</th>
+								<th scope="col">${i18next.t("Score")}</th>
 								</tr>
 							</thead>
 							<tbody class="table-group-divider" style="border-top-color: #6c757d">
-								<!-- Render ranking table rows here -->
+								${this.Matches.data
+									.filter(game => game.has_finished !== false)
+									.map(game => {
+										this.Matches.data.forEach(game => {
+										});
+										return `
+											<tr>
+												<th scope="row">${game.id}</th>
+												<td>${game.user1.username}</td>
+												<td>${game.winner.username}</td>
+											</tr>
+										`;
+									})
+								}
 							</tbody>
 						</table>
 					</div>
@@ -97,7 +112,7 @@ export default class extends Abstract {
 						</table>
 					</div>
 
-					
+
 					<!--GRAPHS TABLE-->
 
 					<div class="tab-pane fade" id="pills-graphs" role="tabpanel" aria-labelledby="pills-graphs-tab">

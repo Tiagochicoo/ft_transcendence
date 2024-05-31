@@ -17,7 +17,6 @@ export default class extends Abstract {
 	}
 
 	async getHtml() {
-		// fetching data mocked on db.json
 		this.user = await Users.get(2);
 		if (!this.user.success)
 			return errorMessage;
@@ -70,7 +69,7 @@ export default class extends Abstract {
 								return `
 									<tr>
 										<th scope="row">${game.id}</th>
-										<td>${game.user2.username}</td>
+										<td>${game.user1.username}</td>
 										<td>${game.winner.username}</td>
 										<td>${game.score}</td>
 									</tr>
