@@ -17,33 +17,44 @@ export default class extends Abstract {
 	}
 
 	async getHtml() {
-		this.dataUsers = await Users.getAllUsers()
+		this.dataUsers = await Users.getAll()
 		if (!this.dataUsers.success)
 			return errorMessage;
 		//console.log(this.dataUser);
 
-		for (var i = 0; i < this.dataUsers.data.length; i++)
+		var userScores = [];
+		for (var i = 0; i < this.dataUsers.data.length; i++) 
 		{
-			console.log(this.dataUsers.data[i].id);
-			this.Matches = await Matches.getAllById(5);
+			this.Matches = await Matches.getAllById(this.dataUsers.data[i].id);
 			if (!this.Matches.success)
 				return errorMessage;
-			else
-				console.log(this.Matches);
-			/*for (var i = 0; i < this.Matches.data.length; i++)
+			else 
 			{
-				if (this.Matches.data[i].has_finished == true)
+				var TotalRankingScore = 0;
+				if (this.Matches.data.length > 0)
 				{
+					for (var x = 0; x < this.Matches.data.length; x++)
 					{
-						if (this.Matches.data[i].winner.username == this.user.data.username)
+						if (this.Matches.data[x].has_finished === true) 
 						{
-							;
+							if (this.Matches.data[x].winner.username == this.dataUsers.data[i].username)
+								TotalRankingScore += 5;
+							else
+								TotalRankingScore += (5 - this.Matches.data[x].score)
 						}
 					}
 				}
-				console.log(this);
-			}*/
+				userScores.push(TotalRankingScore);
+			}
 		}
+		
+		const usersWithScores = this.dataUsers.data.filter(user => user.username !== null)
+		.map((user, index) => ({
+			user: user,
+			score: userScores[index]
+		}));
+
+		usersWithScores.sort((a, b) => b.score - a.score);
 
 		return `
 			<h1>
@@ -76,20 +87,15 @@ export default class extends Abstract {
 								</tr>
 							</thead>
 							<tbody class="table-group-divider" style="border-top-color: #6c757d">
-								${this.Matches.data
-									.filter(game => game.has_finished !== false)
-									.map(game => {
-										this.Matches.data.forEach(game => {
-										});
-										return `
-											<tr>
-												<th scope="row">${game.id}</th>
-												<td>${game.user1.username}</td>
-												<td>${game.winner.username}</td>
-											</tr>
-										`;
-									})
-								}
+							${usersWithScores.map((userWithScore, index) => {
+								return `
+									<tr>
+										<th scope="row">${index + 1}</th>
+										<td>${userWithScore.user.username}</td>
+										<td>${userWithScore.score}</td>
+									</tr>
+								`;
+							}).join('')}
 							</tbody>
 						</table>
 					</div>
