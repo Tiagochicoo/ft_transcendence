@@ -166,8 +166,12 @@ const doUpdate = (io, matchId) => {
       return response.json();
     }).then(resposeJson => {
       if (resposeJson.success) {
-        io.emit(`match_finish_${gameState.user1.id}`, resposeJson.data);
-        io.emit(`match_finish_${gameState.user2.id}`, resposeJson.data);
+        if (resposeJson.data.tournament?.id) {
+          handleTournamentMatchFinish(io, resposeJson.data);
+        } else {
+          io.emit(`match_finish_${gameState.user1.id}`, resposeJson.data);
+          io.emit(`match_finish_${gameState.user2.id}`, resposeJson.data);
+        }
       } else {
         throw new Error();
       }
@@ -216,6 +220,31 @@ const initGame = (io, data) => {
       width: width,
     });
   }, 100);
+}
+
+const getAllTournamentUsers = async (tournamentId) => {
+  return fetch(`http://backend:8000/api/tournaments/${tournamentId}/tournament_users/`, {
+    headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': process.env.API_KEY,
+    }
+  }).then(response => {
+    return response.json();
+  });
+}
+
+const handleTournamentMatchFinish = async (io, data) => {
+  await getAllTournamentUsers(data.tournament.id)
+    .then(responseJson => {
+      if (!responseJson.success) {
+        throw new Error();
+      }
+      responseJson.data.forEach(tournamentUser => {
+        io.emit(`tournament_match_finish_${tournamentUser.user.id}`, data);
+      });
+    }).catch(error => {
+      console.log(`Error sending the start notifications for the tournament ${tournamentId}:`, error);
+    });
 }
 
 module.exports = {
