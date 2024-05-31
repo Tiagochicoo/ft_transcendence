@@ -158,5 +158,8 @@
   },
   "editProfile" : {
     "title": "Editar perfil"
+  },
+  "errors": {
+    "invalid_page": "Não tem permissões para ver essa página"
   }
 }

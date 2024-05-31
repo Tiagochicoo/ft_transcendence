@@ -158,5 +158,8 @@
     },
     "editProfile" : {
       "title": "Edit profile"
+    },
+    "errors": {
+      "invalid_page": "You don't have permissions to see that page"
     }
 }
