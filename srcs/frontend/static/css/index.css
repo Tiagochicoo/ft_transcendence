@@ -213,14 +213,3 @@ main {
   background: green;
   border-radius: 50%;
 }
-
-.container{
-  width: 70%;
-}
-h1{
-  font-size: 46px;
-  text-align: center;
-}
-#canvas{
-  width:100%;
-}
