@@ -17,30 +17,32 @@ export default class extends Abstract {
 	}
 
 	async getHtml() {
-		// fetching data mocked on db.json
-		this.user = await Users.get(2);
-		if (!this.user.success)
+		this.dataUsers = await Users.getAllUsers()
+		if (!this.dataUsers.success)
 			return errorMessage;
+		//console.log(this.dataUser);
 
-		var totalScore = 0;
-	
-		this.Matches = await Matches.getAll(2);
-		if (!this.Matches.success)
-			return errorMessage;
-		else
+		for (var i = 0; i < this.dataUsers.data.length; i++)
 		{
-			console.log(this.Matches);
-			console.log(this.user);
-			for (var i = 0; i < this.Matches.data.length; i++)
+			console.log(this.dataUsers.data[i].id);
+			this.Matches = await Matches.getAllById(5);
+			if (!this.Matches.success)
+				return errorMessage;
+			else
+				console.log(this.Matches);
+			/*for (var i = 0; i < this.Matches.data.length; i++)
 			{
 				if (this.Matches.data[i].has_finished == true)
 				{
-					if (this.Matches.data[i].winner.username == this.user.data.username)
 					{
-						totalScore += 1;
+						if (this.Matches.data[i].winner.username == this.user.data.username)
+						{
+							;
+						}
 					}
 				}
-			}
+				console.log(this);
+			}*/
 		}
 
 		return `

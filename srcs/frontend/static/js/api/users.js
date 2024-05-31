@@ -50,4 +50,8 @@ export default class Users {
 		}
 
   }
+
+  static async getAll() {
+    return await fetchWithToken(`/users`);
+  }
 }

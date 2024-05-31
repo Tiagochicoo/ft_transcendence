@@ -23,7 +23,7 @@ export default class extends Abstract {
 
 		var totalScore = 0;
 	
-		this.Matches = await Matches.getAll(2);
+		this.Matches = await Matches.getAllById(2);
 		if (!this.Matches.success)
 			return errorMessage;
 		else
