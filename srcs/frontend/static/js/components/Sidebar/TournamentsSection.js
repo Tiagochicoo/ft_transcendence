@@ -195,6 +195,13 @@ export default class extends Abstract {
 		this.updateTournamentsPageContent(data.tournament.id);
 	}
 
+	static async tournamentRoundStart(data) {
+		sendNotification({
+			body: i18next.t("sidebar.tournaments.notification_messages.round_start")
+		});
+		navigateTo(`/pong/tournament/${data.tournament.id}/rounds`);
+	}
+
 	static async getTournamentsPageContent(tournamentId) {
 		let tournamentUsers = [];
 		let matches = [];

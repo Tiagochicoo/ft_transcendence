@@ -251,9 +251,12 @@ const handleTournamentMatchFinish = async (io, data) => {
   tournamentData.matches_finished++;
 
   if ([4, 6].includes(tournamentData.matches_finished)) {
-    console.log('HERE!');
     return createTournamentMatches(tournamentId)
       .then(matches => {
+        matches.data.forEach(match => {
+          io.emit(`tournament_round_start_${match.user1.id}`, match);
+          io.emit(`tournament_round_start_${match.user2.id}`, match);
+        });
         setTimeout(() => {
           matches.data.forEach(match => {
             io.emit(`tournament_open_match_${match.user1.id}`, match.id);

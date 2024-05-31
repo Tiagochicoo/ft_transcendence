@@ -48,6 +48,14 @@ const tournamentMatchFinishSocketListener = () => {
   });
 }
 
+const tournamentRoundStartSocketListener = () => {
+  SOCKET.off(`tournament_round_start_${USER_ID}`);
+
+  SOCKET.on(`tournament_round_start_${USER_ID}`, (data) => {
+    TournamentsSection.tournamentRoundStart(data);
+  });
+}
+
 const tournamentRequests = () => {
   tournamentInviteSocketListener();
   tournamentRefuseSocketListener();
@@ -55,6 +63,7 @@ const tournamentRequests = () => {
   tournamentStartSocketListener();
   tournamentOpenMatchSocketListener();
   tournamentMatchFinishSocketListener();
+  tournamentRoundStartSocketListener();
 }
 
 export default tournamentRequests;
