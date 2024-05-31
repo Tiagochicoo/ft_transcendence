@@ -40,12 +40,21 @@ const tournamentOpenMatchSocketListener = () => {
   });
 }
 
+const tournamentMatchFinishSocketListener = () => {
+  SOCKET.off(`tournament_match_finish_${USER_ID}`);
+
+  SOCKET.on(`tournament_match_finish_${USER_ID}`, (data) => {
+    TournamentsSection.tournamentMatchFinish(data);
+  });
+}
+
 const tournamentRequests = () => {
   tournamentInviteSocketListener();
   tournamentRefuseSocketListener();
   tournamentAcceptSocketListener();
   tournamentStartSocketListener();
   tournamentOpenMatchSocketListener();
+  tournamentMatchFinishSocketListener();
 }
 
 export default tournamentRequests;
