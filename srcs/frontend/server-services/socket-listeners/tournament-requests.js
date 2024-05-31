@@ -1,4 +1,4 @@
-const fetch = require("node-fetch");
+const initTournament = require("./tournaments.js");
 
 const tournamentInviteSocketListener = (socket, io) => {
   // Get all the TournamentUsers from the tournament and send them an invite notification
@@ -21,7 +21,7 @@ const tournamentInviteSocketListener = (socket, io) => {
           io.emit(`tournament_invite_${tournamentUser.user.id}`, tournamentUser);
         });
     }).catch(error => {
-      console.log(`Error sending the invites for tournament ${tournamentId}:`, error);
+      console.log(`Error sending the invites for the tournament ${tournamentId}:`, error);
     });
   });
 }
@@ -34,7 +34,11 @@ const tournamentRefuseSocketListener = (socket, io) => {
 
 const tournamentAcceptSocketListener = (socket, io) => {
   socket.on('tournament_accept', (data) => {
-    io.emit(`tournament_accept_${data.tournament.creator.id}`, data);
+    if (data.tournament.has_started) {
+      initTournament(io, data.tournament.id);
+    } else {
+      io.emit(`tournament_accept_${data.tournament.creator.id}`, data);
+    }
   });
 }
 

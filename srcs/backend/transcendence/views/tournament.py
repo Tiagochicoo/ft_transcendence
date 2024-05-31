@@ -49,6 +49,13 @@ class TournamentUserAccept(APIView):
 			tournament_user = TournamentUser.objects.get(pk=tournamentUserId)
 			tournament_user.was_accepted = True
 			tournament_user.save()
+			# Check if tournament is ready to start
+			# And if so: start it
+			tournament_users = TournamentUser.objects.filter(tournament=tournament_user.tournament)
+			if all(tournament_user.was_accepted for tournament_user in tournament_users):
+				tournament = tournament_user.tournament
+				tournament.has_started = True
+				tournament.save()
 			serializer = TournamentUserSerializer(tournament_user)
 			return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
 		except Exception as error:
