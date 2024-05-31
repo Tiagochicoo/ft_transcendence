@@ -10,7 +10,7 @@ export default class Game {
     this.leftPlayer = new User(this.match.user1.username, this.match.user1.id);
     this.rightPlayer = new User(this.match.user2.username, this.match.user2.id);
     this.mode = mode;
-    this.tournamentId = this.mode === 'tournament' ? this.match.tournament : null;
+    this.tournamentId = this.mode === 'tournament' ? this.match.tournament.id : null;
 
     // Game state
     this.gameState = {};
