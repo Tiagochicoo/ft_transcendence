@@ -63,6 +63,13 @@ export default class extends Abstract {
 
 	static async update(data) {
 		console.log(data);
+		if (this.chatRoom.id != data.id) return;
+
+		this.chatRoom = data;
+		const wrapper = document.querySelector('#chat-box .chat-box-wrapper');
+		if (wrapper) {
+			wrapper.innerHTML = this.generateContent();
+		}
 	}
 
 	static async addFunctionality() {
@@ -113,6 +120,43 @@ export default class extends Abstract {
 		this.scrollMessagesToBottom();
 	}
 
+	static generateContent() {
+		return `
+			<div class="chat-box-header">
+				${User.getBadge(this.otherUser)}
+
+				<div class="chat-box-actions-wrapper">
+					${!this.chatRoom.was_blocked || (this.chatRoom.was_blocked && this.chatRoom.block_user?.id == USER_ID) ? `
+						<button class="chat-box-block" data-action="block">
+							<i class="bi bi-slash-circle"></i>
+						</button>
+					` : ''}
+
+					<button class="chat-box-block" data-action="match">
+						<i class="bi bi-controller"></i>
+					</button>
+
+					<button class="chat-box-close" data-action="close">
+						<i class="bi bi-x-circle-fill"></i>
+					</button>
+				</div>
+			</div>
+
+			<div class="chat-box-messages">
+				${this.messages.map(message => this.getMessageHtml(message)).join("")}
+			</div>
+
+			<div class="chat-box-footer">
+				<form novalidate>
+					<input type="text" class="form-control" id="content" name="content">
+					<button type="submit" class="btn btn-primary">
+						<i class="bi bi-send-fill"></i>
+					</button>
+				</form>
+			</div>
+		`;
+	}
+
 	static async getHtml() {
 		let response = await ChatRooms.get(this.chatRoomId);
 		this.chatRoom = response.data;
@@ -124,36 +168,7 @@ export default class extends Abstract {
 
 		return `
 			<div class="chat-box-wrapper" data-chat-room-id="${this.chatRoomId}">
-				<div class="chat-box-header">
-					${User.getBadge(this.otherUser)}
-
-					<div class="chat-box-actions-wrapper">
-						<button class="chat-box-block" data-action="block">
-							<i class="bi bi-slash-circle"></i>
-						</button>
-
-						<button class="chat-box-block" data-action="match">
-							<i class="bi bi-controller"></i>
-						</button>
-
-						<button class="chat-box-close" data-action="close">
-							<i class="bi bi-x-circle-fill"></i>
-						</button>
-					</div>
-				</div>
-
-				<div class="chat-box-messages">
-					${this.messages.map(message => this.getMessageHtml(message)).join("")}
-				</div>
-
-				<div class="chat-box-footer">
-					<form novalidate>
-						<input type="text" class="form-control" id="content" name="content">
-						<button type="submit" class="btn btn-primary">
-							<i class="bi bi-send-fill"></i>
-						</button>
-					</form>
-				</div>
+				${this.generateContent()}
 			</div>
 		`;
 	}
