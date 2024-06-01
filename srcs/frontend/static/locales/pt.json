@@ -148,6 +148,10 @@
     "submitButton": "Registrar"
   },
   "editProfile" : {
-    "title": "Editar perfil"
+    "title": "Editar perfil",
+    "enable2FA": "Ativar autenticação de dois fatores",
+    "disable2FA": "Desativar autenticação de dois fatores",
+    "scanQRCode": "Escaneie este código QR com seu aplicativo autenticador",
+    "updateSuccess": "O perfil foi atualizado com sucesso"
   }
 }

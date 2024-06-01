@@ -148,7 +148,7 @@ export default class extends Abstract {
             <h1 class="mb-4">
                 ${i18next.t('editProfile.title')}
             </h1>
-
+    
             <form id="form-edit-profile" class="needs-validation" novalidate>
                 <div class="mb-4">
                     <label for="edit-email" class="form-label">
@@ -157,7 +157,7 @@ export default class extends Abstract {
                     <input type="text" class="form-control" id="edit-email" name="email">
                     <div id="emailError" class="invalid-feedback" style="display: none;"></div>
                 </div>
-
+    
                 <div class="mb-4">
                     <label for="edit-username" class="form-label">
                         ${i18next.t('signUp.fields.username')}
@@ -165,7 +165,7 @@ export default class extends Abstract {
                     <input type="text" class="form-control" id="edit-username" name="username">
                     <div id="usernameError" class="invalid-feedback" style="display: none;"></div>
                 </div>
-
+    
                 <div class="mb-4">
                     <label for="edit-avatar" class="form-label">
                         ${i18next.t('signUp.fields.avatar')}
@@ -173,7 +173,7 @@ export default class extends Abstract {
                     <input type="file" accept="image/png, image/jpg, image/jpeg" class="form-control" id="edit-avatar" name="avatar">
                     <div id="avatarError" class="invalid-feedback" style="display: none;"></div>
                 </div>
-
+    
                 <div class="mb-4">
                     <label for="edit-password" class="form-label">
                         ${i18next.t('signUp.fields.password')}
@@ -181,25 +181,25 @@ export default class extends Abstract {
                     <input type="password" class="form-control" id="edit-password" name="password">
                     <div id="passwordError" class="invalid-feedback" style="display: none;"></div>
                 </div>
-
+    
                 <div class="mb-4">
                     <input type="checkbox" class="form-check-input" id="is_2fa_enabled" name="is_2fa_enabled">
                     <label for="is_2fa_enabled" class="form-check-label" id="2fa-text">
                         ${i18next.t('editProfile.enable2FA')}
                     </label>
                 </div>
-
+    
                 <div class="mb-4" id="2fa-qrcode-section" style="display: none;">
                     <label for="2fa-qrcode" class="form-label">
                         ${i18next.t('editProfile.scanQRCode')}
                     </label>
                     <img id="2fa-qrcode" src="" alt="2FA QR Code">
                 </div>
-
+    
                 <button type="submit" class="btn btn-primary">
                     ${i18next.t('signUp.submitButton')}
                 </button>
             </form>
         `;
     }
-}
+}    

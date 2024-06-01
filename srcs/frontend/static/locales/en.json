@@ -150,6 +150,21 @@
       "submitButton": "Submit"
     },
     "editProfile" : {
-      "title": "Edit profile"
+      "title": "Edit profile",
+      "enable2FA": "Enable Two-Factor Authentication",
+      "disable2FA": "Disable Two-Factor Authentication",
+      "scanQRCode": "Scan this QR code with your authenticator app",
+      "updateSuccess": "The profile was successfully updated",
+      "validation": {
+        "email_cannot_be_blank": "Email cannot be blank",
+        "invalid_email_format": "Invalid email format",
+        "username_cannot_be_blank": "Username cannot be blank",
+        "username_too_long": "Username is too long",
+        "avatar_unsupported_format": "Unsupported avatar format",
+        "avatar_too_large": "Avatar file size is too large",
+        "password_cannot_be_blank": "Password cannot be blank",
+        "password_too_short": "Password must be at least 8 characters",
+        "is_2fa_enabled": "Two-Factor Authentication error"
+      }
     }
 }
