@@ -14,15 +14,22 @@ main {
   padding-bottom: 32px;
 }
 
-@media (max-width: 992px) {
-  .navbar > .container {
-    padding-right: 140px;
-  }
+/* Navbar */
+.navbar-side-wrapper {
+  display: flex;
+  gap: 16px;
+}
+.navbar .user-badge span {
+  max-width: 100px;
+  width: fit-content !important;
+}
 
-  .language-toggle__wrapper {
-    position: absolute !important;
+@media (max-width: 992px) {
+  .navbar-side-wrapper {
+    position: absolute;
     top: 6px;
     right: 12px;
+    gap: 10px;
   }
 }
 
@@ -262,4 +269,9 @@ main {
   white-space: nowrap;
   width: 100px;
   overflow: hidden;
+}
+
+/* Game */
+#canvas {
+  max-width: 600px;
 }

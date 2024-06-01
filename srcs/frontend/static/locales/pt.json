@@ -9,7 +9,8 @@
     "signIn": "Iniciar Sessão",
     "pong": "Pong",
     "editProfile": "Editar perfil",
-    "logout": "Sair"
+    "logout": "Sair",
+    "language": "Idioma"
   },
   "toast": {
     "just_now": "agora mesmo"

@@ -9,7 +9,8 @@
     "signIn": "Sign-in",
     "pong": "Pong",
     "editProfile": "Edit profile",
-    "logout": "Log out"
+    "logout": "Log out",
+    "language": "Language"
   },
   "toast": {
     "just_now": "just now"
