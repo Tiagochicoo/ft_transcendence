@@ -14,7 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
     )
 
     username = serializers.CharField(
-        max_length=50,
+        max_length=12,
         error_messages={
             'blank': 'username_cannot_be_blank', 
             'max_length': 'username_too_long'
