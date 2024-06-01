@@ -93,6 +93,13 @@ class TournamentFinish(APIView):
 				tournament_user = TournamentUser.objects.get(tournament=tournament,user_id=ranking_list[i])
 				tournament_user.position = i
 				tournament_user.save()
+
+				user = tournament_user.user
+				user.num_tournaments += 1
+				if user == tournament.winner:
+					user.num_tournaments_won += 1
+				user.save()
+
 				i += 1
 
 			serializer = TournamentSerializer(tournament)
