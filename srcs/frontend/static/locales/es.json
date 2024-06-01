@@ -66,7 +66,8 @@
     "winner": "GANADOR",
     "matchAlreadyFinished": "Este juego ya terminó.",
     "userNotInvited": "No fuiste invitado a este juego.",
-    "noMatchFound": "No se han encontrado juegos."
+    "noMatchFound": "No se han encontrado juegos.",
+    "colorSelection": "Selecciona un color para el juego:"
   },
   "individualDashboard": {
     "title": "Estadísticas",

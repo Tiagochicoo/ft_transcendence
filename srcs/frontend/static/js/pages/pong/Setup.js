@@ -29,7 +29,6 @@ export default class extends Abstract {
 	const setupArea = document.getElementById('setup-area');
 	setupArea.innerHTML = this.showListOfFriends();
 
-
 	if (this.checkAvailability) {
 		const invitationBtn = document.querySelector('#invitation-btn');
 
@@ -189,9 +188,9 @@ export default class extends Abstract {
 		<h1 class="mb-4">
 				${i18next.t("pong.title")}
 		</h1>
+
 		<div id="setup-area" class="d-flex flex-column mt-2" >
-		  </div>
-	  </div>
+		</div>
 		`;
   }
 }

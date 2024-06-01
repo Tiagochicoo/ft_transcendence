@@ -30,6 +30,12 @@ export default class extends Abstract {
 			gameDiv.innerHTML = this.showGame(true, '');
 			const game = new Game(match.data, this.mode, match.success);
 			game.drawGame();
+			
+			let gameColor = document.querySelector('#gameColor');
+			localStorage.setItem('gameColor', gameColor.value); // just to have a default color defined.
+			gameColor.addEventListener("input", (event) => {
+				localStorage.setItem('gameColor', gameColor.value);
+			});
 		}
 	} else {
 		gameDiv.innerHTML = this.showGame(false, `${i18next.t("pong.noMatchFound")}`);
@@ -37,7 +43,14 @@ export default class extends Abstract {
   }
 
   showGame(status, message) {
-	return status ? '<canvas id="canvas" width="600" height="400" class="bg-dark"></canvas>' : `<p id="match-error">${message}</p>`;
+	return status ? `<canvas id="canvas" width="600" height="400" class="bg-dark"></canvas>
+						<div class=" d-flex mt-3">
+							<form class="d-flex flex-row align-items-center">
+									<label for="gameColor" class="form-label mx-3">${i18next.t("pong.colorSelection")}</label>
+									<input type="color" class="form-control form-control-color" id="gameColor" value="${localStorage.getItem('gameColor') ? localStorage.getItem('gameColor') : '#14dd50'}" title="Choose a color">
+							</form>
+						</div>
+							` : `<p id="match-error">${message}</p>`;
   }
 
   async getHtml() {
