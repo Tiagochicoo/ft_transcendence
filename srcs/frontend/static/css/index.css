@@ -152,14 +152,20 @@ main {
   color: #f8f9fa;
 }
 
-.chat-box-close {
+.chat-box-actions-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.chat-box-actions-wrapper * {
   color: #f8f9fa;
   font-size: 20px;
   line-height: 1;
   background: transparent;
   padding: 0;
   border: none;
-  margin-left: auto;
 }
 
 .chat-box-messages {

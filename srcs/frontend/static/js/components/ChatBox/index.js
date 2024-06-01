@@ -1,5 +1,6 @@
 import { ChatRooms } from "/static/js/api/index.js";
 import { Abstract } from "/static/js/components/index.js";
+import MatchesSection from "/static/js/components/Sidebar/MatchesSection.js";
 import { User } from "/static/js/generators/index.js";
 
 // Utility Class
@@ -9,6 +10,7 @@ export default class extends Abstract {
 	}
 
 	static chatRoomId = null;
+	static otherUser = {};
 	static chatRoom = {};
 	static messages = [];
 
@@ -54,11 +56,15 @@ export default class extends Abstract {
 
 			while (
 				currentElement.tagName &&
-				(currentElement.matches("[data-action=\"close\"]") || currentElement.parentNode)
+				(currentElement.matches("[data-action]") || currentElement.parentNode)
 			) {
 				if (currentElement.matches("[data-action=\"close\"]")) {
 					e.preventDefault();
 					wrapper.parentNode.innerHTML = '';
+					return;
+				} else if (currentElement.matches("[data-action=\"match\"]")) {
+					e.preventDefault();
+					MatchesSection.matchCreate(this.otherUser.id);
 					return;
 				}
 				currentElement = currentElement.parentNode;
@@ -88,16 +94,22 @@ export default class extends Abstract {
 		response = await ChatRooms.getMessages(this.chatRoomId);
 		this.messages = response.data;
 
-		const otherUser = (this.chatRoom.user1.id === USER_ID) ? this.chatRoom.user2 : this.chatRoom.user1;
+		this.otherUser = (this.chatRoom.user1.id === USER_ID) ? this.chatRoom.user2 : this.chatRoom.user1;
 
 		return `
 			<div class="chat-box-wrapper" data-chat-room-id="${this.chatRoomId}">
 				<div class="chat-box-header">
-					${User.getBadge(otherUser)}
+					${User.getBadge(this.otherUser)}
 
-					<button class="chat-box-close" data-action="close">
-						<i class="bi bi-x-circle-fill"></i>
-					</button>
+					<div class="chat-box-actions-wrapper">
+						<button class="chat-box-block" data-action="match">
+							<i class="bi bi-controller"></i>
+						</button>
+
+						<button class="chat-box-close" data-action="close">
+							<i class="bi bi-x-circle-fill"></i>
+						</button>
+					</div>
 				</div>
 
 				<div class="chat-box-messages">
