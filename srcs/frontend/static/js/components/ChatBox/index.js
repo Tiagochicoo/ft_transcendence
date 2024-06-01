@@ -47,6 +47,20 @@ export default class extends Abstract {
 		await this.addFunctionality();
 	}
 
+	static async block() {
+		const response = await ChatRooms.block(this.chatRoom.id);
+		if (response.success) {
+			SOCKET.emit('chat_block', response.data);
+		}
+	}
+
+	static async unblock() {
+		const response = await ChatRooms.unblock(this.chatRoom.id);
+		if (response.success) {
+			SOCKET.emit('chat_unblock', response.data);
+		}
+	}
+
 	static async addFunctionality() {
 		const wrapper = document.querySelector("#chat-box .chat-box-wrapper");
 
@@ -65,6 +79,14 @@ export default class extends Abstract {
 				} else if (currentElement.matches("[data-action=\"match\"]")) {
 					e.preventDefault();
 					MatchesSection.matchCreate(this.otherUser.id);
+					return;
+				} else if (currentElement.matches("[data-action=\"block\"]")) {
+					e.preventDefault();
+					if (!this.chatRoom.was_blocked) {
+						this.block();
+					} else if (this.chatRoom.block_user == USER_ID) {
+						this.unblock();
+					}
 					return;
 				}
 				currentElement = currentElement.parentNode;
@@ -102,6 +124,10 @@ export default class extends Abstract {
 					${User.getBadge(this.otherUser)}
 
 					<div class="chat-box-actions-wrapper">
+						<button class="chat-box-block" data-action="block">
+							<i class="bi bi-slash-circle"></i>
+						</button>
+
 						<button class="chat-box-block" data-action="match">
 							<i class="bi bi-controller"></i>
 						</button>
