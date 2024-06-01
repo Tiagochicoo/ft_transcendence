@@ -7,6 +7,7 @@ const paddleHeight = 100;
 const paddleWidth = 10;
 const ballRadius = 8;
 const paddleSpeed = 10;
+const ballSpeed = 5;
 const maxScore = 5;
 
 // Listen for user moves and attack
@@ -62,8 +63,8 @@ const startGame = (io, data) => {
     paddleWidth: paddleWidth,
     ballRadius: ballRadius,
     paddleSpeed: paddleSpeed,
-    ballSpeedX: 5,
-    ballSpeedY: 5,
+    ballSpeedX: ballSpeed,
+    ballSpeedY: ballSpeed,
     ballX: width / 2,
     ballY: height / 2,
     leftPaddleY: height / 2 - paddleHeight / 2,
@@ -84,7 +85,7 @@ const doUpdate = (io, matchId) => {
   if (!gameState) return;
 
   // increase ball speed until it collide with some paddle
-  if (gameState.startAttack) {
+  if (gameState.startAttack && !gameState.endAttack) {
     gameState.ballSpeedX = gameState.ballSpeedX * 1.5;
     gameState.ballSpeedY = gameState.ballSpeedY * 1.5;
     gameState.startAttack = false;
@@ -131,9 +132,8 @@ const doUpdate = (io, matchId) => {
   ) {
     //if under attack, disable speed increase effect
     if (gameState.endAttack) {
-      gameState.ballSpeedX = gameState.ballSpeedX / 1.5;
-      gameState.ballSpeedY = gameState.ballSpeedY / 1.5;
-      gameState.endAttack = false;
+      gameState.ballSpeedX = Math.max(gameState.ballSpeedX / 1.5, 3.5);
+      gameState.ballSpeedY = Math.max(gameState.ballSpeedY / 1.5, 3.5);
     }
     gameState.ballSpeedX = -gameState.ballSpeedX;
   }
@@ -146,9 +146,8 @@ const doUpdate = (io, matchId) => {
   ) {
     //if under attack, disable speed increase effect
     if (gameState.endAttack) {
-      gameState.ballSpeedX = gameState.ballSpeedX / 1.5;
-      gameState.ballSpeedY = gameState.ballSpeedY / 1.5;
-      gameState.endAttack = false;
+      gameState.ballSpeedX = Math.max(gameState.ballSpeedX / 1.5, 3.5);
+      gameState.ballSpeedY = Math.max(gameState.ballSpeedY / 1.5, 3.5);
     }
     gameState.ballSpeedX = -gameState.ballSpeedX;
   }
@@ -215,7 +214,7 @@ const doReset = (matchId) => {
 
   gameState.ballX = gameState.width / 2;
   gameState.ballY = gameState.height / 2;
-  gameState.ballSpeedX = -gameState.ballSpeedX;
+  gameState.ballSpeedX = -1 * Math.sign(gameState.ballSpeedX) * ballSpeed;
   gameState.ballSpeedY = Math.random() * 10 - 5;
   gameState.startAttack = false;
   gameState.endAttack = false;
