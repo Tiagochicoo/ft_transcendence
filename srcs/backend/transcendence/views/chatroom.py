@@ -59,6 +59,8 @@ class ChatRoomMessages(APIView):
     def post(self, request, chatRoomId, format=None):
         try:
             chat_room = ChatRoom.objects.get(pk=chatRoomId)
+            if (chat_room.was_blocked):
+                raise Exception('Chat Room is blocked')
             content = request.data.get('content')
             user_id = get_user_id_from_request(request)
             message = Message.objects.create(chat_room=chat_room, content=content, sender_id=user_id)

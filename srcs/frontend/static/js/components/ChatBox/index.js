@@ -68,6 +68,11 @@ export default class extends Abstract {
 		this.chatRoom = data;
 		const wrapper = document.querySelector('#chat-box .chat-box-wrapper');
 		if (wrapper) {
+			if (this.chatRoom.was_blocked) {
+				wrapper.classList.add('blocked');
+			} else {
+				wrapper.classList.remove('blocked');
+			}
 			wrapper.innerHTML = this.generateContent();
 		}
 	}
@@ -107,6 +112,9 @@ export default class extends Abstract {
 		// Send Message
 		wrapper.addEventListener("submit", async (e) => {
 			e.preventDefault();
+			if (this.chatRoom.was_blocked) {
+				return;
+			}
 
 			const data = new FormData(e.target);
 			const response = await ChatRooms.sendMessage(this.chatRoomId, data.get('content'));
@@ -167,7 +175,7 @@ export default class extends Abstract {
 		this.otherUser = (this.chatRoom.user1.id === USER_ID) ? this.chatRoom.user2 : this.chatRoom.user1;
 
 		return `
-			<div class="chat-box-wrapper" data-chat-room-id="${this.chatRoomId}">
+			<div class="chat-box-wrapper ${this.chatRoom.was_blocked ? 'blocked' : ''}" data-chat-room-id="${this.chatRoomId}">
 				${this.generateContent()}
 			</div>
 		`;
