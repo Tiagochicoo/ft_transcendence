@@ -1,4 +1,4 @@
-import { Abstract } from "/static/js/components/index.js";
+import { Abstract, ChatBox } from "/static/js/components/index.js";
 import FriendsSection from "./FriendsSection.js";
 import MatchesSection from "./MatchesSection.js";
 import TournamentsSection from "./TournamentsSection.js";
@@ -9,6 +9,17 @@ export default class extends Abstract {
 		throw new Error("Cannot be instantiated");
 	}
 
+	// If the backdrop exists, then the sidebar is opened on mobile
+	static close() {
+		const backdrop = document.querySelector('.offcanvas-backdrop');
+		if (backdrop) {
+			const button = document.querySelector('[data-bs-target="#offcanvasSidebar"]');
+			if (button) {
+				button.click();
+			}
+		}
+	}
+
 	static async addFunctionality() {
 		if (!USER_ID) {
 			return;
@@ -17,6 +28,14 @@ export default class extends Abstract {
 		await FriendsSection.addFunctionality();
 		await MatchesSection.addFunctionality();
 		await TournamentsSection.addFunctionality();
+
+		// Make sure to close the ChatBox when the Sidebar is oppened
+		const sidebarToggle = document.getElementById('offcanvasSidebar');
+		if (sidebarToggle) {
+			sidebarToggle.addEventListener('show.bs.offcanvas', (e) => {
+				ChatBox.close();
+			});
+		}
 	}
 
 	static async getHtml() {

@@ -1,5 +1,5 @@
 import { ChatRooms } from "/static/js/api/index.js";
-import { Abstract } from "/static/js/components/index.js";
+import { Abstract, Sidebar } from "/static/js/components/index.js";
 import MatchesSection from "/static/js/components/Sidebar/MatchesSection.js";
 import { User } from "/static/js/generators/index.js";
 
@@ -61,6 +61,13 @@ export default class extends Abstract {
 		}
 	}
 
+	static async close() {
+		const wrapper = document.getElementById("chat-box");
+		if (wrapper) {
+			wrapper.innerHTML = '';
+		}
+	}
+
 	static async update(data) {
 		console.log(data);
 		if (this.chatRoom.id != data.id) return;
@@ -90,7 +97,7 @@ export default class extends Abstract {
 			) {
 				if (currentElement.matches("[data-action=\"close\"]")) {
 					e.preventDefault();
-					wrapper.parentNode.innerHTML = '';
+					this.close();
 					return;
 				} else if (currentElement.matches("[data-action=\"match\"]")) {
 					e.preventDefault();
@@ -129,6 +136,9 @@ export default class extends Abstract {
 	}
 
 	static generateContent() {
+		// Make sure the sidebar is closed to display the ChatBox
+		Sidebar.close();
+
 		return `
 			<div class="chat-box-header">
 				${User.getBadge(this.otherUser)}
