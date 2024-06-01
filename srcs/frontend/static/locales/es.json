@@ -48,7 +48,7 @@
       "notification_messages": {
         "create": "Se enviaron solicitudes de torneo",
         "sent": "Envió una solicitud de torneo",
-        "refused": "Rechazó tu solicitud de torneo",
+        "canceled": "El torneo fue cancelado",
         "accepted": "Aceptó tu solicitud de torneo",
         "start": "El torneo comenzará en 10s"
       }

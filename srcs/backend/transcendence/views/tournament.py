@@ -117,7 +117,7 @@ class TournamentTournamentUserDetails(APIView):
 		except Exception as error:
 			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-class UserTournamentDetails(APIView):
+class UserTournamentUserDetails(APIView):
 	def get(self, request, userId, format=None):
 		try:
 			user = User.objects.get(pk=userId)
@@ -146,12 +146,17 @@ class TournamentUserAccept(APIView):
 			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class TournamentUserRefuse(APIView):
+	# Send list of all invites, not just the one from the user that requested it
 	def patch(self, request, tournamentUserId, format=None):
 		try:
 			tournament_user = TournamentUser.objects.get(pk=tournamentUserId)
-			tournament_user.was_refused = True
-			tournament_user.save()
-			serializer = TournamentUserSerializer(tournament_user)
+			tournament_users = tournament_user.tournament.tournament_users.all()
+			for t_user in tournament_users:
+				t_user.was_accepted = False
+				t_user.was_canceled = True
+				t_user.was_refused = False
+				t_user.save()
+			serializer = TournamentUserSerializer(tournament_users, many=True)
 			return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
 		except Exception as error:
 			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

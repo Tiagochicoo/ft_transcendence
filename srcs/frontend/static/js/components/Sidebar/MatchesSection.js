@@ -42,7 +42,7 @@ export default class extends Abstract {
 							<div class="sidebar-section-element d-flex justify-content-between gap-1 p-1 bg-light rounded" data-match-id="${id}" ${isAccepted ? `href="/pong/single/match/${id}" data-link` : ''}>
 								${User.getBadge(user)}
 
-								<div class="d-flex align-items-center gap-1">
+								<div class="d-flex align-items-center">
 									${options.actions.map(({ action, icon }) => `
 										<button class="bg-transparent p-1 border-0" data-action="${action}" data-id="${id}">
 											${icon}

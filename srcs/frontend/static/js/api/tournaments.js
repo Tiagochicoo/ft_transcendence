@@ -20,6 +20,7 @@ export default class Tournaments {
     });
   }
 
+  // List of all invites, not just the one from this user
   static async refuse(tournament_user_id) {
     return await fetchWithToken(`/tournament_users/${tournament_user_id}/refuse/`, {
       method: 'PATCH'
@@ -27,10 +28,10 @@ export default class Tournaments {
   }
 
   static async getAll() {
-    return await fetchWithToken(`/users/${USER_ID}/tournaments/`);
+    return await fetchWithToken(`/users/${USER_ID}/tournament_users/`);
   }
 
-  static async getAllTournamentUsers(tournament_id) {
+  static async getAllByTournament(tournament_id) {
     return await fetchWithToken(`/tournaments/${tournament_id}/tournament_users/`);
   }
 

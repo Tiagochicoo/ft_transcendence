@@ -132,6 +132,10 @@ main {
   color: var(--bs-success);
 }
 
+#sidebar .user-badge span {
+  max-width: 90px !important;
+}
+
 /* ChatBox */
 #chat-box {
   position: absolute;

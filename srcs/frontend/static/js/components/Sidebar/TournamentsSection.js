@@ -49,7 +49,7 @@ export default class extends Abstract {
 								` : ''}
 
 								${!tournament.has_started ? `
-									<div class="d-flex align-items-center gap-1">
+									<div class="d-flex align-items-center">
 										${options.actions.map(({ action, icon }) => `
 											<button class="bg-transparent p-1 border-0" data-action="${action}" data-id="${id}">
 												${icon}
@@ -145,9 +145,12 @@ export default class extends Abstract {
 	}
 
 	static tournamentRefuseNotification(data) {
+		this.doDataUpdate(data);
+		this.updateTournamentsAccepted();
+		this.updateTournamentsReceived();
 		sendNotification({
 			user: data.user,
-			body: i18next.t("sidebar.tournaments.notification_messages.refused")
+			body: i18next.t("sidebar.tournaments.notification_messages.canceled")
 		});
 	}
 
@@ -308,7 +311,7 @@ export default class extends Abstract {
 				`;
 			}
 
-			let response = await Tournaments.getAllTournamentUsers(tournamentId);
+			let response = await Tournaments.getAllByTournament(tournamentId);
 			tournamentUsers = response.data;
 
 			response = await Tournaments.getAllMatches(tournamentId);
@@ -341,10 +344,15 @@ export default class extends Abstract {
 			let response;
 			switch (action) {
 				case 'refuse':
+					// The response comes as the list of all the tournament_user requests
+					// Notify all the other users
+					// And update this one
 					response = await Tournaments.refuse(id);
 					if (response.success) {
-						SOCKET.emit('tournament_refuse', response.data);
-						this.doDataUpdate(response.data);
+						const data = response.data.find(el => el.id == id);
+						const otherData = response.data.filter(el => el.id != id);
+						SOCKET.emit('tournament_refuse', otherData);
+						this.doDataUpdate(data);
 						this.updateTournamentsAccepted();
 						this.updateTournamentsReceived();
 					}

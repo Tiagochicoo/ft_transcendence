@@ -2,7 +2,7 @@ from django.urls import path
 from .views.chatroom import ChatRoomCreate, ChatRoomBlock, ChatRoomUnblock, ChatRoomMessages, ChatRoomDetails, UserChatRoomDetails
 from .views.friendrequest import FriendCreate, FriendCancel, FriendAccept, FriendRefuse, FriendDetails, UserFriendDetails
 from .views.match import MatchCreate, MatchDetail, MatchUpdate, MatchCancel, MatchAccept, MatchRefuse, MatchFinish, MatchByTournament, UserMatchDetails
-from .views.tournament import TournamentCreate, TournamentMatches, TournamentFinish, TournamentTournamentUserDetails, UserTournamentDetails, TournamentUserAccept, TournamentUserRefuse, TournamentDetail, TournamentUpdate
+from .views.tournament import TournamentCreate, TournamentMatches, TournamentFinish, TournamentTournamentUserDetails, UserTournamentUserDetails, TournamentUserAccept, TournamentUserRefuse, TournamentDetail, TournamentUpdate
 from .views.tournament_user import TournamentUserCreate, TournamentUserDetail
 from .views.user import UserList, UserDetails, UserLogin, UserUpdate, WhoAmI
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
@@ -47,7 +47,7 @@ urlpatterns = [
     path('tournaments/<int:tournamentId>/matches/', TournamentMatches.as_view(), name='tournament_matches_create'),
     path('tournaments/<int:tournamentId>/finish/', TournamentFinish.as_view(), name='tournament_finish'),
     path('tournaments/<int:tournamentId>/tournament_users/', TournamentTournamentUserDetails.as_view(), name='tournament_tournament_user_create'),
-    path('users/<int:userId>/tournaments/', UserTournamentDetails.as_view(), name='user_tournament_details'),
+    path('users/<int:userId>/tournament_users/', UserTournamentUserDetails.as_view(), name='user_tournament_user_details'),
     path('tournament_users/<int:tournamentUserId>/accept/', TournamentUserAccept.as_view(), name='tournament_user_accept'),
     path('tournament_users/<int:tournamentUserId>/refuse/', TournamentUserRefuse.as_view(), name='tournament_user_refuse'),
 	path('tournament/update', TournamentUpdate.as_view(), name='tournament_update'),

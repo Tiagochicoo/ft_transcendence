@@ -30,7 +30,9 @@ const tournamentInviteSocketListener = (socket, io) => {
 
 const tournamentRefuseSocketListener = (socket, io) => {
   socket.on('tournament_refuse', (data) => {
-    io.emit(`tournament_refuse_${data.tournament.creator.id}`, data);
+    data.forEach(tournament_user => {
+      io.emit(`tournament_refuse_${tournament_user.user.id}`, tournament_user);
+    })
   });
 }
 

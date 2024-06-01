@@ -45,7 +45,7 @@
       "notification_messages": {
         "create": "The tournament requests were sent",
         "sent": "Sent a tournament request",
-        "refused": "Refused your tournament request",
+        "canceled": "The tournament was canceled",
         "accepted": "Accepted your tournament request",
         "start": "The tournament will start in 5s",
         "match_start": "The tournament match will start in 10s",
