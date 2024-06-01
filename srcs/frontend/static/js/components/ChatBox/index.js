@@ -61,6 +61,10 @@ export default class extends Abstract {
 		}
 	}
 
+	static async update(data) {
+		console.log(data);
+	}
+
 	static async addFunctionality() {
 		const wrapper = document.querySelector("#chat-box .chat-box-wrapper");
 
@@ -84,7 +88,7 @@ export default class extends Abstract {
 					e.preventDefault();
 					if (!this.chatRoom.was_blocked) {
 						this.block();
-					} else if (this.chatRoom.block_user == USER_ID) {
+					} else if (this.chatRoom.block_user.id == USER_ID) {
 						this.unblock();
 					}
 					return;
