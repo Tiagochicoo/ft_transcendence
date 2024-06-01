@@ -68,7 +68,9 @@
       "start": "Start",
       "pause": "Pause",
       "continue": "Continue",
-      "restart": "Restart"
+      "restart": "Restart",
+      "goBack": "Go back",
+      "resetColors": "Reset colors"
     },
     "singleMatch": "Single Match",
     "tournament": "Tournament",

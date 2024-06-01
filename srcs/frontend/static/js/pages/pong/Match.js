@@ -33,12 +33,25 @@ export default class extends Abstract {
 					const inputField = document.querySelector(`#pong #${key}`);
 					if (inputField) {
 						localStorage.setItem(key, inputField.value);
-						inputField.addEventListener("input", (event) => {
+						inputField.addEventListener("input", (e) => {
 							localStorage.setItem(key, inputField.value);
-							console.log(key, inputField.value);
 						});
 					}
 				});
+
+				// Set the reset button
+				const resetColorsButton = document.querySelector(`#pong #resetColors`);
+				if (resetColorsButton) {
+					resetColorsButton.addEventListener("click", (e) => {
+						this.fieldsData.forEach(({ key, defaultValue }) => {
+							localStorage.setItem(key, defaultValue);
+							const inputField = document.querySelector(`#pong #${key}`);
+							if (inputField) {
+								inputField.value = defaultValue;
+							}
+						});
+					});
+				}
 
 				if (match.data.user1.id !== USER_ID && match.data.user2.id !== USER_ID) {
 					throw new Error('Not invited');
@@ -70,10 +83,14 @@ export default class extends Abstract {
 			<div id="pong" tabindex="1" class="d-flex flex-column">
 				<canvas id="canvas" width="600" height="400" class="bg-dark w-100"></canvas>
 
-				<div class="d-flex flex-column mt-3">
-					<h2 class="mt-3 mb-2">
+				<div class="d-flex flex-column align-items-start mt-3">
+					<h2 class="mt-3 mb-3">
 						${i18next.t("pong.dashboard.title")}
 					</h2>
+
+					<button id="resetColors" class="btn btn-secondary mb-3">
+						${i18next.t("pong.buttons.resetColors")}
+					</button>
 
 					<form class="d-flex flex-column">
 						${this.fieldsData.map(({ key, defaultValue }) => `

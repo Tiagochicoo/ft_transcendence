@@ -68,7 +68,9 @@
       "start": "Iniciar",
       "pause": "Pausar",
       "continue": "Continuar",
-      "restart": "Reiniciar"
+      "restart": "Reiniciar",
+      "goBack": "Voltar atrás",
+      "resetColors": "Reverter cores"
     },
     "singleMatch": "Partida única",
     "tournament": "Campeonato",
