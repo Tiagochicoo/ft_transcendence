@@ -150,7 +150,7 @@
       "email_too_long": "Email is too long",
       "email_in_use": "This email is already registered",
       "username_cannot_be_blank": "Username cannot be blank",
-      "username_too_long": "Username is too long",
+      "username_too_long": "Username is too long (maximum of 12 characters)",
       "username_in_use": "This username is already in use",
       "username_too_short": "Username must be at least 5 characters",
       "avatar_unsupported_file_extension": "Avatar only supports the following formats: PNG, JPG or JPEG",

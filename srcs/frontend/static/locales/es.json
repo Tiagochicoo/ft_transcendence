@@ -150,7 +150,7 @@
         "email_too_long": "El correo es demasiado largo",
         "email_in_use": "Este correo electrónico ya está registrado",
         "username_cannot_be_blank": "El nombre de usuario no puede estar vacío",
-        "username_too_long": "El nombre de usuario es demasiado largo",
+        "username_too_long": "El nombre de usuario es demasiado largo (máximo 12 caracteres)",
         "username_in_use": "Este nombre de usuario ya está en uso",
         "username_too_short": "El nombre de usuario debe tener al menos 5 caracteres",
         "avatar_unsupported_file_extension": "El avatar solo admite los siguientes formatos: PNG, JPG o JPEG",
