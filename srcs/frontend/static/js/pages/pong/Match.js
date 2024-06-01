@@ -80,17 +80,16 @@ export default class extends Abstract {
 				${i18next.t("pong.title")}
 			</h1>
 
-			<div id="pong" tabindex="1" class="d-flex flex-column">
-				<canvas id="canvas" width="600" height="400" class="bg-dark w-100"></canvas>
+			<div id="pong" class="d-flex flex-column">
+				<canvas id="canvas" width="600" height="400" class="bg-dark w-100" tabindex="1"></canvas>
 
-				<div class="d-flex flex-column align-items-start mt-3">
-					<h2 class="mt-3 mb-3">
+				<div id="pong-end-btn"></div>
+				</div>
+
+				<div class="d-flex flex-column align-items-start">
+					<h2 class="mt-4 mb-3">
 						${i18next.t("pong.dashboard.title")}
 					</h2>
-
-					<button id="resetColors" class="btn btn-secondary mb-3">
-						${i18next.t("pong.buttons.resetColors")}
-					</button>
 
 					<form class="d-flex flex-column">
 						${this.fieldsData.map(({ key, defaultValue }) => `
@@ -102,10 +101,11 @@ export default class extends Abstract {
 							</label>
 						`).join("")}
 					</form>
-				</div>
-			</div>
 
-			<div id="pong-end-btn"></div>
+					<button id="resetColors" class="btn btn-secondary mt-2">
+						${i18next.t("pong.buttons.resetColors")}
+					</button>
+				</div>
 			</div>
 		`;
 	}
