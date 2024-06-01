@@ -10,6 +10,12 @@ export default class extends Abstract {
 		this.params = props;
 		this.matchId = this.params.matchId;
 
+		this.fieldsData = [
+			{ key: 'textColor', defaultValue: '#14dd50' },
+			{ key: 'backgroundColor', defaultValue: '#212529' },
+			{ key: 'figuresColor', defaultValue: '#14dd50' },
+		];
+
 		// it could be better manipulated if included in a global state!
 		let url = window.location.toString();
 		if (url.indexOf('single') > 0) this.mode = 'single';
@@ -23,13 +29,16 @@ export default class extends Abstract {
 				const game = new Game(match.data, this.mode, match.success);
 
 				// Set the color
-				const gameColor = document.querySelector('#gameColor');
-				if (gameColor) {
-					localStorage.setItem('gameColor', gameColor.value);
-					gameColor.addEventListener("input", (event) => {
-						localStorage.setItem('gameColor', gameColor.value);
-					});
-				}
+				this.fieldsData.forEach(({ key }) => {
+					const inputField = document.querySelector(`#pong #${key}`);
+					if (inputField) {
+						localStorage.setItem(key, inputField.value);
+						inputField.addEventListener("input", (event) => {
+							localStorage.setItem(key, inputField.value);
+							console.log(key, inputField.value);
+						});
+					}
+				});
 
 				if (match.data.user1.id !== USER_ID && match.data.user2.id !== USER_ID) {
 					throw new Error('Not invited');
@@ -58,15 +67,23 @@ export default class extends Abstract {
 				${i18next.t("pong.title")}
 			</h1>
 
-			<div id="pong" tabindex="1" class="d-flex flex-column align-items-center">
+			<div id="pong" tabindex="1" class="d-flex flex-column">
 				<canvas id="canvas" width="600" height="400" class="bg-dark w-100"></canvas>
 
-				<div class=" d-flex mt-3">
-					<form class="d-flex flex-row align-items-center">
-							<label for="gameColor" class="form-label mx-3">
-								${i18next.t("pong.colorSelection")}
+				<div class="d-flex flex-column mt-3">
+					<h2 class="mt-3 mb-2">
+						${i18next.t("pong.dashboard.title")}
+					</h2>
+
+					<form class="d-flex flex-column">
+						${this.fieldsData.map(({ key, defaultValue }) => `
+							<label for="${key}" class="form-label d-flex align-items-center gap-1">
+								<input type="color" class="form-control form-control-color" id="${key}" value="${localStorage.getItem(key) ? localStorage.getItem(key) : defaultValue}">
+								<span>
+									${i18next.t(`pong.dashboard.${key}`)}
+								</span>
 							</label>
-							<input type="color" class="form-control form-control-color" id="gameColor" value="${localStorage.getItem('gameColor') ? localStorage.getItem('gameColor') : '#14dd50'}" title="Choose a color">
+						`).join("")}
 					</form>
 				</div>
 			</div>

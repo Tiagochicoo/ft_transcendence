@@ -84,7 +84,12 @@
     "matchAlreadyFinished": "This match has already finished.",
     "userNotInvited": "You were not invited to this match.",
     "noMatchFound": "No match found.",
-    "colorSelection": "Select a game color style:"
+    "dashboard": {
+      "title": "Personalize your game",
+      "textColor": "Text color",
+      "backgroundColor": "Background color",
+      "figuresColor": "Figures color"
+    }
   },
   "individualDashboard": {
     "title": "Statistics",

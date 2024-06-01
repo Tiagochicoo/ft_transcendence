@@ -84,7 +84,12 @@
     "matchAlreadyFinished": "Esse jogo já acabou.",
     "userNotInvited": "Você não foi convidado para ests jogo.",
     "noMatchFound": "Nenhum jogo encontrado.",
-    "colorSelection": "Selecione uma cor para o jogo:"
+    "dashboard": {
+      "title": "Personalize seu jogo",
+      "textColor": "Cor do texto",
+      "backgroundColor": "Cor de fundo",
+      "figuresColor": "Cor das figuras"
+    }
   },
   "individualDashboard": {
     "title": "Estatísticas",

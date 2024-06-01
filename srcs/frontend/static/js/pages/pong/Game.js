@@ -11,16 +11,21 @@ export default class Game {
     this.rightPlayer = new User(this.match.user2.username, this.match.user2.id);
     this.mode = mode;
     this.tournamentId = this.mode === 'tournament' ? this.match.tournament.id : null;
-    this.gameColor;
+    // Colors
+    this.textColor;
+    this.backgroundColor;
+    this.figuresColor;
     // Game state
     this.gameState = {};
 
-    this.setColor();
+    this.setColors();
     this.socketFunctionality();
   }
 
-  setColor() {
-    this.gameColor = localStorage.getItem('gameColor') ? localStorage.getItem('gameColor') : '#14dd50';
+  setColors() {
+    this.textColor = localStorage.getItem('textColor') ? localStorage.getItem('textColor') : '#14dd50';
+    this.backgroundColor = localStorage.getItem('backgroundColor') ? localStorage.getItem('backgroundColor') : '#212529';
+    this.figuresColor = localStorage.getItem('figuresColor') ? localStorage.getItem('figuresColor') : '#14dd50';
   }
   
   socketFunctionality() {
@@ -30,7 +35,7 @@ export default class Game {
     SOCKET.on(`match_data_${this.match.id}`, (data) => {
       this.gameState = data;
 
-      this.setColor();
+      this.setColors();
       if (this.gameState.meta.status == 'stand-by') {
         this.drawCountdown(this.gameState.meta.countDown);
       } else if (this.gameState.meta.status == 'running') {
@@ -65,9 +70,15 @@ export default class Game {
 
   // Update the canvas with the countdown
   drawCountdown(countdownTime) {
+    // Clear
     this.ctx.clearRect(0, 0, this.gameState.width, this.gameState.height);
 
-    this.ctx.fillStyle = this.gameColor;
+    // Fill background
+    this.ctx.fillStyle = this.backgroundColor;
+    this.ctx.fillRect(0, 0, this.gameState.width, this.gameState.height);
+
+    // Fill text
+    this.ctx.fillStyle = this.textColor;
 
     this.ctx.font = '48px helvetica';
     this.ctx.textAlign = 'center';
@@ -78,11 +89,17 @@ export default class Game {
 
   // Update the canvas with the game
   drawGame() {
+    // Clear
     this.ctx.clearRect(0, 0, this.gameState.width, this.gameState.height);
 
-    this.ctx.fillStyle = this.gameColor;
+    // Fill background
+    this.ctx.fillStyle = this.backgroundColor;
+    this.ctx.fillRect(0, 0, this.gameState.width, this.gameState.height);
 
-    //paddles
+    // Fill figures
+    this.ctx.fillStyle = this.figuresColor;
+
+    // Paddles
     this.ctx.fillRect(0, this.gameState.leftPaddleY, this.gameState.paddleWidth, this.gameState.paddleHeight);
     this.ctx.fillRect(
       this.gameState.width - this.gameState.paddleWidth,
@@ -91,17 +108,20 @@ export default class Game {
       this.gameState.paddleHeight,
     );
 
-    // central line
+    // Central line
     for (let i = 0; i < 40; i++) {
       this.ctx.fillRect(this.gameState.width / 2, 0 + i * 10, 2, 5);
     }
 
-    // ball
+    // Ball
     this.ctx.beginPath();
     this.ctx.arc(this.gameState.ballX, this.gameState.ballY, this.gameState.ballRadius, 0, Math.PI * 2);
     this.ctx.fill();
 
-    // scoreboard
+    // Fill text
+    this.ctx.fillStyle = this.textColor;
+
+    // Scoreboard
     this.ctx.font = "20px helvetica";
     this.ctx.textAlign = "center";
     this.ctx.fillText(
@@ -123,9 +143,15 @@ export default class Game {
       this.gameState = defaultGameState;
     }
 
+    // Clear
     this.ctx.clearRect(0, 0, this.gameState.width, this.gameState.height);
 
-    this.ctx.fillStyle = this.gameColor;
+    // Fill background
+    this.ctx.fillStyle = this.backgroundColor;
+    this.ctx.fillRect(0, 0, this.gameState.width, this.gameState.height);
+
+    // Fill text
+    this.ctx.fillStyle = this.textColor;
     this.ctx.font = '48px helvetica';
     this.ctx.textAlign = 'center';
     this.ctx.textBaseline = 'middle';
