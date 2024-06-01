@@ -69,7 +69,6 @@ export default class extends Abstract {
 	}
 
 	static async update(data) {
-		console.log(data);
 		if (this.chatRoom.id != data.id) return;
 
 		this.chatRoom = data;

@@ -21,7 +21,7 @@ export default class extends Abstract {
 
             if (form.checkValidity()) {
                 const formData = new FormData(form);
-                const response = await Users.update(formData);
+                const response = await Users.update(formData, {}, true);
 
                 if (response.success) {
                     this.clearFields();
@@ -56,6 +56,7 @@ export default class extends Abstract {
         handleError('username', errors.username);
         handleError('avatar', errors.avatar);
         handleError('password', errors.password);
+        handleError('general', errors.general);
     }
 
     clearFields() {
@@ -102,6 +103,8 @@ export default class extends Abstract {
                     <input type="password" class="form-control" id="password" name="password">
                     <div id="passwordError" class="invalid-feedback" style="display: none;"></div>
                 </div>
+
+                <div id="generalError" class="invalid-feedback mb-4" style="display: none;"></div>
 
                 <button type="submit" class="btn btn-primary">
                     ${i18next.t('signUp.submitButton')}

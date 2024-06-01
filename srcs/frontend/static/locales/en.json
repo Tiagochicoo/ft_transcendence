@@ -156,7 +156,8 @@
       "avatar_unsupported_file_extension": "Avatar only supports the following formats: PNG, JPG or JPEG",
       "avatar_file_size_exceed_limit": "Avatar can't exceed the size limit of 100kb",
       "password_cannot_be_blank": "Password cannot be blank",
-      "password_too_short": "Password must be at least 8 characters"
+      "password_too_short": "Password must be at least 8 characters",
+      "no_fields": "No fields were filled"
       },
       "submitButton": "Submit"
     },

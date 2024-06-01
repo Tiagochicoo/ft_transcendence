@@ -156,7 +156,8 @@
       "avatar_unsupported_file_extension": "O avatar só suporta os seguintes formatos: PNG, JPG ou JPEG",
       "avatar_file_size_exceed_limit": "O avatar não pode exceder o tamanho limite de 100kb",
       "password_cannot_be_blank": "A senha não pode estar vazia",
-      "password_too_short": "A senha deve ter pelo menos 8 caracteres"
+      "password_too_short": "A senha deve ter pelo menos 8 caracteres",
+      "no_fields": "Nenhum campo foi preenchido"
     },
     "submitButton": "Registrar"
   },
