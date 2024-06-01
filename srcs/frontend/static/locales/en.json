@@ -70,7 +70,10 @@
       "continue": "Continue",
       "restart": "Restart",
       "goBack": "Go back",
-      "resetColors": "Reset colors"
+      "resetColors": "Reset colors",
+      "up": "UP",
+      "attack": "ATTACK",
+      "down": "DOWN"
     },
     "singleMatch": "Single Match",
     "tournament": "Tournament",

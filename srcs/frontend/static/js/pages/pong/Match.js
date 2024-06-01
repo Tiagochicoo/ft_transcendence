@@ -81,7 +81,23 @@ export default class extends Abstract {
 			</h1>
 
 			<div id="pong" class="d-flex flex-column">
-				<canvas id="canvas" width="600" height="400" class="bg-dark w-100" tabindex="1"></canvas>
+				<div class="canvas-wrapper" class="d-flex flex-column">
+					<canvas id="canvas" width="600" height="400" class="bg-dark w-100" tabindex="1"></canvas>
+
+					<div class="canvas-actions-wrapper d-flex justify-content-between flex-wrap gap-2 mt-2 mt-md-3">
+						<button class="btn btn-secondary py-3 py-md-4" data-game-action="up">
+							${i18next.t("pong.buttons.up")}
+						</button>
+
+						<button class="btn btn-secondary py-3 py-md-4" data-game-action="attack">
+							${i18next.t("pong.buttons.attack")}
+						</button>
+
+						<button class="btn btn-secondary py-3 py-md-4" data-game-action="down">
+							${i18next.t("pong.buttons.down")}
+						</button>
+					</div>
+				</div>
 
 				<div id="pong-end-btn"></div>
 				</div>

@@ -70,7 +70,10 @@
       "continue": "Continuar",
       "restart": "Reiniciar",
       "goBack": "Volver atrás",
-      "resetColors": "Revertir colores"
+      "resetColors": "Revertir colores",
+      "up": "ARRIBA",
+      "attack": "ATAQUE",
+      "down": "ABAJO"
     },
     "singleMatch": "Partido único",
     "tournament": "Torneo",

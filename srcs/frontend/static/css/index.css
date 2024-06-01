@@ -276,6 +276,28 @@ main {
 }
 
 /* Game */
+.canvas-wrapper {
+  width: fit-content;
+}
+
 #canvas {
   max-width: 600px;
+}
+
+.canvas-actions-wrapper button {
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .canvas-actions-wrapper button {
+    flex: auto;
+  }
+
+  .canvas-actions-wrapper button:is([data-game-action="up"], [data-game-action="down"]) {
+    width: calc(50% - 6px);
+  }
+
+  .canvas-actions-wrapper button[data-game-action="attack"] {
+    order: 1;
+  }
 }
