@@ -109,10 +109,14 @@
 }
 
 .player {
-  color: white;
-  padding: 10px 8px;
-  background-color: #212529a6;
   height: 49px;
+  min-width: 150px;
+  background-color: #212529a6;
+  padding: 10px 8px;
+}
+
+.player * {
+  color: #f8f9fa;
 }
 
 .player.round-winner, .match.winner > .player {
@@ -120,7 +124,15 @@
 }
 
 .player.round-looser {
-  background-color: #b92928;
+  background-color: #da5150;
+}
+
+.player.round-winner *, .player.round-looser *, .match.winner * {
+  color: var(--bs-body-color);
+}
+
+.match.winner > :first-child {
+  text-align: center;
 }
 
 .player:nth-child(odd) {
