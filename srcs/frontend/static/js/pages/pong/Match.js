@@ -50,7 +50,7 @@ export default class extends Abstract {
 			</h1>
 
 			<div id="pong" tabindex="1" class="d-flex flex-column align-items-center">
-				<canvas id="canvas" width="600" height="400" class="bg-dark"></canvas>
+				<canvas id="canvas" width="600" height="400" class="bg-dark w-100"></canvas>
 			</div>
 
 			<div id="pong-end-btn"></div>
