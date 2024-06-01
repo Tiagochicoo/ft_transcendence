@@ -27,7 +27,7 @@ export default class extends Abstract{
 				${i18next.t("pong.title")}
 			</h1>
 
-			<div id="tournament-bracket" class="d-flex flex-column mt-2">
+			<div id="tournament-bracket" class="d-flex flex-column">
 				${content}
 			</div>
 		`;

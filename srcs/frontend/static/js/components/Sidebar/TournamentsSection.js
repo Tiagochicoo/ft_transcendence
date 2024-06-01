@@ -271,11 +271,11 @@ export default class extends Abstract {
 			const getRound = (round) => {
 				return `
 					<div class="match">
-						<div class="player ${(round.winner.id && (round.user1.id == round.winner.id)) ? "round-winner" : ""}">
-							${round.user1.username || ""}
+						<div class="player ${round.winner.id ? ((round.user1.id == round.winner.id) ? "round-winner" : "round-looser") : ""}">
+							${User.getBadge(round.user1)}
 						</div>
-						<div class="player ${(round.winner.id && (round.user2.id == round.winner.id)) ? "round-winner" : ""}">
-							${round.user2.username || ""}
+						<div class="player ${round.winner.id ? ((round.user2.id == round.winner.id) ? "round-winner" : "round-looser") : ""}">
+							${User.getBadge(round.user2)}
 						</div>
 					</div>
 				`;
@@ -293,11 +293,17 @@ export default class extends Abstract {
 						<div class='round'>
 							${getRound(rounds[6])}
 						</div>
-						${winner ? `
-							<div class='round'>
-								<div class="winner"><p>${i18next.t("pong.winner")}</p>${winner.username}</div>
+
+						<div class='round'>
+							<div class="match winner">
+								<div class="player">
+									${i18next.t("pong.winner")}
+								</div>
+								<div class="player">
+									${User.getBadge(winner)}
+								</div>
 							</div>
-						` : ''}
+						</div>
 					</div>
 				`;
 			}
