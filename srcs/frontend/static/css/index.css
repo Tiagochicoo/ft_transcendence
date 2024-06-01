@@ -147,7 +147,7 @@ main {
   z-index: 100;
 }
 
-.chat-box-header {
+.chat-box-header, .chat-box-header * {
   display: flex;
   color: #f8f9fa;
 }
@@ -217,6 +217,11 @@ main {
 }
 
 /* User Badge */
+.user-badge {
+  color: var(--bs-body-color);
+  text-decoration: auto !important;
+}
+
 .user-badge.is-online div.online-circle {
   position: static;
   bottom: 2px;

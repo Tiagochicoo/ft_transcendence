@@ -15,7 +15,7 @@ export default class extends Abstract {
 		const isOnline = ONLINE_USERS.find(onlineUserID => onlineUserID == id);
 
 		return `
-			<div class="user-badge d-flex align-items-center gap-2 ${isOnline ? 'is-online' : ''}" data-user-id="${id}">
+			<a class="user-badge d-flex align-items-center gap-2 ${isOnline ? 'is-online' : ''}" data-user-id="${id}" href="/dashboard/individual/${id}" data-link>
 				<img src="${MEDIA_URL}${avatar}" class="rounded-circle" style="height:28px; width:28px;" alt="User avatar" />
 
 				<div class="online-circle">
@@ -24,7 +24,7 @@ export default class extends Abstract {
 				<span class="lh-1">
 					${username}
 				</span>
-			</div>
+			</a>
 		`;
 	}
 }
