@@ -22,6 +22,15 @@ export default class extends Abstract {
 			if (match.success) {
 				const game = new Game(match.data, this.mode, match.success);
 
+				// Set the color
+				const gameColor = document.querySelector('#gameColor');
+				if (gameColor) {
+					localStorage.setItem('gameColor', gameColor.value);
+					gameColor.addEventListener("input", (event) => {
+						localStorage.setItem('gameColor', gameColor.value);
+					});
+				}
+
 				if (match.data.user1.id !== USER_ID && match.data.user2.id !== USER_ID) {
 					throw new Error('Not invited');
 				} else if (match.data.has_finished) {
@@ -51,6 +60,15 @@ export default class extends Abstract {
 
 			<div id="pong" tabindex="1" class="d-flex flex-column align-items-center">
 				<canvas id="canvas" width="600" height="400" class="bg-dark w-100"></canvas>
+
+				<div class=" d-flex mt-3">
+					<form class="d-flex flex-row align-items-center">
+							<label for="gameColor" class="form-label mx-3">
+								${i18next.t("pong.colorSelection")}
+							</label>
+							<input type="color" class="form-control form-control-color" id="gameColor" value="${localStorage.getItem('gameColor') ? localStorage.getItem('gameColor') : '#14dd50'}" title="Choose a color">
+					</form>
+				</div>
 			</div>
 
 			<div id="pong-end-btn"></div>
