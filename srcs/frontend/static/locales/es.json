@@ -105,7 +105,11 @@
         "password": {
           "label": "Contraseña",
           "invalidFeedback": "Por favor, elige una contraseña válida."
-        }
+        },
+        "twoFactorCode": {
+          "label": "Two-Factor Authentication Code",
+          "invalidFeedback": "Please enter a valid 2FA code."
+      }
       },
       "validation": {
         "field_blank": "Este campo no puede estar vacío.",
@@ -113,7 +117,8 @@
         "invalid_email_address": "Introduzca una dirección de correo válida.",
         "account_not_found": "No se encontró ninguna cuenta con el nombre de usuario/correo proporcionado.",
         "invalid_credentials": "Contraseña inválida o el usuario no existe.",
-        "incorrect_password": "La contraseña es incorrecta."
+        "incorrect_password": "La contraseña es incorrecta.",
+        "invalid_2fa_code": "El código 2FA es incorrecto."
       },
       "submitButton": "Enviar"
     },

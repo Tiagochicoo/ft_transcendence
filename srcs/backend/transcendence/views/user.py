@@ -141,7 +141,7 @@ class Verify2FAView(APIView):
                 }
             }, status=status.HTTP_200_OK)
 
-        return JsonResponse({'success': False, 'errors': {'two_factor_code': ['Invalid 2FA code']}}, status=status.HTTP_401_UNAUTHORIZED)
+        return JsonResponse({'success': False, 'errors': {'two_factor_code': ['invalid_2fa_code']}}, status=status.HTTP_401_UNAUTHORIZED)
     
 class Generate2FASecretView(APIView):
     permission_classes = [IsAuthenticated]

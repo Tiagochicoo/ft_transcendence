@@ -53,7 +53,7 @@ export default class extends Abstract {
                         localStorage.setItem('refreshToken', responseData.data.refresh);
                         console.log('2FA verification successful:', responseData);
 
-                        // Update the language with the one the user preferes
+                        // Update the language with the one the user prefers
                         const userId = getUserIDfromToken(responseData.data.access);
                         checkUserPreferredLanguage(userId);
 
@@ -127,6 +127,25 @@ export default class extends Abstract {
                 generalError.style.display = 'block';
             }
         }
+        if (errors.two_factor_code) {
+            const errorKey = `signIn.validation.${errors.two_factor_code[0]}`;
+            const errorMessage = i18next.t(errorKey);
+            const twoFactorCodeError = form.querySelector('#twoFactorCodeError');
+            if (twoFactorCodeError) {
+                twoFactorCodeError.textContent = errorMessage;
+                twoFactorCodeError.style.display = 'block';
+            }
+        }
+        if (errors.two_factor_code_required) {
+            const errorKey = `signIn.validation.${errors.two_factor_code_required[0]}`;
+            const errorMessage = i18next.t(errorKey);
+            const twoFactorCodeRequiredError = form.querySelector('#twoFactorCodeRequiredError');
+            if (twoFactorCodeRequiredError) {
+                twoFactorCodeRequiredError.textContent = errorMessage;
+                twoFactorCodeRequiredError.style.display = 'block';
+                document.getElementById('2fa-code').style.display = 'block';
+            }
+        }
     }
 
     setState(newState) {
@@ -149,9 +168,10 @@ export default class extends Abstract {
                     <div id="generalLoginError" class="invalid-feedback" style="display: none;"></div>
                 </div>
                 <div class="mb-4" id="2fa-code" style="display: none;">
-                    <label for="two_factor_code" class="form-label">Two-Factor Authentication Code</label>
+                    <label for="two_factor_code" class="form-label">${i18next.t('signIn.fields.twoFactorCode.label')}</label>
                     <input type="text" class="form-control" id="two_factor_code" name="two_factor_code">
                     <div id="twoFactorCodeError" class="invalid-feedback" style="display: none;"></div>
+                    <div id="twoFactorCodeRequiredError" class="invalid-feedback" style="display: none;"></div>
                 </div>
                 <button type="submit" class="btn btn-primary">${i18next.t('signIn.submitButton')}</button>
             </form>

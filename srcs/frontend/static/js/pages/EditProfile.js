@@ -34,17 +34,16 @@ export default class extends Abstract {
                 const response = await Users.update(formData);
 
                 if (response.success) {
-                    this.clearFields();
                     sendNotification({
-                        body: 'The profile was successfully updated'
+                        body: i18next.t('editProfile.updateSuccess')
                     });
                     this.clearFields();
                     if (document.getElementById('is_2fa_enabled').checked) {
                         await this.generate2FAQRCode();
-                        document.getElementById('2fa-text').textContent = "Disable Two-Factor Authentication";
+                        document.getElementById('2fa-text').textContent = i18next.t('editProfile.disable2FA');
                     } else {
                         this.clear2FAQRCode();
-                        document.getElementById('2fa-text').textContent = "Enable Two-Factor Authentication";
+                        document.getElementById('2fa-text').textContent = i18next.t('editProfile.enable2FA');
                     }
                 } else {
                     this.handleErrors(response.errors);
@@ -58,7 +57,7 @@ export default class extends Abstract {
     async fetchUserData() {
         try {
             const accessToken = localStorage.getItem('accessToken');
-            const userId = getUserIDfromToken(accessToken);
+            const userId = getUserIDfromToken(accessToken); // Extract user ID from token
             if (!userId) {
                 console.error('User ID is not available in the token');
                 return;
@@ -77,10 +76,10 @@ export default class extends Abstract {
                 document.getElementById('is_2fa_enabled').checked = user.is_2fa_enabled;
                 if (user.is_2fa_enabled) {
                     await this.generate2FAQRCode();
-                    document.getElementById('2fa-text').textContent = "Disable Two-Factor Authentication";
+                    document.getElementById('2fa-text').textContent = i18next.t('editProfile.disable2FA');
                 } else {
                     this.clear2FAQRCode();
-                    document.getElementById('2fa-text').textContent = "Enable Two-Factor Authentication";
+                    document.getElementById('2fa-text').textContent = i18next.t('editProfile.enable2FA');
                 }
             } else {
                 console.error('Failed to fetch user data:', responseData);
@@ -125,7 +124,7 @@ export default class extends Abstract {
             if (!errorField) return;
 
             if (errors?.length) {
-                const errorKey = `signUp.validation.${errors[0].includes(' ') ? 'default_error' : errors[0]}`;
+                const errorKey = `editProfile.validation.${errors[0].includes(' ') ? 'default_error' : errors[0]}`;
                 const errorMessage = i18next.t(errorKey);
                 errorField.textContent = errorMessage;
                 errorField.style.display = 'block';
@@ -150,49 +149,49 @@ export default class extends Abstract {
                 ${i18next.t('editProfile.title')}
             </h1>
 
-            <form id="form-profile" class="needs-validation" novalidate>
+            <form id="form-edit-profile" class="needs-validation" novalidate>
                 <div class="mb-4">
-                    <label for="email" class="form-label">
+                    <label for="edit-email" class="form-label">
                         ${i18next.t('signUp.fields.email')}
                     </label>
-                    <input type="text" class="form-control" id="email" name="email">
+                    <input type="text" class="form-control" id="edit-email" name="email">
                     <div id="emailError" class="invalid-feedback" style="display: none;"></div>
                 </div>
 
                 <div class="mb-4">
-                    <label for="username" class="form-label">
+                    <label for="edit-username" class="form-label">
                         ${i18next.t('signUp.fields.username')}
                     </label>
-                    <input type="text" class="form-control" id="username" name="username">
+                    <input type="text" class="form-control" id="edit-username" name="username">
                     <div id="usernameError" class="invalid-feedback" style="display: none;"></div>
                 </div>
 
                 <div class="mb-4">
-                    <label for="avatar" class="form-label">
+                    <label for="edit-avatar" class="form-label">
                         ${i18next.t('signUp.fields.avatar')}
                     </label>
-                    <input type="file" accept="image/png, image/jpg, image/jpeg" class="form-control" id="avatar" name="avatar">
+                    <input type="file" accept="image/png, image/jpg, image/jpeg" class="form-control" id="edit-avatar" name="avatar">
                     <div id="avatarError" class="invalid-feedback" style="display: none;"></div>
                 </div>
 
                 <div class="mb-4">
-                    <label for="password" class="form-label">
+                    <label for="edit-password" class="form-label">
                         ${i18next.t('signUp.fields.password')}
                     </label>
-                    <input type="password" class="form-control" id="password" name="password">
+                    <input type="password" class="form-control" id="edit-password" name="password">
                     <div id="passwordError" class="invalid-feedback" style="display: none;"></div>
                 </div>
 
                 <div class="mb-4">
                     <input type="checkbox" class="form-check-input" id="is_2fa_enabled" name="is_2fa_enabled">
                     <label for="is_2fa_enabled" class="form-check-label" id="2fa-text">
-                        Enable Two-Factor Authentication
+                        ${i18next.t('editProfile.enable2FA')}
                     </label>
                 </div>
 
                 <div class="mb-4" id="2fa-qrcode-section" style="display: none;">
                     <label for="2fa-qrcode" class="form-label">
-                        Scan this QR code with your authenticator app
+                        ${i18next.t('editProfile.scanQRCode')}
                     </label>
                     <img id="2fa-qrcode" src="" alt="2FA QR Code">
                 </div>

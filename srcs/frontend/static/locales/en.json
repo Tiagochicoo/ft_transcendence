@@ -105,7 +105,11 @@
       "password": {
         "label": "Password",
         "invalidFeedback": "Please choose a valid password."
-      }
+      },
+      "twoFactorCode": {
+        "label": "Two-Factor Authentication Code",
+        "invalidFeedback": "Please enter a valid 2FA code."
+    }
     },
     "validation": {
         "field_blank": "This field may not be blank.",
@@ -113,7 +117,9 @@
         "invalid_email_address": "Enter a valid email address.",
         "account_not_found": "No account found with the provided username/email.",
         "invalid_credentials": "Invalid password or the user does not exist.",
-        "incorrect_password": "The password is incorrect."
+        "incorrect_password": "The password is incorrect.",
+        "invalid_2fa_code": "The 2FA code is incorrect.",
+        "two_factor_code_required": "Two-factor authentication code is required."
     },
     "submitButton": "Submit"
   },
@@ -138,7 +144,8 @@
       "avatar_unsupported_file_extension": "Avatar only supports the following formats: PNG, JPG or JPEG",
       "avatar_file_size_exceed_limit": "Avatar can't exceed the size limit of 100kb",
       "password_cannot_be_blank": "Password cannot be blank",
-      "password_too_short": "Password must be at least 8 characters"
+      "password_too_short": "Password must be at least 8 characters",
+      "invalid_2fa_code": "The 2FA code is incorrect."
       },
       "submitButton": "Submit"
     },
