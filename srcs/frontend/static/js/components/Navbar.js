@@ -93,7 +93,7 @@ export default class extends Abstract {
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a class="dropdown-item" href="/dashboard/individual/1" data-link>
+                                            <a class="dropdown-item" href="/dashboard/individual/${USER_ID}" data-link>
                                                 ${i18next.t("navbar.individualDashboard")}
                                             </a>
                                         </li>
