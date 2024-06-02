@@ -9,7 +9,11 @@
     "signIn": "Iniciar Sesión",
     "pong": "Pong",
     "editProfile": "Editar perfil",
-    "logout": "Cerrar sesión"
+    "logout": "Cerrar sesión",
+    "language": "Idioma",
+    "font": "Fuente",
+    "small": "Pequeño",
+    "large": "Grande"
   },
   "toast": {
     "just_now": "ahora mismo"
@@ -26,16 +30,30 @@
         "refused": "Rechazó tu solicitud de amistad",
         "accepted": "Aceptó tu solicitud de amistad. El partido comenzará en 10s",
         "canceled": "Canceló su solicitud de amistad",
-        "start": "El partido comenzará en 10s"
+        "start": "El partido comenzará en 5s",
+        "match_start": "El partido del torneo comenzará en 10s",
+        "round_start": "Una nueva ronda del torneo comenzará en 5s",
+        "finish": "El torneo terminó"
       }
     },
     "matches": {
       "title": "Partidos",
       "notification_messages": {
+        "create": "Recibida su solicitud de partido",
         "sent": "Envió una solicitud de partido",
         "refused": "Rechazó tu solicitud de partido",
         "accepted": "Aceptó tu solicitud de partido",
         "canceled": "Canceló su solicitud de partido"
+      }
+    },
+    "tournaments": {
+      "title": "Torneos",
+      "notification_messages": {
+        "create": "Se enviaron solicitudes de torneo",
+        "sent": "Envió una solicitud de torneo",
+        "canceled": "El torneo fue cancelado",
+        "accepted": "Aceptó tu solicitud de torneo",
+        "start": "El torneo comenzará en 10s"
       }
     },
     "validation": {
@@ -47,11 +65,19 @@
   },
   "pong": {
     "title": "Pong",
+    "content": "<p>Use los botones de abajo para controlar su pala.</p><p>También puede usar las teclas de Flecha Arriba/Flecha Abajo o W/S para mover la pala hacia arriba y hacia abajo.</p><p>Puede aumentar la velocidad de la pelota presionando la tecla ESPACIO.</p>",
+    "won": "¡Felicidades, ganaste!",
+    "lost": "Ooops, perdiste...",
     "buttons": {
       "start": "Iniciar",
       "pause": "Pausar",
       "continue": "Continuar",
-      "restart": "Reiniciar"
+      "restart": "Reiniciar",
+      "goBack": "Volver atrás",
+      "resetColors": "Revertir colores",
+      "up": "ARRIBA",
+      "attack": "ATAQUE",
+      "down": "ABAJO"
     },
     "singleMatch": "Partido único",
     "tournament": "Torneo",
@@ -67,7 +93,12 @@
     "matchAlreadyFinished": "Este juego ya terminó.",
     "userNotInvited": "No fuiste invitado a este juego.",
     "noMatchFound": "No se han encontrado juegos.",
-    "colorSelection": "Selecciona un color para el juego:"
+    "dashboard": {
+      "title": "Personaliza tu juego",
+      "textColor": "Color del texto",
+      "backgroundColor": "Color de fondo",
+      "figuresColor": "Color de las figuras"
+    }
   },
   "individualDashboard": {
     "title": "Estadísticas",
@@ -133,17 +164,21 @@
         "email_too_long": "El correo es demasiado largo",
         "email_in_use": "Este correo electrónico ya está registrado",
         "username_cannot_be_blank": "El nombre de usuario no puede estar vacío",
-        "username_too_long": "El nombre de usuario es demasiado largo",
+        "username_too_long": "El nombre de usuario es demasiado largo (máximo 12 caracteres)",
         "username_in_use": "Este nombre de usuario ya está en uso",
         "username_too_short": "El nombre de usuario debe tener al menos 5 caracteres",
         "avatar_unsupported_file_extension": "El avatar solo admite los siguientes formatos: PNG, JPG o JPEG",
         "avatar_file_size_exceed_limit": "El avatar no puede exceder el límite de tamaño de 100kb",
         "password_cannot_be_blank": "La contraseña no puede estar vacía",
-        "password_too_short": "La contraseña debe tener al menos 8 caracteres"
+        "password_too_short": "La contraseña debe tener al menos 8 caracteres",
+        "no_fields": "No se ha rellenado ningún campo"
       },
       "submitButton": "Registrar"
     },
     "editProfile" : {
       "title": "Editar perfil"
+    },
+    "errors": {
+      "invalid_page": "No tienes permisos para ver esa página"
     }
   } 

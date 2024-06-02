@@ -2,7 +2,9 @@ import { Users } from "/static/js/api/index.js";
 import { generateSocket, navigateTo } from "./index.js";
 
 function doLogout() {
-    SOCKET.disconnect();
+    if (SOCKET) {
+        SOCKET.disconnect();
+    }
     clearTokens();
     navigateTo('/sign-in');
 }
@@ -104,7 +106,7 @@ async function renewAccessToken(refreshToken) {
     }
 }
 
-async function fetchWithToken(path, options = {}) {
+async function fetchWithToken(path, options = {}, returnErrors = false) {
     let accessToken = localStorage.getItem('accessToken'),
         refreshToken = localStorage.getItem('refreshToken');
 
@@ -131,7 +133,8 @@ async function fetchWithToken(path, options = {}) {
             }
         });
 
-        if (!response.ok) {
+        // If the 'returnErrors' flag is set, skip this and just return the errors
+        if (!response.ok && !returnErrors) {
             const contentType = response.headers.get('content-type');
             if (contentType && contentType.indexOf('application/json') !== -1) {
                 const errorJson = await response.json();

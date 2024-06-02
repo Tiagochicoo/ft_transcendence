@@ -10,23 +10,95 @@ export default class Game {
     this.leftPlayer = new User(this.match.user1.username, this.match.user1.id);
     this.rightPlayer = new User(this.match.user2.username, this.match.user2.id);
     this.mode = mode;
-    this.tournamentId = this.mode === 'tournament' ? this.match.tournament : null;
-    this.gameColor;
+    this.tournamentId = this.mode === 'tournament' ? this.match.tournament.id : null;
+    // Colors
+    this.textColor;
+    this.backgroundColor;
+    this.figuresColor;
     // Game state
     this.gameState = {};
-    
+
+    this.setColors();
     this.socketFunctionality();
   }
 
-  
+  setColors() {
+    this.textColor = localStorage.getItem('textColor') ? localStorage.getItem('textColor') : '#14dd50';
+    this.backgroundColor = localStorage.getItem('backgroundColor') ? localStorage.getItem('backgroundColor') : '#212529';
+    this.figuresColor = localStorage.getItem('figuresColor') ? localStorage.getItem('figuresColor') : '#14dd50';
+  }
+
   socketFunctionality() {
+    const handleDown = (isDown) => {
+      SOCKET.emit(`game_move`, {
+        matchId: this.match.id,
+        key: "ArrowDown",
+        isDown,
+        userId: USER_ID,
+      });
+    }
+
+    const handleUp = (isDown) => {
+      SOCKET.emit(`game_move`, {
+        matchId: this.match.id,
+        key: "ArrowUp",
+        isDown,
+        userId: USER_ID,
+      });
+    }
+
+    const handleAttack = (isDown) => {
+      SOCKET.emit(`game_move`, {
+        matchId: this.match.id,
+        key: " ",
+        isDown,
+        userId: USER_ID,
+      });
+    }
+
+    // Set the game actions
+    const gameActions = document.querySelectorAll(`#pong [data-game-action]`);
+    if (gameActions) {
+      const createEventListeners = (element, callback) => {
+        element.addEventListener('mousedown', (e) => {
+          e.preventDefault();
+          callback(true);
+        });
+        element.addEventListener('mouseup', (e) => {
+          e.preventDefault();
+          callback(false);
+        });
+        element.addEventListener('touchstart', (e) => {
+          callback(true);
+        }, { passive: true});
+        element.addEventListener('touchend', (e) => {
+          e.preventDefault();
+          callback(false);
+        });
+      }
+
+      gameActions.forEach(element => {
+        switch (element.getAttribute("data-game-action")) {
+          case 'up':
+            createEventListeners(element, handleUp);
+            break;
+          case 'attack':
+            createEventListeners(element, handleAttack);
+            break;
+          case 'down':
+            createEventListeners(element, handleDown);
+            break;
+        }
+      });
+    }
+
     // Listen for game state updates
     SOCKET.off(`match_data_${this.match.id}`);
 
     SOCKET.on(`match_data_${this.match.id}`, (data) => {
       this.gameState = data;
 
-      this.gameColor = localStorage.getItem('gameColor') ? localStorage.getItem('gameColor') : '#14dd50';
+      this.setColors();
       if (this.gameState.meta.status == 'stand-by') {
         this.drawCountdown(this.gameState.meta.countDown);
       } else if (this.gameState.meta.status == 'running') {
@@ -39,31 +111,39 @@ export default class Game {
     // Handle user move: key down
     this.canvasArea.addEventListener("keydown", (e) => {
       e.preventDefault();
-      SOCKET.emit(`game_move`, {
-        matchId: this.match.id,
-        key: e.key,
-        isDown: true,
-        userId: USER_ID,
-      });
+      if (["ArrowDown", "s"].includes(e.key)) {
+        handleDown(true);
+      } else if (["ArrowUp", "w"].includes(e.key)) {
+        handleUp(true);
+      } else if (e.key == " ") {
+        handleAttack(true);
+      }
     });
 
     // Handle user move: key up
     this.canvasArea.addEventListener("keyup", (e) => {
       e.preventDefault();
-      SOCKET.emit(`game_move`, {
-        matchId: this.match.id,
-        key: e.key,
-        isDown: false,
-        userId: USER_ID,
-      });
+      if (["ArrowDown", "s"].includes(e.key)) {
+        handleDown(false);
+      } else if (["ArrowUp", "w"].includes(e.key)) {
+        handleUp(false);
+      } else if (e.key == " ") {
+        handleAttack(false);
+      }
     });
   }
 
   // Update the canvas with the countdown
   drawCountdown(countdownTime) {
+    // Clear
     this.ctx.clearRect(0, 0, this.gameState.width, this.gameState.height);
 
-    this.ctx.fillStyle = this.gameColor;
+    // Fill background
+    this.ctx.fillStyle = this.backgroundColor;
+    this.ctx.fillRect(0, 0, this.gameState.width, this.gameState.height);
+
+    // Fill text
+    this.ctx.fillStyle = this.textColor;
 
     this.ctx.font = '48px helvetica';
     this.ctx.textAlign = 'center';
@@ -74,11 +154,17 @@ export default class Game {
 
   // Update the canvas with the game
   drawGame() {
+    // Clear
     this.ctx.clearRect(0, 0, this.gameState.width, this.gameState.height);
 
-    this.ctx.fillStyle = this.gameColor;
+    // Fill background
+    this.ctx.fillStyle = this.backgroundColor;
+    this.ctx.fillRect(0, 0, this.gameState.width, this.gameState.height);
 
-    //paddles
+    // Fill figures
+    this.ctx.fillStyle = this.figuresColor;
+
+    // Paddles
     this.ctx.fillRect(0, this.gameState.leftPaddleY, this.gameState.paddleWidth, this.gameState.paddleHeight);
     this.ctx.fillRect(
       this.gameState.width - this.gameState.paddleWidth,
@@ -87,17 +173,20 @@ export default class Game {
       this.gameState.paddleHeight,
     );
 
-    // central line
+    // Central line
     for (let i = 0; i < 40; i++) {
       this.ctx.fillRect(this.gameState.width / 2, 0 + i * 10, 2, 5);
     }
 
-    // ball
+    // Ball
     this.ctx.beginPath();
     this.ctx.arc(this.gameState.ballX, this.gameState.ballY, this.gameState.ballRadius, 0, Math.PI * 2);
     this.ctx.fill();
 
-    // scoreboard
+    // Fill text
+    this.ctx.fillStyle = this.textColor;
+
+    // Scoreboard
     this.ctx.font = "20px helvetica";
     this.ctx.textAlign = "center";
     this.ctx.fillText(
@@ -114,15 +203,25 @@ export default class Game {
   }
 
   // Update the canvas with the end of the game
-  drawEnd() {
+  drawEnd(defaultGameState = {}) {
+    if (Object.keys(this.gameState).length === 0) {
+      this.gameState = defaultGameState;
+    }
+
+    // Clear
     this.ctx.clearRect(0, 0, this.gameState.width, this.gameState.height);
 
-    this.ctx.fillStyle = this.gameColor;
+    // Fill background
+    this.ctx.fillStyle = this.backgroundColor;
+    this.ctx.fillRect(0, 0, this.gameState.width, this.gameState.height);
+
+    // Fill text
+    this.ctx.fillStyle = this.textColor;
     this.ctx.font = '48px helvetica';
     this.ctx.textAlign = 'center';
     this.ctx.textBaseline = 'middle';
 
-    const text = (USER_ID == this.gameState.meta.winner_id) ? "Congratulations, you won!" : "Ooops, you lost...";
+    const text = (USER_ID == this.gameState.meta.winner_id) ? i18next.t("pong.won") : i18next.t("pong.lost");
 
     this.ctx.fillText(text, this.gameState.width / 2, this.gameState.height / 2);
 
@@ -132,7 +231,7 @@ export default class Game {
       const linkHref = (this.mode === 'single') ? '/pong' : `/pong/tournament/${this.tournamentId}/rounds`;
       pongWrapper.innerHTML = `
         <a class="btn btn-secondary mt-4" href="${linkHref}" data-link>
-          Go Back
+          ${i18next.t('pong.buttons.goBack')}
         </a>
       `;
     }

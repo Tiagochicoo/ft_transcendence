@@ -11,4 +11,4 @@ class Tournament(models.Model):
 	has_finished = models.BooleanField(default=False)
 
 	def __str__(self):
-		return f"Tournament {self.id} created by {self.creator}"
+		return f"Tournament #{self.id} created by {self.creator}"

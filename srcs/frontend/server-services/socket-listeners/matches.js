@@ -1,5 +1,6 @@
 const fetch = require("node-fetch");
 
+const TOURNAMENT_DATA = {};
 const MATCHES_STATE = {};
 const height = 400;
 const width = 600;
@@ -17,19 +18,19 @@ const matchesSocketListener = (socket, io) => {
     if (!gameState) return;
 
     if (userId == gameState.user1.id) {
-      if (["ArrowUp", "w"].includes(key)) {
+      if (key == "ArrowUp") {
         gameState.user1.isUpPressed = isDown;
-      } else if (["ArrowDown", "s"].includes(key)) {
+      } else if (key == "ArrowDown") {
         gameState.user1.isDownPressed = isDown;
-      } else if (["a"].includes(key)) {
+      } else if (key == " ") {
         if (isDown) gameState.startAttack = true;
       }
     } else if (userId == gameState.user2.id) {
-      if (["ArrowUp", "w"].includes(key)) {
+      if (key == "ArrowUp") {
         gameState.user2.isUpPressed = isDown;
-      } else if (["ArrowDown", "s"].includes(key)) {
+      } else if (key == "ArrowDown") {
         gameState.user2.isDownPressed = isDown;
-      } else if (["a"].includes(key)) {
+      } else if (key == " ") {
         if (isDown) gameState.startAttack = true;
       }
     }
@@ -191,8 +192,15 @@ const doUpdate = (io, matchId) => {
       return response.json();
     }).then(resposeJson => {
       if (resposeJson.success) {
-        io.emit(`match_finish_${gameState.user1.id}`, resposeJson.data);
-        io.emit(`match_finish_${gameState.user2.id}`, resposeJson.data);
+        if (resposeJson.data.tournament?.id) {
+          TOURNAMENT_DATA[resposeJson.data.tournament.id].tournament_users.forEach(tournamentUser => {
+            io.emit(`tournament_match_finish_${tournamentUser.user.id}`, tournamentUser);
+          })
+          handleTournamentMatchFinish(io, resposeJson.data);
+        } else {
+          io.emit(`match_finish_${gameState.user1.id}`, resposeJson.data);
+          io.emit(`match_finish_${gameState.user2.id}`, resposeJson.data);
+        }
       } else {
         throw new Error();
       }
@@ -223,7 +231,14 @@ const doReset = (matchId) => {
 // Initialize the game
 // First a countdown of 10s
 // Then run the game
-const initGame = (io, data) => {
+const initGame = (io, data, tournament_users = []) => {
+  if (data.tournament?.id && tournament_users.length) {
+    TOURNAMENT_DATA[data.tournament.id] = {
+      matches_finished: 0,
+      tournament_users,
+    };
+  }
+
   let countDown = 100;
   const intervalId = setInterval(() => {
     countDown--;
@@ -243,6 +258,64 @@ const initGame = (io, data) => {
       width: width,
     });
   }, 100);
+}
+
+const createTournamentMatches = async (tournamentId) => {
+  return fetch(`http://backend:8000/api/tournaments/${tournamentId}/matches/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': process.env.API_KEY,
+    },
+  }).then(response => {
+    return response.json();
+  });
+}
+
+const tournamentFinish = async (tournamentId) => {
+  return fetch(`http://backend:8000/api/tournaments/${tournamentId}/finish/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': process.env.API_KEY,
+    },
+  }).then(response => {
+    return response.json();
+  });
+}
+
+const handleTournamentMatchFinish = async (io, data) => {
+  const tournamentId = data.tournament.id;
+  const tournamentData = TOURNAMENT_DATA[tournamentId];
+  tournamentData.matches_finished++;
+
+  if ([4, 6].includes(tournamentData.matches_finished)) {
+    return createTournamentMatches(tournamentId)
+      .then(matches => {
+        setTimeout(() => {
+          matches.data.forEach(match => {
+            io.emit(`tournament_round_start_${match.user1.id}`, match);
+            io.emit(`tournament_round_start_${match.user2.id}`, match);
+          });
+          setTimeout(() => {
+            matches.data.forEach(match => {
+              io.emit(`tournament_open_match_${match.user1.id}`, match.id);
+              io.emit(`tournament_open_match_${match.user2.id}`, match.id);
+              initGame(io, match);
+            });
+          }, 5000);
+        }, 2000);
+      });
+  } else if (tournamentData.matches_finished == 7) {
+    tournamentFinish(tournamentId)
+    .then(tournament => {
+      setTimeout(() => {
+        TOURNAMENT_DATA[tournamentId].tournament_users.forEach(tournamentUser => {
+          io.emit(`tournament_finish_${tournamentUser.user.id}`, tournament.data);
+        });
+      }, 2000);
+    });
+  }
 }
 
 module.exports = {

@@ -42,7 +42,7 @@ fclean:
 	@printf "\e[38;5;196m ╔════════════════════════════════════════╗ \e[0m\n"
 	@printf "\e[38;5;196m ║    Cleaning all containers & volumes   ║ \e[0m\n"
 	@printf "\e[38;5;196m ╚════════════════════════════════════════╝ \e[0m\n"
-	sudo docker stop $$(sudo docker ps -qa)
+	sudo docker ps -q | xargs -r docker stop
 	sudo docker system prune --all --force --volumes
 	sudo docker network prune --force
 	sudo docker volume prune --force

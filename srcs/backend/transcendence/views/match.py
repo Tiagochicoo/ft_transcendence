@@ -86,13 +86,21 @@ class MatchFinish(APIView):
 			if (match.has_finished):
 				raise Exception('Match already finished')
 			match.has_finished = True
+			user1 = match.user1
+			user2 = match.user2
+			user1.num_games += 1
+			user2.num_games += 1
 			user1_score = request.data.get('user1_score')
 			user2_score = request.data.get('user2_score')
 			match.score = abs(user1_score - user2_score)
 			if (user1_score > user2_score):
 				match.winner = match.user1
+				user1.num_games_won += 1
 			else:
 				match.winner = match.user2
+				user2.num_games_won += 1
+			user1.save()
+			user2.save()
 			match.save()
 			serializer = MatchSerializer(match)
 			return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
