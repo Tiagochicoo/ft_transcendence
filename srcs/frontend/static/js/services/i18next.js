@@ -32,7 +32,11 @@ const i18nextInit = async () => {
       fallbackLng: LOCALES[0],
       resources: localesData.reduce((acc, curr) => ({ ...acc, ...curr }), {}),
     });
-    i18next.on("languageChanged", async () => {
+    i18next.on("languageChanged", async (newLang) => {
+      const htmlElement = document.querySelector('html');
+      if (htmlElement) {
+        htmlElement.lang = newLang;
+      }
       await renderSidebar();
       await renderPage();
     });

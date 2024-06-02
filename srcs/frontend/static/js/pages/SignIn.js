@@ -101,7 +101,7 @@ export default class extends Abstract {
                 </div>
                 <div class="mb-4">
                     <label for="password" class="form-label">${i18next.t('signIn.fields.password.label')}</label>
-                    <input type="password" class="form-control" id="password" name="password">
+                    <input type="password" class="form-control" id="password" name="password" autocomplete="on">
                     <div id="passwordError" class="invalid-feedback" style="display: none;"></div>
                     <div id="generalLoginError" class="invalid-feedback" style="display: none;"></div>
                 </div>

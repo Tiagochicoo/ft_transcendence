@@ -4,6 +4,7 @@ from .serializers_user import UserSerializer
 
 class TournamentSerializer(serializers.ModelSerializer):
 	creator = UserSerializer()
+	winner = UserSerializer()
 
 	class Meta:
 		model = Tournament

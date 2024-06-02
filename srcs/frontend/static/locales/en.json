@@ -9,7 +9,11 @@
     "signIn": "Sign-in",
     "pong": "Pong",
     "editProfile": "Edit profile",
-    "logout": "Log out"
+    "logout": "Log out",
+    "language": "Language",
+    "font": "Font",
+    "small": "Small",
+    "large": "Large"
   },
   "toast": {
     "just_now": "just now"
@@ -31,11 +35,25 @@
     "matches": {
       "title": "Matches",
       "notification_messages": {
+        "create": "Received your match request",
         "sent": "Sent a match request",
         "refused": "Refused your match request",
         "accepted": "Accepted your match request. The match will start in 10s",
         "canceled": "Canceled his match request",
         "start": "The match will start in 10s"
+      }
+    },
+    "tournaments": {
+      "title": "Tournaments",
+      "notification_messages": {
+        "create": "The tournament requests were sent",
+        "sent": "Sent a tournament request",
+        "canceled": "The tournament was canceled",
+        "accepted": "Accepted your tournament request",
+        "start": "The tournament will start in 5s",
+        "match_start": "The tournament match will start in 10s",
+        "round_start": "A new round of the tournament will start in 5s",
+        "finish": "The tournament finished"
       }
     },
     "validation": {
@@ -47,11 +65,19 @@
   },
   "pong": {
     "title": "Pong",
+    "content": "<p>Use the buttons bellow to control your paddle.<p></p>You can also use the ArrowUp/ArrowDown or W/S keys to move the paddle up and down.</p><p>You can increase the speed of the ball by pressing the SPACE key.</p>",
+    "won": "Congratulations, you won!",
+    "lost": "Ooops, you lost...",
     "buttons": {
       "start": "Start",
       "pause": "Pause",
       "continue": "Continue",
-      "restart": "Restart"
+      "restart": "Restart",
+      "goBack": "Go back",
+      "resetColors": "Reset colors",
+      "up": "UP",
+      "attack": "ATTACK",
+      "down": "DOWN"
     },
     "singleMatch": "Single Match",
     "tournament": "Tournament",
@@ -66,7 +92,13 @@
     "winner": "WINNER",
     "matchAlreadyFinished": "This match has already finished.",
     "userNotInvited": "You were not invited to this match.",
-    "noMatchFound": "No match found."
+    "noMatchFound": "No match found.",
+    "dashboard": {
+      "title": "Personalize your game",
+      "textColor": "Text color",
+      "backgroundColor": "Background color",
+      "figuresColor": "Figures color"
+    }
   },
   "individualDashboard": {
     "title": "Statistics",
@@ -132,17 +164,21 @@
       "email_too_long": "Email is too long",
       "email_in_use": "This email is already registered",
       "username_cannot_be_blank": "Username cannot be blank",
-      "username_too_long": "Username is too long",
+      "username_too_long": "Username is too long (maximum of 12 characters)",
       "username_in_use": "This username is already in use",
       "username_too_short": "Username must be at least 5 characters",
       "avatar_unsupported_file_extension": "Avatar only supports the following formats: PNG, JPG or JPEG",
       "avatar_file_size_exceed_limit": "Avatar can't exceed the size limit of 100kb",
       "password_cannot_be_blank": "Password cannot be blank",
-      "password_too_short": "Password must be at least 8 characters"
+      "password_too_short": "Password must be at least 8 characters",
+      "no_fields": "No fields were filled"
       },
       "submitButton": "Submit"
     },
     "editProfile" : {
       "title": "Edit profile"
+    },
+    "errors": {
+      "invalid_page": "You don't have permissions to see that page"
     }
 }

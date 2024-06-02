@@ -25,6 +25,8 @@ class ChatRoomBlock(APIView):
         try:
             chat_room = ChatRoom.objects.get(pk=chatRoomId)
             chat_room.was_blocked = True
+            user_id = get_user_id_from_request(request)
+            chat_room.block_user_id = user_id
             chat_room.save()
             serializer = ChatRoomSerializer(chat_room)
             return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
@@ -37,6 +39,7 @@ class ChatRoomUnblock(APIView):
         try:
             chat_room = ChatRoom.objects.get(pk=chatRoomId)
             chat_room.was_blocked = False
+            chat_room.block_user = None
             chat_room.save()
             serializer = ChatRoomSerializer(chat_room)
             return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
@@ -56,6 +59,8 @@ class ChatRoomMessages(APIView):
     def post(self, request, chatRoomId, format=None):
         try:
             chat_room = ChatRoom.objects.get(pk=chatRoomId)
+            if (chat_room.was_blocked):
+                raise Exception('Chat Room is blocked')
             content = request.data.get('content')
             user_id = get_user_id_from_request(request)
             message = Message.objects.create(chat_room=chat_room, content=content, sender_id=user_id)

@@ -41,7 +41,7 @@ export default class extends Abstract {
 							<div class="sidebar-section-element d-flex justify-content-between gap-1 p-1 bg-light rounded" data-friend-id="${id}">
 								${User.getBadge(user)}
 
-								<div class="d-flex align-items-center gap-1">
+								<div class="d-flex align-items-center">
 									${options.actions.map(({ action, icon }) => `
 										<button class="bg-transparent p-1 border-0" data-action="${action}" data-id="${id}">
 											${icon}
@@ -260,8 +260,8 @@ export default class extends Abstract {
 
 			const data = new FormData(e.target);
 			const response = await Friends.createByUsername(data.get('username'));
-			const usernameInputEl = e.target.querySelector('#username');
-			const usernameErrorEl = e.target.querySelector('#usernameError');
+			const usernameInputEl = e.target.querySelector('#username-add');
+			const usernameErrorEl = e.target.querySelector('#usernameAddError');
 			if (response?.success) {
 				SOCKET.emit('friend_add', response.data);
 				usernameInputEl.value = '';
@@ -287,11 +287,11 @@ export default class extends Abstract {
 				</h4>
 
 				<form id="friends-add" novalidate>
-					<input type="text" class="form-control" id="username" name="username">
+					<input type="text" class="form-control" id="username-add" name="username">
 					<button type="submit" class="btn btn-primary">
 						${i18next.t("sidebar.add")}
 					</button>
-					<div id="usernameError" class="invalid-feedback" style="display: none;"></div>
+					<div id="usernameAddError" class="invalid-feedback" style="display: none;"></div>
 				</form>
 
 				<div id="friends-accepted">

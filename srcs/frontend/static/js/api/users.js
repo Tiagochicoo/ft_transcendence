@@ -29,10 +29,19 @@ export default class Users {
       formData.delete(key);
     }
 
+    if ([...formData].length == 0) {
+      return {
+        success: false,
+        errors: {
+          general: ['no_fields']
+        }
+      }
+    }
+
     return await fetchWithToken(`/users/${USER_ID}`, {
       method: 'PATCH',
       body: formData
-    });
+    }, true);
   }
 
   static async updateUser(data) {

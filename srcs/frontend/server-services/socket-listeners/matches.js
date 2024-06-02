@@ -1,5 +1,6 @@
 const fetch = require("node-fetch");
 
+const TOURNAMENT_DATA = {};
 const MATCHES_STATE = {};
 const height = 400;
 const width = 600;
@@ -7,25 +8,30 @@ const paddleHeight = 100;
 const paddleWidth = 10;
 const ballRadius = 8;
 const paddleSpeed = 10;
+const ballSpeed = 5;
 const maxScore = 5;
 
-// Listen for user moves
+// Listen for user moves and attack
 const matchesSocketListener = (socket, io) => {
   socket.on('game_move', ({ matchId, key, isDown, userId }) => {
     const gameState = MATCHES_STATE[matchId];
     if (!gameState) return;
 
     if (userId == gameState.user1.id) {
-      if (["ArrowUp", "w"].includes(key)) {
+      if (key == "ArrowUp") {
         gameState.user1.isUpPressed = isDown;
-      } else if (["ArrowDown", "s"].includes(key)) {
+      } else if (key == "ArrowDown") {
         gameState.user1.isDownPressed = isDown;
+      } else if (key == " ") {
+        if (isDown) gameState.startAttack = true;
       }
     } else if (userId == gameState.user2.id) {
-      if (["ArrowUp", "w"].includes(key)) {
+      if (key == "ArrowUp") {
         gameState.user2.isUpPressed = isDown;
-      } else if (["ArrowDown", "s"].includes(key)) {
+      } else if (key == "ArrowDown") {
         gameState.user2.isDownPressed = isDown;
+      } else if (key == " ") {
+        if (isDown) gameState.startAttack = true;
       }
     }
   });
@@ -58,12 +64,14 @@ const startGame = (io, data) => {
     paddleWidth: paddleWidth,
     ballRadius: ballRadius,
     paddleSpeed: paddleSpeed,
-    ballSpeedX: 5,
-    ballSpeedY: 5,
+    ballSpeedX: ballSpeed,
+    ballSpeedY: ballSpeed,
     ballX: width / 2,
     ballY: height / 2,
     leftPaddleY: height / 2 - paddleHeight / 2,
     rightPaddleY: height / 2 - paddleHeight / 2,
+    startAttack: false,
+    endAttack: false,
   };
 
   // Run game
@@ -76,6 +84,14 @@ const startGame = (io, data) => {
 const doUpdate = (io, matchId) => {
   const gameState = MATCHES_STATE[matchId];
   if (!gameState) return;
+
+  // increase ball speed until it collide with some paddle
+  if (gameState.startAttack && !gameState.endAttack) {
+    gameState.ballSpeedX = gameState.ballSpeedX * 1.5;
+    gameState.ballSpeedY = gameState.ballSpeedY * 1.5;
+    gameState.startAttack = false;
+    gameState.endAttack = true;
+  } 
 
   // Move left paddle
   if (gameState.user1.isUpPressed && gameState.leftPaddleY > 0) {
@@ -115,6 +131,11 @@ const doUpdate = (io, matchId) => {
     gameState.ballY > gameState.leftPaddleY &&
     gameState.ballY < gameState.leftPaddleY + paddleHeight
   ) {
+    //if under attack, disable speed increase effect
+    if (gameState.endAttack) {
+      gameState.ballSpeedX = Math.max(gameState.ballSpeedX / 1.5, 3.5);
+      gameState.ballSpeedY = Math.max(gameState.ballSpeedY / 1.5, 3.5);
+    }
     gameState.ballSpeedX = -gameState.ballSpeedX;
   }
 
@@ -124,6 +145,11 @@ const doUpdate = (io, matchId) => {
     gameState.ballY > gameState.rightPaddleY &&
     gameState.ballY < gameState.rightPaddleY + paddleHeight
   ) {
+    //if under attack, disable speed increase effect
+    if (gameState.endAttack) {
+      gameState.ballSpeedX = Math.max(gameState.ballSpeedX / 1.5, 3.5);
+      gameState.ballSpeedY = Math.max(gameState.ballSpeedY / 1.5, 3.5);
+    }
     gameState.ballSpeedX = -gameState.ballSpeedX;
   }
 
@@ -166,8 +192,15 @@ const doUpdate = (io, matchId) => {
       return response.json();
     }).then(resposeJson => {
       if (resposeJson.success) {
-        io.emit(`match_finish_${gameState.user1.id}`, resposeJson.data);
-        io.emit(`match_finish_${gameState.user2.id}`, resposeJson.data);
+        if (resposeJson.data.tournament?.id) {
+          TOURNAMENT_DATA[resposeJson.data.tournament.id].tournament_users.forEach(tournamentUser => {
+            io.emit(`tournament_match_finish_${tournamentUser.user.id}`, tournamentUser);
+          })
+          handleTournamentMatchFinish(io, resposeJson.data);
+        } else {
+          io.emit(`match_finish_${gameState.user1.id}`, resposeJson.data);
+          io.emit(`match_finish_${gameState.user2.id}`, resposeJson.data);
+        }
       } else {
         throw new Error();
       }
@@ -189,14 +222,23 @@ const doReset = (matchId) => {
 
   gameState.ballX = gameState.width / 2;
   gameState.ballY = gameState.height / 2;
-  gameState.ballSpeedX = -gameState.ballSpeedX;
+  gameState.ballSpeedX = -1 * Math.sign(gameState.ballSpeedX) * ballSpeed;
   gameState.ballSpeedY = Math.random() * 10 - 5;
+  gameState.startAttack = false;
+  gameState.endAttack = false;
 }
 
 // Initialize the game
 // First a countdown of 10s
 // Then run the game
-const initGame = (io, data) => {
+const initGame = (io, data, tournament_users = []) => {
+  if (data.tournament?.id && tournament_users.length) {
+    TOURNAMENT_DATA[data.tournament.id] = {
+      matches_finished: 0,
+      tournament_users,
+    };
+  }
+
   let countDown = 100;
   const intervalId = setInterval(() => {
     countDown--;
@@ -216,6 +258,64 @@ const initGame = (io, data) => {
       width: width,
     });
   }, 100);
+}
+
+const createTournamentMatches = async (tournamentId) => {
+  return fetch(`http://backend:8000/api/tournaments/${tournamentId}/matches/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': process.env.API_KEY,
+    },
+  }).then(response => {
+    return response.json();
+  });
+}
+
+const tournamentFinish = async (tournamentId) => {
+  return fetch(`http://backend:8000/api/tournaments/${tournamentId}/finish/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': process.env.API_KEY,
+    },
+  }).then(response => {
+    return response.json();
+  });
+}
+
+const handleTournamentMatchFinish = async (io, data) => {
+  const tournamentId = data.tournament.id;
+  const tournamentData = TOURNAMENT_DATA[tournamentId];
+  tournamentData.matches_finished++;
+
+  if ([4, 6].includes(tournamentData.matches_finished)) {
+    return createTournamentMatches(tournamentId)
+      .then(matches => {
+        setTimeout(() => {
+          matches.data.forEach(match => {
+            io.emit(`tournament_round_start_${match.user1.id}`, match);
+            io.emit(`tournament_round_start_${match.user2.id}`, match);
+          });
+          setTimeout(() => {
+            matches.data.forEach(match => {
+              io.emit(`tournament_open_match_${match.user1.id}`, match.id);
+              io.emit(`tournament_open_match_${match.user2.id}`, match.id);
+              initGame(io, match);
+            });
+          }, 5000);
+        }, 2000);
+      });
+  } else if (tournamentData.matches_finished == 7) {
+    tournamentFinish(tournamentId)
+    .then(tournament => {
+      setTimeout(() => {
+        TOURNAMENT_DATA[tournamentId].tournament_users.forEach(tournamentUser => {
+          io.emit(`tournament_finish_${tournamentUser.user.id}`, tournament.data);
+        });
+      }, 2000);
+    });
+  }
 }
 
 module.exports = {

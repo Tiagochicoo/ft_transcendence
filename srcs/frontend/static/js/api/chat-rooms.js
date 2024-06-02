@@ -27,4 +27,16 @@ export default class ChatRooms {
       body: JSON.stringify({ content })
     });
   }
+
+  static async block(chat_room_id) {
+    return await fetchWithToken(`/chat_rooms/${chat_room_id}/block`, {
+      method: 'PATCH'
+    });
+  }
+
+  static async unblock(chat_room_id) {
+    return await fetchWithToken(`/chat_rooms/${chat_room_id}/unblock`, {
+      method: 'PATCH'
+    });
+  }
 }
