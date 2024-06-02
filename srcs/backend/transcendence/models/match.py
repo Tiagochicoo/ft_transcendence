@@ -17,4 +17,4 @@ class Match(models.Model):
 	winner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='matches_as_winner')
 
 	def __str__(self):
-		return f"Match {self.id} of {self.user1} with {self.user2}"
+		return f"Match {self.id} of {self.user1} with {self.user2} and winner {self.winner}"
