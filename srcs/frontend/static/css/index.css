@@ -337,3 +337,22 @@ main {
     width: 100%;
   }
 }
+
+/* Dashboard */
+.matches-table {
+  max-height: 500px;
+  max-width: calc(100vw - 120px);
+  overflow-x: auto;
+}
+
+.matches-table tbody :is(th, td) {
+  background-color: transparent;
+}
+
+.matches-table tbody tr.won {
+  background-color: #00800040;
+}
+
+.matches-table tbody tr.lost {
+  background-color: #ff000040;
+}
