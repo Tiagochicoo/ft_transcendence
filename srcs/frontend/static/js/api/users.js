@@ -44,22 +44,6 @@ export default class Users {
     }, true);
   }
 
-  static async updateUser(data) {
-
-    try {
-      const response = await fetchWithToken('/users/update', {
-        method: "PATCH",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data),
-      });
-    } catch(error) {
-			console.error("Error: ", error);
-		}
-
-  }
-
   static async getAll() {
     return await fetchWithToken(`/users`);
   }
