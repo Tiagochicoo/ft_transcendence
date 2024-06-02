@@ -100,7 +100,7 @@ export default class extends Abstract {
                     <label for="password" class="form-label">
                         ${i18next.t('signUp.fields.password')}
                     </label>
-                    <input type="password" class="form-control" id="password" name="password">
+                    <input type="password" class="form-control" id="password" name="password" autocomplete="on">
                     <div id="passwordError" class="invalid-feedback" style="display: none;"></div>
                 </div>
 

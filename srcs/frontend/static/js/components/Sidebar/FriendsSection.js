@@ -260,8 +260,8 @@ export default class extends Abstract {
 
 			const data = new FormData(e.target);
 			const response = await Friends.createByUsername(data.get('username'));
-			const usernameInputEl = e.target.querySelector('#username');
-			const usernameErrorEl = e.target.querySelector('#usernameError');
+			const usernameInputEl = e.target.querySelector('#username-add');
+			const usernameErrorEl = e.target.querySelector('#usernameAddError');
 			if (response?.success) {
 				SOCKET.emit('friend_add', response.data);
 				usernameInputEl.value = '';
@@ -287,11 +287,11 @@ export default class extends Abstract {
 				</h4>
 
 				<form id="friends-add" novalidate>
-					<input type="text" class="form-control" id="username" name="username">
+					<input type="text" class="form-control" id="username-add" name="username">
 					<button type="submit" class="btn btn-primary">
 						${i18next.t("sidebar.add")}
 					</button>
-					<div id="usernameError" class="invalid-feedback" style="display: none;"></div>
+					<div id="usernameAddError" class="invalid-feedback" style="display: none;"></div>
 				</form>
 
 				<div id="friends-accepted">
