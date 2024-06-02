@@ -18,19 +18,19 @@ const matchesSocketListener = (socket, io) => {
     if (!gameState) return;
 
     if (userId == gameState.user1.id) {
-      if (["ArrowUp", "w"].includes(key)) {
+      if (key == "ArrowUp") {
         gameState.user1.isUpPressed = isDown;
-      } else if (["ArrowDown", "s"].includes(key)) {
+      } else if (key == "ArrowDown") {
         gameState.user1.isDownPressed = isDown;
-      } else if (["a"].includes(key)) {
+      } else if (key == " ") {
         if (isDown) gameState.startAttack = true;
       }
     } else if (userId == gameState.user2.id) {
-      if (["ArrowUp", "w"].includes(key)) {
+      if (key == "ArrowUp") {
         gameState.user2.isUpPressed = isDown;
-      } else if (["ArrowDown", "s"].includes(key)) {
+      } else if (key == "ArrowDown") {
         gameState.user2.isDownPressed = isDown;
-      } else if (["a"].includes(key)) {
+      } else if (key == " ") {
         if (isDown) gameState.startAttack = true;
       }
     }

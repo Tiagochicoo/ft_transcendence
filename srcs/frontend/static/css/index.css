@@ -298,6 +298,7 @@ main {
   }
 
   .canvas-actions-wrapper button[data-game-action="attack"] {
-    order: 1;
+    order: -1;
+    width: 100%;
   }
 }

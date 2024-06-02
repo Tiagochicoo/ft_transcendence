@@ -27,8 +27,71 @@ export default class Game {
     this.backgroundColor = localStorage.getItem('backgroundColor') ? localStorage.getItem('backgroundColor') : '#212529';
     this.figuresColor = localStorage.getItem('figuresColor') ? localStorage.getItem('figuresColor') : '#14dd50';
   }
-  
+
   socketFunctionality() {
+    const handleDown = (isDown) => {
+      SOCKET.emit(`game_move`, {
+        matchId: this.match.id,
+        key: "ArrowDown",
+        isDown,
+        userId: USER_ID,
+      });
+    }
+
+    const handleUp = (isDown) => {
+      SOCKET.emit(`game_move`, {
+        matchId: this.match.id,
+        key: "ArrowUp",
+        isDown,
+        userId: USER_ID,
+      });
+    }
+
+    const handleAttack = (isDown) => {
+      SOCKET.emit(`game_move`, {
+        matchId: this.match.id,
+        key: " ",
+        isDown,
+        userId: USER_ID,
+      });
+    }
+
+    // Set the game actions
+    const gameActions = document.querySelectorAll(`#pong [data-game-action]`);
+    if (gameActions) {
+      const createEventListeners = (element, callback) => {
+        element.addEventListener('mousedown', (e) => {
+          e.preventDefault();
+          callback(true);
+        });
+        element.addEventListener('mouseup', (e) => {
+          e.preventDefault();
+          callback(false);
+        });
+        element.addEventListener('touchstart', (e) => {
+          callback(true);
+        }, { passive: true});
+        element.addEventListener('touchend', (e) => {
+          e.preventDefault();
+          callback(false);
+        });
+      }
+
+      gameActions.forEach(element => {
+        switch (element.getAttribute("data-game-action")) {
+          case 'up':
+            createEventListeners(element, handleUp);
+            break;
+          case 'attack':
+            createEventListeners(element, handleAttack);
+            break;
+          case 'down':
+            createEventListeners(element, handleDown);
+            break;
+        }
+      });
+    }
+
     // Listen for game state updates
     SOCKET.off(`match_data_${this.match.id}`);
 
@@ -48,23 +111,25 @@ export default class Game {
     // Handle user move: key down
     this.canvasArea.addEventListener("keydown", (e) => {
       e.preventDefault();
-      SOCKET.emit(`game_move`, {
-        matchId: this.match.id,
-        key: e.key,
-        isDown: true,
-        userId: USER_ID,
-      });
+      if (["ArrowDown", "s"].includes(e.key)) {
+        handleDown(true);
+      } else if (["ArrowUp", "w"].includes(e.key)) {
+        handleUp(true);
+      } else if (e.key == " ") {
+        handleAttack(true);
+      }
     });
 
     // Handle user move: key up
     this.canvasArea.addEventListener("keyup", (e) => {
       e.preventDefault();
-      SOCKET.emit(`game_move`, {
-        matchId: this.match.id,
-        key: e.key,
-        isDown: false,
-        userId: USER_ID,
-      });
+      if (["ArrowDown", "s"].includes(e.key)) {
+        handleDown(false);
+      } else if (["ArrowUp", "w"].includes(e.key)) {
+        handleUp(false);
+      } else if (e.key == " ") {
+        handleAttack(false);
+      }
     });
   }
 
