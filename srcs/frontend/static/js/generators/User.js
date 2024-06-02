@@ -6,6 +6,11 @@ export default class extends Abstract {
 		throw new Error("Cannot be instantiated");
 	}
 
+	static parseDate(rawDate) {
+		const date = new Date(rawDate);
+		return date.toLocaleDateString();
+	}
+
 	static getBadge(user) {
 		if (!user || !user.id) {
 			return '';
@@ -63,11 +68,6 @@ export default class extends Abstract {
 	}
 
 	static getMatchesTable(user, matches) {
-		const parseDate = (rawDate) => {
-			const date = new Date(rawDate);
-			return date.toLocaleDateString();
-		}
-
 		return `
 			<div class="matches-table mt-4">
 				<table class="table table-hover text-center">
@@ -91,7 +91,7 @@ export default class extends Abstract {
 							return `
 								<tr class="${isWinner ? 'won' : 'lost'}">
 									<th scope="row">${match.id}</th>
-									<td>${parseDate(match.created_on)}</td>
+									<td>${this.parseDate(match.created_on)}</td>
 									<td>${match.user1.id == user.id ? match.user2.username : match.user1.username}</td>
 									<td>${match.winner.username}</td>
 									<td>${isWinner ? match.score : -match.score}</td>
@@ -111,6 +111,56 @@ export default class extends Abstract {
 
 							<td colspan="2" class="text-center">
 								${i18next.t("dashboard.totalWins")}${user.num_games_won}
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		`;
+	}
+
+	static getTournamentsTable(user, tournament_users) {
+		return `
+			<div class="matches-table mt-4">
+				<table class="table table-hover text-center">
+					<thead class="table-secondary">
+						<tr>
+							<th colspan="5"">${i18next.t("dashboard.tournaments")}</th>
+						</tr>
+
+						<tr>
+							<th scope="col">ID</th>
+							<th scope="col">${i18next.t("dashboard.date")}</th>
+							<th scope="col">${i18next.t("dashboard.winner")}</th>
+							<th scope="col">${i18next.t("dashboard.position")}</th>
+						</tr>
+					</thead>
+
+					<tbody class="table-group-divider">
+						${tournament_users.map(tournament_user => {
+							const isWinner = (tournament_user.tournament.winner.id == user.id);
+							return `
+								<tr class="${isWinner ? 'won' : 'lost'}">
+									<th scope="row">${tournament_user.id}</th>
+									<td>${this.parseDate(tournament_user.tournament.created_on)}</td>
+									<td>${tournament_user.tournament.winner.username}</td>
+									<td>${tournament_user.position + 1}º</td>
+								</tr>
+							`
+						}).join("")}
+					</tbody>
+
+					<tfoot class="table-group-divider">
+						<tr>
+							<td colspan="2" class="text-center">
+								${i18next.t("dashboard.totalTournaments")}${user.num_tournaments}
+							</td>
+
+							<td colspan="1">
+							</td>
+
+							<td colspan="2" class="text-center">
+								${i18next.t("dashboard.totalWins")}${user.num_tournaments_won}
 							</td>
 						</tr>
 					</tfoot>

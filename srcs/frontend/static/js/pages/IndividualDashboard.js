@@ -43,6 +43,10 @@ export default class extends Abstract {
 			<div class="mt-4">
 				${User.getMatchesTable(this.user, this.matches)}
 			</div>
+
+			<div class="mt-4">
+				${User.getTournamentsTable(this.user, this.tournament_users)}
+			</div>
 		`;
 	}
 }
