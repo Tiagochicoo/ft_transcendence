@@ -74,7 +74,7 @@ export default class extends Abstract {
 				</div>
 
 				<div class="tab-pane fade" id="pills-ratios" role="tabpanel" aria-labelledby="pills-ratios-tab">
-					<div class="d-flex justify-content-around flex-wrap gap-4 mt-4">
+					<div class="d-flex flex-column flex-lg-row justify-content-around align-items-lg-between gap-4 mt-4">
 						${User.getCircle({ title: i18next.t("dashboard.matchesWinRatio"), ratio: this.user.num_games_won / this.user.num_games })}
 						${User.getCircle({ title: i18next.t("dashboard.tournamentsWinRatio"), ratio: this.user.num_tournaments_won / this.user.num_tournaments })}
 					</div>

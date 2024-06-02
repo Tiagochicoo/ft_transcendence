@@ -359,13 +359,19 @@ main {
 
 /* Pie chart */
 .pie-chart-wrapper {
-  max-width: 200px;
+  max-width: 240px;
   text-align: center;
+}
+
+@media (max-width: 992px) {
+  .pie-chart-wrapper {
+    max-width: none;
+  }
 }
 
 .pie-chart {
   --border-with: 14px;
-  --width: 100px;
+  --width: 120px;
   position: relative;
   display: inline-grid;
   font-size: 1.25rem;

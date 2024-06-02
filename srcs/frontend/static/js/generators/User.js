@@ -141,7 +141,7 @@ export default class extends Abstract {
 							const isWinner = (tournament_user.tournament.winner.id == user.id);
 							return `
 								<tr class="${isWinner ? 'won' : 'lost'}">
-									<th scope="row">${tournament_user.id}</th>
+									<th scope="row">${tournament_user.tournament.id}</th>
 									<td>${this.parseDate(tournament_user.tournament.created_on)}</td>
 									<td>${tournament_user.tournament.winner.username}</td>
 									<td>${tournament_user.position + 1}º</td>
@@ -219,7 +219,7 @@ export default class extends Abstract {
 	}
 
 	static getCircle({ title, ratio }) {
-		ratio = Math.round(ratio * 100);
+		ratio = Math.round(ratio * 100) || 0;
 
 		let color = '#008000';
 		if (ratio < 30) {
@@ -230,9 +230,9 @@ export default class extends Abstract {
 
 		return `
 			<div class="pie-chart-wrapper d-flex flex-column justify-content-between">
-				<h5 class="mb-3">
+				<h4 class="mb-3">
 					${title}
-				</h5>
+				</h4>
 
 				<div class="pie-chart" style="--ratio: ${ratio};--color: ${color}">
 					${ratio}%
