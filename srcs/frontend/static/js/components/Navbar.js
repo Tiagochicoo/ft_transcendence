@@ -70,7 +70,7 @@ export default class extends Abstract {
             <nav class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
                 <div class="container position-relative">
                     <a class="navbar-brand" href="/" data-link>
-                        <img src="/static/images/logo-42.png" style="height: 40px;"/>
+                        <img src="/static/images/logo-42.png" alt="42 school logo" style="height: 40px;"/>
                     </a>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
