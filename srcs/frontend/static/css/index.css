@@ -17,8 +17,17 @@ main {
 /* Navbar */
 .navbar-side-wrapper {
   display: flex;
-  gap: 16px;
+  gap: 10px;
 }
+
+.navbar .btn-group {
+  flex-direction: column;
+}
+
+.navbar .btn-group .dropdown-toggle {
+  width: fit-content;
+}
+
 .navbar .user-badge span {
   max-width: 100px;
   width: fit-content !important;

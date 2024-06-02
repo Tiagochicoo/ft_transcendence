@@ -10,7 +10,10 @@
     "pong": "Pong",
     "editProfile": "Editar perfil",
     "logout": "Sair",
-    "language": "Idioma"
+    "language": "Idioma",
+    "font": "Fonte",
+    "small": "Pequeno",
+    "large": "Grande"
   },
   "toast": {
     "just_now": "agora mesmo"

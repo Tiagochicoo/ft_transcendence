@@ -1,7 +1,7 @@
 import { Users } from "/static/js/api/index.js";
 import { User } from "/static/js/generators/index.js";
 import { doLogout } from "/static/js/services/index.js";
-import { Abstract, LanguageToggle } from "./index.js";
+import { Abstract, FontSizeToggle, LanguageToggle } from "./index.js";
 
 export default class extends Abstract {
     constructor(props) {
@@ -9,6 +9,7 @@ export default class extends Abstract {
 
         this.params = props;
         this.languageToggle = new LanguageToggle();
+        this.fontSizeToggle = new FontSizeToggle();
         this.user = {};
     }
 
@@ -18,6 +19,7 @@ export default class extends Abstract {
     }
 
     async addFunctionality() {
+        await this.fontSizeToggle.addFunctionality();
         const logoutButton = document.getElementById('logoutButton');
         if (logoutButton) {
             logoutButton.addEventListener('click', this.handleLogout);
@@ -104,6 +106,14 @@ export default class extends Abstract {
                                 </li>
                             ` : ''}
                             ${userManagementLinks}
+
+                            <li class="nav-item d-block d-sm-none py-1">
+                                ${await this.languageToggle.getHtml()}
+                            </li>
+
+                            <li class="nav-item d-block d-sm-none py-1">
+                                ${await this.fontSizeToggle.getHtml()}
+                            </li>
                         </ul>
                     </div>
 
@@ -112,7 +122,13 @@ export default class extends Abstract {
                             <span class="navbar-toggler-icon"></span>
                         </button>
 
-                        ${await this.languageToggle.getHtml()}
+                        <div class="d-none d-sm-block">
+                            ${await this.languageToggle.getHtml()}
+                        </div>
+
+                        <div class="d-none d-sm-block">
+                            ${await this.fontSizeToggle.getHtml()}
+                        </div>
 
                         ${Object.keys(this.user).length ? User.getBadge(this.user) : ""}
                     </div>

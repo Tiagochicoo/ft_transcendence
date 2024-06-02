@@ -2,7 +2,9 @@ import { Users } from "/static/js/api/index.js";
 import { generateSocket, navigateTo } from "./index.js";
 
 function doLogout() {
-    SOCKET.disconnect();
+    if (SOCKET) {
+        SOCKET.disconnect();
+    }
     clearTokens();
     navigateTo('/sign-in');
 }
