@@ -103,7 +103,7 @@ export default class extends Abstract {
 					</div>
 				</div>
 
-				<div id="pong-end-btn"></div>
+				<div id="pong-end-btn">
 				</div>
 
 				<div class="d-flex flex-column align-items-start">
