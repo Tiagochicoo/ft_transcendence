@@ -185,6 +185,7 @@
       "matches": "Matches",
       "tournaments": "Tournaments",
       "rankings": "Rankings",
+      "ratios": "Ratios",
       "date": "Date",
       "opponent": "Opponent",
       "winner": "Winner",
@@ -195,6 +196,8 @@
       "totalMatches": "Total matches: ",
       "totalWins": "Total wins: ",
       "totalTournaments": "Total tournaments: ",
+      "matchesWinRatio": "Matches win ratio",
+      "tournamentsWinRatio": "Tournaments win ratio",
       "individual": {
         "title": "Individual dashboard"
       }

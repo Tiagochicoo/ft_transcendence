@@ -217,4 +217,27 @@ export default class extends Abstract {
 			</div>
 		`;
 	}
+
+	static getCircle({ title, ratio }) {
+		ratio = Math.round(ratio * 100);
+
+		let color = '#008000';
+		if (ratio < 30) {
+			color = '#FF0000';
+		} else if (ratio < 65) {
+			color = '#FFCC00';
+		}
+
+		return `
+			<div class="pie-chart-wrapper d-flex flex-column justify-content-between">
+				<h5 class="mb-3">
+					${title}
+				</h5>
+
+				<div class="pie-chart" style="--ratio: ${ratio};--color: ${color}">
+					${ratio}%
+				</div>
+			</div>
+		`;
+	}
 }

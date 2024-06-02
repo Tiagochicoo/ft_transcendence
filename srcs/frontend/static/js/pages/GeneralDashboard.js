@@ -53,6 +53,11 @@ export default class extends Abstract {
 						${i18next.t("dashboard.rankings")}
 					</button>
 				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="pills-ratios-tab" data-bs-toggle="pill" data-bs-target="#pills-ratios" type="button" role="tab" aria-controls="pills-ratios" aria-selected="false">
+						${i18next.t("dashboard.ratios")}
+					</button>
+				</li>
 			</ul>
 
 			<div class="tab-content" id="dashboard-individual-pills-tabContent">
@@ -66,6 +71,13 @@ export default class extends Abstract {
 
 				<div class="tab-pane fade" id="pills-rankings" role="tabpanel" aria-labelledby="pills-rankings-tab">
 					${User.getRankingsTable(this.users)}
+				</div>
+
+				<div class="tab-pane fade" id="pills-ratios" role="tabpanel" aria-labelledby="pills-ratios-tab">
+					<div class="d-flex justify-content-around flex-wrap gap-4 mt-4">
+						${User.getCircle({ title: i18next.t("dashboard.matchesWinRatio"), ratio: this.user.num_games_won / this.user.num_games })}
+						${User.getCircle({ title: i18next.t("dashboard.tournamentsWinRatio"), ratio: this.user.num_tournaments_won / this.user.num_tournaments })}
+					</div>
 				</div>
 			</div>
 		`;

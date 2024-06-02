@@ -185,6 +185,7 @@
     "matches": "Partidas",
     "tournaments": "Torneios",
     "rankings": "Classificações",
+    "ratios": "Rácios",
     "date": "Data",
     "opponent": "Oponente",
     "winner": "Vencedor",
@@ -195,6 +196,8 @@
     "totalMatches": "Total de partidas: ",
     "totalWins": "Total de vitórias: ",
     "totalTournaments": "Total de torneios: ",
+    "matchesWinRatio": "Proporção de vitórias em partidas",
+    "tournamentsWinRatio": "Proporção de vitórias em torneios",
     "individual": {
       "title": "Painel individual"
     }
