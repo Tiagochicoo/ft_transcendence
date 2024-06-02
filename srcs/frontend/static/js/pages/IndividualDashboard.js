@@ -6,8 +6,6 @@ import { invalidPage } from "/static/js/services/index.js";
 export default class extends Abstract {
 	constructor(props) {
 		super(props);
-
-		this.userId
 	}
 
 	async addFunctionality() {
@@ -35,12 +33,12 @@ export default class extends Abstract {
 			<ul class="nav nav-pills mt-4 mb-2" id="dashboard-individual-pills-tab" role="tablist">
 				<li class="nav-item" role="presentation">
 					<button class="nav-link active" id="pills-matches-tab" data-bs-toggle="pill" data-bs-target="#pills-matches" type="button" role="tab" aria-controls="pills-matches" aria-selected="true">
-					${i18next.t("dashboard.matches")}
-				</button>
+						${i18next.t("dashboard.matches")}
+					</button>
 				</li>
-					<li class="nav-item" role="presentation">
+				<li class="nav-item" role="presentation">
 					<button class="nav-link" id="pills-tournaments-tab" data-bs-toggle="pill" data-bs-target="#pills-tournaments" type="button" role="tab" aria-controls="pills-tournaments" aria-selected="false">
-					${i18next.t("dashboard.tournaments")}
+						${i18next.t("dashboard.tournaments")}
 					</button>
 				</li>
 			</ul>

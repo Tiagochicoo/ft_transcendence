@@ -168,4 +168,53 @@ export default class extends Abstract {
 			</div>
 		`;
 	}
+
+	static getRankingsTable(users) {
+		users = users.map(user => ({
+			...user,
+			score: (user.num_games_won * 5) + (user.num_tournaments_won * 10)
+		})).sort((a, b) => {
+			if (a.score < b.score) {
+				return 1;
+			} else if (a.score > b.score) {
+				return -1;
+			} else if (a.id < b.id) {
+				return 1;
+			} else if (a.id > b.id) {
+				return -1;
+			}
+			return 0;
+		});
+
+		return `
+			<div class="matches-table">
+				<table class="table table-hover text-center">
+					<thead class="table-secondary">
+						<tr>
+							<th colspan="3"">${i18next.t("dashboard.rankings")}</th>
+						</tr>
+
+						<tr>
+							<th scope="col">${i18next.t("dashboard.rank")}</th>
+							<th scope="col">${i18next.t("dashboard.username")}</th>
+							<th scope="col">${i18next.t("dashboard.score")}</th>
+						</tr>
+					</thead>
+
+					<tbody class="table-group-divider">
+						${users.map((user, index) => {
+							const isUser = (user.id == USER_ID);
+							return `
+								<tr class="${isUser ? 'won' : ''}">
+									<th scope="row">${index + 1}</th>
+									<td>${user.username}</td>
+									<td>${user.score}</td>
+								</tr>
+							`
+						}).join("")}
+					</tbody>
+				</table>
+			</div>
+		`;
+	}
 }
