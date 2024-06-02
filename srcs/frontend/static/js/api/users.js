@@ -7,6 +7,10 @@ export default class Users {
     return await fetchWithToken(`/users/${user_id}`);
   }
 
+  static async getDashboard(user_id) {
+    return await fetchWithToken(`/users/${user_id}/dashboard`);
+  }
+
   static async getByUsername(username) {
     if (username?.length <= 0) {
       return {
