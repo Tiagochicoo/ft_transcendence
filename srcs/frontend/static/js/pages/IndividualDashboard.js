@@ -1,52 +1,43 @@
 import { Abstract } from "/static/js/components/index.js";
 import { Users } from "/static/js/api/index.js";
-import { Matches } from "/static/js/api/index.js";
+import { User } from "/static/js/generators/index.js";
+import { invalidPage } from "/static/js/services/index.js";
 
 export default class extends Abstract {
 	constructor(props) {
 		super(props);
+
+		this.userId
 	}
 
-	async addFunctionality() {}
-
-
-	errorMessage() {
-		return `
-			<h1>Something went wrong</h1>
-		`;
+	async addFunctionality() {
 	}
 
 	async getHtml() {
-		this.user = await Users.get(2);
-		if (!this.user.success)
-			return errorMessage;
+		const response = await Users.getDashboard(this.params.userId);
+		if (!response.success) {
+			return invalidPage();
+		}
+		this.user = response.data.user;
+		this.matches = response.data.matches.filter(({ has_finished }) => has_finished);
+		this.tournaments = response.data.tournaments;
 
-		var totalScore = 0;
-	
-		this.Matches = await Matches.getAllById(2);
-		if (!this.Matches.success)
-			return errorMessage;
-		else
-		{
-			console.log(this.Matches);
-			console.log(this.user);
-			for (var i = 0; i < this.Matches.data.length; i++)
-			{
-				if (this.Matches.data[i].has_finished == true)
-				{
-					if (this.Matches.data[i].winner.username == this.user.data.username)
-					{
-						totalScore += 1;
-					}
+		let numWins = 0;
+		for (const match of this.matches) {
+			if (match.has_finished) {
+				if (match.winner.id == this.user.id) {
+					numWins += 1;
 				}
 			}
 		}
 
 		return `
 			<h1>
-				${i18next.t("Personal Dashboard")} - ${this.user.data.username}
+				${i18next.t("Personal Dashboard")}
 			</h1>
-			
+
+			${User.getProfile(this.user)}
+
 			<div class="dashboard">
 				<table class="table table-hover text-center">
 					<thead class="table-secondary">
@@ -59,27 +50,26 @@ export default class extends Abstract {
 					</thead>
 					<tbody class="table-group-divider" style="border-top-color: #6c757d">
 						<tr>
-							<td colspan="6" class="text-center">${i18next.t("Total Matches: ")}${this.Matches.data.length} with ${this.Matches.data.filter(game => game.has_finished !== true).length} Matches Canceled</td>
+							<td colspan="6" class="text-center">
+								${i18next.t("Total Matches: ")}${this.matches.length}
+							</td>
 						</tr>
-						${this.Matches.data
-							.filter(game => game.has_finished !== false)
-							.map(game => {
-								this.Matches.data.forEach(game => {
-								});
-								return `
-									<tr>
-										<th scope="row">${game.id}</th>
-										<td>${game.user1.username}</td>
-										<td>${game.winner.username}</td>
-										<td>${game.score}</td>
-									</tr>
-								`;
-							}).join('')
-						}
+
+						${this.matches.map(match => `
+							<tr>
+								<th scope="row">${match.id}</th>
+								<td>${match.user1.id == this.user.id ? match.user2.username : match.user1.username}</td>
+								<td>${match.winner.username}</td>
+								<td>${match.score}</td>
+							</tr>
+						`).join("")}
 					</tbody>
+
 					<tbody class="table-group-divider" style="border-top-color: #6c757d">
 						<tr>
-							<td colspan="6" class="text-center">${i18next.t("Total Wins: ")}${totalScore}</td>
+							<td colspan="6" class="text-center">
+								${i18next.t("Total Wins: ")}${numWins}
+							</td>
 						</tr>
 					</tbody>
 				</table>

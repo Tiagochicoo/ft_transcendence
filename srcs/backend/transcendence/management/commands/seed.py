@@ -1,5 +1,7 @@
 from django.contrib.auth.hashers import make_password
 from django.core.management.base import BaseCommand
+from datetime import timedelta
+from django.utils import timezone
 import random
 from ...models import ChatRoom as ChatRoom
 from ...models import FriendRequest as FriendRequest
@@ -7,7 +9,6 @@ from ...models import Match as Match
 from ...models import Tournament as Tournament
 from ...models import TournamentUser as TournamentUser
 from ...models import User as User
-
 # manage.py seed
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):
@@ -39,21 +40,28 @@ class Command(BaseCommand):
             chat_room = ChatRoom.objects.create(user1=user, user2=all_users[0])
             FriendRequest.objects.create(user1=user, user2=all_users[0], chat_room=chat_room)
 
+        today = timezone.now()
+        date = today - timedelta(days=10)
+
         # Create Matches for the First User
         for user in all_users[1:10]:
-            Match.objects.create(user1=all_users[0], user2=user, was_accepted=True, has_finished=True, score=random.randint(1, 5), winner=all_users[0])
-            Match.objects.create(user1=all_users[0], user2=user, was_accepted=True, has_finished=True, score=random.randint(1, 5), winner=all_users[0])
-            Match.objects.create(user1=all_users[0], user2=user, was_accepted=True, has_finished=True, score=random.randint(1, 5), winner=user)
+            Match.objects.create(created_on=date, user1=all_users[0], user2=user, was_accepted=True, has_finished=True, score=random.randint(1, 5), winner=all_users[0])
+            Match.objects.create(created_on=date, user1=all_users[0], user2=user, was_accepted=True, has_finished=True, score=random.randint(1, 5), winner=all_users[0])
+            Match.objects.create(created_on=date, user1=all_users[0], user2=user, was_accepted=True, has_finished=True, score=random.randint(1, 5), winner=user)
+            date += timedelta(days=1)
 
         # Create Tournaments for the First User
-        tournament = Tournament.objects.create(creator=all_users[0], winner=all_users[0], has_started=True, has_finished=True)
-        for i in range(8):
-            TournamentUser.objects.create(tournament=tournament, user=all_users[i], was_accepted=True, position=i)
-        for i in range(4):
-            Match.objects.create(tournament=tournament, user1=all_users[i * 2], user2=all_users[(i * 2) + 1], was_accepted=True, has_finished=True, score=random.randint(1, 5), winner=all_users[i * 2])
-        Match.objects.create(tournament=tournament, user1=all_users[0], user2=all_users[2], was_accepted=True, has_finished=True, score=random.randint(1, 5), winner=all_users[0])
-        Match.objects.create(tournament=tournament, user1=all_users[4], user2=all_users[6], was_accepted=True, has_finished=True, score=random.randint(1, 5), winner=all_users[4])
-        Match.objects.create(tournament=tournament, user1=all_users[0], user2=all_users[4], was_accepted=True, has_finished=True, score=random.randint(1, 5), winner=all_users[0])
+        date = today - timedelta(days=5)
+        for i in range(2):
+            tournament = Tournament.objects.create(created_on=date, creator=all_users[0], winner=all_users[0], has_started=True, has_finished=True)
+            for i in range(8):
+                TournamentUser.objects.create(tournament=tournament, user=all_users[i], was_accepted=True, position=i)
+            for i in range(4):
+                Match.objects.create(created_on=date, tournament=tournament, user1=all_users[i * 2], user2=all_users[(i * 2) + 1], was_accepted=True, has_finished=True, score=random.randint(1, 5), winner=all_users[i * 2])
+            Match.objects.create(created_on=date, tournament=tournament, user1=all_users[0], user2=all_users[2], was_accepted=True, has_finished=True, score=random.randint(1, 5), winner=all_users[0])
+            Match.objects.create(created_on=date, tournament=tournament, user1=all_users[4], user2=all_users[6], was_accepted=True, has_finished=True, score=random.randint(1, 5), winner=all_users[4])
+            Match.objects.create(created_on=date, tournament=tournament, user1=all_users[0], user2=all_users[4], was_accepted=True, has_finished=True, score=random.randint(1, 5), winner=all_users[0])
+            date = today
 
         # Log messages
         self.stdout.write(self.style.SUCCESS(f"Users created: {User.objects.count()}"))
