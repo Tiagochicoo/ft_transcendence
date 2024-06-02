@@ -76,9 +76,13 @@ export default class extends Abstract {
 
 	async getHtml() {
 		return `
-			<h1 class="mb-4">
+			<h1 class="mb-3">
 				${i18next.t("pong.title")}
 			</h1>
+
+			<div class="pong-content mb-4">
+				${i18next.t("pong.content")}
+			</div>
 
 			<div id="pong" class="d-flex flex-column">
 				<div class="canvas-wrapper" class="d-flex flex-column">

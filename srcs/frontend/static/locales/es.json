@@ -62,6 +62,7 @@
   },
   "pong": {
     "title": "Pong",
+    "content": "<p>Use los botones de abajo para controlar su pala.</p><p>También puede usar las teclas de Flecha Arriba/Flecha Abajo o W/S para mover la pala hacia arriba y hacia abajo.</p><p>Puede aumentar la velocidad de la pelota presionando la tecla ESPACIO.</p>",
     "won": "¡Felicidades, ganaste!",
     "lost": "Ooops, perdiste...",
     "buttons": {

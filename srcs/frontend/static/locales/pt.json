@@ -62,6 +62,7 @@
   },
   "pong": {
     "title": "Pong",
+    "content": "<p>Use os botões abaixo para controlar sua raquete.</p><p>Você também pode usar as teclas Seta Para Cima/Seta Para Baixo ou W/S para mover a raquete para cima e para baixo.</p><p>Você pode aumentar a velocidade da bola pressionando a tecla ESPAÇO.</p>",
     "won": "Parabéns, você ganhou!",
     "lost": "Ooops, você perdeu...",
     "buttons": {

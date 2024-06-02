@@ -276,6 +276,10 @@ main {
 }
 
 /* Game */
+.pong-content p {
+  margin-bottom: 10px;
+}
+
 .canvas-wrapper {
   width: fit-content;
 }
