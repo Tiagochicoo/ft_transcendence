@@ -21,7 +21,7 @@ export default class extends Abstract {
 				<div class="online-circle">
 				</div>
 
-				<span class="lh-1">
+				<span class="lh-2">
 					${username}
 				</span>
 			</a>

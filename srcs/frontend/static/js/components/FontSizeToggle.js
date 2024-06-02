@@ -19,7 +19,10 @@ export default class extends Abstract {
 		}
 
 		const setFontSmall = () => {
-			document.body.classList.remove('font-large');
+			const htmlElement = document.querySelector('html');
+			if (!htmlElement) return;
+
+			htmlElement.classList.remove('font-large');
 			localStorage.setItem('fontSize', 'small');
 
 			doAction('small', (smallToggle) => smallToggle.classList.add("active"));
@@ -27,7 +30,10 @@ export default class extends Abstract {
 		}
 
 		const setFontLarge = () => {
-			document.body.classList.add('font-large');
+			const htmlElement = document.querySelector('html');
+			if (!htmlElement) return;
+
+			htmlElement.classList.add('font-large');
 			localStorage.setItem('fontSize', 'large');
 
 			doAction('small', (smallToggle) => smallToggle.classList.remove("active"));
