@@ -86,7 +86,7 @@ class UserDashboard(APIView):
         try:
             user = User.objects.get(pk=userId)
             serializer_user = UserSerializer(user)
-            matches = Match.objects.filter(Q(user1=user) | Q(user1=user))
+            matches = Match.objects.filter(Q(user1=user) | Q(user2=user))
             serializer_matches = MatchSerializer(matches, many=True)
             tournament_users = user.tournament_users.all()
             serializer_tournament_users = TournamentUserSerializer(tournament_users, many=True)

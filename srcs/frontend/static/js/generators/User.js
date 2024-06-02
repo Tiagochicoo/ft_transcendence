@@ -39,7 +39,7 @@ export default class extends Abstract {
 		}
 
 		return `
-			<div class="user-profile d-flex align-items-center flex-wrap gap-2">
+			<div class="user-profile d-flex align-items-center flex-wrap gap-3">
 				<img src="${MEDIA_URL}${user.avatar}" class="rounded-circle" alt="User avatar" />
 
 				<div class="user-profile d-flex flex-column">
@@ -69,7 +69,7 @@ export default class extends Abstract {
 
 	static getMatchesTable(user, matches) {
 		return `
-			<div class="matches-table mt-4">
+			<div class="matches-table">
 				<table class="table table-hover text-center">
 					<thead class="table-secondary">
 						<tr>
@@ -121,7 +121,7 @@ export default class extends Abstract {
 
 	static getTournamentsTable(user, tournament_users) {
 		return `
-			<div class="matches-table mt-4">
+			<div class="matches-table">
 				<table class="table table-hover text-center">
 					<thead class="table-secondary">
 						<tr>
