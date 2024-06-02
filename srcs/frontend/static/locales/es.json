@@ -180,5 +180,20 @@
     },
     "errors": {
       "invalid_page": "No tienes permisos para ver esa página"
+    },
+    "dashboard": {
+      "matches": "Partidos",
+      "tournaments": "Torneos",
+      "date": "Fecha",
+      "opponent": "Oponente",
+      "winner": "Ganador",
+      "score": "Puntuación",
+      "position": "Posición",
+      "totalMatches": "Total de partidos: ",
+      "totalWins": "Total de victorias: ",
+      "totalTournaments": "Total de torneos: ",
+      "individual": {
+        "title": "Panel individual"
+      }
     }
-  } 
+  }

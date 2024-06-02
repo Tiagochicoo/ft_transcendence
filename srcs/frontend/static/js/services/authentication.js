@@ -106,7 +106,7 @@ async function renewAccessToken(refreshToken) {
     }
 }
 
-async function fetchWithToken(path, options = {}, returnErrors = false) {
+async function fetchWithToken(path, options = {}) {
     let accessToken = localStorage.getItem('accessToken'),
         refreshToken = localStorage.getItem('refreshToken');
 
@@ -133,8 +133,8 @@ async function fetchWithToken(path, options = {}, returnErrors = false) {
             }
         });
 
-        // If the 'returnErrors' flag is set, skip this and just return the errors
-        if (!response.ok && !returnErrors) {
+        /*
+        if (!response.ok) {
             const contentType = response.headers.get('content-type');
             if (contentType && contentType.indexOf('application/json') !== -1) {
                 const errorJson = await response.json();
@@ -145,6 +145,7 @@ async function fetchWithToken(path, options = {}, returnErrors = false) {
             }
             throw new Error('API call failed');
         }
+        */
 
         return await response.json();
     } catch (error) {

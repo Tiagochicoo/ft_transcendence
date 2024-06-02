@@ -180,5 +180,20 @@
     },
     "errors": {
       "invalid_page": "You don't have permissions to see that page"
+    },
+    "dashboard": {
+      "matches": "Matches",
+      "tournaments": "Tournaments",
+      "date": "Date",
+      "opponent": "Opponent",
+      "winner": "Winner",
+      "score": "Score",
+      "position": "Position",
+      "totalMatches": "Total matches: ",
+      "totalWins": "Total wins: ",
+      "totalTournaments": "Total tournaments: ",
+      "individual": {
+        "title": "Individual dashboard"
+      }
     }
 }

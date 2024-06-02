@@ -45,7 +45,7 @@ export default class Users {
     return await fetchWithToken(`/users/${USER_ID}`, {
       method: 'PATCH',
       body: formData
-    }, true);
+    });
   }
 
   static async getAll() {
