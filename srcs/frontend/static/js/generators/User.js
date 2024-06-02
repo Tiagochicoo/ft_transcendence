@@ -61,4 +61,61 @@ export default class extends Abstract {
 			</div>
 		`;
 	}
+
+	static getMatchesTable(user, matches) {
+		const parseDate = (rawDate) => {
+			const date = new Date(rawDate);
+			return date.toLocaleDateString();
+		}
+
+		return `
+			<div class="matches-table mt-4">
+				<table class="table table-hover text-center">
+					<thead class="table-secondary">
+						<tr>
+							<th colspan="5"">${i18next.t("dashboard.matches")}</th>
+						</tr>
+
+						<tr>
+							<th scope="col">ID</th>
+							<th scope="col">${i18next.t("dashboard.date")}</th>
+							<th scope="col">${i18next.t("dashboard.opponent")}</th>
+							<th scope="col">${i18next.t("dashboard.winner")}</th>
+							<th scope="col">${i18next.t("dashboard.score")}</th>
+						</tr>
+					</thead>
+
+					<tbody class="table-group-divider">
+						${matches.map(match => {
+							const isWinner = (match.winner.id == user.id);
+							return `
+								<tr class="${isWinner ? 'won' : 'lost'}">
+									<th scope="row">${match.id}</th>
+									<td>${parseDate(match.created_on)}</td>
+									<td>${match.user1.id == user.id ? match.user2.username : match.user1.username}</td>
+									<td>${match.winner.username}</td>
+									<td>${isWinner ? match.score : -match.score}</td>
+								</tr>
+							`
+						}).join("")}
+					</tbody>
+
+					<tfoot class="table-group-divider">
+						<tr>
+							<td colspan="2" class="text-center">
+								${i18next.t("dashboard.totalMatches")}${user.num_games}
+							</td>
+
+							<td colspan="1">
+							</td>
+
+							<td colspan="2" class="text-center">
+								${i18next.t("dashboard.totalWins")}${user.num_games_won}
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		`;
+	}
 }
