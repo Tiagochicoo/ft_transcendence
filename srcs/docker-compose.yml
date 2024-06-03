@@ -6,6 +6,7 @@ services:
       - "443:443"
     volumes:
       - ./frontend:/usr/share/nginx/html
+      - node_modules:/usr/share/nginx/html/node_modules
       - ./backend:/transcendence
     restart: always
     networks:
@@ -22,7 +23,7 @@ services:
       - "3000:3000"
     volumes:
       - ./frontend/:/transcendence
-      - ./frontend:/usr/share/nginx/html
+      - node_modules:/transcendence/node_modules
     depends_on:
       - backend
     networks:
@@ -63,3 +64,4 @@ networks:
 
 volumes:
   postgres_data:
+  node_modules:

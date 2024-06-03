@@ -1,11 +1,11 @@
 # Use Node.js 16 LTS version
 FROM node:16
 
-# Copy application files
-COPY . .
-
 # Set working directory
 WORKDIR /transcendence
+
+# Copy application files
+COPY . .
 
 # Expose port 3000
 EXPOSE 3000
