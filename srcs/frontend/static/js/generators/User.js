@@ -21,7 +21,7 @@ export default class extends Abstract {
 
 		return `
 			<a class="user-badge d-flex align-items-center gap-2 ${isOnline ? 'is-online' : ''}" data-user-id="${id}" href="/dashboard/individual/${id}" data-link>
-				<img src="${MEDIA_URL}${avatar}" class="rounded-circle" style="height:28px; width:28px;" alt="User avatar" />
+				<img src="${avatar}" class="rounded-circle" style="height:28px; width:28px;" alt="User avatar" />
 
 				<div class="online-circle">
 				</div>
@@ -40,7 +40,7 @@ export default class extends Abstract {
 
 		return `
 			<div class="user-profile d-flex align-items-center flex-wrap gap-3">
-				<img src="${MEDIA_URL}${user.avatar}" class="rounded-circle" alt="User avatar" />
+				<img src="${user.avatar}" class="rounded-circle" alt="User avatar" />
 
 				<div class="user-profile d-flex flex-column">
 					<p class="font-weight-bold mb-0">
