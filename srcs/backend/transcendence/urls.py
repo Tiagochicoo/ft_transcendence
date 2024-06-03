@@ -4,7 +4,7 @@ from .views.friendrequest import FriendCreate, FriendCancel, FriendAccept, Frien
 from .views.match import MatchCreate, MatchDetail, MatchUpdate, MatchCancel, MatchAccept, MatchRefuse, MatchFinish, MatchByTournament, UserMatchDetails
 from .views.tournament import TournamentCreate, TournamentMatches, TournamentFinish, TournamentTournamentUserDetails, UserTournamentUserDetails, TournamentUserAccept, TournamentUserRefuse, TournamentDetail, TournamentUpdate
 from .views.tournament_user import TournamentUserCreate, TournamentUserDetail
-from .views.user import UserList, UserDetails, UserLogin, UserUpdate, WhoAmI
+from .views.user import UserList, UserDetails, UserLogin, UserUpdate, WhoAmI, Generate2FASecretView, Verify2FAView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
 urlpatterns = [
@@ -18,6 +18,8 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('token/verify', TokenVerifyView.as_view(), name='token_verify'),
     path('whoami/', WhoAmI.as_view(), name='whoami'),
+    path('generate-2fa-secret/', Generate2FASecretView.as_view(), name='generate-2fa-secret'),
+    path('verify-2fa/', Verify2FAView.as_view(), name='verify-2fa'),
 
     path('friend_requests', FriendCreate.as_view(), name='friend_create'),
     path('friend_requests/<int:friendRequestId>/cancel', FriendCancel.as_view(), name='friend_cancel'),
