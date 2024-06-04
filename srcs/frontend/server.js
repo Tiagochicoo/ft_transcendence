@@ -12,7 +12,7 @@ const port = process.env.PORT || 3000;
 const { socketListeners } = services;
 
 app.get("/*", (req, res) => {
-  if (/^.*(?:\.js|\.css|\.png|\.json|\.jpg)$/.test(req.url)) {
+  if (/^.*(?:\.js|\.css|\.png|\.json|\.jpg|\.ico)$/.test(req.url)) {
     res.sendFile(path.resolve(__dirname, req.path.slice(1)));
     return;
   }
