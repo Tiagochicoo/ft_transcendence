@@ -185,6 +185,7 @@
     "matches": "Partidas",
     "tournaments": "Torneios",
     "rankings": "Classificações",
+    "history": "História",
     "ratios": "Rácios",
     "date": "Data",
     "opponent": "Oponente",
@@ -196,6 +197,8 @@
     "totalMatches": "Total de partidas: ",
     "totalWins": "Total de vitórias: ",
     "totalTournaments": "Total de torneios: ",
+    "victories": "vitórias",
+    "defeats": "derrotas",
     "matchesWinRatio": "Proporção de vitórias em partidas",
     "tournamentsWinRatio": "Proporção de vitórias em torneios",
     "individual": {

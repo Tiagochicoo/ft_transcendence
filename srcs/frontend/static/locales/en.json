@@ -185,6 +185,7 @@
       "matches": "Matches",
       "tournaments": "Tournaments",
       "rankings": "Rankings",
+      "history": "History",
       "ratios": "Ratios",
       "date": "Date",
       "opponent": "Opponent",
@@ -196,6 +197,8 @@
       "totalMatches": "Total matches: ",
       "totalWins": "Total wins: ",
       "totalTournaments": "Total tournaments: ",
+      "victories": "victories",
+      "defeats": "defeats",
       "matchesWinRatio": "Matches win ratio",
       "tournamentsWinRatio": "Tournaments win ratio",
       "individual": {

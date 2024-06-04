@@ -256,10 +256,10 @@ export default class extends Abstract {
 				${Object.keys(matchesByDate).map(date => `
 					<div class="day">
 						<div class="column">
-							<div data-bs-toggle="tooltip" data-bs-placement="top" title="${matchesByDate[date].victories}" class="cell victories" style="height: ${(matchesByDate[date].victories / maxHeight) * 100 || 0}%;">
+							<div data-bs-toggle="tooltip" data-bs-placement="top" title="${i18next.t("dashboard.victories")}: ${matchesByDate[date].victories}" class="cell victories" style="height: ${(matchesByDate[date].victories / maxHeight) * 100 || 0}%;">
 							</div>
 
-							<div data-bs-toggle="tooltip" data-bs-placement="top" title="${matchesByDate[date].defeats}" class="cell defeats" style="height: ${(matchesByDate[date].defeats / maxHeight) * 100 || 0}%;">
+							<div data-bs-toggle="tooltip" data-bs-placement="top" title="${i18next.t("dashboard.defeats")}: ${matchesByDate[date].defeats}" class="cell defeats" style="height: ${(matchesByDate[date].defeats / maxHeight) * 100 || 0}%;">
 							</div>
 						</div>
 
