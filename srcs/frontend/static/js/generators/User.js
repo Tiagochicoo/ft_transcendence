@@ -218,6 +218,60 @@ export default class extends Abstract {
 		`;
 	}
 
+	static getHistoryTable(matches) {
+		const today = new Date();
+		const startDate = new Date(today);
+		startDate.setDate(today.getDate() - 13);
+
+		const matchesByDate = {};
+		for (let dateIt = new Date(startDate); dateIt <= today; dateIt.setDate(dateIt.getDate() + 1)) {
+			const dateKey = dateIt.toISOString().split('T')[0];
+			matchesByDate[dateKey] = {
+				victories: 0,
+				defeats: 0,
+			}
+		}
+
+		matches.forEach(match => {
+			const date = new Date(match.created_on);
+			if ((date < startDate) || (date > today) || !match.has_finished) {
+				return;
+			}
+
+			const dateKey = date.toISOString().split('T')[0];
+			if (match.winner.id == USER_ID) {
+				matchesByDate[dateKey].victories++;
+			} else {
+				matchesByDate[dateKey].defeats++;
+			}
+		});
+
+		let maxHeight = 0;
+		Object.keys(matchesByDate).forEach(key => {
+			maxHeight = Math.max(maxHeight, matchesByDate[key].victories + matchesByDate[key].defeats);
+		});
+
+		return `
+			<div class="matches-timeline">
+				${Object.keys(matchesByDate).map(date => `
+					<div class="day">
+						<div class="column">
+							<div data-bs-toggle="tooltip" data-bs-placement="top" title="${matchesByDate[date].victories}" class="cell victories" style="height: ${(matchesByDate[date].victories / maxHeight) * 100 || 0}%;">
+							</div>
+
+							<div data-bs-toggle="tooltip" data-bs-placement="top" title="${matchesByDate[date].defeats}" class="cell defeats" style="height: ${(matchesByDate[date].defeats / maxHeight) * 100 || 0}%;">
+							</div>
+						</div>
+
+						<div class="date-label">
+							${date}
+						</div>
+					</div>
+				`).join("")}
+			</div>
+		`;
+	}
+
 	static getCircle({ title, ratio }) {
 		ratio = Math.round(ratio * 100) || 0;
 

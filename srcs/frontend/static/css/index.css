@@ -90,7 +90,7 @@ main {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .sidebar-outter-wrapper, .sidebar-wrapper {
     min-width: 72px;
     max-width: 72px;
@@ -299,7 +299,7 @@ main {
   border: 3px solid #212529cc;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .user-profile img {
     height: 75px;
     width: 75px;
@@ -323,7 +323,7 @@ main {
   flex: 1;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .canvas-actions-wrapper button {
     flex: auto;
   }
@@ -355,6 +355,50 @@ main {
 
 .matches-table tbody tr.lost {
   background-color: #ff000040;
+}
+
+/* Timeline */
+.matches-timeline {
+  display: flex;
+  max-height: 500px;
+  max-width: calc(100vw - 120px);
+  overflow-x: auto;
+}
+
+.matches-timeline .day {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 0.8rem;
+}
+
+.matches-timeline .column {
+  display: flex;
+  flex-direction: column-reverse;
+  height: 200px;
+  padding: 0 4px;
+  border-bottom: 1px solid #212529;
+}
+
+.matches-timeline .victories {
+  background-color: #00800040;
+}
+
+.matches-timeline .defeats {
+  background-color: #ff000040;
+}
+
+.matches-timeline .date-label {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  margin: 0 auto;
+}
+
+@media (max-width: 767px) {
+  .matches-timeline .day {
+    min-width: 35px;
+  }
 }
 
 /* Pie chart */

@@ -9,6 +9,11 @@ export default class extends Abstract {
 	}
 
 	async addFunctionality() {
+		// Enable tooltips
+		const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+		tooltipTriggerList.map(function (tooltipTriggerEl) {
+			return new bootstrap.Tooltip(tooltipTriggerEl)
+		});
 	}
 
 	async getHtml() {
@@ -54,6 +59,11 @@ export default class extends Abstract {
 					</button>
 				</li>
 				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="pills-history-tab" data-bs-toggle="pill" data-bs-target="#pills-history" type="button" role="tab" aria-controls="pills-history" aria-selected="false">
+						${i18next.t("dashboard.history")}
+					</button>
+				</li>
+				<li class="nav-item" role="presentation">
 					<button class="nav-link" id="pills-ratios-tab" data-bs-toggle="pill" data-bs-target="#pills-ratios" type="button" role="tab" aria-controls="pills-ratios" aria-selected="false">
 						${i18next.t("dashboard.ratios")}
 					</button>
@@ -71,6 +81,12 @@ export default class extends Abstract {
 
 				<div class="tab-pane fade" id="pills-rankings" role="tabpanel" aria-labelledby="pills-rankings-tab">
 					${User.getRankingsTable(this.users)}
+				</div>
+
+				<div class="tab-pane fade" id="pills-history" role="tabpanel" aria-labelledby="pills-history-tab">
+					<div class="mt-4">
+						${User.getHistoryTable(this.matches)}
+					</div>
 				</div>
 
 				<div class="tab-pane fade" id="pills-ratios" role="tabpanel" aria-labelledby="pills-ratios-tab">
