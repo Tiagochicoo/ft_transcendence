@@ -1,59 +1,57 @@
 import { Abstract } from "/static/js/components/index.js";
-import { PongData } from "/static/js/api/index.js";
+import { Users } from "/static/js/api/index.js";
+import { User } from "/static/js/generators/index.js";
+import { invalidPage } from "/static/js/services/index.js";
 
 export default class extends Abstract {
-  constructor(props) {
-    super(props);
+	constructor(props) {
+		super(props);
+	}
 
-    this.params = props;
-    this.data;
-    this.user;
-    // we can use this to retreive data from database
-    this.userId = this.params.userId;
-  }
+	async addFunctionality() {
+	}
 
-  generateTable() {
-    let table = `<table class="table table-hover text-center">
-						<thead class="table-secondary">
-							<tr>
-								<th scope="col">${i18next.t("individualDashboard.columns.id")}</th>
-								<th scope="col">${i18next.t("individualDashboard.columns.victory")}</th>
-								<th scope="col">${i18next.t("individualDashboard.columns.defeat")}</th>
-								<th scope="col">${i18next.t("individualDashboard.columns.opponent")}</th>
-								<th scope="col">${i18next.t("individualDashboard.columns.points")}</th>
-								<th scope="col">${i18next.t("individualDashboard.columns.total")}</th>
-							</tr>
-						</thead>
-						<tbody class="table-group-divider" style="border-top-color: #6c757d">`;
+	async getHtml() {
+		const response = await Users.getDashboard(this.params.userId);
+		if (!response.success) {
+			return invalidPage();
+		}
 
-    this.user.games.forEach((game) => {
-      table += `<tr>
-							<th scope="row">${game.gameId}</th>
-							<td>${game.victory ? "x" : " "}</td>
-							<td>${game.defeat ? "x" : " "}</td>
-							<td>${game.opponent}</td>
-							<td>${game.points}</td>
-							<td>${game.totalPoints}</td>
-						</tr>`;
-    });
-    table += "</tbody></table>";
-    return table;
-  }
+		this.user = response.data.user;
+		this.matches = response.data.matches
+			.filter(({ has_finished }) => has_finished)
+			.sort(({ id }) => id);
+		this.tournament_users = response.data.tournament_users.sort(({ id }) => id);;
 
-  async addFunctionality() {}
-
-  async getHtml() {
-    // fetching data mocked on db.json
-    this.data = await PongData.getMockedData();
-    // this.user = this.data.users.filter((user) => user.userId == this.userId)[0];
-	// mocked for now
-	this.user = this.data.users[0];
-
-    return `
+		return `
 			<h1>
-				${i18next.t("individualDashboard.title")} - ${this.user.username}
+				${i18next.t("dashboard.individual.title")}
 			</h1>
-			<div class="dashboard">${this.generateTable()}</div>
+
+			${User.getProfile(this.user)}
+
+			<ul class="nav nav-pills mt-4 mb-2" id="dashboard-individual-pills-tab" role="tablist">
+				<li class="nav-item" role="presentation">
+					<button class="nav-link active" id="pills-matches-tab" data-bs-toggle="pill" data-bs-target="#pills-matches" type="button" role="tab" aria-controls="pills-matches" aria-selected="true">
+						${i18next.t("dashboard.matches")}
+					</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="pills-tournaments-tab" data-bs-toggle="pill" data-bs-target="#pills-tournaments" type="button" role="tab" aria-controls="pills-tournaments" aria-selected="false">
+						${i18next.t("dashboard.tournaments")}
+					</button>
+				</li>
+			</ul>
+
+			<div class="tab-content" id="dashboard-individual-pills-tabContent">
+				<div class="tab-pane fade active show" id="pills-matches" role="tabpanel" aria-labelledby="pills-matches-tab">
+					${User.getMatchesTable(this.user, this.matches)}
+				</div>
+
+				<div class="tab-pane fade" id="pills-tournaments" role="tabpanel" aria-labelledby="pills-tournaments-tab">
+					${User.getTournamentsTable(this.user, this.tournament_users)}
+				</div>
+			</div>
 		`;
-  }
+	}
 }
