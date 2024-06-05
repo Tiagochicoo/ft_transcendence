@@ -133,41 +133,47 @@ class UserLogin(APIView):
 
 class Verify2FAView(APIView):
     def post(self, request, *args, **kwargs):
-        user_id = request.data.get('user_id')
-        two_factor_code = request.data.get('two_factor_code')
-        user = User.objects.get(id=user_id)
+        try:
+            user_id = request.data.get('user_id')
+            two_factor_code = request.data.get('two_factor_code')
+            user = User.objects.get(id=user_id)
 
-        if user and user.verify_2fa_code(two_factor_code):
-            refresh = RefreshToken.for_user(user)
-            return JsonResponse({
-                'success': True,
-                'data': {
-                    'refresh': str(refresh),
-                    'access': str(refresh.access_token),
-                    'user_id': user.id,
-                }
-            }, status=status.HTTP_200_OK)
+            if user and user.verify_2fa_code(two_factor_code):
+                refresh = RefreshToken.for_user(user)
+                return JsonResponse({
+                    'success': True,
+                    'data': {
+                        'refresh': str(refresh),
+                        'access': str(refresh.access_token),
+                        'user_id': user.id,
+                    }
+                }, status=status.HTTP_200_OK)
 
-        return JsonResponse({'success': False, 'errors': {'two_factor_code': ['invalid_2fa_code']}}, status=status.HTTP_401_UNAUTHORIZED)
+            return JsonResponse({'success': False, 'errors': {'two_factor_code': ['invalid_2fa_code']}}, status=status.HTTP_401_UNAUTHORIZED)
+        except Exception as error:
+            return JsonResponse({'success': False, 'errors': {'two_factor_code': ['invalid_2fa_code']}}, status=status.HTTP_401_UNAUTHORIZED)
 
 class Generate2FASecretView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        user = request.user
-        if not user.two_factor_code:
-            user.two_factor_code = pyotp.random_base32()
-            user.save()
+        try:
+            user = request.user
+            if not user.two_factor_code:
+                user.two_factor_code = pyotp.random_base32()
+                user.save()
 
-        totp = pyotp.TOTP(user.two_factor_code)
-        otp_auth_url = totp.provisioning_uri(name=user.email, issuer_name="Transcendence")
+            totp = pyotp.TOTP(user.two_factor_code)
+            otp_auth_url = totp.provisioning_uri(name=user.email, issuer_name="Transcendence")
 
-        qr = qrcode.make(otp_auth_url)
-        buffer = BytesIO()
-        qr.save(buffer, format="PNG")
-        qr_code_base64 = base64.b64encode(buffer.getvalue()).decode()
+            qr = qrcode.make(otp_auth_url)
+            buffer = BytesIO()
+            qr.save(buffer, format="PNG")
+            qr_code_base64 = base64.b64encode(buffer.getvalue()).decode()
 
-        return Response({
-            'qr_code': qr_code_base64,
-            'otp_auth_url': otp_auth_url
-        })
+            return Response({
+                'qr_code': qr_code_base64,
+                'otp_auth_url': otp_auth_url
+            })
+        except Exception as error:
+            return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

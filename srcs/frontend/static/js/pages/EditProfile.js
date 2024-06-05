@@ -1,11 +1,6 @@
-import { sendNotification } from "/static/js/services/index.js";
+import { sendNotification, getUserIDfromToken } from "/static/js/services/index.js";
 import { Users } from "/static/js/api/index.js";
 import { Abstract } from "/static/js/components/index.js";
-
-function getUserIDfromToken(token) {
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    return payload.user_id;
-}
 
 export default class extends Abstract {
     constructor(props) {
@@ -62,7 +57,7 @@ export default class extends Abstract {
                 console.error('User ID is not available in the token');
                 return;
             }
-            const response = await fetch(`http://localhost:8000/api/users/${userId}`, {
+            const response = await fetch(`${API_URL}/users/${userId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -91,7 +86,7 @@ export default class extends Abstract {
 
     async generate2FAQRCode() {
         try {
-            const response = await fetch('http://localhost:8000/api/generate-2fa-secret', {
+            const response = await fetch(`${API_URL}/generate-2fa-secret`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -197,7 +192,7 @@ export default class extends Abstract {
                 </div>
 
                 <div class="mb-4" id="2fa-qrcode-section" style="display: none;">
-                    <label for="2fa-qrcode" class="form-label">
+                    <label for="2fa-qrcode" class="d-block form-label">
                         ${i18next.t('editProfile.scanQRCode')}
                     </label>
                     <img id="2fa-qrcode" src="" alt="2FA QR Code">

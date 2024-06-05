@@ -31,7 +31,7 @@ export default class extends Abstract {
             if (this.state.is2FARequired) {
                 // Handle 2FA code submission
                 try {
-                    const response = await fetch('http://localhost:8000/api/verify-2fa/', {
+                    const response = await fetch(`${API_URL}/verify-2fa/`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -163,7 +163,7 @@ export default class extends Abstract {
                 </div>
                 <div class="mb-4">
                     <label for="password" class="form-label">${i18next.t('signIn.fields.password.label')}</label>
-                    <input type="password" class="form-control" id="password" name="password">
+                    <input type="password" class="form-control" id="password" name="password" autocomplete="on">
                     <div id="passwordError" class="invalid-feedback" style="display: none;"></div>
                     <div id="generalLoginError" class="invalid-feedback" style="display: none;"></div>
                 </div>
