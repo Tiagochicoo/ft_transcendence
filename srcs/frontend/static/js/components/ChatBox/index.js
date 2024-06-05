@@ -149,9 +149,11 @@ export default class extends Abstract {
 						</button>
 					` : ''}
 
-					<button class="chat-box-block" data-action="match">
-						<i class="bi bi-controller"></i>
-					</button>
+					${!this.chatRoom.was_blocked ? `
+						<button class="chat-box-block" data-action="match">
+							<i class="bi bi-controller"></i>
+						</button>
+					` : ''}
 
 					<button class="chat-box-close" data-action="close">
 						<i class="bi bi-x-circle-fill"></i>
