@@ -90,7 +90,7 @@ main {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .sidebar-outter-wrapper, .sidebar-wrapper {
     min-width: 72px;
     max-width: 72px;
@@ -292,6 +292,20 @@ main {
   overflow: hidden;
 }
 
+/* User Profile */
+.user-profile img {
+  height: 100px;
+  width: 100px;
+  border: 3px solid #212529cc;
+}
+
+@media (max-width: 767px) {
+  .user-profile img {
+    height: 75px;
+    width: 75px;
+  }
+}
+
 /* Game */
 .pong-content p {
   margin-bottom: 10px;
@@ -309,7 +323,7 @@ main {
   flex: 1;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .canvas-actions-wrapper button {
     flex: auto;
   }
@@ -322,4 +336,117 @@ main {
     order: -1;
     width: 100%;
   }
+}
+
+/* Dashboard */
+.matches-table {
+  max-height: 500px;
+  max-width: calc(100vw - 120px);
+  overflow-x: auto;
+}
+
+.matches-table tbody :is(th, td) {
+  background-color: transparent;
+}
+
+.matches-table tbody tr.won {
+  background-color: #00800040;
+}
+
+.matches-table tbody tr.lost {
+  background-color: #ff000040;
+}
+
+/* Timeline */
+.matches-timeline {
+  display: flex;
+  max-height: 500px;
+  max-width: calc(100vw - 120px);
+  overflow-x: auto;
+}
+
+.matches-timeline .day {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 0.8rem;
+}
+
+.matches-timeline .column {
+  display: flex;
+  flex-direction: column-reverse;
+  height: 200px;
+  padding: 0 4px;
+  border-bottom: 1px solid #212529;
+}
+
+.matches-timeline .victories {
+  background-color: #00800040;
+}
+
+.matches-timeline .defeats {
+  background-color: #ff000040;
+}
+
+.matches-timeline .date-label {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  margin: 0 auto;
+}
+
+@media (max-width: 767px) {
+  .matches-timeline .day {
+    min-width: 35px;
+  }
+}
+
+/* Pie chart */
+.pie-chart-wrapper {
+  max-width: 240px;
+  text-align: center;
+}
+
+@media (max-width: 992px) {
+  .pie-chart-wrapper {
+    max-width: none;
+  }
+}
+
+.pie-chart {
+  --border-with: 14px;
+  --width: 120px;
+  position: relative;
+  display: inline-grid;
+  font-size: 1.25rem;
+  font-weight: 700;
+  width: var(--width);
+  place-content: center;
+  margin: 0 auto;
+  aspect-ratio: 1;
+}
+
+.pie-chart:before,
+.pie-chart:after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+}
+
+.pie-chart:before {
+  inset: 0;
+  background: radial-gradient(farthest-side,
+    var(--color) 98%,
+    #0000) top/var(--border-with) var(--border-with) no-repeat,
+    conic-gradient(var(--color) calc(var(--ratio)*1%),
+    #0000 0
+  );
+  mask: radial-gradient(farthest-side,#0000 calc(99% - var(--border-with)),#000 calc(100% - var(--border-with)));
+  -webkit-mask: radial-gradient(farthest-side,#0000 calc(99% - var(--border-with)),#000 calc(100% - var(--border-with)));
+}
+
+.pie-chart:after {
+  inset: calc(50% - var(--border-with)/2);
+  background: var(--color);
+  transform: rotate(calc(var(--ratio)*3.6deg)) translateY(calc(50% - var(--width)/2));
 }

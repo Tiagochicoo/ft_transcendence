@@ -23,7 +23,7 @@ export default class extends Abstract {
                 formData.append('preferred_language', i18next.language || 'en');
 
                 try {
-                    const response = await fetch('http://localhost:8000/api/users', {
+                    const response = await fetch(`${API_URL}/users`, {
                         method: 'POST',
                         headers: {
                             'X-CSRFToken': getCSRFToken()

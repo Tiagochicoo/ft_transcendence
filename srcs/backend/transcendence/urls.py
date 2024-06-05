@@ -4,7 +4,7 @@ from .views.friendrequest import FriendCreate, FriendCancel, FriendAccept, Frien
 from .views.match import MatchCreate, MatchDetail, MatchUpdate, MatchCancel, MatchAccept, MatchRefuse, MatchFinish, MatchByTournament, UserMatchDetails
 from .views.tournament import TournamentCreate, TournamentMatches, TournamentFinish, TournamentTournamentUserDetails, UserTournamentUserDetails, TournamentUserAccept, TournamentUserRefuse, TournamentDetail, TournamentUpdate
 from .views.tournament_user import TournamentUserCreate, TournamentUserDetail
-from .views.user import UserList, UserDetails, UserLogin, UserUpdate, WhoAmI, Generate2FASecretView, Verify2FAView
+from .views.user import UserList, UserDetails, UserDashboard, UserLogin, WhoAmI, Generate2FASecretView, Verify2FAView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
 urlpatterns = [
@@ -12,7 +12,7 @@ urlpatterns = [
     # Added a forward slash (/) to the end of the URL because it was breaking with query params
     path('users/', UserList.as_view(), name='users'),
     path('users/<int:userId>', UserDetails.as_view(), name='user_details'),
-	path('users/update', UserUpdate.as_view(), name='user_update'),
+    path('users/<int:userId>/dashboard', UserDashboard.as_view(), name='user_details'),
     path('sign-in', UserLogin.as_view(), name='user_login'),
     path('token', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

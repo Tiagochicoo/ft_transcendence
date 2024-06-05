@@ -8,6 +8,8 @@ COPY ./ssl/nginx-selfsigned.crt /etc/nginx/certs/
 COPY ./ssl/nginx-selfsigned.key /etc/nginx/certs/
 COPY ./proxy_params /etc/nginx/
 
+# COPY --from=frontend /node_modules /usr/share/nginx/html
+
 EXPOSE 443
 
 CMD ["nginx", "-g", "daemon off;"]

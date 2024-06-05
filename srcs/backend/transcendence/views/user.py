@@ -1,9 +1,11 @@
+from django.db.models import Q
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
-from ..models import User
+from ..models import Match, User
+from ..serializers.serializers_match import MatchSerializer
+from ..serializers.serializers_tournament_user import TournamentUserSerializer
 from ..serializers.serializers_user import UserSerializer
 from ..serializers.serializers_signin import SignInSerializer
 from rest_framework.permissions import IsAuthenticated
@@ -83,6 +85,25 @@ class UserDetails(APIView):
         except Exception as error:
             return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+class UserDashboard(APIView):
+    def get(self, request, userId, format=None):
+        try:
+            user = User.objects.get(pk=userId)
+            serializer_user = UserSerializer(user)
+            matches = Match.objects.filter(Q(user1=user) | Q(user2=user))
+            serializer_matches = MatchSerializer(matches, many=True)
+            tournament_users = user.tournament_users.all()
+            serializer_tournament_users = TournamentUserSerializer(tournament_users, many=True)
+            data = {
+                'user': serializer_user.data,
+                'matches': serializer_matches.data,
+                'tournament_users': serializer_tournament_users.data
+            }
+            return JsonResponse({'success': True, 'data': data}, status=status.HTTP_200_OK)
+        except Exception as error:
+            print(error)
+            return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 class UserLogin(APIView):
     def post(self, request, *args, **kwargs):
         try:
@@ -110,20 +131,6 @@ class UserLogin(APIView):
         except Exception as error:
             return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-class UserUpdate(APIView):
-    def patch(self, request):
-        try:
-            user = User.objects.get(pk=request.data.get('userId'))
-            if 'numGames' in request.data:
-                user.num_games += request.data.get('numGames')
-            if 'numGamesWon' in request.data:
-                user.num_games_won += request.data.get('numGamesWon')
-            user.save()
-            serializer = UserSerializer(user)
-            return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
-        except Exception as error:
-            return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
 class Verify2FAView(APIView):
     def post(self, request, *args, **kwargs):
         user_id = request.data.get('user_id')
@@ -142,7 +149,7 @@ class Verify2FAView(APIView):
             }, status=status.HTTP_200_OK)
 
         return JsonResponse({'success': False, 'errors': {'two_factor_code': ['invalid_2fa_code']}}, status=status.HTTP_401_UNAUTHORIZED)
-    
+
 class Generate2FASecretView(APIView):
     permission_classes = [IsAuthenticated]
 

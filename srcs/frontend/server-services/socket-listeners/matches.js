@@ -85,10 +85,9 @@ const doUpdate = (io, matchId) => {
   const gameState = MATCHES_STATE[matchId];
   if (!gameState) return;
 
-  // increase ball speed until it collide with some paddle
+  // change ball direction 
   if (gameState.startAttack && !gameState.endAttack) {
-    gameState.ballSpeedX = gameState.ballSpeedX * 1.5;
-    gameState.ballSpeedY = gameState.ballSpeedY * 1.5;
+    gameState.ballSpeedY = gameState.ballSpeedY * 3;
     gameState.startAttack = false;
     gameState.endAttack = true;
   } 
@@ -131,11 +130,6 @@ const doUpdate = (io, matchId) => {
     gameState.ballY > gameState.leftPaddleY &&
     gameState.ballY < gameState.leftPaddleY + paddleHeight
   ) {
-    //if under attack, disable speed increase effect
-    if (gameState.endAttack) {
-      gameState.ballSpeedX = Math.max(gameState.ballSpeedX / 1.5, 3.5);
-      gameState.ballSpeedY = Math.max(gameState.ballSpeedY / 1.5, 3.5);
-    }
     gameState.ballSpeedX = -gameState.ballSpeedX;
   }
 
@@ -145,11 +139,6 @@ const doUpdate = (io, matchId) => {
     gameState.ballY > gameState.rightPaddleY &&
     gameState.ballY < gameState.rightPaddleY + paddleHeight
   ) {
-    //if under attack, disable speed increase effect
-    if (gameState.endAttack) {
-      gameState.ballSpeedX = Math.max(gameState.ballSpeedX / 1.5, 3.5);
-      gameState.ballSpeedY = Math.max(gameState.ballSpeedY / 1.5, 3.5);
-    }
     gameState.ballSpeedX = -gameState.ballSpeedX;
   }
 

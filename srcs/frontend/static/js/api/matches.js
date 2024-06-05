@@ -35,4 +35,8 @@ export default class Matches {
   static async getAll() {
     return await fetchWithToken(`/users/${USER_ID}/matches/`);
   }
+
+  static async getAllById(user_id) {
+    return await fetchWithToken(`/users/${user_id}/matches/`);
+  }
 }

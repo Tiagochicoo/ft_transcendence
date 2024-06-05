@@ -65,7 +65,7 @@ export default class extends Abstract {
             } else {
                 // Initial login request
                 try {
-                    const response = await fetch('http://localhost:8000/api/sign-in', {
+                    const response = await fetch(`${API_URL}/sign-in`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

@@ -1,95 +1,101 @@
 import { Abstract } from "/static/js/components/index.js";
-import { PongData } from "/static/js/api/index.js";
+import { Users } from "/static/js/api/index.js";
+import { User } from "/static/js/generators/index.js";
+import { invalidPage } from "/static/js/services/index.js";
 
 export default class extends Abstract {
-  constructor(props) {
-    super(props);
+	constructor(props) {
+		super(props);
+	}
 
-    this.params = props;
+	async addFunctionality() {
+		// Enable tooltips
+		const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+		tooltipTriggerList.map(function (tooltipTriggerEl) {
+			return new bootstrap.Tooltip(tooltipTriggerEl)
+		});
+	}
 
-    this.data;
-    this.games;
-    this.users;
-  }
+	async getHtml() {
+		let response = await Users.getDashboard(USER_ID);
+		if (!response.success) {
+			return invalidPage();
+		}
 
-  async addFunctionality() {}
+		this.user = response.data.user;
+		this.matches = response.data.matches
+			.filter(({ has_finished }) => has_finished)
+			.sort(({ id }) => id);
+		this.tournament_users = response.data.tournament_users.sort(({ id }) => id);;
 
-  generateHistoryTable() {
-    let table = `<table class="table text-center">
-						<thead class="table-secondary">
-							<tr>
-								<th scope="col">${i18next.t("generalDashboard.columns.id")}</th>
-								<th scope="col" colspan="2">${i18next.t("generalDashboard.columns.players")}</th>
-							</tr>
-						</thead>
-						<tbody class="table-group-divider" style="border-top-color: #6c757d">`;
+		response = await Users.getAll();
+		if (!response.success) {
+			return invalidPage();
+		}
 
-    this.games.forEach((game) => {
-      table += `<tr>
-							<th scope="row" rowspan="2">${game.gameId}</th>
-							<td class="border-bottom-0">${game.leftPlayer}</td>
-							<td class="border-bottom-0">${game.rightPlayer}</td>
-						</tr>
-						<tr>
-							<td class="border-top-0">${game.leftPts}</td>
-							<td class="border-top-0">${game.rightPts}</td>
-						</tr>`;
-    });
-    table += "</tbody></table>";
-    return table;
-  }
+		this.users = response.data;
 
-  generateRankingTable() {
-    // data can be sorted on SQL query
-    this.users.sort((a, b) => b.totalPoints - a.totalPoints);
-
-    let table = `<table class="table text-center table-hover">
-						<thead class="table-secondary">
-							<tr>
-								<th scope="col">${i18next.t("generalDashboard.columns.players")}</th>
-								<th scope="col">${i18next.t("generalDashboard.columns.points")}</th>
-							</tr>
-						</thead>
-						<tbody class="table-group-divider" style="border-top-color: #6c757d">`;
-
-    this.users.forEach((user) => {
-      table += `<tr href="/dashboard/individual/${user.userId}" data-link>
-							<th scope="row">${user.username}</th>
-							<td> ${user.totalPoints}</td>
-						</tr>`;
-    });
-    table += "</tbody></table>";
-
-    return table;
-  }
-
-  async getHtml() {
-    // fetching data mocked on db.json
-    this.data = await PongData.getMockedData();
-    this.games = this.data.games;
-    this.users = this.data.users;
-
-    return `
+		return `
 			<h1>
-				${i18next.t("generalDashboard.title")}
+				${i18next.t("dashboard.individual.title")}
 			</h1>
 
-			<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+			${User.getProfile(this.user)}
+
+			<ul class="nav nav-pills mt-4 mb-2" id="dashboard-individual-pills-tab" role="tablist">
 				<li class="nav-item" role="presentation">
-					<button class="nav-link active" id="pills-history-tab" data-bs-toggle="pill" data-bs-target="#pills-history" type="button" role="tab" aria-controls="pills-history" aria-selected="true">${i18next.t("generalDashboard.tabs.history")}</button>
+					<button class="nav-link active" id="pills-matches-tab" data-bs-toggle="pill" data-bs-target="#pills-matches" type="button" role="tab" aria-controls="pills-matches" aria-selected="true">
+						${i18next.t("dashboard.matches")}
+					</button>
 				</li>
 				<li class="nav-item" role="presentation">
-					<button class="nav-link" id="pills-ranking-tab" data-bs-toggle="pill" data-bs-target="#pills-ranking" type="button" role="tab" aria-controls="pills-ranking" aria-selected="false">${i18next.t("generalDashboard.tabs.ranking")}</button>
+					<button class="nav-link" id="pills-tournaments-tab" data-bs-toggle="pill" data-bs-target="#pills-tournaments" type="button" role="tab" aria-controls="pills-tournaments" aria-selected="false">
+						${i18next.t("dashboard.tournaments")}
+					</button>
 				</li>
 				<li class="nav-item" role="presentation">
-					<button class="nav-link" id="pills-graphs-tab" data-bs-toggle="pill" data-bs-target="#pills-graphs" type="button" role="tab" aria-controls="pills-graphs" aria-selected="false">${i18next.t("generalDashboard.tabs.graphs")}</button>
+					<button class="nav-link" id="pills-rankings-tab" data-bs-toggle="pill" data-bs-target="#pills-rankings" type="button" role="tab" aria-controls="pills-rankings" aria-selected="false">
+						${i18next.t("dashboard.rankings")}
+					</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="pills-history-tab" data-bs-toggle="pill" data-bs-target="#pills-history" type="button" role="tab" aria-controls="pills-history" aria-selected="false">
+						${i18next.t("dashboard.history")}
+					</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="pills-ratios-tab" data-bs-toggle="pill" data-bs-target="#pills-ratios" type="button" role="tab" aria-controls="pills-ratios" aria-selected="false">
+						${i18next.t("dashboard.ratios")}
+					</button>
 				</li>
 			</ul>
-			<div class="tab-content" id="pills-tabContent">
-				<div class="tab-pane fade show active" id="pills-history" role="tabpanel" aria-labelledby="pills-history-tab">${this.generateHistoryTable()}</div>
-				<div class="tab-pane fade" id="pills-ranking" role="tabpanel" aria-labelledby="pills-ranking-tab">${this.generateRankingTable()}</div>
-				<div class="tab-pane fade" id="pills-graphs" role="tabpanel" aria-labelledby="pills-gaphs-tab">Graphs are coming here</div>
+
+			<div class="tab-content" id="dashboard-individual-pills-tabContent">
+				<div class="tab-pane fade active show" id="pills-matches" role="tabpanel" aria-labelledby="pills-matches-tab">
+					${User.getMatchesTable(this.user, this.matches)}
+				</div>
+
+				<div class="tab-pane fade" id="pills-tournaments" role="tabpanel" aria-labelledby="pills-tournaments-tab">
+					${User.getTournamentsTable(this.user, this.tournament_users)}
+				</div>
+
+				<div class="tab-pane fade" id="pills-rankings" role="tabpanel" aria-labelledby="pills-rankings-tab">
+					${User.getRankingsTable(this.users)}
+				</div>
+
+				<div class="tab-pane fade" id="pills-history" role="tabpanel" aria-labelledby="pills-history-tab">
+					<div class="mt-4">
+						${User.getHistoryTable(this.matches)}
+					</div>
+				</div>
+
+				<div class="tab-pane fade" id="pills-ratios" role="tabpanel" aria-labelledby="pills-ratios-tab">
+					<div class="d-flex flex-column flex-lg-row justify-content-around align-items-lg-between gap-4 mt-4">
+						${User.getCircle({ title: i18next.t("dashboard.matchesWinRatio"), ratio: this.user.num_games_won / this.user.num_games })}
+						${User.getCircle({ title: i18next.t("dashboard.tournamentsWinRatio"), ratio: this.user.num_tournaments_won / this.user.num_tournaments })}
+					</div>
+				</div>
 			</div>
 		`;
-  }
+	}
 }

@@ -188,5 +188,29 @@
   },
   "errors": {
     "invalid_page": "Não tem permissões para ver essa página"
+  },
+  "dashboard": {
+    "matches": "Partidas",
+    "tournaments": "Torneios",
+    "rankings": "Classificações",
+    "history": "História",
+    "ratios": "Rácios",
+    "date": "Data",
+    "opponent": "Oponente",
+    "winner": "Vencedor",
+    "score": "Pontuação",
+    "position": "Posição",
+    "rank": "Classificação",
+    "username": "Nome de usuário",
+    "totalMatches": "Total de partidas: ",
+    "totalWins": "Total de vitórias: ",
+    "totalTournaments": "Total de torneios: ",
+    "victories": "vitórias",
+    "defeats": "derrotas",
+    "matchesWinRatio": "Proporção de vitórias em partidas",
+    "tournamentsWinRatio": "Proporção de vitórias em torneios",
+    "individual": {
+      "title": "Painel individual"
+    }
   }
 }
