@@ -273,11 +273,11 @@ main {
   top: 90px;
   right: 12px;
   height: fit-content;
+  max-width: calc(100vw - 120px);
 }
 
 .toast-header {
-  max-width: calc(100vw - 48px);
-  width: 350px;
+  width: 100%;
 }
 
 /* User Badge */
