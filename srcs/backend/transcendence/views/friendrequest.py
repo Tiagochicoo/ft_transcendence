@@ -44,7 +44,7 @@ class FriendCreate(APIView):
             serializer = FriendRequestSerializer(friend_request)
             return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception as error:
-            return JsonResponse({'success': False, 'message': str(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return JsonResponse({'success': False, 'message': str(error)}, status=status.HTTP_400_BAD_REQUEST)
 
 class FriendCancel(APIView):
     def patch(self, request, friendRequestId, format=None):
@@ -55,7 +55,7 @@ class FriendCancel(APIView):
             serializer = FriendRequestSerializer(friend_request)
             return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception as error:
-            return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return JsonResponse({'success': False}, status=status.HTTP_400_BAD_REQUEST)
 
 class FriendAccept(APIView):
     def patch(self, request, friendRequestId, format=None):
@@ -66,7 +66,7 @@ class FriendAccept(APIView):
             serializer = FriendRequestSerializer(friend_request)
             return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception as error:
-            return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return JsonResponse({'success': False}, status=status.HTTP_400_BAD_REQUEST)
 
 class FriendRefuse(APIView):
     def patch(self, request, friendRequestId, format=None):
@@ -77,7 +77,7 @@ class FriendRefuse(APIView):
             serializer = FriendRequestSerializer(friend_request)
             return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception as error:
-            return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return JsonResponse({'success': False}, status=status.HTTP_400_BAD_REQUEST)
 
 class FriendDetails(APIView):
     def get(self, request, friendRequestId, format=None):
@@ -86,7 +86,7 @@ class FriendDetails(APIView):
             serializer = FriendRequestSerializer(friend_request)
             return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception as error:
-            return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return JsonResponse({'success': False}, status=status.HTTP_404_NOT_FOUND)
 
 class UserFriendDetails(APIView):
     def get(self, request, userId, format=None):
@@ -96,4 +96,4 @@ class UserFriendDetails(APIView):
             serializer = FriendRequestSerializer(friend_requests, many=True)
             return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception as error:
-            return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return JsonResponse({'success': False}, status=status.HTTP_404_NOT_FOUND)

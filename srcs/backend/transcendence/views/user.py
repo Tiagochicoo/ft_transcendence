@@ -52,7 +52,7 @@ class UserList(APIView):
             serializer = UserSerializer(users, many=True)
             return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception as error:
-            return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return JsonResponse({'success': False}, status=status.HTTP_404_NOT_FOUND)
 
     def post(self, request, *args, **kwargs):
         try:
@@ -63,7 +63,7 @@ class UserList(APIView):
             else:
                 return JsonResponse({'success': False, 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as error:
-            return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return JsonResponse({'success': False}, status=status.HTTP_400_BAD_REQUEST)
 
 class UserDetails(APIView):
     def get(self, request, userId, format=None):
@@ -72,7 +72,7 @@ class UserDetails(APIView):
             serializer = UserSerializer(user)
             return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception as error:
-            return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return JsonResponse({'success': False}, status=status.HTTP_404_NOT_FOUND)
 
     def patch(self, request, userId, format=None):
         try:
@@ -83,7 +83,7 @@ class UserDetails(APIView):
                 return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
             return JsonResponse({'success': False, 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as error:
-            return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return JsonResponse({'success': False}, status=status.HTTP_400_BAD_REQUEST)
 
 class UserDashboard(APIView):
     def get(self, request, userId, format=None):
@@ -102,7 +102,7 @@ class UserDashboard(APIView):
             return JsonResponse({'success': True, 'data': data}, status=status.HTTP_200_OK)
         except Exception as error:
             print(error)
-            return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return JsonResponse({'success': False}, status=status.HTTP_404_NOT_FOUND)
 
 class UserLogin(APIView):
     def post(self, request, *args, **kwargs):
@@ -129,7 +129,7 @@ class UserLogin(APIView):
                 }, status=status.HTTP_200_OK)
             return JsonResponse({'success': False, 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as error:
-            return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return JsonResponse({'success': False}, status=status.HTTP_400_BAD_REQUEST)
 
 class Verify2FAView(APIView):
     def post(self, request, *args, **kwargs):
@@ -176,4 +176,4 @@ class Generate2FASecretView(APIView):
                 'otp_auth_url': otp_auth_url
             })
         except Exception as error:
-            return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return JsonResponse({'success': False}, status=status.HTTP_404_NOT_FOUND)
