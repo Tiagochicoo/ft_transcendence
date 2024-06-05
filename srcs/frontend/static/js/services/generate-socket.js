@@ -17,7 +17,7 @@ const generateSocket = async () => {
 
     socketListeners();
   } catch(e) {
-    console.error(e);
+    // console.error(e);
   }
 }
 

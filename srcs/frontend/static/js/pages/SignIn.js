@@ -44,14 +44,15 @@ export default class extends Abstract {
                     });
 
                     const responseData = await response.json();
-                    console.log("2FA verification response:", responseData);
+                    // console.log("2FA verification response:", responseData);
 
                     if (!response.ok) {
                         this.handleErrors(responseData.errors);
                     } else {
                         localStorage.setItem('accessToken', responseData.data.access);
                         localStorage.setItem('refreshToken', responseData.data.refresh);
-                        console.log('2FA verification successful:', responseData);
+                        // console.log('2FA verification successful:', responseData);
+                        console.log('2FA verification successful');
 
                         // Update the language with the one the user prefers
                         const userId = getUserIDfromToken(responseData.data.access);
@@ -60,7 +61,7 @@ export default class extends Abstract {
                         navigateTo('/dashboard/general');
                     }
                 } catch (error) {
-                    console.error('Network or other error:', error);
+                    // console.error('Network or other error:', error);
                 }
             } else {
                 // Initial login request
@@ -75,7 +76,7 @@ export default class extends Abstract {
                     });
 
                     const responseData = await response.json();
-                    console.log("Server response:", responseData);
+                    // console.log("Server response:", responseData);
 
                     if (!responseData.success) {
                         this.handleErrors(responseData.errors);
@@ -86,7 +87,8 @@ export default class extends Abstract {
                     } else {
                         localStorage.setItem('accessToken', responseData.data.access);
                         localStorage.setItem('refreshToken', responseData.data.refresh);
-                        console.log('Login successful:', responseData);
+                        // console.log('Login successful:', responseData);
+                        console.log('Login successful');
 
                         const userId = getUserIDfromToken(responseData.data.access);
                         checkUserPreferredLanguage(userId);
@@ -94,7 +96,7 @@ export default class extends Abstract {
                         navigateTo('/dashboard/general');
                     }
                 } catch (error) {
-                    console.error('Network or other error:', error);
+                    // console.error('Network or other error:', error);
                 }
             }
         });

@@ -198,7 +198,7 @@ const doUpdate = (io, matchId) => {
         throw new Error();
       }
     }).catch(error => {
-      console.log(`Error finishing the match ${matchId}:`, error);
+      // console.log(`Error finishing the match ${matchId}:`, error);
     }).finally(() => {
       delete MATCHES_STATE[matchId];
     });

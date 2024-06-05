@@ -32,16 +32,17 @@ export default class extends Abstract {
                     });
 
                     const responseData = await response.json();
-                    console.log("Server response:", responseData);
+                    // console.log("Server response:", responseData);
 
                     if (!responseData.success) {
                         this.handleErrors(responseData.errors);
                     } else {
-                        console.log('User registered successfully:', responseData);
+                        // console.log('User registered successfully:', responseData);
+                        console.log('User registered successfully');
                         navigateTo('/sign-in');
                     }
                 } catch (error) {
-                    console.error('Network or other error:', error);
+                    // console.error('Network or other error:', error);
                 }
             } else {
                 form.classList.add("was-validated");

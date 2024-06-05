@@ -77,10 +77,10 @@ export default class extends Abstract {
                     document.getElementById('2fa-text').textContent = i18next.t('editProfile.enable2FA');
                 }
             } else {
-                console.error('Failed to fetch user data:', responseData);
+                // console.error('Failed to fetch user data:', responseData);
             }
         } catch (error) {
-            console.error('Network or other error:', error);
+            // console.error('Network or other error:', error);
         }
     }
 
@@ -99,10 +99,10 @@ export default class extends Abstract {
                 document.getElementById('2fa-qrcode').src = `data:image/png;base64,${responseData.qr_code}`;
                 document.getElementById('2fa-qrcode-section').style.display = 'block';
             } else {
-                console.error('Failed to generate 2FA QR code:', responseData);
+                // console.error('Failed to generate 2FA QR code:', responseData);
             }
         } catch (error) {
-            console.error('Network or other error:', error);
+            // console.error('Network or other error:', error);
         }
     }
 

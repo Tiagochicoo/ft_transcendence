@@ -36,7 +36,7 @@ const initTournament = async (io, tournamentId) => {
         });
       }, 5000);
     }).catch(error => {
-      console.log(`Error sending the start notifications for the tournament ${tournamentId}:`, error);
+      // console.log(`Error sending the start notifications for the tournament ${tournamentId}:`, error);
     });
 }
 

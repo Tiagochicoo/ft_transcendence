@@ -23,7 +23,7 @@ const tournamentInviteSocketListener = (socket, io) => {
           io.emit(`tournament_invite_${tournamentUser.user.id}`, tournamentUser);
         });
     }).catch(error => {
-      console.log(`Error sending the invites for the tournament ${tournamentId}:`, error);
+      // console.log(`Error sending the invites for the tournament ${tournamentId}:`, error);
     });
   });
 }

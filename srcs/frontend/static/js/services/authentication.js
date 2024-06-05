@@ -101,7 +101,7 @@ async function renewAccessToken(refreshToken) {
             throw new Error('Failed to renew access token');
         }
     } catch (error) {
-        console.error('Error during token renewal:', error);
+        // console.error('Error during token renewal:', error);
         return null;
     }
 }
@@ -138,10 +138,10 @@ async function fetchWithToken(path, options = {}) {
             const contentType = response.headers.get('content-type');
             if (contentType && contentType.indexOf('application/json') !== -1) {
                 const errorJson = await response.json();
-                console.error('API call failed with JSON error:', errorJson);
+                // console.error('API call failed with JSON error:', errorJson);
             } else {
                 const errorText = await response.text();
-                console.error('API call failed with text error:', errorText);
+                // console.error('API call failed with text error:', errorText);
             }
             throw new Error('API call failed');
         }
@@ -149,7 +149,7 @@ async function fetchWithToken(path, options = {}) {
 
         return await response.json();
     } catch (error) {
-        console.error('Error during API call:', error);
+        // console.error('Error during API call:', error);
     }
 }
 
