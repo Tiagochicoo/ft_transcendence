@@ -33,7 +33,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'email', 'password', 'username', 'avatar', 'num_games', 'num_games_won', 'num_tournaments', 'num_tournaments_won', 'preferred_language']
+        fields = ['id', 'email', 'password', 'username', 'avatar', 'num_games', 'num_games_won', 'num_tournaments', 'num_tournaments_won', 'preferred_language', 'is_2fa_enabled', 'two_factor_code']
         extra_kwargs = {'password': {'write_only': True}}
 
     def validate_email(self, value):
@@ -86,7 +86,9 @@ class UserSerializer(serializers.ModelSerializer):
             num_games_won=validated_data.get('num_games_won', 0),
             num_tournaments=validated_data.get('num_tournaments', 0),
             num_tournaments_won=validated_data.get('num_tournaments_won', 0),
-            preferred_language=validated_data.get('preferred_language', 'en')
+            preferred_language=validated_data.get('preferred_language', 'en'),
+            is_2fa_enabled=validated_data.get('is_2fa_enabled', False),
+            two_factor_code=validated_data.get('two_factor_code', None),
         )
         # Only set the avatar if provided
         # The default value was not working properly otherwise
@@ -101,6 +103,11 @@ class UserSerializer(serializers.ModelSerializer):
 
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
+        
+        if 'twofa_enabled' in validated_data:
+            instance.twofa_enabled = validated_data['twofa_enabled']
+            if not validated_data['twofa_enabled']:
+                instance.two_factor_secret = None
 
         instance.save()
         return instance

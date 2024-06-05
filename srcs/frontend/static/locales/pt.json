@@ -137,7 +137,11 @@
       "password": {
         "label": "Senha",
         "invalidFeedback": "Por favor escolha uma senha válida."
-      }
+      },
+      "twoFactorCode": {
+        "label": "Código de autenticação de dois fatores",
+        "invalidFeedback": "Por favor, insira um código 2FA válido."
+    }
     },
     "validation": {
       "field_blank": "Este campo não pode estar vazio.",
@@ -145,7 +149,8 @@
       "invalid_email_address": "Insira um endereço de email válido.",
       "account_not_found": "Nenhuma conta encontrada com o username/email fornecido.",
       "invalid_credentials": "Senha inválida ou o usuário não existe.",
-      "incorrect_password": "A senha está incorreta."
+      "incorrect_password": "A senha está incorreta.",
+      "invalid_2fa_code": "El código 2FA es incorrecto."
     },
     "submitButton": "Enviar"
   },
@@ -176,7 +181,10 @@
     "submitButton": "Registrar"
   },
   "editProfile" : {
-    "title": "Editar perfil"
+    "title": "Editar perfil",
+    "enable2FA": "Ativar autenticação de dois fatores",
+    "disable2FA": "Desativar autenticação de dois fatores",
+    "scanQRCode": "Escaneie este código QR com seu aplicativo autenticador"
   },
   "errors": {
     "invalid_page": "Não tem permissões para ver essa página"

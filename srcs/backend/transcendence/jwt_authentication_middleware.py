@@ -23,7 +23,7 @@ class JWTAuthenticationMiddleware:
 
         # Skip JWT authentication for admin, media, sign-in, and sign-up URLs
         is_media_or_admin_route = any(map(lambda prefix: resolve(request.path_info).route.startswith(prefix), ['admin', '^media/']))
-        if is_media_or_admin_route or ((request.method == 'POST') and (resolve(request.path_info).url_name in ['users', 'user_login', 'token_refresh'])):
+        if is_media_or_admin_route or ((request.method == 'POST') and (resolve(request.path_info).url_name in ['users', 'user_login', 'token_refresh', 'verify-2fa', 'two_factor_code'])):
             return self.get_response(request)
 
         if authorization_header:

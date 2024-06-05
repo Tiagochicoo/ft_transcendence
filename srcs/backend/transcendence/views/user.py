@@ -11,6 +11,10 @@ from ..serializers.serializers_signin import SignInSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 import logging
+import pyotp
+import qrcode
+from io import BytesIO
+import base64
 
 logger = logging.getLogger(__name__)
 
@@ -106,6 +110,14 @@ class UserLogin(APIView):
             serializer = SignInSerializer(data=request.data)
             if serializer.is_valid():
                 user = serializer.validated_data['user']
+
+                if user.is_2fa_enabled:
+                    return JsonResponse({
+                        'success': True,
+                        '2fa_required': True,
+                        'user_id': user.id,
+                    }, status=status.HTTP_200_OK)
+
                 refresh = RefreshToken.for_user(user)
                 return JsonResponse({
                     'success': True,
@@ -116,5 +128,52 @@ class UserLogin(APIView):
                     }
                 }, status=status.HTTP_200_OK)
             return JsonResponse({'success': False, 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class Verify2FAView(APIView):
+    def post(self, request, *args, **kwargs):
+        try:
+            user_id = request.data.get('user_id')
+            two_factor_code = request.data.get('two_factor_code')
+            user = User.objects.get(id=user_id)
+
+            if user and user.verify_2fa_code(two_factor_code):
+                refresh = RefreshToken.for_user(user)
+                return JsonResponse({
+                    'success': True,
+                    'data': {
+                        'refresh': str(refresh),
+                        'access': str(refresh.access_token),
+                        'user_id': user.id,
+                    }
+                }, status=status.HTTP_200_OK)
+
+            return JsonResponse({'success': False, 'errors': {'two_factor_code': ['invalid_2fa_code']}}, status=status.HTTP_401_UNAUTHORIZED)
+        except Exception as error:
+            return JsonResponse({'success': False, 'errors': {'two_factor_code': ['invalid_2fa_code']}}, status=status.HTTP_401_UNAUTHORIZED)
+
+class Generate2FASecretView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        try:
+            user = request.user
+            if not user.two_factor_code:
+                user.two_factor_code = pyotp.random_base32()
+                user.save()
+
+            totp = pyotp.TOTP(user.two_factor_code)
+            otp_auth_url = totp.provisioning_uri(name=user.email, issuer_name="Transcendence")
+
+            qr = qrcode.make(otp_auth_url)
+            buffer = BytesIO()
+            qr.save(buffer, format="PNG")
+            qr_code_base64 = base64.b64encode(buffer.getvalue()).decode()
+
+            return Response({
+                'qr_code': qr_code_base64,
+                'otp_auth_url': otp_auth_url
+            })
         except Exception as error:
             return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
