@@ -260,7 +260,15 @@ main {
 
 /* Toast */
 #toast {
-  position: absolute;
+  position: sticky;
+  top: 90px;
+  right: 12px;
+  height: fit-content;
+}
+
+.toast-header {
+  max-width: calc(100vw - 48px);
+  width: 350px;
 }
 
 /* User Badge */
