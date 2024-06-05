@@ -192,6 +192,8 @@
       "invalid_page": "You don't have permissions to see that page"
     },
     "dashboard": {
+      "matchesWon": "Matches won:",
+      "tournamentsWon": "Tournaments won:",
       "matches": "Matches",
       "tournaments": "Tournaments",
       "rankings": "Rankings",
@@ -213,6 +215,9 @@
       "tournamentsWinRatio": "Tournaments win ratio",
       "individual": {
         "title": "Individual dashboard"
+      },
+      "general": {
+        "title": "General dashboard"
       }
     }
 }

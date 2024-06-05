@@ -39,7 +39,7 @@ export default class extends Abstract {
 
 		return `
 			<h1>
-				${i18next.t("dashboard.individual.title")}
+				${i18next.t("dashboard.general.title")}
 			</h1>
 
 			${User.getProfile(this.user)}
