@@ -1,7 +1,7 @@
 import { Tournaments } from "/static/js/api/index.js";
 import { Abstract } from "/static/js/components/index.js";
 import { User } from "/static/js/generators/index.js";
-import { navigateTo, sendNotification } from "/static/js/services/index.js";
+import { navigateTo, sendNotification, variables } from "/static/js/services/index.js";
 
 // Utility Class
 export default class extends Abstract {
@@ -180,7 +180,7 @@ export default class extends Abstract {
 		const response = await Tournaments.create(invited_user_ids);
 
 		if (response.success) {
-			SOCKET.emit('tournament_invite', response.data.tournament.id);
+			variables.socket.emit('tournament_invite', response.data.tournament.id);
 			this.tournamentCreateNotification(response.data);
 		}
 
@@ -351,7 +351,7 @@ export default class extends Abstract {
 					if (response.success) {
 						const data = response.data.find(el => el.id == id);
 						const otherData = response.data.filter(el => el.id != id);
-						SOCKET.emit('tournament_refuse', otherData);
+						variables.socket.emit('tournament_refuse', otherData);
 						this.doDataUpdate(data);
 						this.updateTournamentsAccepted();
 						this.updateTournamentsReceived();
@@ -361,7 +361,7 @@ export default class extends Abstract {
 				case 'accept':
 					response = await Tournaments.accept(id);
 					if (response.success) {
-						SOCKET.emit('tournament_accept', response.data);
+						variables.socket.emit('tournament_accept', response.data);
 						this.doDataUpdate(response.data);
 						this.updateTournamentsAccepted();
 						this.updateTournamentsReceived();

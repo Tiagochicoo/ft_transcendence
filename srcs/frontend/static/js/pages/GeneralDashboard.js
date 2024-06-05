@@ -26,7 +26,9 @@ export default class extends Abstract {
 		this.matches = response.data.matches
 			.filter(({ has_finished }) => has_finished)
 			.sort(({ id }) => id);
-		this.tournament_users = response.data.tournament_users.sort(({ id }) => id);;
+		this.tournament_users = response.data.tournament_users
+			.filter(({ tournament }) => tournament.has_finished)
+			.sort(({ id }) => id);
 
 		response = await Users.getAll();
 		if (!response.success) {

@@ -5,5 +5,6 @@ import { navigateTo, invalidPage} from "./navigation.js";
 import sendNotification from "./notifications.js";
 import { renderSidebar, renderPage } from "./render.js";
 import socketListeners from "./socket-listeners/index.js";
+import variables from "./variables.js";
 
-export { doLogout, getCSRFToken, getUserIDfromToken, clearTokens, refreshUserID, fetchWithToken, generateSocket, i18nextInit, changeLanguage, checkUserPreferredLanguage, navigateTo, invalidPage, sendNotification, renderSidebar, renderPage, socketListeners };
+export { doLogout, getCSRFToken, getUserIDfromToken, clearTokens, refreshUserID, fetchWithToken, generateSocket, i18nextInit, changeLanguage, checkUserPreferredLanguage, navigateTo, invalidPage, sendNotification, renderSidebar, renderPage, socketListeners, variables };

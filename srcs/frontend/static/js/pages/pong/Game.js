@@ -1,4 +1,5 @@
 import { User } from "/static/js/pages/pong/index.js";
+import { variables } from "/static/js/services/index.js";
 
 export default class Game {
   constructor(match, mode) {
@@ -30,7 +31,7 @@ export default class Game {
 
   socketFunctionality() {
     const handleDown = (isDown) => {
-      SOCKET.emit(`game_move`, {
+      variables.socket.emit(`game_move`, {
         matchId: this.match.id,
         key: "ArrowDown",
         isDown,
@@ -39,7 +40,7 @@ export default class Game {
     }
 
     const handleUp = (isDown) => {
-      SOCKET.emit(`game_move`, {
+      variables.socket.emit(`game_move`, {
         matchId: this.match.id,
         key: "ArrowUp",
         isDown,
@@ -48,7 +49,7 @@ export default class Game {
     }
 
     const handleAttack = (isDown) => {
-      SOCKET.emit(`game_move`, {
+      variables.socket.emit(`game_move`, {
         matchId: this.match.id,
         key: " ",
         isDown,
@@ -93,9 +94,9 @@ export default class Game {
     }
 
     // Listen for game state updates
-    SOCKET.off(`match_data_${this.match.id}`);
+    variables.socket.off(`match_data_${this.match.id}`);
 
-    SOCKET.on(`match_data_${this.match.id}`, (data) => {
+    variables.socket.on(`match_data_${this.match.id}`, (data) => {
       this.gameState = data;
 
       this.setColors();

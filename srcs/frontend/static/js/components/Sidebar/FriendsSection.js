@@ -1,7 +1,7 @@
 import { Friends } from "/static/js/api/index.js";
 import { Abstract, ChatBox } from "/static/js/components/index.js";
 import { User } from "/static/js/generators/index.js";
-import { sendNotification } from "/static/js/services/index.js";
+import { sendNotification, variables } from "/static/js/services/index.js";
 
 // Utility Class
 export default class extends Abstract {
@@ -219,7 +219,7 @@ export default class extends Abstract {
 				case 'refuse':
 					response = await Friends.refuse(id);
 					if (response.success) {
-						SOCKET.emit('friend_refuse', response.data);
+						variables.socket.emit('friend_refuse', response.data);
 						this.doDataUpdate(response.data);
 						this.updateFriendsAccepted();
 						this.updateFriendsReceived();
@@ -229,7 +229,7 @@ export default class extends Abstract {
 				case 'accept':
 					response = await Friends.accept(id);
 					if (response.success) {
-						SOCKET.emit('friend_accept', response.data);
+						variables.socket.emit('friend_accept', response.data);
 						this.doDataUpdate(response.data);
 						this.updateFriendsAccepted();
 						this.updateFriendsReceived();
@@ -239,7 +239,7 @@ export default class extends Abstract {
 				case 'cancel':
 					response = await Friends.cancel(id);
 					if (response.success) {
-						SOCKET.emit('friend_cancel', response.data);
+						variables.socket.emit('friend_cancel', response.data);
 						this.doDataUpdate(response.data);
 						this.updateFriendsSent();
 					}
@@ -263,7 +263,7 @@ export default class extends Abstract {
 			const usernameInputEl = e.target.querySelector('#username-add');
 			const usernameErrorEl = e.target.querySelector('#usernameAddError');
 			if (response?.success) {
-				SOCKET.emit('friend_add', response.data);
+				variables.socket.emit('friend_add', response.data);
 				usernameInputEl.value = '';
 				usernameErrorEl.textContent = '';
 				usernameErrorEl.style.display = 'none';
