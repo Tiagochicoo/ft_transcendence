@@ -56,6 +56,10 @@ main {
 }
 
 /* SideBar */
+#sidebar {
+  z-index: 10;
+}
+
 .sidebar-outter-wrapper, .sidebar-wrapper {
   min-width: 250px;
   max-width: 250px;
