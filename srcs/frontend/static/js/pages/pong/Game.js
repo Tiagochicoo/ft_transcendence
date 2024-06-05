@@ -31,6 +31,8 @@ export default class Game {
 
   socketFunctionality() {
     const handleDown = (isDown) => {
+      if (this.gameState?.meta?.status != "running") return;
+
       variables.socket.emit(`game_move`, {
         matchId: this.match.id,
         key: "ArrowDown",
@@ -40,6 +42,8 @@ export default class Game {
     }
 
     const handleUp = (isDown) => {
+      if (this.gameState?.meta?.status != "running") return;
+
       variables.socket.emit(`game_move`, {
         matchId: this.match.id,
         key: "ArrowUp",
@@ -49,12 +53,19 @@ export default class Game {
     }
 
     const handleAttack = (isDown) => {
+      if (this.gameState?.meta?.status != "running") return;
+
       variables.socket.emit(`game_move`, {
         matchId: this.match.id,
         key: " ",
         isDown,
         userId: USER_ID,
       });
+
+      const attackBtn = document.querySelector('#pong [data-game-action="attack"]');
+      if (attackBtn) {
+        attackBtn.disabled = true;
+      }
     }
 
     // Set the game actions
