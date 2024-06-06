@@ -66,6 +66,7 @@
   "pong": {
     "title": "Pong",
     "content": "<p>Use los botones de abajo para controlar su pala.</p><p>También puede usar las teclas de Flecha Arriba/Flecha Abajo o W/S para mover la pala hacia arriba y hacia abajo.</p><p>Puedes ATACAR a tu oponente una vez cambiando la dirección de la bola pulsando la tecla ESPACIO.</p>",
+    "contentLocal": "<p>Use los botones de abajo para controlar su pala.</p><p>También puede usar las teclas de Flecha Arriba/Flecha Abajo o W/S para mover la pala hacia arriba y hacia abajo.</p><p>Puedes ATACAR a tu oponente una vez cambiando la dirección de la bola pulsando la tecla ESPACIO/ENTER.</p>",
     "another": "Otra partida",
     "won": "¡Felicidades, ganaste!",
     "lost": "Ooops, perdiste...",

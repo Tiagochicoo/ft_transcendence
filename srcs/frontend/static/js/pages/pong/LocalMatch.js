@@ -402,16 +402,6 @@ export default class Game {
     const text = `${i18next.t("dashboard.winner")}: ${winnerUsername}`;
 
     this.ctx.fillText(text, this.gameState.width / 2, this.gameState.height / 2);
-
-    // Add 'Go Back' button
-    const pongWrapper = document.getElementById("pong-end-btn");
-    if (pongWrapper) {
-      pongWrapper.innerHTML = `
-        <a class="btn btn-secondary mt-4" href="/local-match" data-link tabindex="1">
-          ${i18next.t('pong.another')}
-        </a>
-      `;
-    }
   }
 
   async getHtml() {
@@ -427,7 +417,7 @@ export default class Game {
 			</h1>
 
 			<div class="pong-content mb-4">
-				${i18next.t("pong.content")}
+				${i18next.t("pong.content2")}
 			</div>
 
 			<div id="pong" class="d-flex flex-column">

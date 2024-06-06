@@ -66,6 +66,7 @@
   "pong": {
     "title": "Pong",
     "content": "<p>Use the buttons bellow to control your paddle.<p></p>You can also use the ArrowUp/ArrowDown or W/S keys to move the paddle up and down.</p><p>You can ATTACK your opponent once by changing the ball's direction by pressing the SPACE key.</p>",
+    "contentLocal": "<p>Use the buttons bellow to control your paddle.<p></p>You can also use the ArrowUp/ArrowDown or W/S keys to move the paddle up and down.</p><p>You can ATTACK your opponent once by changing the ball's direction by pressing the SPACE/ENTER key.</p>",
     "another": "Another match",
     "won": "Congratulations, you won!",
     "lost": "Ooops, you lost...",
