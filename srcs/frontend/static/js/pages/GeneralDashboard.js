@@ -25,8 +25,10 @@ export default class extends Abstract {
 		this.user = response.data.user;
 		this.matches = response.data.matches
 			.filter(({ has_finished }) => has_finished)
-			.sort(({ id }) => id);
-		this.tournament_users = response.data.tournament_users.sort(({ id }) => id);;
+			.sort((a, b) => a.id > b.id ? -1 : 1);
+		this.tournament_users = response.data.tournament_users
+			.filter(({ tournament }) => tournament.has_finished)
+			.sort((a, b) => a.id > b.id ? -1 : 1);
 
 		response = await Users.getAll();
 		if (!response.success) {
@@ -37,7 +39,7 @@ export default class extends Abstract {
 
 		return `
 			<h1>
-				${i18next.t("dashboard.individual.title")}
+				${i18next.t("dashboard.general.title")}
 			</h1>
 
 			${User.getProfile(this.user)}

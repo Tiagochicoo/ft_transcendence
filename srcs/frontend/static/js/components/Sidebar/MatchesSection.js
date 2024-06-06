@@ -1,7 +1,7 @@
 import { Matches } from "/static/js/api/index.js";
 import { Abstract } from "/static/js/components/index.js";
 import { User } from "/static/js/generators/index.js";
-import { navigateTo, sendNotification } from "/static/js/services/index.js";
+import { navigateTo, sendNotification, variables } from "/static/js/services/index.js";
 
 // Utility Class
 export default class extends Abstract {
@@ -206,7 +206,7 @@ export default class extends Abstract {
 		const response = await Matches.create(invited_user_id);
 
 		if (response.success) {
-			SOCKET.emit('match_invite', response.data);
+			variables.socket.emit('match_invite', response.data);
 			this.matchCreateNotification(response.data);
 		}
 
@@ -227,7 +227,7 @@ export default class extends Abstract {
 				case 'refuse':
 					response = await Matches.refuse(id);
 					if (response.success) {
-						SOCKET.emit('match_refuse', response.data);
+						variables.socket.emit('match_refuse', response.data);
 						this.doDataUpdate(response.data);
 						this.updateMatchesAccepted();
 						this.updateMatchesReceived();
@@ -237,7 +237,7 @@ export default class extends Abstract {
 				case 'accept':
 					response = await Matches.accept(id);
 					if (response.success) {
-						SOCKET.emit('match_accept', response.data);
+						variables.socket.emit('match_accept', response.data);
 						this.doDataUpdate(response.data);
 						this.updateMatchesAccepted();
 						this.updateMatchesReceived();
@@ -252,7 +252,7 @@ export default class extends Abstract {
 				case 'cancel':
 					response = await Matches.cancel(id);
 					if (response.success) {
-						SOCKET.emit('match_cancel', response.data);
+						variables.socket.emit('match_cancel', response.data);
 						this.doDataUpdate(response.data);
 						this.updateMatchesSent();
 					}

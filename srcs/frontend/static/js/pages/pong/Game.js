@@ -1,4 +1,5 @@
 import { User } from "/static/js/pages/pong/index.js";
+import { variables } from "/static/js/services/index.js";
 
 export default class Game {
   constructor(match, mode) {
@@ -30,7 +31,9 @@ export default class Game {
 
   socketFunctionality() {
     const handleDown = (isDown) => {
-      SOCKET.emit(`game_move`, {
+      if (this.gameState?.meta?.status != "running") return;
+
+      variables.socket.emit(`game_move`, {
         matchId: this.match.id,
         key: "ArrowDown",
         isDown,
@@ -39,7 +42,9 @@ export default class Game {
     }
 
     const handleUp = (isDown) => {
-      SOCKET.emit(`game_move`, {
+      if (this.gameState?.meta?.status != "running") return;
+
+      variables.socket.emit(`game_move`, {
         matchId: this.match.id,
         key: "ArrowUp",
         isDown,
@@ -48,12 +53,19 @@ export default class Game {
     }
 
     const handleAttack = (isDown) => {
-      SOCKET.emit(`game_move`, {
+      if (this.gameState?.meta?.status != "running") return;
+
+      variables.socket.emit(`game_move`, {
         matchId: this.match.id,
         key: " ",
         isDown,
         userId: USER_ID,
       });
+
+      const attackBtn = document.querySelector('#pong [data-game-action="attack"]');
+      if (attackBtn) {
+        attackBtn.disabled = true;
+      }
     }
 
     // Set the game actions
@@ -61,18 +73,15 @@ export default class Game {
     if (gameActions) {
       const createEventListeners = (element, callback) => {
         element.addEventListener('mousedown', (e) => {
-          e.preventDefault();
           callback(true);
         });
         element.addEventListener('mouseup', (e) => {
-          e.preventDefault();
           callback(false);
         });
         element.addEventListener('touchstart', (e) => {
           callback(true);
-        }, { passive: true});
+        });
         element.addEventListener('touchend', (e) => {
-          e.preventDefault();
           callback(false);
         });
       }
@@ -93,9 +102,9 @@ export default class Game {
     }
 
     // Listen for game state updates
-    SOCKET.off(`match_data_${this.match.id}`);
+    variables.socket.off(`match_data_${this.match.id}`);
 
-    SOCKET.on(`match_data_${this.match.id}`, (data) => {
+    variables.socket.on(`match_data_${this.match.id}`, (data) => {
       this.gameState = data;
 
       this.setColors();
@@ -110,7 +119,6 @@ export default class Game {
 
     // Handle user move: key down
     this.canvasArea.addEventListener("keydown", (e) => {
-      e.preventDefault();
       if (["ArrowDown", "s"].includes(e.key)) {
         handleDown(true);
       } else if (["ArrowUp", "w"].includes(e.key)) {
@@ -122,7 +130,6 @@ export default class Game {
 
     // Handle user move: key up
     this.canvasArea.addEventListener("keyup", (e) => {
-      e.preventDefault();
       if (["ArrowDown", "s"].includes(e.key)) {
         handleDown(false);
       } else if (["ArrowUp", "w"].includes(e.key)) {

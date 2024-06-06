@@ -1,7 +1,7 @@
 import { Tournaments } from "/static/js/api/index.js";
 import { Abstract } from "/static/js/components/index.js";
 import { User } from "/static/js/generators/index.js";
-import { navigateTo, sendNotification } from "/static/js/services/index.js";
+import { navigateTo, sendNotification, variables } from "/static/js/services/index.js";
 
 // Utility Class
 export default class extends Abstract {
@@ -39,7 +39,7 @@ export default class extends Abstract {
 				<div id="${options.id}" class="collapse ${isExpanded ? "show" : ""} ${options.title ? 'mt-3' : ''}">
 					<ul class="list-unstyled d-flex flex-column gap-2 mb-0">
 						${list.map(({ id, user, tournament }) => `
-							<div class="sidebar-section-element d-flex align-items-center justify-content-between gap-1 p-1 bg-light rounded" data-tournament-id="${tournament.id}" ${isAccepted ? `href="/pong/tournament/${tournament.id}/rounds" data-link` : ''}>
+							<${isAccepted ? "button" : "div"} class="sidebar-section-element d-flex align-items-center justify-content-between gap-1 p-1 bg-light rounded" data-tournament-id="${tournament.id}" ${isAccepted ? `href="/pong/tournament/${tournament.id}/rounds" data-link` : ''}>
 								${User.getBadge(user)}
 
 								${isAccepted ? `
@@ -57,7 +57,7 @@ export default class extends Abstract {
 										`).join("")}
 									</div>
 								` : ''}
-							</div>
+							</${isAccepted ? "button" : "div"}>
 						`).join("")}
 					</ul>
 				</div>
@@ -180,7 +180,7 @@ export default class extends Abstract {
 		const response = await Tournaments.create(invited_user_ids);
 
 		if (response.success) {
-			SOCKET.emit('tournament_invite', response.data.tournament.id);
+			variables.socket.emit('tournament_invite', response.data.tournament.id);
 			this.tournamentCreateNotification(response.data);
 		}
 
@@ -351,7 +351,7 @@ export default class extends Abstract {
 					if (response.success) {
 						const data = response.data.find(el => el.id == id);
 						const otherData = response.data.filter(el => el.id != id);
-						SOCKET.emit('tournament_refuse', otherData);
+						variables.socket.emit('tournament_refuse', otherData);
 						this.doDataUpdate(data);
 						this.updateTournamentsAccepted();
 						this.updateTournamentsReceived();
@@ -361,7 +361,7 @@ export default class extends Abstract {
 				case 'accept':
 					response = await Tournaments.accept(id);
 					if (response.success) {
-						SOCKET.emit('tournament_accept', response.data);
+						variables.socket.emit('tournament_accept', response.data);
 						this.doDataUpdate(response.data);
 						this.updateTournamentsAccepted();
 						this.updateTournamentsReceived();

@@ -7,7 +7,7 @@ export default class PongData {
 	static getMockedData() {
 	  return fetch("/static/js/db.json")
 		.then((response) => response.json())
-		.catch((error) => console.log(error.message));
+		.catch((error) => {} /* console.log(error.message) */);
 	}
 
 	static async createMatch(data) {
@@ -22,7 +22,7 @@ export default class PongData {
 			});
 			return response.data.id;
 		} catch(error) {
-			console.error("Error: ", error);
+			// console.error("Error: ", error);
 			return -1;
 		}
 	}
@@ -43,7 +43,7 @@ export default class PongData {
 				body: JSON.stringify(data),
 			});
 		} catch(error) {
-			console.error("Error: ", error);
+			// console.error("Error: ", error);
 		}
 	}
 
@@ -65,7 +65,7 @@ export default class PongData {
 
 			return response.data.id;
 		} catch(error) {
-			console.error("Error: ", error);
+			// console.error("Error: ", error);
 			return -1;
 		}
 	}
@@ -81,7 +81,7 @@ export default class PongData {
 				body: JSON.stringify(data),
 			});
 		} catch(error) {
-			console.error("Error: ", error);
+			// console.error("Error: ", error);
 		}
 	}
 
@@ -102,7 +102,7 @@ export default class PongData {
 			});
 			return true;
 		} catch(error) {
-			console.log("Error: ", error);
+			// console.log("Error: ", error);
 			return false;
 		}
 	}

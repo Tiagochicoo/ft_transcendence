@@ -26,12 +26,12 @@
     <script>
       // Declare Global Variables for the client
       const API_URL = '/api';
-      let USER_ID, SOCKET;
+      let USER_ID;
       let ONLINE_USERS = [];
     </script>
   </head>
 
-  <body class="font-large">
+  <body>
     <!-- Navbar -->
     <div id="navbar"></div>
 
@@ -41,7 +41,7 @@
         <div id="sidebar"></div>
         <div id="app"></div>
         <div id="chat-box"></div>
-        <div id="toast" class="toast top-0 end-0 bg-body-secondary" role="alert" aria-live="assertive" aria-atomic="true">
+        <div id="toast" class="toast bg-body-secondary" role="alert" aria-live="assertive" aria-atomic="true">
           <div class="toast-header justify-content-between">
             <div class="toast-user"></div>
             <div class="d-flex align-items-center">

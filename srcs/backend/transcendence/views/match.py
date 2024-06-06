@@ -18,7 +18,7 @@ class MatchCreate(APIView):
 			serializer = MatchSerializer(match)
 			return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
 		except Exception as error:
-			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+			return JsonResponse({'success': False}, status=status.HTTP_400_BAD_REQUEST)
 
 class MatchDetail(APIView):
 	def get(self, request, id, format=None):
@@ -44,7 +44,7 @@ class MatchUpdate(APIView):
 			serializer = MatchSerializer(match)
 			return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
 		except Exception as error:
-			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+			return JsonResponse({'success': False}, status=status.HTTP_400_BAD_REQUEST)
 
 class MatchCancel(APIView):
 	def patch(self, request, MatchId, format=None):
@@ -55,7 +55,7 @@ class MatchCancel(APIView):
 			serializer = MatchSerializer(match)
 			return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
 		except Exception as error:
-			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+			return JsonResponse({'success': False}, status=status.HTTP_400_BAD_REQUEST)
 
 class MatchAccept(APIView):
 	def patch(self, request, MatchId, format=None):
@@ -66,7 +66,7 @@ class MatchAccept(APIView):
 			serializer = MatchSerializer(match)
 			return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
 		except Exception as error:
-			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+			return JsonResponse({'success': False}, status=status.HTTP_400_BAD_REQUEST)
 
 class MatchRefuse(APIView):
 	def patch(self, request, MatchId, format=None):
@@ -77,7 +77,7 @@ class MatchRefuse(APIView):
 			serializer = MatchSerializer(match)
 			return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
 		except Exception as error:
-			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+			return JsonResponse({'success': False}, status=status.HTTP_400_BAD_REQUEST)
 
 class MatchFinish(APIView):
 	def patch(self, request, MatchId, format=None):
@@ -105,7 +105,7 @@ class MatchFinish(APIView):
 			serializer = MatchSerializer(match)
 			return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
 		except Exception as error:
-			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+			return JsonResponse({'success': False}, status=status.HTTP_400_BAD_REQUEST)
 
 class MatchByTournament(APIView):
 	def get(self, request, tournament_id, format=None):
@@ -128,4 +128,4 @@ class UserMatchDetails(APIView):
 			serializer = MatchSerializer(matches, many=True)
 			return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
 		except Exception as error:
-			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+			return JsonResponse({'success': False}, status=status.HTTP_404_NOT_FOUND)

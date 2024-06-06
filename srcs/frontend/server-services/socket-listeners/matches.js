@@ -22,16 +22,18 @@ const matchesSocketListener = (socket, io) => {
         gameState.user1.isUpPressed = isDown;
       } else if (key == "ArrowDown") {
         gameState.user1.isDownPressed = isDown;
-      } else if (key == " ") {
-        if (isDown) gameState.startAttack = true;
+      } else if ((key == " ") && isDown && !gameState.startAttack && !gameState.user1.usedAttack) {
+        gameState.startAttack = true;
+        gameState.user1.usedAttack = true;
       }
     } else if (userId == gameState.user2.id) {
       if (key == "ArrowUp") {
         gameState.user2.isUpPressed = isDown;
       } else if (key == "ArrowDown") {
         gameState.user2.isDownPressed = isDown;
-      } else if (key == " ") {
-        if (isDown) gameState.startAttack = true;
+      } else if ((key == " ") && isDown && !gameState.startAttack && !gameState.user2.usedAttack) {
+        gameState.startAttack = true;
+        gameState.user2.usedAttack = true;
       }
     }
   });
@@ -45,12 +47,14 @@ const startGame = (io, data) => {
       score: 0,
       isDownPressed: false,
       isUpPressed: false,
+      usedAttack: false,
     },
     user2: {
       id: data.user2.id,
       score: 0,
       isDownPressed: false,
       isUpPressed: false,
+      usedAttack: false,
     },
     meta: {
       status: "running",
@@ -194,7 +198,7 @@ const doUpdate = (io, matchId) => {
         throw new Error();
       }
     }).catch(error => {
-      console.log(`Error finishing the match ${matchId}:`, error);
+      // console.log(`Error finishing the match ${matchId}:`, error);
     }).finally(() => {
       delete MATCHES_STATE[matchId];
     });

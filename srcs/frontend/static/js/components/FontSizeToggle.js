@@ -5,7 +5,7 @@ export default class extends Abstract {
 		super(props);
 
 		this.params = props;
-		this.defaultFontSize = localStorage.getItem('fontSize') || 'large';
+		this.defaultFontSize = localStorage.getItem('fontSize') || 'small';
 	}
 
 	async addFunctionality() {

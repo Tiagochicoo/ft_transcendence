@@ -51,14 +51,14 @@ export default class extends Abstract {
 
 					<p class="mb-0">
 						<strong>
-							Matches won:
+							${i18next.t("dashboard.matchesWon")}
 						</strong>
 						${user.num_games_won}/${user.num_games}
 					</p>
 
 					<p class="mb-0">
 						<strong>
-							Tournaments won:
+							${i18next.t("dashboard.tournamentsWon")}
 						</strong>
 						${user.num_tournaments_won}/${user.num_tournaments}
 					</p>

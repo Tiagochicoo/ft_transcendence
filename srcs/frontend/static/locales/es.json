@@ -65,7 +65,7 @@
   },
   "pong": {
     "title": "Pong",
-    "content": "<p>Use los botones de abajo para controlar su pala.</p><p>También puede usar las teclas de Flecha Arriba/Flecha Abajo o W/S para mover la pala hacia arriba y hacia abajo.</p><p>Puede aumentar la velocidad de la pelota presionando la tecla ESPACIO.</p>",
+    "content": "<p>Use los botones de abajo para controlar su pala.</p><p>También puede usar las teclas de Flecha Arriba/Flecha Abajo o W/S para mover la pala hacia arriba y hacia abajo.</p><p>Puedes ATACAR a tu oponente una vez cambiando la dirección de la bola pulsando la tecla ESPACIO.</p>",
     "won": "¡Felicidades, ganaste!",
     "lost": "Ooops, perdiste...",
     "buttons": {
@@ -150,7 +150,8 @@
         "account_not_found": "No se encontró ninguna cuenta con el nombre de usuario/correo proporcionado.",
         "invalid_credentials": "Contraseña inválida o el usuario no existe.",
         "incorrect_password": "La contraseña es incorrecta.",
-        "invalid_2fa_code": "El código 2FA es incorrecto."
+        "invalid_2fa_code": "El código 2FA es incorrecto.",
+        "two_factor_code_required": "Se requiere un código de autenticación de dos factores."
       },
       "submitButton": "Enviar"
     },
@@ -176,7 +177,8 @@
         "avatar_file_size_exceed_limit": "El avatar no puede exceder el límite de tamaño de 100kb",
         "password_cannot_be_blank": "La contraseña no puede estar vacía",
         "password_too_short": "La contraseña debe tener al menos 8 caracteres",
-        "no_fields": "No se ha rellenado ningún campo"
+        "no_fields": "No se ha rellenado ningún campo",
+        "invalid_2fa_code": "El código 2FA es incorrecto."
       },
       "submitButton": "Registrar"
     },
@@ -190,6 +192,8 @@
       "invalid_page": "No tienes permisos para ver esa página"
     },
     "dashboard": {
+      "matchesWon": "Partidos ganados:",
+      "tournamentsWon": "Torneos ganados:",
       "matches": "Partidos",
       "tournaments": "Torneos",
       "rankings": "Clasificaciones",
@@ -211,6 +215,9 @@
       "tournamentsWinRatio": "Proporción de victorias en torneos",
       "individual": {
         "title": "Panel individual"
+      },
+      "general": {
+        "title": "Panel geral"
       }
     }
   }

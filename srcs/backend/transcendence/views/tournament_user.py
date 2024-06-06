@@ -16,7 +16,7 @@ class TournamentUserCreate(APIView):
 			serializer = TournamentUserSerializer(tournament_user)
 			return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
 		except Exception as error:
-			return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+			return JsonResponse({'success': False}, status=status.HTTP_400_BAD_REQUEST)
 
 class TournamentUserDetail(APIView):
 	def get(self, request, tournament_id, format=None):

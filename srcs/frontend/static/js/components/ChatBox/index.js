@@ -2,6 +2,7 @@ import { ChatRooms } from "/static/js/api/index.js";
 import { Abstract, Sidebar } from "/static/js/components/index.js";
 import MatchesSection from "/static/js/components/Sidebar/MatchesSection.js";
 import { User } from "/static/js/generators/index.js";
+import { variables } from "/static/js/services/index.js";
 
 // Utility Class
 export default class extends Abstract {
@@ -50,14 +51,14 @@ export default class extends Abstract {
 	static async block() {
 		const response = await ChatRooms.block(this.chatRoom.id);
 		if (response.success) {
-			SOCKET.emit('chat_block', response.data);
+			variables.socket.emit('chat_block', response.data);
 		}
 	}
 
 	static async unblock() {
 		const response = await ChatRooms.unblock(this.chatRoom.id);
 		if (response.success) {
-			SOCKET.emit('chat_unblock', response.data);
+			variables.socket.emit('chat_unblock', response.data);
 		}
 	}
 
@@ -125,7 +126,7 @@ export default class extends Abstract {
 			const data = new FormData(e.target);
 			const response = await ChatRooms.sendMessage(this.chatRoomId, data.get('content'));
 			if (response.success) {
-				SOCKET.emit('chat_message', response.data);
+				variables.socket.emit('chat_message', response.data);
 				e.target.querySelector('#content').value = '';
 			}
 		});
@@ -149,9 +150,11 @@ export default class extends Abstract {
 						</button>
 					` : ''}
 
-					<button class="chat-box-block" data-action="match">
-						<i class="bi bi-controller"></i>
-					</button>
+					${!this.chatRoom.was_blocked ? `
+						<button class="chat-box-block" data-action="match">
+							<i class="bi bi-controller"></i>
+						</button>
+					` : ''}
 
 					<button class="chat-box-close" data-action="close">
 						<i class="bi bi-x-circle-fill"></i>

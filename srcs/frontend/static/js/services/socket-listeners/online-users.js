@@ -1,11 +1,12 @@
 import FriendsSection from "/static/js/components/Sidebar/FriendsSection.js";
+import { variables } from "/static/js/services/index.js";
 
 const onlineUsersSocketListener = () => {
   // Remove 'online_users' listener
-  SOCKET.off('online_users');
+  variables.socket.off('online_users');
 
   // Listen to the 'online_users' event
-  SOCKET.on('online_users', (data) => {
+  variables.socket.on('online_users', (data) => {
     ONLINE_USERS = data;
     FriendsSection.updateOnlineStatus();
   });
