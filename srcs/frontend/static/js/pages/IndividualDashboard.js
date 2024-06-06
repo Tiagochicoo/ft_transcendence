@@ -20,10 +20,10 @@ export default class extends Abstract {
 		this.user = response.data.user;
 		this.matches = response.data.matches
 			.filter(({ has_finished }) => has_finished)
-			.sort(({ id }) => id);
+			.sort((a, b) => a.id > b.id ? -1 : 1);
 		this.tournament_users = response.data.tournament_users
 			.filter(({ tournament }) => tournament.has_finished)
-			.sort(({ id }) => id);
+			.sort((a, b) => a.id > b.id ? -1 : 1);
 
 		return `
 			<h1>
