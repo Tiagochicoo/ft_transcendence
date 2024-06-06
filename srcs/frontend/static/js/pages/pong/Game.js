@@ -120,10 +120,13 @@ export default class Game {
     // Handle user move: key down
     this.canvasArea.addEventListener("keydown", (e) => {
       if (["ArrowDown", "s"].includes(e.key)) {
+        e.preventDefault();
         handleDown(true);
       } else if (["ArrowUp", "w"].includes(e.key)) {
+        e.preventDefault();
         handleUp(true);
       } else if (e.key == " ") {
+        e.preventDefault();
         handleAttack(true);
       }
     });
