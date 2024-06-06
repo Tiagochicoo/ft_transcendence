@@ -39,7 +39,7 @@ export default class extends Abstract {
 				<div id="${options.id}" class="collapse ${isExpanded ? "show" : ""} ${options.title ? 'mt-3' : ''}">
 					<ul class="list-unstyled d-flex flex-column gap-2 mb-0">
 						${list.map(({ id, user, tournament }) => `
-							<div class="sidebar-section-element d-flex align-items-center justify-content-between gap-1 p-1 bg-light rounded" data-tournament-id="${tournament.id}" ${isAccepted ? `href="/pong/tournament/${tournament.id}/rounds" data-link` : ''}>
+							<${isAccepted ? "button" : "div"} class="sidebar-section-element d-flex align-items-center justify-content-between gap-1 p-1 bg-light rounded" data-tournament-id="${tournament.id}" ${isAccepted ? `href="/pong/tournament/${tournament.id}/rounds" data-link` : ''}>
 								${User.getBadge(user)}
 
 								${isAccepted ? `
@@ -57,7 +57,7 @@ export default class extends Abstract {
 										`).join("")}
 									</div>
 								` : ''}
-							</div>
+							</${isAccepted ? "button" : "div"}>
 						`).join("")}
 					</ul>
 				</div>

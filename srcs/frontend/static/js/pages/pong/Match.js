@@ -89,15 +89,15 @@ export default class extends Abstract {
 					<canvas id="canvas" width="600" height="400" class="bg-dark w-100" tabindex="1"></canvas>
 
 					<div class="canvas-actions-wrapper d-flex justify-content-between flex-wrap gap-2 mt-2 mt-md-3">
-						<button class="btn btn-secondary py-3 py-md-4" data-game-action="up">
+						<button class="btn btn-secondary py-3 py-md-4" data-game-action="up" tabindex="1">
 							${i18next.t("pong.buttons.up")}
 						</button>
 
-						<button class="btn btn-secondary py-3 py-md-4" data-game-action="attack">
+						<button class="btn btn-secondary py-3 py-md-4" data-game-action="attack" tabindex="1">
 							${i18next.t("pong.buttons.attack")}
 						</button>
 
-						<button class="btn btn-secondary py-3 py-md-4" data-game-action="down">
+						<button class="btn btn-secondary py-3 py-md-4" data-game-action="down" tabindex="1">
 							${i18next.t("pong.buttons.down")}
 						</button>
 					</div>
@@ -114,7 +114,7 @@ export default class extends Abstract {
 					<form class="d-flex flex-column">
 						${this.fieldsData.map(({ key, defaultValue }) => `
 							<label for="${key}" class="form-label d-flex align-items-center gap-1">
-								<input type="color" class="form-control form-control-color" id="${key}" value="${localStorage.getItem(key) ? localStorage.getItem(key) : defaultValue}">
+								<input type="color" class="form-control form-control-color" id="${key}" value="${localStorage.getItem(key) ? localStorage.getItem(key) : defaultValue}" tabindex="1">
 								<span>
 									${i18next.t(`pong.dashboard.${key}`)}
 								</span>
@@ -122,7 +122,7 @@ export default class extends Abstract {
 						`).join("")}
 					</form>
 
-					<button id="resetColors" class="btn btn-secondary mt-2">
+					<button id="resetColors" class="btn btn-secondary mt-2" tabindex="1">
 						${i18next.t("pong.buttons.resetColors")}
 					</button>
 				</div>

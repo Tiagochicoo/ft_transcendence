@@ -162,6 +162,11 @@ main {
   max-width: 90px !important;
 }
 
+*:focus-visible {
+  outline: 3px solid deepskyblue !important;
+  outline-offset: 2px !important;
+}
+
 /* ChatBox */
 #chat-box {
   position: absolute;

@@ -73,18 +73,15 @@ export default class Game {
     if (gameActions) {
       const createEventListeners = (element, callback) => {
         element.addEventListener('mousedown', (e) => {
-          e.preventDefault();
           callback(true);
         });
         element.addEventListener('mouseup', (e) => {
-          e.preventDefault();
           callback(false);
         });
         element.addEventListener('touchstart', (e) => {
           callback(true);
-        }, { passive: true});
+        });
         element.addEventListener('touchend', (e) => {
-          e.preventDefault();
           callback(false);
         });
       }
@@ -122,7 +119,6 @@ export default class Game {
 
     // Handle user move: key down
     this.canvasArea.addEventListener("keydown", (e) => {
-      e.preventDefault();
       if (["ArrowDown", "s"].includes(e.key)) {
         handleDown(true);
       } else if (["ArrowUp", "w"].includes(e.key)) {
@@ -134,7 +130,6 @@ export default class Game {
 
     // Handle user move: key up
     this.canvasArea.addEventListener("keyup", (e) => {
-      e.preventDefault();
       if (["ArrowDown", "s"].includes(e.key)) {
         handleDown(false);
       } else if (["ArrowUp", "w"].includes(e.key)) {
