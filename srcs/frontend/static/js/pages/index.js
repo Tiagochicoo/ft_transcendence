@@ -7,5 +7,6 @@ import EditProfile from "./EditProfile.js";
 import Match from "./pong/Match.js";
 import Pong from "./Pong.js";
 import Setup from "./pong/Setup.js"
+import LocalMatch from "./pong/LocalMatch.js"
 
-export { GeneralDashboard, IndividualDashboard, Home, SignUp, SignIn, EditProfile, Match, Pong, Setup };
+export { GeneralDashboard, IndividualDashboard, Home, SignUp, SignIn, EditProfile, Match, Pong, Setup, LocalMatch };

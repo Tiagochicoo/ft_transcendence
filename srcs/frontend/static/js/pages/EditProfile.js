@@ -30,7 +30,7 @@ export default class extends Abstract {
                 if (response.success) {
                     this.clearFields();
                     sendNotification({
-                        body: 'The profile was successfully updated'
+                        body: i18next.t('editProfile.successMessage')
                     });
 
                     if (document.getElementById('is_2fa_enabled').checked) {

@@ -8,7 +8,8 @@ import {
   EditProfile,
   Match,
   Pong,
-  Setup
+  Setup,
+  LocalMatch
 } from "/static/js/pages/index.js";
 import { Tournament } from "/static/js/pages/pong/index.js";
 import { refreshUserID, navigateTo } from "./index.js";
@@ -16,6 +17,7 @@ import { refreshUserID, navigateTo } from "./index.js";
 const ROUTES = [
   { path: "/", title: "Home", page: Home },
   { path: "/pong", title: "Pong", page: Pong },
+  { path: "/local-match", title: "Local Match", page: LocalMatch },
   { path: "/pong/single/setup", title: "Pong", page: Setup },
   { path: "/pong/single/match/:matchId", title: "Pong", page: Match },
   { path: "/pong/tournament/setup", title: "Pong", page: Setup },
