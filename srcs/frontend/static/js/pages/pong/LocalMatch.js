@@ -407,8 +407,8 @@ export default class Game {
     const pongWrapper = document.getElementById("pong-end-btn");
     if (pongWrapper) {
       pongWrapper.innerHTML = `
-        <a class="btn btn-secondary mt-4" href="/local-match" data-link>
-          ${i18next.t('pong.buttons.goBack')}
+        <a class="btn btn-secondary mt-4" href="/local-match" data-link tabindex="1">
+          ${i18next.t('pong.another')}
         </a>
       `;
     }

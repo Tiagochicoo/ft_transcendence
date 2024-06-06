@@ -240,7 +240,7 @@ export default class Game {
     if (pongWrapper) {
       const linkHref = (this.mode === 'single') ? '/pong' : `/pong/tournament/${this.tournamentId}/rounds`;
       pongWrapper.innerHTML = `
-        <a class="btn btn-secondary mt-4" href="${linkHref}" data-link>
+        <a class="btn btn-secondary mt-4" href="${linkHref}" data-link tabindex="1">
           ${i18next.t('pong.buttons.goBack')}
         </a>
       `;
