@@ -84,6 +84,7 @@
     "singleMatchNotEnoughFriends": "You need at least 1 friends to star a match.",
     "tournamentNotEnoughFriends": "You need at least 7 friends to star a tournament.",
     "createError": "We could not create your match. Please try again.",
+    "localMatch": "Local match",
     "singleMatchInvitationMessage": "Select your opponent:",
     "tournamentInvitationMessage": "Select 7 participants:",
     "invitationError": "You should select 7 participants to invite.",
@@ -184,6 +185,7 @@
     },
     "editProfile" : {
       "title": "Edit profile",
+      "successMessage": "The profile was successfully updated",
       "enable2FA": "Enable Two-Factor Authentication",
       "disable2FA": "Disable Two-Factor Authentication",
       "scanQRCode": "Scan this QR code with your authenticator app"

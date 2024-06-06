@@ -29,11 +29,7 @@
         "sent": "Envió una solicitud de amistad",
         "refused": "Rechazó tu solicitud de amistad",
         "accepted": "Aceptó tu solicitud de amistad. El partido comenzará en 10s",
-        "canceled": "Canceló su solicitud de amistad",
-        "start": "El partido comenzará en 5s",
-        "match_start": "El partido del torneo comenzará en 10s",
-        "round_start": "Una nueva ronda del torneo comenzará en 5s",
-        "finish": "El torneo terminó"
+        "canceled": "Canceló su solicitud de amistad"
       }
     },
     "matches": {
@@ -43,7 +39,8 @@
         "sent": "Envió una solicitud de partido",
         "refused": "Rechazó tu solicitud de partido",
         "accepted": "Aceptó tu solicitud de partido",
-        "canceled": "Canceló su solicitud de partido"
+        "canceled": "Canceló su solicitud de partido",
+        "start": "El partido comenzará en 10s"
       }
     },
     "tournaments": {
@@ -53,7 +50,10 @@
         "sent": "Envió una solicitud de torneo",
         "canceled": "El torneo fue cancelado",
         "accepted": "Aceptó tu solicitud de torneo",
-        "start": "El torneo comenzará en 10s"
+        "start": "El torneo comenzará en 10s",
+        "match_start": "El partido del torneo comenzará en 10s",
+        "round_start": "Una nueva ronda del torneo comenzará en 5s",
+        "finish": "El torneo terminó"
       }
     },
     "validation": {
@@ -84,6 +84,7 @@
     "singleMatchNotEnoughFriends": "Necesitas al menos 1 amigo para empazar una partida.",
     "tournamentNotEnoughFriends": "Necesitas al menos 7 amigos para empezar un torneo.",
     "createError": "No se pudo crear tu partida. Inténtalo de nuevo.",
+    "localMatch": "Partida local",
     "singleMatchInvitationMessage": "Selecciona a tu oponente:",
     "tournamentInvitationMessage": "Seleccione 7 participantes:",
     "invitationError": "Debes seleccionar 7 participantes para convidar.",
@@ -184,6 +185,7 @@
     },
     "editProfile" : {
       "title": "Editar perfil",
+      "successMessage": "El perfil se ha actualizado correctamente",
       "enable2FA": "Habilitar la autenticación de dos factores",
       "disable2FA": "Desactivar la autenticación de dos factores",
       "scanQRCode": "Escanea este código QR con tu aplicación de autenticación"
