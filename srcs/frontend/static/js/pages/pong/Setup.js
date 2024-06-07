@@ -111,10 +111,6 @@ export default class extends Abstract {
 				${i18next.t("pong.title")}
 			</h1>
 
-			<a class="btn btn-secondary mb-4" href="/local-match" data-link>
-				${i18next.t('pong.localMatch')}
-			</a>
-
 			<div id="setup-area" class="d-flex flex-column">
 				${this.checkAvailability() ? `
 					<div>
