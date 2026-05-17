@@ -60,6 +60,13 @@ services:
       - transcendence
     restart: always
 
+cloudflared:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --config /etc/cloudflared/config.yml run
+    volumes:
+      - /etc/cloudflared/config.yml:/etc/cloudflared/config.yml
+      - /etc/cloudflared/<tunnel-id>.json:/etc/cloudflared/credentials-file.json
+
 networks:
   transcendence:
 
